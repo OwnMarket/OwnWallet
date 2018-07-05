@@ -1,0 +1,10 @@
+<div class="column-container align-center">
+  <mat-form-field class="full-width" *ngIf="walletInfo">
+    <input matInput placeholder="private key" disabled value="{{walletInfo.privateKey}}" />
+  </mat-form-field>
+  <mat-form-field class="full-width" *ngIf="walletInfo">
+    <input matInput placeholder="address" disabled value="{{walletInfo.address}}" />
+  </mat-form-field>
+
+  <button (click)="onGenerateWalletClick()" mat-raised-button color="accent" matTooltip="Clicking on this button, you will generate new chainium address and private key.">GENERATE WALLET</button>
+</div>

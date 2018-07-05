@@ -1,0 +1,8 @@
+<div class="column-container align-center">
+    <mat-form-field class="full-width">
+      <input matInput placeholder="enter private key" [type]="hide ? 'password' : 'text'" [value]="privateKey" (input)="privateKey = $event.target.value" required/>
+      <mat-icon matSuffix (click)="hide = !hide" color="accent">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+    </mat-form-field>
+    <button (click)="onImportButtonClick()" mat-raised-button color="accent" >IMPORT</button>
+    
+</div>

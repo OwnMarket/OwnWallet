@@ -1,0 +1,23 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title class="font-bold">
+      Asset transfer
+    </mat-panel-title>
+    <mat-panel-description *ngIf="assetTransfer.amount || assetTransfer.fromAccount || assetTransfer.toAccount || assetTransfer.assetHash">{{assetTransfer.amount}} of {{assetTransfer.assetHash}} from {{assetTransfer.fromAccount}} to {{assetTransfer.toAccount}}</mat-panel-description>
+    <button (click)="onRemoveAssetTransferClick()" mat-icon-button color="accent" aria-label="delete this row from actions list">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-expansion-panel-header>
+  <mat-form-field class="form-margin-right">
+    <input matInput placeholder="amount" [value]="assetTransfer.amount" type="number" (input)="assetTransfer.amount = $event.target.value">
+  </mat-form-field>
+  <mat-form-field class="form-margin-right">
+    <input matInput placeholder="asset hash" [value]="assetTransfer.assetHash" (input)="assetTransfer.assetHash = $event.target.value">
+  </mat-form-field>
+  <mat-form-field class="form-margin-right">
+    <input matInput placeholder="from account" [value]="assetTransfer.fromAccount" (input)="assetTransfer.fromAccount = $event.target.value">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="to account" [value]="assetTransfer.toAccount" (input)="assetTransfer.toAccount = $event.target.value">
+  </mat-form-field>
+</mat-expansion-panel>

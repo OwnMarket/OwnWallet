@@ -1,0 +1,47 @@
+<div *ngIf="!isKeyImported">
+    <h1 class="mat-display-1 accent-font-color ">Wallet has not been imported, please use import wallet feature from the menu.</h1>
+</div>
+<div *ngIf="isKeyImported && tx">
+<div class="column-container">
+  <div class="row-container">
+    <mat-form-field class="form-margin-right">
+      <input matInput placeholder="nonce" value="{{tx.nonce}}" type="number" (input)="tx.nonce = $event.target.value">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="fee" value="{{tx.fee}}" type="number" (input)="tx.fee = $event.target.value" matTooltip="this is a recommended minimum fee which will be charged for each action in action list">
+    </mat-form-field>
+  </div>
+  <div class="column-container" *ngIf="displayActions">
+    <mat-toolbar>
+      <span class="font-bold">Actions</span>
+    </mat-toolbar>
+    <mat-accordion>
+      <ng-template ngFor let-addedAction [ngForOf]="tx.actions">
+        <ng-template [ngIf]="addedAction.actionType=='TransferChx'">
+          <app-chx-transfer [chxTransfer]="addedAction.actionData" [removalService]="removalService"></app-chx-transfer>
+        </ng-template>
+        <ng-template [ngIf]="addedAction.actionType=='TransferAsset'">
+          <app-asset-transfer [assetTransfer]="addedAction.actionData" [removalService]="removalService"></app-asset-transfer>
+        </ng-template>
+      </ng-template>
+    </mat-accordion>
+  </div>
+</div>
+<div class="fab-bottom-right row-container">
+  <mat-form-field class="form-margin-right">
+    <mat-select placeholder="add new action">
+      <mat-option *ngFor="let action of availableActions" [value]="action.value" (onSelectionChange)="onActionSelected($event, action)">
+        {{ action.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div *ngIf="totalFee()>0">
+    <mat-form-field class="form-margin-right">
+      <input matInput placeholder="total fee" disabled value="{{totalFee()}}" type="number">
+    </mat-form-field>
+    <button mat-fab matTooltip="review and/or submit transaction" (click)="openSubmissionDialog()">
+      <mat-icon>done_all</mat-icon>
+    </button>
+  </div>
+</div>
+</div>

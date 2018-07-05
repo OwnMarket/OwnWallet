@@ -1,0 +1,21 @@
+.row-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.align-right
+{
+    margin-left: auto;
+}
+
+.error-image
+{
+    height:30%; 
+    width: 30%;
+}
+
+.inner-text
+{
+    align-self: center;  
+    word-wrap: break-word
+}

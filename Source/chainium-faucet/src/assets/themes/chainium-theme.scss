@@ -1,0 +1,122 @@
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$md-primarycolor: (
+    50 :  #f8f8f8,
+    100 : #f0f0f0,
+    200 :#e5e5e5,
+    300 : #d4d4d4,
+    400 : #afafaf,
+    500 : #8f8f8f,
+    600 : #676767,
+    700 : #545454,
+    800 : #363636,
+    900 : #161616,
+    A100 : #ff4e4e,
+    A200 : #ff1b1b,
+    A400 : #e70000,
+    A700 : #ce0000,
+    contrast: (
+        50 : #fef2e1,
+        100 : #fcddb5,
+        200 : #fbc786,
+        300 : #f9b158,
+        400 : #f7a03a,
+        500 : #f59128,
+        600 : #f08626,
+        700 : #e97724,
+        800 : #e26822,
+        900 : #d65120,
+        A100 : #ffffff,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff
+    )
+);
+
+$md-accentcolor: (
+    50 : #fef2e1,
+    100 : #fcddb5,
+    200 : #fbc786,
+    300 : #f9b158,
+    400 : #f7a03a,
+    500 : #f59128,
+    600 : #f08626,
+    700 : #e97724,
+    800 : #e26822,
+    900 : #d65120,
+    A100 : #fffbfa,
+    A200 : #ffd1c7,
+    A400 : #ffa894,
+    A700 : #ff937a,
+    contrast: (
+        50 : #ffffff,
+        100 : #fafafa,
+        200 : #f5f5f5,
+        300 : #f0f0f0,
+        400 : #dedede,
+        500 : #000000,
+        600 : #979797,
+        700 : #818181,
+        800 : #606060,
+        900 : #3c3c3c,
+        A100 : #ffffff,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$font-base-color : #ffffff;
+
+@function get-chainium-font-palette($color) {
+    @return (
+        base:              $color,
+        divider:           rgba($color,30),
+        dividers:          rgba($color,30),
+        disabled:          rgba($color, 0.38),
+        disabled-button:   rgba($color, 0.38),
+        disabled-text:     rgba($color, 0.38),
+        hint-text:         rgba($color, 0.38),
+        secondary-text:    rgba($color, 0.54),
+        icon:              rgba($color, 0.54),
+        icons:             rgba($color, 0.54),
+        text:              rgba($color, 0.87),
+        slider-off:        rgba($color, 0.26),
+        slider-off-active: rgba($color, 0.38),
+        slider-min:        rgba($color, 0.38)
+    );
+};
+
+$chainium-app-primary: mat-palette($md-primarycolor);
+$chainium-app-accent:  mat-palette($md-accentcolor);
+
+// The warn palette is optional (defaults to red).
+// $chainium-app-warn:    mat-palette($mat-red);
+$chainium-app-warn:mat-palette($mat-deep-orange, A200);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$chainium-fonts: get-chainium-font-palette($font-base-color);
+//$chainium-app-theme : map-merge(mat-dark-theme($chainium-app-primary, $chainium-app-accent, $chainium-app-warn), (foreground: $chainium-fonts));
+$chainium-app-theme : mat-dark-theme($chainium-app-primary,$chainium-app-accent,$chainium-app-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($chainium-app-theme);
+
+.accent-font-color {
+    color: mat-color($md-accentcolor, 800);
+}
+
+.primary-font-color{
+    color: $font-base-color;
+}

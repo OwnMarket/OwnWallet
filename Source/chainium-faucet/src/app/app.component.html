@@ -1,0 +1,20 @@
+<div class="column-container align-center sidenav-content-content">
+  <mat-form-field class="full-width">
+    <input matInput placeholder="enter chainium address" type="text" matTooltip="Please enter chainium address, so we can provide you with some test CHX tokens."
+      [value]="chainiumAddress" (input)="chainiumAddress = $event.target.value" />
+  </mat-form-field>
+  <button (click)="onGetTokensButtonClick()" mat-raised-button color="accent">GET TEST TOKENS</button>
+
+</div>
+<div class="column-container align-center sidenav-content-content">
+  <mat-form-field class="full-width">
+    <input matInput placeholder="enter address hash" type="text" matTooltip="Please enter your adress hash, so we can provide you with some test Chainium assets."
+    [value]="addressHash" (input)="addressHash = $event.target.value"/>
+  </mat-form-field>
+  <button (click)="onGetAssetsButtonClick()" mat-raised-button color="accent">GET TEST ASSETS</button>
+</div>
+<div class="column-container align-center" *ngIf="messages">
+  <mat-divider class="toolbar-bottom-margin"></mat-divider>
+  <mat-list>
+    <mat-list-item *ngFor="let msg of messages">{{msg}}</mat-list-item>
+  </mat-list>

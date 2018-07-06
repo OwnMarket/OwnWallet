@@ -1,0 +1,21 @@
+<div class="column-container">
+        <div mat-dialog-title class="row-container">
+                <button type="button" aria-label="close dialog" mat-icon-button (click)="closeErrorDialog()" class="align-right" color="accent">
+                        <mat-icon aria-label="Side nav toggle icon">close</mat-icon>
+                </button>
+        </div>
+        <div class="row-container" mat-dialog-content>
+                <img src="../../assets/images/{{errorImage}}.png" class="error-image" />
+                <section class="mat-typography inner-text">
+                        <div class="row-container">
+                                <h1 class="mat-display-2 accent-font-color ">Oops!</h1>
+                                <h1 class="mat-display-2" style="margin-left:16px;">Something went wrong...</h1>
+                        </div>
+                        <section class="mat-typography">
+                                <h2 class="mat-display-1">This is awkward... Please try again later...</h2>
+                        </section>
+                </section>
+
+        </div>
+
+</div>

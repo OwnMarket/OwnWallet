@@ -41,7 +41,7 @@ import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
     BrowserModule,
     GoogleMaterialModule,
     BrowserAnimationsModule,
-    AppRoutingModule, 
+    AppRoutingModule,
     HttpClientModule
   ],
   providers: [

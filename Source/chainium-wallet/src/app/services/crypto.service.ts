@@ -3,13 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
+import { environment } from '../../environments/environment';
+
 import { WalletInfo } from '../models/WalletInfo';
 import { Tx, TxEnvelope } from '../models/SubmitTransactions';
 
-const WALLETAPIURL: string = "http://localhost:5162";
-const GENERATEWALLET: string = "wallet";
-const GETADDRESS : string = "address";
-const SIGNTRANSACTION : string = "sign";
+const GENERATEWALLET = 'wallet';
+const GETADDRESS = 'address';
+const SIGNTRANSACTION = 'sign';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -20,29 +21,31 @@ const httpOptions = {
 })
 export class CryptoService {
 
-  private baseServiceUrl : string = WALLETAPIURL;
-  constructor(private http: HttpClient) { }
+  private baseServiceUrl: string;
+  constructor(private http: HttpClient) {
+    this.baseServiceUrl = environment.walletApiUrl;
+  }
 
   public generateWallet(): Observable<WalletInfo> {
-    let walleturl = `${this.baseServiceUrl}/${GENERATEWALLET}`;
+    const walleturl = `${this.baseServiceUrl}/${GENERATEWALLET}`;
     return this.http.get<WalletInfo>(walleturl);
   }
 
   public getAddressFromKey(privateKey: string): Observable<any> {
-    let getAddressUrl = `${this.baseServiceUrl}/${GETADDRESS}`;
-    let data = { privateKey : privateKey };
+    const getAddressUrl = `${this.baseServiceUrl}/${GETADDRESS}`;
+    const data = { privateKey : privateKey };
     return this.http.post<any>(getAddressUrl, data);
   }
-  public signTransaction(privateKey: string, tx: Tx): Observable<TxEnvelope> { 
-    let txTxt = JSON.stringify(tx);
+  public signTransaction(privateKey: string, tx: Tx): Observable<TxEnvelope> {
+    const txTxt = JSON.stringify(tx);
 
-    let signRequest = {
+    const signRequest = {
       privateKey : privateKey,
       dataToSign : txTxt
     };
 
-    let signMessageUrl = `${this.baseServiceUrl}/${SIGNTRANSACTION}`
+    const signMessageUrl = `${this.baseServiceUrl}/${SIGNTRANSACTION}`;
 
-    return this.http.post<TxEnvelope>(signMessageUrl,signRequest);
+    return this.http.post<TxEnvelope>(signMessageUrl, signRequest);
   }
 }

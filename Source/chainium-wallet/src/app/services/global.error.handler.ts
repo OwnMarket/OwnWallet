@@ -1,22 +1,21 @@
-import { ErrorHandler, Injectable, Injector} from '@angular/core';
+import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root'
-  })
+  providedIn: 'root'
+})
 export class GlobalErrorHandler extends ErrorHandler {
-    constructor() { 
-        super();
-    }
-  
+  private static subject = new Subject<any>();
+  constructor() {
+    super();
+  }
+
   handleError(error) {
     this.sendMessage(error);
     super.handleError(error);
-    //throw error;
+    // throw error;
   }
- 
-  private static subject : Subject<any> = new Subject<any>();
- 
+
   sendMessage(message: any) {
     GlobalErrorHandler.subject.next(message);
   }
@@ -26,7 +25,7 @@ export class GlobalErrorHandler extends ErrorHandler {
   }
 
   getMessage(): Observable<any> {
-      return GlobalErrorHandler.subject.asObservable();
+    return GlobalErrorHandler.subject.asObservable();
   }
-  
+
 }

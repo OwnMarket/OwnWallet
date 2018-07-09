@@ -30,9 +30,9 @@ export class SubmitTransactionComponent implements OnInit {
         viewValue: 'Transfer Chx',
         onSelected() {
           let action = new TxAction();
-          action.actionType = "TransferChx";
+          action.actionType = 'TransferChx';
           action.actionData = {
-            recipientAddress: "",
+            recipientAddress: '',
             amount: null
           }
           return action;
@@ -42,13 +42,13 @@ export class SubmitTransactionComponent implements OnInit {
         value: 'TransferAsset',
         viewValue: 'Transfer Asset',
         onSelected() {
-          let action = new TxAction();
-          action.actionType = "TransferAsset";
+          const action = new TxAction();
+          action.actionType = 'TransferAsset';
 
-          let assetTransfer = {
-            fromAccount: "",
-            toAccount: "",
-            assetHash: "",
+          const assetTransfer = {
+            fromAccount: '',
+            toAccount: '',
+            assetHash: '',
             amount: 0
           };
 
@@ -78,7 +78,7 @@ export class SubmitTransactionComponent implements OnInit {
             tx: this.tx,
             removeAction: this.removeTxAction
           };
-      });
+        });
   }
 
   validateTransaction(txAction: TxAction): boolean {

@@ -19,6 +19,8 @@ import { HomeScreenComponent } from './home-screen/home-screen.component';
 import { HttpClientModule } from '@angular/common/http'
 import { GlobalErrorHandler } from './services/global.error.handler';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
+import { AddressAccountInfoComponent } from './address-account-info/address-account-info.component';
+import { GenerateAccountComponent } from './generate-account/generate-account.component';
 
 @NgModule({
   entryComponents : [ SubmitTransactionInfoComponent, ErrorDialogComponent],
@@ -35,7 +37,9 @@ import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
     AssetTransferComponent,
     SubmitTransactionInfoComponent,
     HomeScreenComponent,
-    ErrorDialogComponent
+    ErrorDialogComponent,
+    AddressAccountInfoComponent,
+    GenerateAccountComponent
   ],
   imports: [
     BrowserModule,

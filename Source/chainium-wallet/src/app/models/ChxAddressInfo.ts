@@ -1,5 +1,5 @@
-export class ChxAddressInfo{
-    chainiumAddress : string;
-    balance : number;
-    nonce : number;
+export class ChxAddressInfo {
+    chainiumAddress: string;
+    balance: number;
+    nonce: number;
 }

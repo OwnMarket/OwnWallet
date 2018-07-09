@@ -39,7 +39,7 @@ export class NodeService {
   public getMinFee(): number {
     // TODO: decide on how to get this value
     // for now return 0.1
-    return 0.1;
+    return 0.01;
   }
 
   public submitTransaction(txEnvelope: TxEnvelope): Observable<any> {
@@ -55,5 +55,10 @@ export class NodeService {
   public getBlockInfo(blockNumber: number): Observable<any> {
     const blockInfoUrl = `${this.baseServiceUrl}/block/${blockNumber}`;
     return this.http.get<any>(blockInfoUrl);
+  }
+
+  public getChxAddressAccounts(chxAddress: string): Observable<any> {
+    const adressesInfoUrl = `${this.baseServiceUrl}/address/${chxAddress}/accounts`;
+    return this.http.get<any>(adressesInfoUrl);
   }
 }

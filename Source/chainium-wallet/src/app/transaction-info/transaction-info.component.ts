@@ -13,9 +13,9 @@ interface ActionTypeMapper {
 const ACTIONTYPEMAPPERS: ActionTypeMapper[] =
   [
     {
-      actionType: "ChxTransfer",
+      actionType: 'ChxTransfer',
       map(actionData: any): string {
-        let chxTransfer = actionData as ChxTransfer;
+        const chxTransfer = actionData as ChxTransfer;
 
         if (!chxTransfer) {
           return '';
@@ -25,9 +25,9 @@ const ACTIONTYPEMAPPERS: ActionTypeMapper[] =
       }
     },
     {
-      actionType: "AssetTransfer",
+      actionType: 'AssetTransfer',
       map(actionData: any): string {
-        let assetTransfer = actionData as AssetTransfer;
+        const assetTransfer = actionData as AssetTransfer;
 
         if (!assetTransfer) {
           return '';
@@ -44,18 +44,18 @@ const ACTIONTYPEMAPPERS: ActionTypeMapper[] =
   styleUrls: ['./transaction-info.component.css']
 })
 export class TransactionInfoComponent implements OnInit {
-  transactionHash: string = '';
+  transactionHash = '';
   txInfo: TransactionInfo;
   subscription: Subscription;
   errors: string[];
   transactionStatus: string = '';
-  
+
   constructor(private nodeService: NodeService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(params => {
-      let tHash = params['transactionHash'];
-      this.transactionHash = tHash == null || tHash == undefined ? '' : tHash;
+      const tHash = params['transactionHash'];
+      this.transactionHash = tHash == null || tHash === undefined ? '' : tHash;
       this.onTransactionInfoButtonClick();
     });
   }
@@ -82,18 +82,17 @@ export class TransactionInfoComponent implements OnInit {
       });
   }
 
-  private mapStatus(status : number) : string {
-      switch(status)
-      {
-        case 0:
-          return 'Pending';
-        case 1:
-          return 'Success';
-        case 2:
-          return 'Failed';
-      }
+  private mapStatus(status: number): string {
+    switch (status) {
+      case 0:
+        return 'Pending';
+      case 1:
+        return 'Success';
+      case 2:
+        return 'Failed';
+    }
 
-      return 'Unknown';
+    return 'Unknown';
 
   }
 

@@ -10,6 +10,7 @@ import { NodeService } from '../services/node.service';
   styleUrls: ['./balance-info.component.css']
 })
 export class BalanceInfoComponent implements OnInit {
+  addressInfo: ChxAddressInfo;
 
   constructor(private cryptoService: CryptoService,
     private privateKeyService: PrivatekeyService,
@@ -22,18 +23,16 @@ export class BalanceInfoComponent implements OnInit {
   ngOnInit() {
   }
 
-  addressInfo: ChxAddressInfo;
-
+  
   onRefreshAddressInfoClick() {
-    if(!this.privateKeyService.existsKey())
-    {
+    if (!this.privateKeyService.existsKey()) {
       this.addressInfo = null;
       return;
     }
 
     this.cryptoService
-    .getAddressFromKey(this.privateKeyService.walletInfo.privateKey)
-    .subscribe(addr => this.setAddress(addr));
+      .getAddressFromKey(this.privateKeyService.walletInfo.privateKey)
+      .subscribe(addr => this.setAddress(addr));
   }
 
   private setAddress(addr: any): void {

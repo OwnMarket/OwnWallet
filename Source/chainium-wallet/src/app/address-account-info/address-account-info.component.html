@@ -1,0 +1,23 @@
+<div class="column-container">
+  <div class="column-container align-center">
+    <mat-form-field class="full-width">
+      <textarea matInput placeholder="chainium address" [value]="chainiumAddress" (input)="chainiumAddress = $event.target.value"
+        required></textarea>
+    </mat-form-field>
+    <button (click)="onAccountInfoButtonClick()" mat-raised-button color="accent">GET ADRESSS INFO</button>
+  </div>
+  <div *ngIf="addressInfo">
+    <mat-toolbar class="toolbar-header">Accounts</mat-toolbar>
+    <mat-divider class="toolbar-bottom-margin"></mat-divider>
+    <mat-list>
+      <mat-list-item *ngFor="let account of addressInfo.accounts">{{account}}</mat-list-item>
+    </mat-list>
+  </div>
+  <div *ngIf="errors">
+      <mat-toolbar class="toolbar-header">Errors</mat-toolbar>
+      <mat-divider class="toolbar-bottom-margin"></mat-divider>
+      <mat-list>
+        <mat-list-item *ngFor="let error of errors">{{error}}</mat-list-item>
+      </mat-list>
+  </div>
+  </div>

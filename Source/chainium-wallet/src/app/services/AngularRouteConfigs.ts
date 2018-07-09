@@ -6,15 +6,19 @@ import { SubmitTransactionComponent } from '../submit-transaction/submit-transac
 import { TransactionInfoComponent } from '../transaction-info/transaction-info.component';
 import { BlockInfoComponent } from '../block-info/block-info.component';
 import { HomeScreenComponent } from '../home-screen/home-screen.component';
+import { AddressAccountInfoComponent } from '../address-account-info/address-account-info.component';
+import { GenerateAccountComponent } from '../generate-account/generate-account.component';
 
 
-export const ROUTERCONFIGS : Routes = [
-    { path: 'wallet', component: WalletComponent },
-    { path: 'importwallet', component: ImportWalletComponent},
-    { path: 'accountinfo', component: AccountInfoComponent},
-    { path: 'submissions', component : SubmitTransactionComponent},
-    { path: 'transaction', component: TransactionInfoComponent},
-    { path: 'transaction/:transactionHash', component: TransactionInfoComponent},
-    { path: 'block', component: BlockInfoComponent},
-    { path: '', component: HomeScreenComponent}
-  ];
+export const ROUTERCONFIGS = [
+  { path: 'wallet', component: WalletComponent },
+  { path: 'importwallet', component: ImportWalletComponent },
+  { path: 'accountinfo', component: AccountInfoComponent },
+  { path: 'submissions', component: SubmitTransactionComponent },
+  { path: 'transaction', component: TransactionInfoComponent },
+  { path: 'transaction/:transactionHash', component: TransactionInfoComponent },
+  { path: 'block', component: BlockInfoComponent },
+  { path: '', component: HomeScreenComponent },
+  { path: 'addressaccountinfo', component: AddressAccountInfoComponent },
+  { path: 'generateaccount', component: GenerateAccountComponent }
+];

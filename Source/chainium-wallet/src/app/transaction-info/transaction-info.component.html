@@ -1,6 +1,7 @@
 <div class="column-container align-center">
     <mat-form-field class="full-width">
-        <textarea matInput placeholder="transaction hash" [value]="transactionHash" (input)="transactionHash = $event.target.value" required></textarea>
+        <textarea matInput placeholder="transaction hash" [value]="transactionHash" (input)="transactionHash = $event.target.value"
+            required></textarea>
     </mat-form-field>
     <button (click)="onTransactionInfoButtonClick()" mat-raised-button color="accent">GET TRANSACTION</button>
 </div>
@@ -19,7 +20,7 @@
     <mat-form-field class="info-item-margin">
         <input matInput placeholder="fee" disabled value="{{txInfo.fee}}" type="number">
     </mat-form-field>
-    <mat-form-field class="info-item-margin" >
+    <mat-form-field class="info-item-margin">
         <input matInput placeholder="status" disabled value="{{transactionStatus}}" type="text">
     </mat-form-field>
     <mat-form-field class="info-item-margin" *ngIf="txInfo.errorCode && (txInfo.errorCode>0)">
@@ -35,8 +36,9 @@
     </mat-list>
 </div>
 <div class="column-container" *ngIf="errors">
-<mat-toolbar class="toolbar-header">Errors</mat-toolbar>
-<mat-divider class="toolbar-bottom-margin"></mat-divider>
-<mat-list>
-    <mat-list-item *ngFor="let error of errors">{{error}}</mat-list-item>
-</mat-list>
+    <mat-toolbar class="toolbar-header">Errors</mat-toolbar>
+    <mat-divider class="toolbar-bottom-margin"></mat-divider>
+    <mat-list>
+        <mat-list-item *ngFor="let error of errors">{{error}}</mat-list-item>
+    </mat-list>
+</div>

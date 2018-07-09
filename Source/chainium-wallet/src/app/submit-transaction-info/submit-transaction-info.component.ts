@@ -14,12 +14,12 @@ export class SubmitTransactionInfoComponent implements OnInit {
   txtEnvelope: string;
   txResult: TxResult;
   submissionErrors: string[];
-  isSubmited: boolean = false;
+  isSubmited = false;
 
   constructor(
     public dialogRef: MatDialogRef<SubmitTransactionInfoComponent>,
-    private activatedRoute : ActivatedRoute,
-    private router : Router,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: TxEnvelope,
     private nodeService: NodeService) {
     this.transactionEnvelope = data;
@@ -43,9 +43,9 @@ export class SubmitTransactionInfoComponent implements OnInit {
     });
   }
 
-  onTransactionHashClick(){
+  onTransactionHashClick() {
     this.onCloseClick();
-    this.router.navigate([`/transaction/${this.txResult.txHash}`],{relativeTo : this.activatedRoute});
+    this.router.navigate([`/transaction/${this.txResult.txHash}`], { relativeTo: this.activatedRoute });
   }
 
   onCloseClick(): void {

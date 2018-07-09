@@ -6,8 +6,8 @@ import { WalletRoutes } from './services/walletroutes.service';
 import { WalletRouteInfo } from './models/WalletRouteInfo';
 import { PrivatekeyService } from './services/privatekey.service';
 import { MatDialog } from '@angular/material';
-import { GlobalErrorHandler } from './services/global.error.handler'
-import { ErrorDialogComponent } from './error-dialog/error-dialog.component'
+import { GlobalErrorHandler } from './services/global.error.handler';
+import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -51,7 +51,7 @@ export class AppComponent implements OnDestroy {
     this.errorOccuredSubscription.unsubscribe();
   }
 
-  private loadErrorDialog(error : any){
+  private loadErrorDialog(error: any) {
     this.dialog.open(ErrorDialogComponent, { data: error });
   }
 }

@@ -8,7 +8,7 @@
 </div>
 <div class="column-container align-center sidenav-content-content">
   <mat-form-field class="full-width">
-    <input matInput placeholder="enter address hash" type="text" matTooltip="Please enter your adress hash, so we can provide you with some test Chainium assets."
+    <input matInput placeholder="enter account hash" type="text" matTooltip="Please enter your account hash, so we can provide you with some test Chainium assets."
     [value]="addressHash" (input)="addressHash = $event.target.value"/>
   </mat-form-field>
   <button (click)="onGetAssetsButtonClick()" mat-raised-button color="accent">GET TEST ASSETS</button>

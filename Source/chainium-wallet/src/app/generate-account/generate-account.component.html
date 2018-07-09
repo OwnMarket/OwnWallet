@@ -4,12 +4,12 @@
 <div class="column-container" *ngIf="isKeyImported">
   <div class="column-container align-center">
     <button (click)="onGenerateAccountClick()" mat-raised-button color="accent">GENERATE ACCOUNT</button>
-    
+
   </div>
   <div class="column-container" *ngIf="txResult">
-      <mat-toolbar class="toolbar-header">Transaction hash</mat-toolbar>
-      <mat-divider class="toolbar-bottom-margin"></mat-divider>
-      <a mat-button class="full-width"  (click)="onTransactionHashClick()" matTooltip="click on transaction hash for a detailed transaction view">{{txResult.txHash}}</a>
+    <mat-toolbar class="toolbar-header">Transaction hash</mat-toolbar>
+    <mat-divider class="toolbar-bottom-margin"></mat-divider>
+    <a mat-button class="full-width" (click)="onTransactionHashClick()" matTooltip="click on transaction hash for a detailed transaction view">{{txResult.txHash}}</a>
   </div>
   <div class="column-container" *ngIf="errors">
     <mat-toolbar class="toolbar-header">Errors</mat-toolbar>

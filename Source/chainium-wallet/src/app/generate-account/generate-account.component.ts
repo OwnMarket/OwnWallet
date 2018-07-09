@@ -38,13 +38,14 @@ export class GenerateAccountComponent implements OnInit {
     return (result as T);
   }
 
-  private composeTx(nonce: number): Tx {
+  private composeTx(nonce: number, senderAddress: string): Tx {
     const action = new TxAction();
     action.actionType = 'CreateAccount';
     action.actionData = {};
 
     const tx = new Tx();
     tx.fee = this.nodeService.getMinFee();
+    tx.senderAddress = senderAddress;
     tx.actions = [action];
     tx.nonce = nonce;
 
@@ -69,7 +70,7 @@ export class GenerateAccountComponent implements OnInit {
           return;
         }
 
-        const tx = this.composeTx(this.balInfo.nonce + 1);
+        const tx = this.composeTx(this.balInfo.nonce + 1, this.privateKeyService.walletInfo.address);
         this.cryptoService.signTransaction(this.privateKeyService.walletInfo.privateKey, tx)
           .subscribe(signData => {
             this.envelope = this.errorsOrResult<TxEnvelope>(signData);

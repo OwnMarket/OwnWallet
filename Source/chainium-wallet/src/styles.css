@@ -88,3 +88,7 @@ button{
     margin-top:68px; 
     background-color: transparent;
 }
+
+.pointer{
+    cursor: pointer;
+}

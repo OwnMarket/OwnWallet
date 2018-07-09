@@ -9,7 +9,7 @@ import { BlockInfo } from '../models/BlockInfo';
 })
 export class BlockInfoComponent implements OnInit {
 
-  blockNumber: number = 0;
+  blockNumber = 0;
   blockInfo: BlockInfo;
   errors: string[];
   constructor(private nodeService: NodeService) { }
@@ -19,7 +19,7 @@ export class BlockInfoComponent implements OnInit {
   }
 
   onBlockInfoButtonClick() {
-    if (this.blockNumber.toString() == "") {
+    if (this.blockNumber.toString() === '') {
       return;
     }
 

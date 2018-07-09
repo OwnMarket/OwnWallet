@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
 const ROUTES: WalletRouteInfo[] = [
   { route: '/wallet', linkText: 'Generate wallet', icon: 'library_add' },
   { route: '/importwallet', linkText: 'Import wallet', icon: 'account_balance_wallet' },
-  { route: '/generateaccount', linkText: 'Generate account', icon: 'how_to_reg' },
   { route: '/addressaccountinfo', linkText: 'Address accounts info', icon: 'info' },
+  { route: '/generateaccount', linkText: 'Generate account', icon: 'how_to_reg' },
   { route: '/accountinfo', linkText: 'Account info', icon: 'info' },
   { route: '/submissions', linkText: 'Submit transaction', icon: 'next_week' },
   { route: '/transaction', linkText: 'Transaction info', icon: 'info' },

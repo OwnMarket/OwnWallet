@@ -3,7 +3,7 @@
     <mat-form-field class="full-width">
       <textarea matInput placeholder="account hash" [value]="accountHash" (input)="accountHash = $event.target.value" required></textarea>
     </mat-form-field>
-    <button (click)="onAccountInfoButtonClick()" mat-raised-button color="accent">GET ACCOUNT</button>
+    <button (click)="onAccountInfoButtonClick()" mat-raised-button color="accent" matTooltip="Click to get info for entered account hash.">GET ACCOUNT</button>
   </div>
   <div *ngIf="accountInfo" class="column-container" style="margin-top:68px;">
     <mat-form-field>

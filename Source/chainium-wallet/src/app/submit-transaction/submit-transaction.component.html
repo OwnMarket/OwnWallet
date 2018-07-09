@@ -29,7 +29,7 @@
 </div>
 <div class="fab-bottom-right row-container">
   <mat-form-field class="form-margin-right">
-    <mat-select placeholder="add new action">
+    <mat-select placeholder="add new action" matTooltip="Add action from a list of predefined action.">
       <mat-option *ngFor="let action of availableActions" [value]="action.value" (onSelectionChange)="onActionSelected($event, action)">
         {{ action.viewValue }}
       </mat-option>
@@ -37,7 +37,7 @@
   </mat-form-field>
   <div *ngIf="totalFee()>0">
     <mat-form-field class="form-margin-right">
-      <input matInput placeholder="total fee" disabled value="{{totalFee()}}" type="number">
+      <input matInput placeholder="total fee" disabled value="{{totalFee()}}" type="text">
     </mat-form-field>
     <button mat-fab matTooltip="review and/or submit transaction" (click)="openSubmissionDialog()">
       <mat-icon>done_all</mat-icon>

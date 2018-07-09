@@ -2,7 +2,7 @@
     <mat-form-field>
         <input matInput placeholder="block number" [value]="blockNumber>=0 ? blockNumber : (-1*blockNumber)" (input)="blockNumber = $event.target.value" type="number" required>
     </mat-form-field>
-    <button (click)="onBlockInfoButtonClick()" mat-raised-button color="accent">GET BLOCK</button>
+    <button (click)="onBlockInfoButtonClick()" mat-raised-button color="accent" matTooltip="Click to get detailed block info.">GET BLOCK</button>
 </div>
 <div class="column-container" *ngIf="blockInfo">
     <mat-toolbar class="toolbar-header">Block info</mat-toolbar>
@@ -34,7 +34,7 @@
     <mat-toolbar class="toolbar-header">Transactions</mat-toolbar>
     <mat-divider></mat-divider>
     <mat-nav-list>
-        <a mat-list-item *ngFor="let transaction of blockInfo.txSet" routerLink="/transaction/{{transaction}}">{{transaction}}</a>
+        <a mat-list-item *ngFor="let transaction of blockInfo.txSet" routerLink="/transaction/{{transaction}}" matTooltip="Click to get detailed transaction info.">{{transaction}}</a>
     </mat-nav-list>
 </div>
 <div class="column-container" *ngIf="errors">

@@ -3,7 +3,7 @@
         <textarea matInput placeholder="transaction hash" [value]="transactionHash" (input)="transactionHash = $event.target.value"
             required></textarea>
     </mat-form-field>
-    <button (click)="onTransactionInfoButtonClick()" mat-raised-button color="accent">GET TRANSACTION</button>
+    <button (click)="onTransactionInfoButtonClick()" mat-raised-button color="accent" matTooltip="Click to get info for entered transaction hash.">GET TRANSACTION</button>
 </div>
 <div class="column-container" *ngIf="txInfo">
     <mat-toolbar class="toolbar-header">Transaction info</mat-toolbar>

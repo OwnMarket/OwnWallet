@@ -24,7 +24,8 @@ export class ErrorDialogComponent implements OnInit {
   }
 
   closeErrorDialog(): void {
-    this.ngZone.run(()=>{
-    this.dialogRef.close();});
+    this.ngZone.run(() => {
+      this.dialogRef.close();
+    });
   }
 }

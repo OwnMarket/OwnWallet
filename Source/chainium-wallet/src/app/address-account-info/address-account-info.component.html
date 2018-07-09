@@ -4,7 +4,7 @@
       <textarea matInput placeholder="chainium address" [value]="chainiumAddress" (input)="chainiumAddress = $event.target.value"
         required></textarea>
     </mat-form-field>
-    <button (click)="onAccountInfoButtonClick()" mat-raised-button color="accent">GET ADRESSS INFO</button>
+    <button (click)="onAccountInfoButtonClick()" mat-raised-button color="accent" matTooltip="Click to get detailed address info.">GET ADRESSS INFO</button>
   </div>
   <div *ngIf="addressInfo">
     <mat-toolbar class="toolbar-header">Accounts</mat-toolbar>

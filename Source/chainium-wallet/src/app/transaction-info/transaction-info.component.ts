@@ -21,7 +21,7 @@ const ACTIONTYPEMAPPERS: ActionTypeMapper[] =
           return '';
         }
 
-        return `Transfer of ${chxTransfer.amount} CHX to ${chxTransfer.recipientAddress}`
+        return `Transfer of ${chxTransfer.amount} CHX to ${chxTransfer.recipientAddress}`;
       }
     },
     {
@@ -36,19 +36,19 @@ const ACTIONTYPEMAPPERS: ActionTypeMapper[] =
         return `Transfer ${assetTransfer.amount} of ${assetTransfer.assetHash} from ${assetTransfer.fromAccount} to ${assetTransfer.toAccount}`;
       }
     }
-  ]
+  ];
 
 @Component({
   selector: 'app-transaction-info',
   templateUrl: './transaction-info.component.html',
   styleUrls: ['./transaction-info.component.css']
 })
-export class TransactionInfoComponent implements OnInit {
+export class TransactionInfoComponent implements OnInit, OnDestroy {
   transactionHash = '';
   txInfo: TransactionInfo;
   subscription: Subscription;
   errors: string[];
-  transactionStatus: string = '';
+  transactionStatus = '';
 
   constructor(private nodeService: NodeService, private route: ActivatedRoute) { }
 
@@ -97,7 +97,7 @@ export class TransactionInfoComponent implements OnInit {
   }
 
   mapAction(action: TxAction): string {
-    let mapper = ACTIONTYPEMAPPERS.find(el => el.actionType == action.actionType);
+    const mapper = ACTIONTYPEMAPPERS.find(el => el.actionType === action.actionType);
 
     if (!mapper) {
       return JSON.stringify(action);

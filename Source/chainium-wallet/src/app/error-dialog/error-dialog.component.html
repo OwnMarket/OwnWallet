@@ -1,5 +1,10 @@
 <div class="column-container">
         <div mat-dialog-title class="row-container">
+                <div class="row-container">
+                        <h1 class="mat-display-2 accent-font-color ">Oops!</h1>
+                        <h1 class="mat-display-2" style="margin-left:16px;">Something went wrong...</h1>
+                </div>
+
                 <button type="button" aria-label="close dialog" mat-icon-button (click)="closeErrorDialog()" class="align-right" color="accent">
                         <mat-icon aria-label="Side nav toggle icon">close</mat-icon>
                 </button>
@@ -7,10 +12,7 @@
         <div class="row-container" mat-dialog-content>
                 <img src="../../assets/images/{{errorImage}}.png" class="error-image" />
                 <section class="mat-typography inner-text">
-                        <div class="row-container">
-                                <h1 class="mat-display-2 accent-font-color ">Oops!</h1>
-                                <h1 class="mat-display-2" style="margin-left:16px;">Something went wrong...</h1>
-                        </div>
+
                         <section class="mat-typography">
                                 <h2 class="mat-display-1">This is awkward... But our wallet is still young, working hard on fixing these issues...</h2>
                         </section>

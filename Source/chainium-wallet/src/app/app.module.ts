@@ -8,7 +8,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { AppComponent } from './app.component';
 import { WalletComponent } from './wallet/wallet.component';
 import { ImportWalletComponent } from './import-wallet/import-wallet.component';
-import { BalanceInfoComponent} from './balance-info/balance-info.component';
+import { BalanceInfoComponent } from './balance-info/balance-info.component';
 import { AccountInfoComponent } from './account-info/account-info.component';
 import { SubmitTransactionComponent } from './submit-transaction/submit-transaction.component';
 import { TransactionInfoComponent } from './transaction-info/transaction-info.component';
@@ -17,14 +17,16 @@ import { ChxTransferComponent } from './actions/chx-transfer/chx-transfer.compon
 import { AssetTransferComponent } from './actions/asset-transfer/asset-transfer.component';
 import { SubmitTransactionInfoComponent } from './submit-transaction-info/submit-transaction-info.component';
 import { HomeScreenComponent } from './home-screen/home-screen.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GlobalErrorHandler } from './services/global.error.handler';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { AddressAccountInfoComponent } from './address-account-info/address-account-info.component';
 import { GenerateAccountComponent } from './generate-account/generate-account.component';
+import { WalletHttpInterceptor } from './services/wallet-http-interceptor';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
-  entryComponents : [ SubmitTransactionInfoComponent, ErrorDialogComponent],
+  entryComponents: [SubmitTransactionInfoComponent, ErrorDialogComponent, LoaderComponent],
   declarations: [
     AppComponent,
     WalletComponent,
@@ -40,7 +42,8 @@ import { GenerateAccountComponent } from './generate-account/generate-account.co
     HomeScreenComponent,
     ErrorDialogComponent,
     AddressAccountInfoComponent,
-    GenerateAccountComponent
+    GenerateAccountComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -52,8 +55,13 @@ import { GenerateAccountComponent } from './generate-account/generate-account.co
   ],
   providers: [
     {
-      provide : ErrorHandler,
-      useClass : GlobalErrorHandler
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: WalletHttpInterceptor,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]

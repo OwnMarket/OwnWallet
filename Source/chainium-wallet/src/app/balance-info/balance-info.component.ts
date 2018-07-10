@@ -23,7 +23,7 @@ export class BalanceInfoComponent implements OnInit {
   ngOnInit() {
   }
 
-  
+
   onRefreshAddressInfoClick() {
     if (!this.privateKeyService.existsKey()) {
       this.addressInfo = null;
@@ -44,7 +44,7 @@ export class BalanceInfoComponent implements OnInit {
           this.addressInfo = null;
           return;
         }
-        this.addressInfo = addr as ChxAddressInfo
+        this.addressInfo = addr as ChxAddressInfo;
       });
   }
 

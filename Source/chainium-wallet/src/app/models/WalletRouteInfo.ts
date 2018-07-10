@@ -1,5 +1,5 @@
-export class WalletRouteInfo{
-    route : string;
-    linkText : string;
-    icon : string;
+export class WalletRouteInfo {
+    route: string;
+    linkText: string;
+    icon: string;
 }

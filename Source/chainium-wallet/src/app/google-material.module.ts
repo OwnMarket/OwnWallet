@@ -78,4 +78,4 @@ import {
     MatTreeModule,
   ]
 })
-export class GoogleMaterialModule{}
+export class GoogleMaterialModule { }

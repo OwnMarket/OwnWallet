@@ -10,28 +10,27 @@ export class PrivatekeyService {
 
   constructor() { }
 
-  walletInfo : WalletInfo;
+  walletInfo: WalletInfo;
+  private subject = new Subject<any>();
 
-  existsKey():boolean{
+  existsKey(): boolean {
     if (this.walletInfo && this.walletInfo.privateKey) {
       return true;
     }
-    
+
     return false;
   }
 
-  private subject = new Subject<any>();
- 
   sendMessage(message: boolean) {
-      this.subject.next(message);
+    this.subject.next(message);
   }
 
   clearMessage() {
-      this.subject.next();
+    this.subject.next();
   }
 
   getMessage(): Observable<any> {
-      return this.subject.asObservable();
+    return this.subject.asObservable();
   }
-  
+
 }

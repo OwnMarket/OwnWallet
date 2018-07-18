@@ -4,7 +4,6 @@
 
 export const environment = {
   production: false,
-  walletApiUrl: 'http://localhost:5162',
   nodeApiUrl: 'http://localhost:10717'
 };
 

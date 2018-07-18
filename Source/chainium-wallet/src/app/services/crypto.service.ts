@@ -1,51 +1,33 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-
-import { environment } from '../../environments/environment';
 
 import { WalletInfo } from '../models/WalletInfo';
 import { Tx, TxEnvelope } from '../models/SubmitTransactions';
 
-const GENERATEWALLET = 'wallet';
-const GETADDRESS = 'address';
-const SIGNTRANSACTION = 'sign';
-
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+declare var chainiumSdk: any;
 
 @Injectable({
   providedIn: 'root'
 })
 export class CryptoService {
-
-  private baseServiceUrl: string;
-  constructor(private http: HttpClient) {
-    this.baseServiceUrl = environment.walletApiUrl;
-  }
-
   public generateWallet(): Observable<WalletInfo> {
-    const walleturl = `${this.baseServiceUrl}/${GENERATEWALLET}`;
-    return this.http.get<WalletInfo>(walleturl);
+    const wallet = chainiumSdk.crypto.generateWallet();
+    return of(wallet);
   }
 
   public getAddressFromKey(privateKey: string): Observable<any> {
-    const getAddressUrl = `${this.baseServiceUrl}/${GETADDRESS}`;
-    const data = { privateKey : privateKey };
-    return this.http.post<any>(getAddressUrl, data);
+    const address = chainiumSdk.crypto.addressFromPrivateKey(privateKey);
+    return of(address);
   }
+
   public signTransaction(privateKey: string, tx: Tx): Observable<TxEnvelope> {
-    const txTxt = JSON.stringify(tx);
-
-    const signRequest = {
-      privateKey : privateKey,
-      dataToSign : txTxt
-    };
-
-    const signMessageUrl = `${this.baseServiceUrl}/${SIGNTRANSACTION}`;
-
-    return this.http.post<TxEnvelope>(signMessageUrl, signRequest);
+    const rawTx = chainiumSdk.crypto.utf8ToHex(JSON.stringify(tx));
+    const signature = chainiumSdk.crypto.signMessage(privateKey, rawTx);
+    return of({
+      tx: chainiumSdk.crypto.encode64(rawTx),
+      v: signature.v,
+      r: signature.r,
+      s: signature.s
+    });
   }
 }

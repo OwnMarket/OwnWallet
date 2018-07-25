@@ -6,8 +6,8 @@ export class TransactionInfo {
     nonce : number;
     fee : number;
     actions : TxAction[];
-    status : number;
-    errorCode : number;
+    status : string;
+    errorCode : string;
     failedActionNumber : number;
     blockNumber : number;   
 }

@@ -12,24 +12,30 @@
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <textarea matInput placeholder="block hash" disabled value="{{blockInfo.hash}}"></textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.hash}}" class="pointer margin-l-20">file_copy</mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <textarea matInput placeholder="previous block hash" disabled value="{{blockInfo.previousHash}}"></textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.previousHash}}" class="pointer margin-l-20">file_copy</mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <input matInput placeholder="timestamp" disabled value="{{blockInfo.timestamp}}" type="number">
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <textarea matInput placeholder="validator address" disabled value="{{blockInfo.validator}}"></textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.validator}}" class="pointer margin-l-20">file_copy</mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <textarea matInput placeholder="transaction set root" disabled value="{{blockInfo.txSetRoot}}"></textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.txSetRoot}}" class="pointer margin-l-20">file_copy</mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <textarea matInput placeholder="transaction result set root" disabled value="{{blockInfo.txResultSetRoot}}"></textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.txResultSetRoot}}" class="pointer margin-l-20">file_copy</mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <textarea matInput placeholder="state root" disabled value="{{blockInfo.stateRoot}}"></textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.stateRoot}}" class="pointer margin-l-20">file_copy</mat-icon>
     </mat-form-field>
     <mat-toolbar class="toolbar-header">Transactions</mat-toolbar>
     <mat-divider></mat-divider>

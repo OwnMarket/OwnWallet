@@ -13,6 +13,7 @@
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <textarea matInput placeholder="sender address" disabled value="{{txInfo.senderAddress}}"></textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{txInfo.senderAddress}}" class="pointer margin-l-20">file_copy</mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <input matInput placeholder="nonce" disabled value="{{txInfo.nonce}}" type="number">
@@ -21,10 +22,17 @@
         <input matInput placeholder="fee" disabled value="{{txInfo.fee}}" type="number">
     </mat-form-field>
     <mat-form-field class="info-item-margin">
+        <input matInput placeholder="total fee" disabled value="{{totalFee}}" type="number">
+    </mat-form-field>
+    <mat-form-field class="info-item-margin" *ngIf="txInfo.blockNumber">
+        <input matInput placeholder="block number" disabled value="{{txInfo.blockNumber}}" type="number">
+    </mat-form-field>
+    <mat-form-field class="info-item-margin">
         <input matInput placeholder="status" disabled value="{{transactionStatus}}" type="text">
     </mat-form-field>
-    <mat-form-field class="info-item-margin" *ngIf="txInfo.errorCode && (txInfo.errorCode>0)">
-        <input matInput placeholder="error code" disabled value="{{txInfo.errorCode}}" type="number">
+    <mat-form-field class="info-item-margin" 
+        *ngIf="showErrorCode">
+        <input matInput placeholder="error code" disabled value="{{txInfo.errorCode}}" type="text">
     </mat-form-field>
     <mat-form-field class="info-item-margin" *ngIf="txInfo.failedActionNumber && (txInfo.failedActionNumber>0)">
         <input matInput placeholder="number of failed actions" disabled value="{{txInfo.failedActionNumber}}" type="number">

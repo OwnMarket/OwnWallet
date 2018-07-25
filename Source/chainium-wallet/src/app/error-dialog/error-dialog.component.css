@@ -1,21 +1,22 @@
-.row-container{
+@import 'error-1-img.css';
+@import 'error-2-img.css';
+@import 'error-3-img.css';
+
+.row-container {
     display: flex;
     flex-direction: row;
 }
 
-.align-right
-{
+.align-right {
     margin-left: auto;
 }
 
-.error-image
-{
+.error-image {
     height:30%; 
     width: 30%;
 }
 
-.inner-text
-{
+.inner-text {
     align-self: center;  
     word-wrap: break-word
 }

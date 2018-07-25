@@ -6,7 +6,7 @@ import { SubmitTransactionComponent } from '../submit-transaction/submit-transac
 import { TransactionInfoComponent } from '../transaction-info/transaction-info.component';
 import { BlockInfoComponent } from '../block-info/block-info.component';
 import { HomeScreenComponent } from '../home-screen/home-screen.component';
-import { AddressAccountInfoComponent } from '../address-account-info/address-account-info.component';
+import { AddressInfoComponent } from '../address-info/address-info.component';
 import { GenerateAccountComponent } from '../generate-account/generate-account.component';
 
 
@@ -19,6 +19,6 @@ export const ROUTERCONFIGS = [
   { path: 'transaction/:transactionHash', component: TransactionInfoComponent },
   { path: 'block', component: BlockInfoComponent },
   { path: '', component: HomeScreenComponent },
-  { path: 'addressaccountinfo', component: AddressAccountInfoComponent },
+  { path: 'addressinfo', component: AddressInfoComponent },
   { path: 'generateaccount', component: GenerateAccountComponent }
 ];

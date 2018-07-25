@@ -20,7 +20,7 @@ import { HomeScreenComponent } from './home-screen/home-screen.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GlobalErrorHandler } from './services/global.error.handler';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
-import { AddressAccountInfoComponent } from './address-account-info/address-account-info.component';
+import { AddressInfoComponent } from './address-info/address-info.component';
 import { GenerateAccountComponent } from './generate-account/generate-account.component';
 import { WalletHttpInterceptor } from './services/wallet-http-interceptor';
 import { LoaderComponent } from './loader/loader.component';
@@ -41,7 +41,7 @@ import { LoaderComponent } from './loader/loader.component';
     SubmitTransactionInfoComponent,
     HomeScreenComponent,
     ErrorDialogComponent,
-    AddressAccountInfoComponent,
+    AddressInfoComponent,
     GenerateAccountComponent,
     LoaderComponent
   ],

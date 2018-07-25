@@ -10,7 +10,9 @@
                 </button>
         </div>
         <div class="row-container" mat-dialog-content>
-                <img src="../../assets/images/{{errorImage}}.png" class="error-image" />
+                <div *ngIf="errorImage==='error-1'" class="error-1-img"></div>
+                <div *ngIf="errorImage==='error-2'" class="error-2-img"></div>
+                <div *ngIf="errorImage==='error-3'" class="error-3-img"></div>
                 <section class="mat-typography inner-text">
 
                         <section class="mat-typography">

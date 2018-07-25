@@ -13,7 +13,7 @@ interface ActionTypeMapper {
 const ACTIONTYPEMAPPERS: ActionTypeMapper[] =
   [
     {
-      actionType: 'ChxTransfer',
+      actionType: 'TransferChx',
       map(actionData: any): string {
         const chxTransfer = actionData as ChxTransfer;
 
@@ -25,7 +25,7 @@ const ACTIONTYPEMAPPERS: ActionTypeMapper[] =
       }
     },
     {
-      actionType: 'AssetTransfer',
+      actionType: 'TransferAsset',
       map(actionData: any): string {
         const assetTransfer = actionData as AssetTransfer;
 
@@ -49,6 +49,8 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   errors: string[];
   transactionStatus = '';
+  totalFee: number = 0;
+  showErrorCode: boolean = false;
 
   constructor(private nodeService: NodeService, private route: ActivatedRoute) { }
 
@@ -79,21 +81,29 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
         this.errors = null;
         this.txInfo = info as TransactionInfo;
         this.transactionStatus = this.mapStatus(this.txInfo.status);
+        this.totalFee = (this.txInfo.actions)?(this.txInfo.fee*this.txInfo.actions.length):0;
+        this.showErrorCode = this.txInfo.errorCode && 
+            ((isNaN(Number(this.txInfo.errorCode)) && this.txInfo.errorCode.length > 0) || 
+             (!isNaN(Number(this.txInfo.errorCode)) && Number(this.txInfo.errorCode) > 0));
       });
   }
 
-  private mapStatus(status: number): string {
-    switch (status) {
-      case 0:
-        return 'Pending';
-      case 1:
-        return 'Success';
-      case 2:
-        return 'Failed';
+  private mapStatus(status: string): string {
+    if (typeof status == 'number') {
+      switch (status) {
+        case 0:
+          return 'Pending';
+        case 1:
+          return 'Success';
+        case 2:
+          return 'Failed';
+        default: 
+          return 'undefined';
+      }
     }
-
-    return 'Unknown';
-
+    else {
+      return status;
+    }
   }
 
   mapAction(action: TxAction): string {

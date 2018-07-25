@@ -1,4 +1,7 @@
-.logo-image{
+@import 'logo-img.css';
+
+.logo-image {
     height:20%;
     width: 20%;
+    padding-bottom: 20%;
 }

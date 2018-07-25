@@ -1,94 +1,99 @@
 /* You can add global styles to this file, and also import other style files */
 /*@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';*/
-body{
+body {
  background-color : #161616;
 }
 
-.column-container{
+.column-container {
     display: flex;
     flex-direction: column;
 }
 
-.align-center{
+.align-center {
     align-items: center;
     justify-content: center;
 }
 
-.full-width{
+.full-width {
     width: 100%;
 }
 
-.fab-bottom-right {
+.submit-transaction {
+    z-index: 1500 !important;
+    margin-top: 40px;
+    justify-content: end;
+}
+
+.close-menu {
     top: auto !important;
     right: 30px !important;
     bottom: 30px !important;
     left: auto !important;
-    position: fixed !important;
+    position: absolute !important;
     z-index: 1500 !important;
 }
 
-.row-container{
+.row-container {
     display: flex;
     flex-direction: row;
 }
 
-.form-margin-right
-{
+.form-margin-right {
     margin-right: 24px;    
 }
 
-.font-bold
-{
+.font-bold {
     font-weight: bold;
 }
 
-.align-left
-{
+.align-left {
     margin-right:auto;
 }
 
-.chx-address-width
-{
+.chx-address-width {
     width: 350px;
 }
 
-.align-right
-{
+.align-right {
     margin-left: auto;
 }
 
-.chainium-gray
-{
+.chainium-gray {
     background-color: #161616;
 }
 
-body{
+body {
     margin:0px;
     padding: 0px;
     border-width: 0px;
 }
 
-button{
+button {
     font-weight: bold;
 }
 
-.info-item-margin
-{
+.info-item-margin {
     margin-left: 16px;
     margin-right: 16px;
 }
 
-.toolbar-bottom-margin
-{
+.toolbar-bottom-margin {
     margin-bottom: 24px;
 }
 
-.toolbar-header
-{
+.toolbar-header {
     margin-top:68px; 
     background-color: transparent;
 }
 
-.pointer{
+.pointer {
     cursor: pointer;
+}
+
+.margin-l-20 {
+    margin-left: 20px;
+}
+
+.condensed {
+    font-family: 'Roboto Condensed', Roboto, 'Helvetica Neue', sans-serif !important;
 }

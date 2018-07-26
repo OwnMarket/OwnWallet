@@ -1,7 +1,7 @@
 <div class="column-container">
   <div class="column-container align-center">
     <mat-form-field class="full-width">
-      <textarea matInput placeholder="chainium address" [value]="chainiumAddress" (input)="chainiumAddress = $event.target.value"
+      <textarea matInput placeholder="Own address" [value]="chainiumAddress" (input)="chainiumAddress = $event.target.value"
         required></textarea>
     </mat-form-field>
     <button (click)="onAddressInfoButtonClick()" mat-raised-button color="accent" matTooltip="Click to get detailed address info.">GET ADRESSS INFO</button>

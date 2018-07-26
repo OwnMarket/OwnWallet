@@ -1,6 +1,6 @@
 .sidenav-container {
   display : flex;
-  flex-grow: 1;
+  min-height: 100vh;
 }
   
 .sidenav {
@@ -19,7 +19,6 @@
 
 .sidenav-content-header {
   display: flex;
-  flex-grow: 1;
 }
 
 .sidenav-content-content {

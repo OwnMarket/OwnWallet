@@ -25,9 +25,7 @@ export class CryptoService {
     const signature = chainiumSdk.crypto.signMessage(privateKey, rawTx);
     return of({
       tx: chainiumSdk.crypto.encode64(rawTx),
-      v: signature.v,
-      r: signature.r,
-      s: signature.s
+      signature: signature
     });
   }
 }

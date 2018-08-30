@@ -1,8 +1,6 @@
 export class TxEnvelope {
     tx: string;
-    v: string;
-    r: string;
-    s: string;
+    signature: string;
 }
 
 export class TxResult {

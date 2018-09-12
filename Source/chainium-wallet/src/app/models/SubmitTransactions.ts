@@ -25,8 +25,8 @@ export class TxAction {
 }
 
 export class Tx {
+    senderAddress: string;
     nonce: number;
     fee: number;
-    senderAddress: string;
     actions: TxAction[];
 }

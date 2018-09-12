@@ -44,10 +44,10 @@ export class GenerateAccountComponent implements OnInit {
     action.actionData = {};
 
     const tx = new Tx();
-    tx.fee = this.nodeService.getMinFee();
     tx.senderAddress = senderAddress;
-    tx.actions = [action];
     tx.nonce = nonce;
+    tx.fee = this.nodeService.getMinFee();
+    tx.actions = [action];
 
     return tx;
   }

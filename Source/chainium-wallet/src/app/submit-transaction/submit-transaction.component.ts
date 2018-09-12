@@ -145,14 +145,11 @@ export class SubmitTransactionComponent implements OnInit {
   private txEnvelope: TxEnvelope;
   openSubmissionDialog(): void {
     let txToSign = new Tx();
-    txToSign.actions = this.tx.actions.filter(a => this.validateTransaction(a));
-    txToSign.fee = this.tx.fee;
+    txToSign.senderAddress = this.privateKeyService.walletInfo.address;
     txToSign.nonce = this.tx.nonce;
-
-
+    txToSign.fee = this.tx.fee;
+    txToSign.actions = this.tx.actions.filter(a => this.validateTransaction(a));
     this.cryptoService.signTransaction(this.privateKeyService.walletInfo.privateKey, txToSign).subscribe(env => this.loadSignedData(env));
-
-
   }
 
   private loadSignedData(env: TxEnvelope) {

@@ -28,4 +28,8 @@ export class CryptoService {
       signature: signature
     });
   }
+
+  public deriveHash(address: string, nonce: number, txActionNumber: number): string {
+    return chainiumSdk.crypto.deriveHash(address, nonce, txActionNumber);
+  }
 }

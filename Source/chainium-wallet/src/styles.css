@@ -86,6 +86,19 @@ button {
     background-color: transparent;
 }
 
+.tx-action-card .mat-card-header-text {
+    margin: 0;
+}
+
+.tx-action-card table {
+    border-spacing: 0;
+}
+
+.tx-action-card td {
+    padding: 0;
+    width: 50%;
+}
+
 .pointer {
     cursor: pointer;
 }

@@ -30,18 +30,215 @@
     <mat-form-field class="info-item-margin">
         <input matInput placeholder="status" disabled value="{{transactionStatus}}" type="text">
     </mat-form-field>
-    <mat-form-field class="info-item-margin" 
-        *ngIf="showErrorCode">
+    <mat-form-field class="info-item-margin" *ngIf="showErrorCode">
         <input matInput placeholder="error code" disabled value="{{txInfo.errorCode}}" type="text">
     </mat-form-field>
     <mat-form-field class="info-item-margin" *ngIf="txInfo.failedActionNumber && (txInfo.failedActionNumber>0)">
         <input matInput placeholder="number of failed actions" disabled value="{{txInfo.failedActionNumber}}" type="number">
     </mat-form-field>
+
     <mat-toolbar class="toolbar-header">Actions</mat-toolbar>
     <mat-divider class="toolbar-bottom-margin"></mat-divider>
-    <mat-list>
-        <mat-list-item *ngFor="let action of txInfo.actions">{{mapAction(action)}}</mat-list-item>
-    </mat-list>
+
+    <mat-card *ngFor="let action of txInfo.actions; let actionIndex = index" class="tx-action-card toolbar-bottom-margin">
+        <mat-card-header>
+            <mat-card-title>{{actionIndex + 1}}. {{action.actionType}}</mat-card-title>
+            <!-- <mat-card-subtitle></mat-card-subtitle> -->
+        </mat-card-header>
+        <mat-card-content>
+
+            <!-- TransferChx -->
+            <table class="full-width" *ngIf="action.actionType === 'TransferChx'">
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="amount" disabled type="number"
+                                value="{{action.actionData.amount}}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="to address" disabled type="text"
+                                value="{{action.actionData.recipientAddress}}">
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- DelegateStake -->
+            <table class="full-width" *ngIf="action.actionType === 'DelegateStake'">
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="amount" disabled type="number"
+                                value="{{action.actionData.amount}}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="validator address" disabled type="text"
+                                value="{{action.actionData.validatorAddress}}">
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- SetValidatorNetworkAddress -->
+            <table class="full-width" *ngIf="action.actionType === 'SetValidatorNetworkAddress'">
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="network address" disabled type="text"
+                                value="{{action.actionData.networkAddress}}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- TransferAsset -->
+            <table class="full-width" *ngIf="action.actionType === 'TransferAsset'">
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="amount" disabled value="{{action.actionData.amount}}" type="number">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="asset" disabled value="{{action.actionData.assetHash}}" type="text">
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="from account" disabled type="text"
+                                value="{{action.actionData.fromAccount}}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="to account" disabled type="text"
+                                value="{{action.actionData.toAccount}}">
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- CreateAssetEmission -->
+            <table class="full-width" *ngIf="action.actionType === 'CreateAssetEmission'">
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="amount" disabled type="number"
+                                value="{{action.actionData.amount}}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="asset" disabled type="text"
+                                value="{{action.actionData.assetHash}}">
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="emission account" disabled type="text"
+                                value="{{action.actionData.emissionAccountHash}}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- CreateAsset -->
+            <table class="full-width" *ngIf="action.actionType === 'CreateAsset'">
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="asset" disabled type="text"
+                                value="{{deriveHash(txInfo.senderAddress, txInfo.nonce, actionIndex + 1)}}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- CreateAccount -->
+            <table class="full-width" *ngIf="action.actionType === 'CreateAccount'">
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="account" disabled type="text"
+                                value="{{deriveHash(txInfo.senderAddress, txInfo.nonce, actionIndex + 1)}}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- SetAccountController -->
+            <table class="full-width" *ngIf="action.actionType === 'SetAccountController'">
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="account" disabled type="text"
+                                value="{{action.actionData.accountHash}}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="controller address" disabled type="text"
+                                value="{{action.actionData.controllerAddress}}">
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- SetAssetController -->
+            <table class="full-width" *ngIf="action.actionType === 'SetAssetController'">
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="asset" disabled type="text"
+                                value="{{action.actionData.assetHash}}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="controller address" disabled type="text"
+                                value="{{action.actionData.controllerAddress}}">
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- SetAssetCode -->
+            <table class="full-width" *ngIf="action.actionType === 'SetAssetCode'">
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="asset" disabled type="text"
+                                value="{{action.actionData.assetHash}}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="code" disabled type="text"
+                                value="{{action.actionData.assetCode}}">
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+
+        </mat-card-content>
+    </mat-card>
 </div>
 <div class="column-container" *ngIf="errors">
     <mat-toolbar class="toolbar-header">Errors</mat-toolbar>

@@ -1,42 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NodeService } from '../services/node.service';
 import { TransactionInfo } from '../models/TransactionInfo';
-import { TxAction, ChxTransfer, AssetTransfer, TxResult } from '../models/SubmitTransactions';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-
-interface ActionTypeMapper {
-  actionType: string;
-  map(actionData: any): string;
-}
-
-const ACTIONTYPEMAPPERS: ActionTypeMapper[] =
-  [
-    {
-      actionType: 'TransferChx',
-      map(actionData: any): string {
-        const chxTransfer = actionData as ChxTransfer;
-
-        if (!chxTransfer) {
-          return '';
-        }
-
-        return `Transfer of ${chxTransfer.amount} CHX to ${chxTransfer.recipientAddress}`;
-      }
-    },
-    {
-      actionType: 'TransferAsset',
-      map(actionData: any): string {
-        const assetTransfer = actionData as AssetTransfer;
-
-        if (!assetTransfer) {
-          return '';
-        }
-
-        return `Transfer ${assetTransfer.amount} of ${assetTransfer.assetHash} from ${assetTransfer.fromAccount} to ${assetTransfer.toAccount}`;
-      }
-    }
-  ];
+import { CryptoService } from '../services/crypto.service';
 
 @Component({
   selector: 'app-transaction-info',
@@ -52,7 +19,7 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
   totalFee: number = 0;
   showErrorCode: boolean = false;
 
-  constructor(private nodeService: NodeService, private route: ActivatedRoute) { }
+  constructor(private nodeService: NodeService, private route: ActivatedRoute, private cryptoService : CryptoService) {}
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(params => {
@@ -106,14 +73,7 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
     }
   }
 
-  mapAction(action: TxAction): string {
-    const mapper = ACTIONTYPEMAPPERS.find(el => el.actionType === action.actionType);
-
-    if (!mapper) {
-      return JSON.stringify(action);
-    }
-
-    return mapper.map(action.actionData);
+  deriveHash(address: string, nonce: number, txActionNumber: number) {
+    return this.cryptoService.deriveHash(address, nonce, txActionNumber);
   }
-
 }

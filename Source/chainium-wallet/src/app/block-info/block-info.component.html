@@ -19,7 +19,7 @@
         <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.previousHash}}" class="pointer margin-l-20">file_copy</mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
-        <input matInput placeholder="timestamp" disabled value="{{blockInfo.timestamp}}" type="number">
+        <input matInput placeholder="timestamp" disabled value="{{blockInfo.blockTime}} ({{blockInfo.timestamp}})" type="text">
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <textarea matInput placeholder="validator address" disabled value="{{blockInfo.validator}}"></textarea>

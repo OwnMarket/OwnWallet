@@ -13,7 +13,7 @@
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <textarea matInput placeholder="sender address" disabled value="{{txInfo.senderAddress}}"></textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{txInfo.senderAddress}}" class="pointer margin-l-20">file_copy</mat-icon>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{txInfo.senderAddress}}" class="pointer margin-l-20 animate-click">file_copy</mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <input matInput placeholder="nonce" disabled value="{{txInfo.nonce}}" type="number">

@@ -8,7 +8,7 @@
   <div class="container-margin" *ngIf="addressInfo">
     <mat-form-field class="full-width address-font-size">
       <input matInput placeholder="CHX address" class="condensed" disabled value="{{addressInfo.chainiumAddress}}">
-      <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{addressInfo.chainiumAddress}}" class="pointer margin-l-20">file_copy</mat-icon>
+      <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{addressInfo.chainiumAddress}}" class="pointer margin-l-20 animate-click">file_copy</mat-icon>
     </mat-form-field>
     <mat-form-field class="full-width">
       <input matInput placeholder="balance" class="condensed" disabled value="{{addressInfo.balance}}" type="text">

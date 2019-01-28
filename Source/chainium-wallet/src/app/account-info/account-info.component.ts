@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AccountInfo } from '../models/AccountInfo';
 import { NodeService } from '../services/node.service'
 
@@ -7,17 +9,28 @@ import { NodeService } from '../services/node.service'
   templateUrl: './account-info.component.html',
   styleUrls: ['./account-info.component.css']
 })
-export class AccountInfoComponent implements OnInit {
+export class AccountInfoComponent implements OnInit, OnDestroy {
   accountInfo : AccountInfo;
   accountHash : string;
   displayedColumns : string[];
   errors : string[];
-  constructor(private nodeService : NodeService) { 
+  routeSubscription: Subscription;
+  
+  constructor(private nodeService : NodeService, private route: ActivatedRoute) { 
     this.accountHash = '';
     this.displayedColumns = ['assetcode','balance'];
   }
 
   ngOnInit() {
+    this.routeSubscription = this.route.params.subscribe(params => {
+      const accountHash = params['accountHash'];
+      this.accountHash = accountHash == null || accountHash === undefined ? null : accountHash;
+      this.onAccountInfoButtonClick();
+    });
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
   }
 
   onAccountInfoButtonClick(){

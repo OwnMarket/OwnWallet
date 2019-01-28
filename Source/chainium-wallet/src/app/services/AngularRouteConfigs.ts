@@ -14,11 +14,13 @@ export const ROUTERCONFIGS = [
   { path: 'wallet', component: WalletComponent },
   { path: 'importwallet', component: ImportWalletComponent },
   { path: 'accountinfo', component: AccountInfoComponent },
+  { path: 'accountinfo/:accountHash', component: AccountInfoComponent },
   { path: 'submissions', component: SubmitTransactionComponent },
   { path: 'transaction', component: TransactionInfoComponent },
   { path: 'transaction/:transactionHash', component: TransactionInfoComponent },
   { path: 'block', component: BlockInfoComponent },
   { path: '', component: HomeScreenComponent },
   { path: 'addressinfo', component: AddressInfoComponent },
+  { path: 'addressinfo/:addressHash', component: AddressInfoComponent },
   { path: 'generateaccount', component: GenerateAccountComponent }
 ];

@@ -12,7 +12,7 @@
     
     <mat-form-field>
       <textarea matInput placeholder="controller address" [value]="accountInfo.controllerAddress" disabled></textarea>
-      <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{accountInfo.controllerAddress}}" class="pointer margin-l-20">file_copy</mat-icon>
+      <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{accountInfo.controllerAddress}}" class="pointer margin-l-20 animate-click">file_copy</mat-icon>
     </mat-form-field>
 
     <mat-table [dataSource]="accountInfo.holdings" class="mat-elevation-z8 full-width">
@@ -20,7 +20,7 @@
       <ng-container matColumnDef="assetcode">
         <mat-header-cell *matHeaderCellDef>ASSET HASH</mat-header-cell>
         <mat-cell *matCellDef="let holding"> {{holding.assetHash}}
-          <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{holding.assetHash}}" class="pointer margin-l-20">file_copy</mat-icon>
+          <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{holding.assetHash}}" class="pointer margin-l-20 animate-click">file_copy</mat-icon>
         </mat-cell>
       </ng-container>
 

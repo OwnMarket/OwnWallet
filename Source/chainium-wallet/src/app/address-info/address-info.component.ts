@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { NodeService } from '../services/node.service';
 import { ChxAccountsInfo } from '../models/AddressInfo';
 import { ChxAddressInfo } from '../models/ChxAddressInfo';
@@ -8,14 +10,25 @@ import { ChxAddressInfo } from '../models/ChxAddressInfo';
   templateUrl: './address-info.component.html',
   styleUrls: ['./address-info.component.css']
 })
-export class AddressInfoComponent implements OnInit {
+export class AddressInfoComponent implements OnInit, OnDestroy {
   chainiumAddress = '';
   errors: string[];
   accountsInfo: ChxAccountsInfo;
   addressInfo: ChxAddressInfo;
-  constructor(private nodeService: NodeService) { }
+  routeSubscription: Subscription;
+
+  constructor(private nodeService: NodeService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.routeSubscription = this.route.params.subscribe(params => {
+      const chainiumAddress = params['addressHash'];
+      this.chainiumAddress = chainiumAddress == null || chainiumAddress === undefined ? null : chainiumAddress;
+      this.onAddressInfoButtonClick();
+    });  
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
   }
 
   onAddressInfoButtonClick() {

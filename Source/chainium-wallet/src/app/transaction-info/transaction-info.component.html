@@ -34,7 +34,7 @@
         <input matInput placeholder="error code" disabled value="{{txInfo.errorCode}}" type="text">
     </mat-form-field>
     <mat-form-field class="info-item-margin" *ngIf="txInfo.failedActionNumber && (txInfo.failedActionNumber>0)">
-        <input matInput placeholder="number of failed actions" disabled value="{{txInfo.failedActionNumber}}" type="number">
+        <input matInput placeholder="failed action number" disabled value="{{txInfo.failedActionNumber}}" type="number">
     </mat-form-field>
 
     <mat-toolbar class="toolbar-header">Actions</mat-toolbar>

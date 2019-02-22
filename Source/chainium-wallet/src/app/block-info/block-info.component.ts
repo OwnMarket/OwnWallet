@@ -29,7 +29,8 @@ export class BlockInfoComponent implements OnInit {
         this.errors = info.errors;
         return;
       }
-      info.blockTime = new Date(info.timestamp * 1000).toISOString(); // Block timestamp is Unix time (seconds).
+      let timestamp = info.timestamp > 2**32 ? info.timestamp : info.timestamp * 1000; // New version in milliseconds.
+      info.blockTime = new Date(timestamp).toISOString(); // Block timestamp is Unix time.
       this.errors = null;
       this.blockInfo = info as BlockInfo;
     });

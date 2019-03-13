@@ -18,13 +18,16 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
   transactionStatus = '';
   totalFee: number = 0;
   showErrorCode: boolean = false;
+  ready = false;
 
-  constructor(private nodeService: NodeService, private route: ActivatedRoute, private cryptoService : CryptoService) {}
+  constructor(private nodeService: NodeService,
+    private route: ActivatedRoute,
+    private cryptoService: CryptoService) { }
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(params => {
       const tHash = params['transactionHash'];
-      this.transactionHash = tHash == null || tHash === undefined ? '' : tHash;
+      this.transactionHash = (tHash == null || tHash === undefined) ? '' : tHash;
       this.onTransactionInfoButtonClick();
     });
   }
@@ -48,10 +51,11 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
         this.errors = null;
         this.txInfo = info as TransactionInfo;
         this.transactionStatus = this.mapStatus(this.txInfo.status);
-        this.totalFee = (this.txInfo.actions)?(this.txInfo.fee*this.txInfo.actions.length):0;
-        this.showErrorCode = this.txInfo.errorCode && 
-            ((isNaN(Number(this.txInfo.errorCode)) && this.txInfo.errorCode.length > 0) || 
-             (!isNaN(Number(this.txInfo.errorCode)) && Number(this.txInfo.errorCode) > 0));
+        this.totalFee = (this.txInfo.actions) ? (this.txInfo.actionFee * this.txInfo.actions.length) : 0;
+        this.showErrorCode = this.txInfo.errorCode &&
+          ((isNaN(Number(this.txInfo.errorCode)) && this.txInfo.errorCode.length > 0) ||
+            (!isNaN(Number(this.txInfo.errorCode)) && Number(this.txInfo.errorCode) > 0));
+        this.ready = true;
       });
   }
 
@@ -64,7 +68,7 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
           return 'Success';
         case 2:
           return 'Failed';
-        default: 
+        default:
           return 'undefined';
       }
     }

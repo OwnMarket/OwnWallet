@@ -1,11 +1,12 @@
 <div class="column-container align-center">
     <mat-form-field class="full-width">
-        <textarea matInput placeholder="transaction hash" [value]="transactionHash" (input)="transactionHash = $event.target.value"
-            required></textarea>
+        <textarea matInput placeholder="transaction hash" [value]="transactionHash"
+            (input)="transactionHash = $event.target.value" required></textarea>
     </mat-form-field>
-    <button (click)="onTransactionInfoButtonClick()" mat-raised-button color="accent" matTooltip="Click to get info for entered transaction hash.">GET TRANSACTION</button>
+    <button (click)="onTransactionInfoButtonClick()" mat-raised-button color="accent"
+        matTooltip="Click to get info for entered transaction hash.">GET TRANSACTION</button>
 </div>
-<div class="column-container" *ngIf="txInfo">
+<div class="column-container" *ngIf="txInfo && ready">
     <mat-toolbar class="toolbar-header">Transaction info</mat-toolbar>
     <mat-divider class="toolbar-bottom-margin"></mat-divider>
     <mat-form-field class="info-item-margin">
@@ -13,19 +14,20 @@
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <textarea matInput placeholder="sender address" disabled value="{{txInfo.senderAddress}}"></textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{txInfo.senderAddress}}" class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{txInfo.senderAddress}}"
+            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <input matInput placeholder="nonce" disabled value="{{txInfo.nonce}}" type="number">
     </mat-form-field>
     <mat-form-field class="info-item-margin">
-        <input matInput placeholder="fee" disabled value="{{txInfo.fee}}" type="number">
+        <input matInput placeholder="fee" disabled value="{{txInfo.actionFee}}" type="number">
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <input matInput placeholder="total fee" disabled value="{{totalFee}}" type="number">
     </mat-form-field>
-    <mat-form-field class="info-item-margin" *ngIf="txInfo.blockNumber">
-        <input matInput placeholder="block number" disabled value="{{txInfo.blockNumber}}" type="number">
+    <mat-form-field class="info-item-margin" *ngIf="txInfo.status">
+        <input matInput placeholder="status" disabled value="{{txInfo.status}}" type="text">
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <input matInput placeholder="status" disabled value="{{transactionStatus}}" type="text">
@@ -40,13 +42,13 @@
     <mat-toolbar class="toolbar-header">Actions</mat-toolbar>
     <mat-divider class="toolbar-bottom-margin"></mat-divider>
 
-    <mat-card *ngFor="let action of txInfo.actions; let actionIndex = index" class="tx-action-card toolbar-bottom-margin">
+    <mat-card *ngFor="let action of txInfo.actions; let actionIndex = index"
+        class="tx-action-card toolbar-bottom-margin">
         <mat-card-header>
             <mat-card-title>{{actionIndex + 1}}. {{action.actionType}}</mat-card-title>
             <!-- <mat-card-subtitle></mat-card-subtitle> -->
         </mat-card-header>
         <mat-card-content>
-
             <!-- TransferChx -->
             <table class="full-width" *ngIf="action.actionType === 'TransferChx'">
                 <tr>
@@ -83,8 +85,8 @@
                 </tr>
             </table>
 
-            <!-- SetValidatorNetworkAddress -->
-            <table class="full-width" *ngIf="action.actionType === 'SetValidatorNetworkAddress'">
+            <!-- ConfigureValidator -->
+            <table class="full-width" *ngIf="action.actionType === 'ConfigureValidator'">
                 <tr>
                     <td>
                         <mat-form-field class="full-width">
@@ -93,6 +95,28 @@
                         </mat-form-field>
                     </td>
                     <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="network address" disabled type="text"
+                                value="{{action.actionData.sharedRewardPercent}}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="network address" disabled type="text"
+                                value="{{action.actionData.isEnabled}}">
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- RemoveValidator -->
+            <table class="full-width" *ngIf="action.actionType === 'RemoveValidator'">
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="remove validator" disabled type="text"
+                                value="{{deriveHash(txInfo.senderAddress, txInfo.nonce, actionIndex + 1)}}">
+                        </mat-form-field>
                     </td>
                 </tr>
             </table>
@@ -102,12 +126,14 @@
                 <tr>
                     <td>
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="amount" disabled value="{{action.actionData.amount}}" type="number">
+                            <input matInput placeholder="amount" disabled value="{{action.actionData.amount}}"
+                                type="number">
                         </mat-form-field>
                     </td>
                     <td>
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="asset" disabled value="{{action.actionData.assetHash}}" type="text">
+                            <input matInput placeholder="asset" disabled value="{{action.actionData.assetHash}}"
+                                type="text">
                         </mat-form-field>
                     </td>
                 </tr>
@@ -115,13 +141,13 @@
                     <td>
                         <mat-form-field class="full-width">
                             <input matInput placeholder="from account" disabled type="text"
-                                value="{{action.actionData.fromAccount}}">
+                                value="{{action.actionData.fromAccountHash}}">
                         </mat-form-field>
                     </td>
                     <td>
                         <mat-form-field class="full-width">
                             <input matInput placeholder="to account" disabled type="text"
-                                value="{{action.actionData.toAccount}}">
+                                value="{{action.actionData.toAccountHash}}">
                         </mat-form-field>
                     </td>
                 </tr>
@@ -169,6 +195,43 @@
                 </tr>
             </table>
 
+            <!-- SetAssetCode -->
+            <table class="full-width" *ngIf="action.actionType === 'SetAssetCode'">
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="asset hash" disabled type="text"
+                                value="{{action.actionData.assetHash}}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="asset code" disabled type="text"
+                                value="{{action.actionData.assetCode}}">
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+
+
+            <!-- SetAssetController -->
+            <table class="full-width" *ngIf="action.actionType === 'SetAssetController'">
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="asset" disabled type="text"
+                                value="{{action.actionData.assetHash}}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="controller address" disabled type="text"
+                                value="{{action.actionData.controllerAddress}}">
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+
             <!-- CreateAccount -->
             <table class="full-width" *ngIf="action.actionType === 'CreateAccount'">
                 <tr>
@@ -201,42 +264,77 @@
                 </tr>
             </table>
 
-            <!-- SetAssetController -->
-            <table class="full-width" *ngIf="action.actionType === 'SetAssetController'">
+            <!-- SubmitVote -->
+            <table class="full-width" *ngIf="action.actionType === 'SubmitVote'">
                 <tr>
                     <td>
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="asset" disabled type="text"
+                            <input matInput placeholder="account hash" disabled type="text"
+                                value="{{action.actionData.accountHash}}">
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="asset hash" disabled type="text"
                                 value="{{action.actionData.assetHash}}">
                         </mat-form-field>
                     </td>
+                </tr>
+                <tr>
                     <td>
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="controller address" disabled type="text"
-                                value="{{action.actionData.controllerAddress}}">
+                            <input matInput placeholder="resolution hash" disabled type="text"
+                                value="{{action.actionData.resolutionHash}}">
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="vote hash" disabled type="text"
+                                value="{{action.actionData.voteHash}}">
                         </mat-form-field>
                     </td>
                 </tr>
             </table>
 
-            <!-- SetAssetCode -->
-            <table class="full-width" *ngIf="action.actionType === 'SetAssetCode'">
+            <!-- SubmitVoteWeight -->
+            <table class="full-width" *ngIf="action.actionType === 'SubmitVoteWeight'">
                 <tr>
                     <td>
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="asset" disabled type="text"
+                            <input matInput placeholder="account hash" disabled type="text"
+                                value="{{action.actionData.accountHash}}">
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="asset hash" disabled type="text"
                                 value="{{action.actionData.assetHash}}">
                         </mat-form-field>
                     </td>
+                </tr>
+                <tr>
                     <td>
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="code" disabled type="text"
-                                value="{{action.actionData.assetCode}}">
+                            <input matInput placeholder="resolution hash" disabled type="text"
+                                value="{{action.actionData.resolutionHash}}">
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="vote hash" disabled type="text"
+                                value="{{action.actionData.voteWeight}}">
                         </mat-form-field>
                     </td>
                 </tr>
             </table>
-
         </mat-card-content>
     </mat-card>
 </div>

@@ -1,0 +1,31 @@
+<div class="column-container align-center">
+    <mat-form-field class="full-width">
+        <input matInput placeholder="asset hash" [value]="assetHash" (input)="assetHash = $event.target.value"
+            type="text" required>
+    </mat-form-field>
+    <button (click)="onAssetInfoButtonClick()" mat-raised-button color="accent"
+        matTooltip="Click to get detailed block info.">GET ASSET</button>
+</div>
+<div class="column-container" *ngIf="assetInfo">
+    <mat-toolbar class="toolbar-header">Asset info</mat-toolbar>
+    <mat-divider class="toolbar-bottom-margin"></mat-divider>
+    <mat-form-field class="info-item-margin">
+        <input matInput placeholder="asset code" disabled value="{{assetInfo.assetCode}}">
+    </mat-form-field>
+    <mat-form-field class="info-item-margin">
+        <textarea matInput placeholder="controller address" disabled value="{{assetInfo.controllerAddress}}"></textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{assetInfo.controllerAddress}}"
+            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+    </mat-form-field>
+    <mat-form-field class="info-item-margin">
+        <textarea matInput placeholder="is eligibility required" disabled
+            value="{{assetInfo.isEligibilityRequired}}"></textarea>
+    </mat-form-field>
+</div>
+<div class="column-container" *ngIf="errors">
+    <mat-toolbar class="toolbar-header">Errors</mat-toolbar>
+    <mat-divider class="toolbar-bottom-margin"></mat-divider>
+    <mat-list>
+        <mat-list-item *ngFor="let error of errors">{{error}}</mat-list-item>
+    </mat-list>
+</div>

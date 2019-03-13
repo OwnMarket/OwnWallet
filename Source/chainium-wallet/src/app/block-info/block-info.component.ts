@@ -14,7 +14,6 @@ export class BlockInfoComponent implements OnInit {
   errors: string[];
   constructor(private nodeService: NodeService) { }
 
-
   ngOnInit() {
   }
 

@@ -1,10 +1,12 @@
-.toolbar-header
-{
+.toolbar-header {
     margin-top:68px; 
     background-color: transparent;
 }
 
-.toolbar-bottom-margin
-{
+.toolbar-bottom-margin {
     margin-bottom: 24px;
+}
+
+.validators-container {
+    display: flex;
 }

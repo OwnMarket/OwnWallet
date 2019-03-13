@@ -1,5 +1,5 @@
-import { Component, OnDestroy, ViewContainerRef } from '@angular/core';
-import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { Component, OnDestroy } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { WalletRoutes } from './services/walletroutes.service';
@@ -11,7 +11,6 @@ import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { WalletHttpInterceptor } from './services/wallet-http-interceptor';
 import { LoaderComponent } from './loader/loader.component';
 import { LoaderMessage } from './models/LoaderMessage';
-
 
 const LoaderDlg = 'LoaderDlg';
 @Component({
@@ -30,7 +29,6 @@ export class AppComponent implements OnDestroy {
   balanceChangeSubscription: Subscription;
   errorOccuredSubscription: Subscription;
   openLoadingDialogSubscription: Subscription;
-
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(

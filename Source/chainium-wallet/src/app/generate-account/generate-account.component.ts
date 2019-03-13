@@ -17,12 +17,12 @@ export class GenerateAccountComponent implements OnInit {
   isKeyImported: boolean;
   private balInfo: ChxAddressInfo;
   private envelope: TxEnvelope;
+
   constructor(private nodeService: NodeService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private privateKeyService: PrivatekeyService,
     private cryptoService: CryptoService) {
-
     this.isKeyImported = privateKeyService.existsKey();
   }
 
@@ -34,7 +34,6 @@ export class GenerateAccountComponent implements OnInit {
       this.errors = result.errors;
       return null;
     }
-
     return (result as T);
   }
 
@@ -46,7 +45,7 @@ export class GenerateAccountComponent implements OnInit {
     const tx = new Tx();
     tx.senderAddress = senderAddress;
     tx.nonce = nonce;
-    tx.fee = this.nodeService.getMinFee();
+    tx.actionFee = this.nodeService.getMinFee();
     tx.actions = [action];
 
     return tx;
@@ -56,16 +55,13 @@ export class GenerateAccountComponent implements OnInit {
     if (!this.privateKeyService.existsKey) {
       return;
     }
-
     this.nodeService.getAddressInfo(this.privateKeyService.walletInfo.address)
       .subscribe(info => {
         this.balInfo = this.errorsOrResult<ChxAddressInfo>(info);
-
         if (!this.balInfo) {
           return;
         }
-
-        if (this.balInfo.balance <= 0) {
+        if (this.balInfo.balance.available <= 0) {
           this.errors = ['Your balance is insufficient to cover address creation fee'];
           return;
         }
@@ -82,14 +78,10 @@ export class GenerateAccountComponent implements OnInit {
             this.nodeService.submitTransaction(this.envelope)
               .subscribe(result => { this.txResult = this.errorsOrResult<TxResult>(result); });
           });
-
-
-
       });
   }
 
   onTransactionHashClick() {
     this.router.navigate([`/transaction/${this.txResult.txHash}`], { relativeTo: this.activatedRoute });
   }
-
 }

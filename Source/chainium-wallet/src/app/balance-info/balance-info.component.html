@@ -2,16 +2,31 @@
   <mat-toolbar>
     <span>Address Info</span>
     <button mat-icon-button (click)="onRefreshAddressInfoClick()" style="margin-left: auto;">
-      <mat-icon aria-label="Click to refresh balance info" color="accent" matTooltip="Click to refresh balance info.">autorenew</mat-icon>
+      <mat-icon aria-label="Click to refresh balance info" color="accent" matTooltip="Click to refresh balance info.">
+        autorenew</mat-icon>
     </button>
   </mat-toolbar>
   <div class="container-margin" *ngIf="addressInfo">
     <mat-form-field class="full-width address-font-size">
       <input matInput placeholder="CHX address" class="condensed" disabled value="{{addressInfo.chainiumAddress}}">
-      <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{addressInfo.chainiumAddress}}" class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+      <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{addressInfo.chainiumAddress}}"
+        class="pointer margin-l-20 animate-click">file_copy</mat-icon>
     </mat-form-field>
     <mat-form-field class="full-width">
-      <input matInput placeholder="balance" class="condensed" disabled value="{{addressInfo.balance}}" type="text">
+      <input matInput placeholder="total balance" class="condensed" disabled value="{{addressInfo.balance.total}}"
+        type="text">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <input matInput placeholder="staked balance" class="condensed" disabled value="{{addressInfo.balance.staked}}"
+        type="text">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <input matInput placeholder="deposit balance" class="condensed" disabled value="{{addressInfo.balance.deposit}}"
+        type="text">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <input matInput placeholder="available balance" class="condensed" disabled
+        value="{{addressInfo.balance.available}}" type="text">
     </mat-form-field>
     <mat-form-field class="full-width">
       <input matInput placeholder="nonce" class="condensed" disabled value="{{addressInfo.nonce}}" type="text">

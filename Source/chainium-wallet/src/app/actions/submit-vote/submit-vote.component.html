@@ -1,0 +1,27 @@
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title class="font-bold">
+            Submit Vote
+        </mat-panel-title>
+        <button (click)="onRemoveSubmitVoteClick()" mat-icon-button color="accent"
+            aria-label="delete this row from actions list">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </mat-expansion-panel-header>
+    <mat-form-field class="address-field-width">
+        <input matInput placeholder="account hash" [value]="submitVote.accountHash || ''"
+            (input)="submitVote.accountHash = $event.target.value">
+    </mat-form-field>
+    <mat-form-field class="address-field-width">
+        <input matInput placeholder="asset hash" [value]="submitVote.assetHash || ''"
+            (input)="submitVote.assetHash = $event.target.value">
+    </mat-form-field>
+    <mat-form-field class="address-field-width">
+        <input matInput placeholder="resolution code" [value]="submitVote.resolutionHash || ''"
+            (input)="submitVote.resolutionHash = $event.target.value">
+    </mat-form-field>
+    <mat-form-field class="address-field-width">
+        <input matInput placeholder="vote hash" [value]="submitVote.voteHash || ''"
+            (input)="submitVote.voteHash = $event.target.value">
+    </mat-form-field>
+</mat-expansion-panel>

@@ -1,0 +1,22 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title class="font-bold">
+      Delegate stake
+    </mat-panel-title>
+    <mat-panel-description *ngIf="delegateStake.amount || delegateStake.validatorAddress">{{delegateStake.amount}} Stake
+      to {{delegateStake.validatorAddress}}
+    </mat-panel-description>
+    <button (click)="onRemoveDelegateStakeClick()" mat-icon-button color="accent"
+      aria-label="delete this row from actions list">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-expansion-panel-header>
+  <mat-form-field class="form-margin-right">
+    <input matInput placeholder="amount" [value]="delegateStake.amount" type="number"
+      (input)="delegateStake.amount = $event.target.value">
+  </mat-form-field>
+  <mat-form-field class="address-field-width">
+    <input matInput placeholder="validator address" [value]="delegateStake.validatorAddress || ''"
+      (input)="delegateStake.validatorAddress = $event.target.value">
+  </mat-form-field>
+</mat-expansion-panel>

@@ -1,20 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-import { ChxAddressInfo } from '../models/ChxAddressInfo';
-import { AccountInfo, Holding } from '../models/AccountInfo';
-import { TxEnvelope, TxResult } from '../models/SubmitTransactions';
-import { TransactionInfo } from '../models/TransactionInfo';
-import { BlockInfo } from '../models/BlockInfo';
-
-
-
+import { AccountInfo } from '../models/AccountInfo';
+import { TxEnvelope } from '../models/SubmitTransactions';
 
 const TXENDPOINT = 'tx';
-
 
 @Injectable({
   providedIn: 'root'
@@ -36,10 +28,15 @@ export class NodeService {
     return this.http.get<AccountInfo>(accountInfoUrl);
   }
 
+  public getAssetInfo(assetHash: string): Observable<any> {
+    const assetInfoUrl = `${this.baseServiceUrl}/asset/${assetHash}`;
+    return this.http.get<AccountInfo>(assetInfoUrl);
+  }
+
   public getMinFee(): number {
     // TODO: decide on how to get this value
-    // for now return 0.1
-    return 0.01;
+    // for now return 0.001
+    return 0.001;
   }
 
   public submitTransaction(txEnvelope: TxEnvelope): Observable<any> {
@@ -58,7 +55,27 @@ export class NodeService {
   }
 
   public getChxAddressAccounts(chxAddress: string): Observable<any> {
-    const adressesInfoUrl = `${this.baseServiceUrl}/address/${chxAddress}/accounts`;
-    return this.http.get<any>(adressesInfoUrl);
+    const addressAccountsInfoUrl = `${this.baseServiceUrl}/address/${chxAddress}/accounts`;
+    return this.http.get<any>(addressAccountsInfoUrl);
+  }
+
+  public getChxAddressAssets(chxAddress: string): Observable<any> {
+    const addressAssetsInfoUrl = `${this.baseServiceUrl}/address/${chxAddress}/assets`;
+    return this.http.get<any>(addressAssetsInfoUrl);
+  }
+
+  public getChxAddressStakes(chxAddress: string): Observable<any> {
+    const stakesInfoUrl = `${this.baseServiceUrl}/address/${chxAddress}/stakes`;
+    return this.http.get<any>(stakesInfoUrl);
+  }
+
+  public getValidators(activeOnly: boolean): Observable<any> {
+    const stakesInfoUrl = `${this.baseServiceUrl}/validators?activeOnly=${activeOnly}`;
+    return this.http.get<any>(stakesInfoUrl);
+  }
+
+  public getValidatorStakes(validatorHash: string): Observable<any> {
+    const stakesInfoUrl = `${this.baseServiceUrl}/validator/${validatorHash}/stakes`;
+    return this.http.get<any>(stakesInfoUrl);
   }
 }

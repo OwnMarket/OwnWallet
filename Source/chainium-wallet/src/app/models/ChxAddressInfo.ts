@@ -1,5 +1,12 @@
 export class ChxAddressInfo {
     chainiumAddress: string;
-    balance: number;
+    balance: AddressBalance;
     nonce: number;
+}
+
+export class AddressBalance {
+    available: number;
+    deposit: number;
+    staked: number;
+    total: number;
 }

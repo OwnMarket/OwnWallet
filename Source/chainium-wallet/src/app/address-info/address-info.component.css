@@ -8,3 +8,56 @@
 {
     margin-bottom: 24px;
 }
+
+.fist-title {
+    width: 50%
+}
+
+.second-toolbar {
+    display: none;
+}
+
+.stakes {
+    width: 70%;
+    margin-right: 5%;
+}
+
+@media only screen and (max-width: 1466px) {
+.second-title {
+    display: none;
+    }
+.second-toolbar {
+    display: block;
+    background-color: transparent;
+    }
+}
+
+.display-list {
+    min-width: 30%;
+    height: 20rem;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.first-list {
+    margin-right: 5%;
+    margin-bottom: 5%;
+}
+
+.list-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.display-item {
+    font-family: monospace;
+}
+
+::-webkit-scrollbar {
+    width: 2px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ec6608;
+}

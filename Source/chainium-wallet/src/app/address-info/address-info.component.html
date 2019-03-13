@@ -1,27 +1,61 @@
 <div class="column-container">
   <div class="column-container align-center">
     <mat-form-field class="full-width">
-      <textarea matInput placeholder="Own address" [value]="chainiumAddress" (input)="chainiumAddress = $event.target.value"
-        required></textarea>
+      <textarea matInput placeholder="Own address" [value]="chainiumAddress"
+        (input)="chainiumAddress = $event.target.value" required></textarea>
     </mat-form-field>
-    <button (click)="onAddressInfoButtonClick()" mat-raised-button color="accent" matTooltip="Click to get detailed address info.">GET ADRESSS INFO</button>
+    <button (click)="onAddressInfoButtonClick()" mat-raised-button color="accent"
+      matTooltip="Click to get detailed address info.">GET ADRESSS INFO</button>
   </div>
-  <div *ngIf="accountsInfo">
+  <div *ngIf="accountsInfo && ready">
     <mat-form-field class="full-width">
-      <textarea matInput placeholder="balance" [value]="addressInfo.balance" disabled></textarea>
+      <textarea matInput placeholder="nonce" value="{{addressInfo.nonce}}" disabled></textarea>
     </mat-form-field>
     <mat-form-field class="full-width">
-      <textarea matInput placeholder="nonce" [value]="addressInfo.nonce" disabled></textarea>
+      <textarea matInput placeholder="totoal balance" disabled value="{{addressInfo.balance.total}}"></textarea>
     </mat-form-field>
-
-    <mat-toolbar class="toolbar-header">Accounts</mat-toolbar>
+    <mat-form-field class="full-width">
+      <textarea matInput placeholder="staked balance" disabled value="{{addressInfo.balance.staked}}"></textarea>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <textarea matInput placeholder="deposit balance" disabled value="{{addressInfo.balance.deposit}}"></textarea>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <textarea matInput placeholder="available balance" disabled value="{{addressInfo.balance.available}}"></textarea>
+    </mat-form-field>
+    <ng-container *ngIf="stakeInfo.stakes.length > 0">
+      <ng-container *ngFor="let stake of stakeInfo.stakes">
+        <mat-form-field class="stakes">
+          <textarea matInput placeholder="stakes" disabled value="{{stake.validatorAddress}}"></textarea>
+          <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{stake.validatorAddress}}"
+            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+        </mat-form-field>
+        <mat-form-field class="form-margin-right">
+          <input matInput placeholder="amount" disabled value="{{stake.amount}}" type="number">
+        </mat-form-field>
+      </ng-container>
+    </ng-container>
+    <mat-toolbar class="toolbar-header">
+      <span class="first-title" style="width: 50%;">Accounts</span>
+      <span class="second-title">Assets</span>
+    </mat-toolbar>
     <mat-divider class="toolbar-bottom-margin"></mat-divider>
-    <mat-list *ngIf="accountsInfo.accounts && accountsInfo.accounts.length > 0; else noAccounts">
-      <mat-list-item *ngFor="let account of accountsInfo.accounts">{{account}}
-        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{account}}" class="pointer margin-l-20 animate-click">file_copy</mat-icon>
-      </mat-list-item>
-    </mat-list>
-
+    <div class="list-container">
+      <mat-list class="display-list first-list"
+        *ngIf="accountsInfo.accounts && accountsInfo.accounts.length > 0; else noAccounts">
+        <mat-list-item class="display-item" *ngFor="let account of accountsInfo.accounts">{{account}}
+          <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{account}}"
+            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+        </mat-list-item>
+      </mat-list>
+      <mat-list class="display-list" *ngIf="assetsInfo && assetsInfo.assets.length > 0; else noAssets">
+        <mat-toolbar class="second-toolbar">Assets</mat-toolbar>
+        <mat-list-item class="display-item" *ngFor="let asset of assetsInfo.assets">{{asset}}
+          <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{asset}}"
+            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+        </mat-list-item>
+      </mat-list>
+    </div>
     <ng-template #noAccounts>
       <mat-list>
         <mat-list-item>
@@ -29,12 +63,19 @@
         </mat-list-item>
       </mat-list>
     </ng-template>
+    <ng-template #noAssets>
+      <mat-list>
+        <mat-list-item>
+          There are no assets associated with this address
+        </mat-list-item>
+      </mat-list>
+    </ng-template>
   </div>
   <div *ngIf="errors">
-      <mat-toolbar class="toolbar-header">Errors</mat-toolbar>
-      <mat-divider class="toolbar-bottom-margin"></mat-divider>
-      <mat-list>
-        <mat-list-item *ngFor="let error of errors">{{error}}</mat-list-item>
-      </mat-list>
+    <mat-toolbar class="toolbar-header">Errors</mat-toolbar>
+    <mat-divider class="toolbar-bottom-margin"></mat-divider>
+    <mat-list>
+      <mat-list-item *ngFor="let error of errors">{{error}}</mat-list-item>
+    </mat-list>
   </div>
 </div>

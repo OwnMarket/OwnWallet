@@ -1,3 +1,15 @@
+export class TxAction {
+    actionType: string;
+    actionData: object;
+}
+
+export class Tx {
+    senderAddress: string;
+    nonce: number;
+    actionFee: number;
+    actions: TxAction[];
+}
+
 export class TxEnvelope {
     tx: string;
     signature: string;
@@ -7,26 +19,75 @@ export class TxResult {
     txHash: string;
 }
 
+//#region Network Management Actions
 export class ChxTransfer {
     recipientAddress: string;
     amount: number;
 }
 
+export class DelegateStake {
+    validatorAddress: string;
+    amount: number;
+}
+
+export class ConfigureValidator {
+    networkAddress: string;
+    sharedRewardPercent: number;
+    isEnabled: boolean;
+}
+
+export class RemoveValidator {
+}
+//#endregion Network Management Actions
+
+//#region Asset Management Actions
 export class AssetTransfer {
-    fromAccount: string;
-    toAccount: string;
+    fromAccountHash: string;
+    toAccountHash: string;
     assetHash: string;
     amount: number;
 }
 
-export class TxAction {
-    actionType: string;
-    actionData: object;
+export class CreateAssetEmission {
+    emissionAccountHash: string;
+    assetHash: string;
+    amount: number;
 }
 
-export class Tx {
-    senderAddress: string;
-    nonce: number;
-    fee: number;
-    actions: TxAction[];
+export class CreateAsset {
 }
+
+export class SetAssetCode {
+    assetHash: string;
+    assetCode: string;
+}
+
+export class SetAssetController {
+    assetHash: string;
+    controllerAddress: string;
+}
+
+export class CreateAccount {
+}
+
+export class SetAccountController {
+    accountHash: string;
+    controllerAddress: string;
+}
+//#endregion Asset Management Actions
+
+//#region Voting Actions
+export class SubmitVote {
+    accountHash: string;
+    assetHash: string;
+    resolutionHash: string;
+    voteHash: string;
+}
+
+export class SubmitVoteWeight {
+    accountHash: string;
+    assetHash: string;
+    resolutionHash: string;
+    voteWeight: number;
+}
+//#endregion Voting Actions

@@ -50,8 +50,9 @@ body {
     margin-right:auto;
 }
 
-.chx-address-width {
+.address-field-width {
     width: 350px;
+    margin-right: 15px;
 }
 
 .align-right {

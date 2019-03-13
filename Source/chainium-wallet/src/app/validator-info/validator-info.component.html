@@ -1,0 +1,66 @@
+<div class="column-container align-center">
+    <caption>Enter a valdiator hash to get specific validator stakes, leave blank to get all validators.</caption>
+    <mat-form-field class="full-width">
+        <input matInput placeholder="validator hash" [value]="validatorHash"
+            (input)="validatorHash = $event.target.value" type="text">
+    </mat-form-field>
+    <div style="display:flex">
+        <button (click)="onValidatorInfoButtonClick()" mat-raised-button color="accent"
+            matTooltip="Click to get detailed block info.">GET VALIDATORS</button>
+        &nbsp;
+        <mat-checkbox name="active-validators" [(ngModel)]="activeOnly">Only active </mat-checkbox>
+    </div>
+</div>
+<br>
+<div class="column-container" *ngIf="validatorsInfo">
+    <mat-divider class="toolbar-bottom-margin"></mat-divider>
+    <ng-container *ngIf="validatorsInfo.validators.length > 0">
+        <ng-container *ngFor="let validator of validatorsInfo.validators; let i = index">
+            <mat-toolbar class="toolbar-header">Validator {{i+1}}</mat-toolbar>
+            <br>
+            <mat-form-field class="stakes">
+                <textarea matInput placeholder="validator address" disabled
+                    value="{{validator.validatorAddress}}"></textarea>
+                <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{validator.validatorAddress}}"
+                    class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+            </mat-form-field>
+            <mat-form-field class="stakes">
+                <textarea matInput placeholder="network address" disabled
+                    value="{{validator.networkAddress}}"></textarea>
+                <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{validator.networkAddress}}"
+                    class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+            </mat-form-field>
+            <mat-form-field class="form-margin-right">
+                <input matInput placeholder="shared reward percent" disabled value="{{validator.sharedRewardPercent}}"
+                    type="number">
+            </mat-form-field>
+            <mat-form-field class="form-margin-right">
+                <input matInput placeholder="is active" disabled value="{{validator.isActive}}">
+            </mat-form-field>
+        </ng-container>
+    </ng-container>
+</div>
+<div class="column-container" *ngIf="validatorStakes">
+    <mat-divider class="toolbar-bottom-margin"></mat-divider>
+    <ng-container *ngIf="validatorStakes.stakes.length > 0">
+        <ng-container *ngFor="let stake of validatorStakes.stakes; let i = index">
+            <mat-toolbar class="toolbar-header">Stake {{i+1}}</mat-toolbar>
+            <br>
+            <mat-form-field class="stakes">
+                <textarea matInput placeholder="stakes" disabled value="{{stake.stakerAddress}}"></textarea>
+                <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{stake.stakerAddress}}"
+                    class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+            </mat-form-field>
+            <mat-form-field class="form-margin-right">
+                <input matInput placeholder="amount" disabled value="{{stake.amount}}" type="number">
+            </mat-form-field>
+        </ng-container>
+    </ng-container>
+</div>
+<div class="column-container" *ngIf="errors">
+    <mat-toolbar class="toolbar-header">Errors</mat-toolbar>
+    <mat-divider class="toolbar-bottom-margin"></mat-divider>
+    <mat-list>
+        <mat-list-item *ngFor="let error of errors">{{error}}</mat-list-item>
+    </mat-list>
+</div>

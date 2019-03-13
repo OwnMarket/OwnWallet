@@ -1,4 +1,3 @@
-import { Routes } from '@angular/router';
 import { WalletComponent } from '../wallet/wallet.component'
 import { ImportWalletComponent } from '../import-wallet/import-wallet.component';
 import { AccountInfoComponent } from '../account-info/account-info.component';
@@ -8,6 +7,8 @@ import { BlockInfoComponent } from '../block-info/block-info.component';
 import { HomeScreenComponent } from '../home-screen/home-screen.component';
 import { AddressInfoComponent } from '../address-info/address-info.component';
 import { GenerateAccountComponent } from '../generate-account/generate-account.component';
+import { AssetInfoComponent } from '../asset-info/asset-info.component';
+import { ValidatorInfoComponent } from '../validator-info/validator-info.component';
 
 
 export const ROUTERCONFIGS = [
@@ -21,6 +22,8 @@ export const ROUTERCONFIGS = [
   { path: 'block', component: BlockInfoComponent },
   { path: '', component: HomeScreenComponent },
   { path: 'addressinfo', component: AddressInfoComponent },
+  { path: 'assetInfo', component: AssetInfoComponent },
+  { path: 'validatorInfo', component: ValidatorInfoComponent },
   { path: 'addressinfo/:addressHash', component: AddressInfoComponent },
-  { path: 'generateaccount', component: GenerateAccountComponent }
+  //{ path: 'generateaccount', component: GenerateAccountComponent }
 ];

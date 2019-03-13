@@ -24,6 +24,20 @@ import { AddressInfoComponent } from './address-info/address-info.component';
 import { GenerateAccountComponent } from './generate-account/generate-account.component';
 import { WalletHttpInterceptor } from './services/wallet-http-interceptor';
 import { LoaderComponent } from './loader/loader.component';
+import { DelegateStakeComponent } from './actions/delegate-stake/delegate-stake.component';
+import { ConfigureValidatorComponent } from './actions/configure-validator/configure-validator.component';
+import { CreateAssetEmissionComponent } from './actions/create-asset-emission/create-asset-emission.component';
+import { SetAssetCodeComponent } from './actions/set-asset-code/set-asset-code.component';
+import { SetAssetControllerComponent } from './actions/set-asset-controller/set-asset-controller.component';
+import { SetAccountControllerComponent } from './actions/set-account-controller/set-account-controller.component';
+import { SubmitVoteComponent } from './actions/submit-vote/submit-vote.component';
+import { SubmitVoteWeightComponent } from './actions/submit-vote-weight/submit-vote-weight.component';
+import { RemoveValidatorComponent } from './actions/remove-validator/remove-validator.component';
+import { AssetInfoComponent } from './asset-info/asset-info.component';
+import { ValidatorInfoComponent } from './validator-info/validator-info.component';
+import { FormsModule } from '@angular/forms';
+import { CreateAssetComponent } from './actions/create-asset/create-asset.component';
+import { CreateAccountComponent } from './actions/create-account/create-account.component';
 
 @NgModule({
   entryComponents: [SubmitTransactionInfoComponent, ErrorDialogComponent, LoaderComponent],
@@ -33,11 +47,24 @@ import { LoaderComponent } from './loader/loader.component';
     ImportWalletComponent,
     BalanceInfoComponent,
     AccountInfoComponent,
+    AssetInfoComponent,
+    ValidatorInfoComponent,
     SubmitTransactionComponent,
     TransactionInfoComponent,
     BlockInfoComponent,
     ChxTransferComponent,
     AssetTransferComponent,
+    DelegateStakeComponent,
+    ConfigureValidatorComponent,
+    RemoveValidatorComponent,
+    CreateAssetEmissionComponent,
+    CreateAssetComponent,
+    SetAssetCodeComponent,
+    SetAssetControllerComponent,
+    CreateAccountComponent,
+    SetAccountControllerComponent,
+    SubmitVoteComponent,
+    SubmitVoteWeightComponent,
     SubmitTransactionInfoComponent,
     HomeScreenComponent,
     ErrorDialogComponent,
@@ -47,6 +74,7 @@ import { LoaderComponent } from './loader/loader.component';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     GoogleMaterialModule,
     BrowserAnimationsModule,
     AppRoutingModule,

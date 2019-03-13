@@ -1,0 +1,27 @@
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title class="font-bold">
+            Submit Vote Weight
+        </mat-panel-title>
+        <button (click)="onRemoveSubmitVoteWeightClick()" mat-icon-button color="accent"
+            aria-label="delete this row from actions list">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </mat-expansion-panel-header>
+    <mat-form-field class="address-field-width">
+        <input matInput placeholder="account hash" [value]="submitVoteWeight.accountHash || ''"
+            (input)="submitVoteWeight.accountHash = $event.target.value">
+    </mat-form-field>
+    <mat-form-field class="address-field-width">
+        <input matInput placeholder="asset hash" [value]="submitVoteWeight.assetHash || ''"
+            (input)="submitVoteWeight.assetHash = $event.target.value">
+    </mat-form-field>
+    <mat-form-field class="address-field-width">
+        <input matInput placeholder="resolution code" [value]="submitVoteWeight.resolutionHash || ''"
+            (input)="submitVoteWeight.resolutionHash = $event.target.value">
+    </mat-form-field>
+    <mat-form-field class="form-margin-right">
+        <input matInput placeholder="vote weight" [value]="submitVoteWeight.voteWeight || ''"
+            (input)="submitVoteWeight.voteWeight = $event.target.value" type="number">
+    </mat-form-field>
+</mat-expansion-panel>

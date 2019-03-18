@@ -29,9 +29,6 @@
     <mat-form-field class="info-item-margin" *ngIf="txInfo.status">
         <input matInput placeholder="status" disabled value="{{txInfo.status}}" type="text">
     </mat-form-field>
-    <mat-form-field class="info-item-margin">
-        <input matInput placeholder="status" disabled value="{{transactionStatus}}" type="text">
-    </mat-form-field>
     <mat-form-field class="info-item-margin" *ngIf="showErrorCode">
         <input matInput placeholder="error code" disabled value="{{txInfo.errorCode}}" type="text">
     </mat-form-field>

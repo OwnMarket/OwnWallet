@@ -15,7 +15,6 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
   txInfo: TransactionInfo;
   subscription: Subscription;
   errors: string[];
-  transactionStatus = '';
   totalFee: number = 0;
   showErrorCode: boolean = false;
   ready = false;
@@ -50,31 +49,12 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
         }
         this.errors = null;
         this.txInfo = info as TransactionInfo;
-        this.transactionStatus = this.mapStatus(this.txInfo.status);
         this.totalFee = (this.txInfo.actions) ? (this.txInfo.actionFee * this.txInfo.actions.length) : 0;
         this.showErrorCode = this.txInfo.errorCode &&
           ((isNaN(Number(this.txInfo.errorCode)) && this.txInfo.errorCode.length > 0) ||
             (!isNaN(Number(this.txInfo.errorCode)) && Number(this.txInfo.errorCode) > 0));
         this.ready = true;
       });
-  }
-
-  private mapStatus(status: string): string {
-    if (typeof status == 'number') {
-      switch (status) {
-        case 0:
-          return 'Pending';
-        case 1:
-          return 'Success';
-        case 2:
-          return 'Failed';
-        default:
-          return 'undefined';
-      }
-    }
-    else {
-      return status;
-    }
   }
 
   deriveHash(address: string, nonce: number, txActionNumber: number) {

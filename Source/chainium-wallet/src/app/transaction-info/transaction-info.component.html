@@ -35,6 +35,9 @@
     <mat-form-field class="info-item-margin" *ngIf="txInfo.failedActionNumber && (txInfo.failedActionNumber>0)">
         <input matInput placeholder="failed action number" disabled value="{{txInfo.failedActionNumber}}" type="number">
     </mat-form-field>
+    <mat-form-field class="info-item-margin">
+        <input matInput placeholder="included in block number" disabled value="{{txInfo.includedInBlockNumber}}" type="number">
+    </mat-form-field>
 
     <mat-toolbar class="toolbar-header">Actions</mat-toolbar>
     <mat-divider class="toolbar-bottom-margin"></mat-divider>

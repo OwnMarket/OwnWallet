@@ -9,4 +9,5 @@ export class TransactionInfo {
     status : string;
     errorCode : string;
     failedActionNumber : number;
+    includedInBlockNumber: number;
 }

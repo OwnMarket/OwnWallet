@@ -1,5 +1,5 @@
 export class StakesInfo {
-    stakes: [StakeInfo];
+    stakes: StakeInfo[];
 }
 
 export class StakeInfo {

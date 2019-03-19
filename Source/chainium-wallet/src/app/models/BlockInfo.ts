@@ -9,6 +9,7 @@ export class BlockInfo {
     timestamp: number;
     blockTime: string; // Doesn't come from the API
     txSet: string[];
+    proposerAddress: string;
     txSetRoot: string;
     txResultSetRoot: string
     stateRoot: string;

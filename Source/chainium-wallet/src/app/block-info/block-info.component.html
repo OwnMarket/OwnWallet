@@ -23,8 +23,79 @@
             class="pointer margin-l-20 animate-click">file_copy</mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
+        <input matInput placeholder="configuration block number" disabled value="{{blockInfo.configurationBlockNumber}}"
+            type="text">
+    </mat-form-field>
+    <mat-form-field class="info-item-margin">
         <input matInput placeholder="timestamp" disabled value="{{blockInfo.blockTime}} ({{blockInfo.timestamp}})"
             type="text">
+    </mat-form-field>
+    <mat-form-field class="info-item-margin">
+        <textarea matInput placeholder="proposer address" disabled value="{{blockInfo.proposerAddress}}"></textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.proposerAddress}}"
+            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+    </mat-form-field>
+    <mat-form-field class="info-item-margin">
+        <textarea matInput placeholder="transaction set root" disabled value="{{blockInfo.txSetRoot}}"></textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.txSetRoot}}"
+            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+    </mat-form-field>
+    <mat-form-field class="info-item-margin">
+        <textarea matInput placeholder="transaction result set root" disabled
+            value="{{blockInfo.txResultSetRoot}}"></textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.txResultSetRoot}}"
+            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+    </mat-form-field>
+    <mat-form-field class="info-item-margin">
+        <input matInput placeholder="equivocation proofs root" disabled value="{{blockInfo.equivocationProofsRoot}}"
+            type="text">
+    </mat-form-field>
+    <mat-form-field class="info-item-margin">
+        <input matInput placeholder="equivocation proof results root" disabled
+            value="{{blockInfo.equivocationProofResultsRoot}}" type="text">
+    </mat-form-field>
+    <mat-form-field class="info-item-margin">
+        <textarea matInput placeholder="state root" disabled value="{{blockInfo.stateRoot}}"></textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.stateRoot}}"
+            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+    </mat-form-field>
+    <mat-form-field class="info-item-margin">
+        <textarea matInput placeholder="staking rewards set root" disabled
+            value="{{blockInfo.stakingRewardsRoot}}"></textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.stakingRewardsRoot}}"
+            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+    </mat-form-field>
+    <mat-form-field class="info-item-margin">
+        <input matInput placeholder="configuration root" disabled value="{{blockInfo.configurationRoot}}" type="text">
+        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.configurationRoot}}"
+            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+    </mat-form-field>
+    <mat-form-field class="info-item-margin" *ngIf="blockInfo.txSet.length > 0">
+        <ng-container *ngFor="let txSetItem of blockInfo.txSet">
+            <div class="validators-container">
+                <textarea matInput placeholder="txSet" disabled value="{{txSetItem}}"></textarea>
+                <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{txSetItem}}"
+                    class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+            </div>
+        </ng-container>
+    </mat-form-field>
+    <mat-form-field class="info-item-margin" *ngIf="blockInfo.equivocationProofs.length > 0">
+        <ng-container *ngFor="let equivocationProof of blockInfo.equivocationProofs">
+            <div class="validators-container">
+                <textarea matInput placeholder="equivocation proofs" disabled value="{{equivocationProof}}"></textarea>
+                <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{equivocationProof}}"
+                    class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+            </div>
+        </ng-container>
+    </mat-form-field>
+    <mat-form-field class="info-item-margin" *ngIf="blockInfo.stakingRewards > 0">
+        <ng-container *ngFor="let reward of blockInfo.stakingRewards">
+            <div class="validators-container">
+                <textarea matInput placeholder="staking rewards" disabled value="{{reward}}"></textarea>
+                <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{reward}}"
+                    class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+            </div>
+        </ng-container>
     </mat-form-field>
     <ng-container *ngIf="blockInfo.configuration">
         <mat-form-field class="info-item-margin">
@@ -55,33 +126,7 @@
         </mat-form-field>
     </ng-container>
     <mat-form-field class="info-item-margin">
-        <input matInput placeholder="configuration block number" disabled value="{{blockInfo.configurationBlockNumber}}"
-            type="text">
-    </mat-form-field>
-    <mat-form-field class="info-item-margin">
-        <input matInput placeholder="configuration root" disabled value="{{blockInfo.configurationRoot}}" type="text">
-        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.configurationRoot}}"
-            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
-    </mat-form-field>
-    <mat-form-field class="info-item-margin">
         <input matInput placeholder="consensus round" disabled value="{{blockInfo.consensusRound}}" type="text">
-    </mat-form-field>
-    <mat-form-field class="info-item-margin">
-        <input matInput placeholder="equivocation proof results root" disabled
-            value="{{blockInfo.equivocationProofResultsRoot}}" type="text">
-    </mat-form-field>
-    <mat-form-field class="info-item-margin">
-        <input matInput placeholder="equivocation proofs root" disabled value="{{blockInfo.equivocationProofsRoot}}"
-            type="text">
-    </mat-form-field>
-    <mat-form-field class="info-item-margin" *ngIf="blockInfo.equivocationProofs.length > 0">
-        <ng-container *ngFor="let equivocationProof of blockInfo.equivocationProofs">
-            <div class="validators-container">
-                <textarea matInput placeholder="equivocation proofs" disabled value="{{equivocationProof}}"></textarea>
-                <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{equivocationProof}}"
-                    class="pointer margin-l-20 animate-click">file_copy</mat-icon>
-            </div>
-        </ng-container>
     </mat-form-field>
     <mat-form-field class="info-item-margin" *ngIf="blockInfo.signatures.length > 0">
         <ng-container *ngFor="let signature of blockInfo.signatures">
@@ -91,46 +136,6 @@
                     class="pointer margin-l-20 animate-click">file_copy</mat-icon>
             </div>
         </ng-container>
-    </mat-form-field>
-    <mat-form-field class="info-item-margin" *ngIf="blockInfo.txSet.length > 0">
-        <ng-container *ngFor="let txSetItem of blockInfo.txSet">
-            <div class="validators-container">
-                <textarea matInput placeholder="txSet" disabled value="{{txSetItem}}"></textarea>
-                <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{txSetItem}}"
-                    class="pointer margin-l-20 animate-click">file_copy</mat-icon>
-            </div>
-        </ng-container>
-    </mat-form-field>
-    <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="transaction set root" disabled value="{{blockInfo.txSetRoot}}"></textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.txSetRoot}}"
-            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
-    </mat-form-field>
-    <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="transaction result set root" disabled
-            value="{{blockInfo.txResultSetRoot}}"></textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.txResultSetRoot}}"
-            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
-    </mat-form-field>
-    <mat-form-field class="info-item-margin" *ngIf="blockInfo.stakingRewards > 0">
-        <ng-container *ngFor="let reward of blockInfo.stakingRewards">
-            <div class="validators-container">
-                <textarea matInput placeholder="staking rewards" disabled value="{{reward}}"></textarea>
-                <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{reward}}"
-                    class="pointer margin-l-20 animate-click">file_copy</mat-icon>
-            </div>
-        </ng-container>
-    </mat-form-field>
-    <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="staking rewards set root" disabled
-            value="{{blockInfo.stakingRewardsRoot}}"></textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.stakingRewardsRoot}}"
-            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
-    </mat-form-field>
-    <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="state root" disabled value="{{blockInfo.stateRoot}}"></textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{blockInfo.stateRoot}}"
-            class="pointer margin-l-20 animate-click">file_copy</mat-icon>
     </mat-form-field>
     <mat-toolbar class="toolbar-header">Transactions</mat-toolbar>
     <mat-divider></mat-divider>

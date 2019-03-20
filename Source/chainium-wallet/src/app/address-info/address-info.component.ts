@@ -12,7 +12,7 @@ import { StakesInfo, StakeInfo } from '../models/StakesInfo.model';
   styleUrls: ['./address-info.component.css']
 })
 export class AddressInfoComponent implements OnInit, OnDestroy {
-  chainiumAddress = '';
+  blockchainAddress = '';
   errors: string[];
   accountsInfo: ChxAccountsInfo;
   addressInfo: ChxAddressInfo;
@@ -26,8 +26,8 @@ export class AddressInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.routeSubscription = this.route.params.subscribe(params => {
-      const chainiumAddress = params['addressHash'];
-      this.chainiumAddress = chainiumAddress == null || chainiumAddress === undefined ? null : chainiumAddress;
+      const blockchainAddress = params['addressHash'];
+      this.blockchainAddress = blockchainAddress == null || blockchainAddress === undefined ? null : blockchainAddress;
       this.onAddressInfoButtonClick();
     });
   }
@@ -37,21 +37,21 @@ export class AddressInfoComponent implements OnInit, OnDestroy {
   }
 
   onAddressInfoButtonClick() {
-    if (!this.chainiumAddress) {
+    if (!this.blockchainAddress) {
       return;
     }
 
     this.nodeService
-      .getAddressInfo(this.chainiumAddress)
+      .getAddressInfo(this.blockchainAddress)
       .subscribe(addr => {
         if (!addr || addr.errors) {
-          this.chainiumAddress = null;
+          this.blockchainAddress = null;
           this.addressInfo = null;
           return;
         }
         this.addressInfo = addr as ChxAddressInfo;
         this.nodeService
-          .getChxAddressAssets(this.chainiumAddress)
+          .getChxAddressAssets(this.blockchainAddress)
           .subscribe(assets => {
             if (!assets || assets.errors) {
               this.assetsInfo = null;
@@ -60,7 +60,7 @@ export class AddressInfoComponent implements OnInit, OnDestroy {
             }
             this.assetsInfo = assets;
             this.nodeService
-              .getChxAddressStakes(this.chainiumAddress)
+              .getChxAddressStakes(this.blockchainAddress)
               .subscribe(stakes => {
                 this.stakeInfo = stakes as StakesInfo;
                 this.sortStakes("amount","DESC");
@@ -69,7 +69,7 @@ export class AddressInfoComponent implements OnInit, OnDestroy {
           });
       });
 
-    this.nodeService.getChxAddressAccounts(this.chainiumAddress).subscribe(info => {
+    this.nodeService.getChxAddressAccounts(this.blockchainAddress).subscribe(info => {
       if (!info || info.errors) {
         this.errors = info.errors;
         this.accountsInfo = null;

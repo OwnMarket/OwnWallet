@@ -1,5 +1,5 @@
 export class ChxAddressInfo {
-    chainiumAddress: string;
+    blockchainAddress: string;
     balance: AddressBalance;
     nonce: number;
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 import { WalletInfo } from '../models/WalletInfo';
 import { Tx, TxEnvelope } from '../models/SubmitTransactions';
@@ -22,7 +23,7 @@ export class CryptoService {
 
   public signTransaction(privateKey: string, tx: Tx): Observable<TxEnvelope> {
     const rawTx = chainiumSdk.crypto.utf8ToHex(JSON.stringify(tx));
-    const signature = chainiumSdk.crypto.signMessage(privateKey, rawTx);
+    const signature = chainiumSdk.crypto.signMessage(environment.networkCode,privateKey, rawTx);
     return of({
       tx: chainiumSdk.crypto.encode64(rawTx),
       signature: signature

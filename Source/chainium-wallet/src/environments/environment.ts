@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  nodeApiUrl: 'http://localhost:10717'
+  nodeApiUrl: 'https://wallet-node.testnet.weown.com',
+  networkCode: 'OWN_PUBLIC_BLOCKCHAIN_TESTNET'
 };
 
 /*

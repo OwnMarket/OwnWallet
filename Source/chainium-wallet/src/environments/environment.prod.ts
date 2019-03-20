@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  nodeApiUrl: 'https://node-api.chainium.io'
+  nodeApiUrl: '<<NODE_API_URL>>',
+  networkCode: '<<NETWORK_CODE>>'
 };

@@ -16,7 +16,7 @@ export class BlockInfoComponent implements OnInit {
   subscription: Subscription;
   errors: string[];
   constructor(private nodeService: NodeService,
-    private route: ActivatedRoute, ) { }
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(params => {

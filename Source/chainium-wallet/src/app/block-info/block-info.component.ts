@@ -30,7 +30,6 @@ export class BlockInfoComponent implements OnInit {
     if (this.blockNumber < 0 || this.blockNumber === null) {
       return;
     }
-
     this.nodeService.getBlockInfo(this.blockNumber).subscribe(info => {
       if (!info || info.errors) {
         this.blockInfo = null;
@@ -38,10 +37,15 @@ export class BlockInfoComponent implements OnInit {
         return;
       }
       let timestamp = info.timestamp > 2 ** 32 ? info.timestamp : info.timestamp * 1000; // New version in milliseconds.
+      if(timestamp === 0) {
+        info.blockTime = '';
+      }
+      else {
       info.blockTime = new Date(timestamp).toISOString(); // Block timestamp is Unix time.
+      info.timestamp = `(${info.timestamp})`;
+      }
       this.errors = null;
       this.blockInfo = info as BlockInfo;
     });
   }
-
 }

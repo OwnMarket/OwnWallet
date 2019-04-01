@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { NodeService } from "../services/node.service";
 import { ValidatorsInfo } from "../models/ValidatorInfo.model";
 import { StakeInfo } from "../models/StakesInfo.model";
+import { Subscription } from "rxjs";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-validator-info",
@@ -12,14 +14,21 @@ import { StakeInfo } from "../models/StakesInfo.model";
 export class ValidatorInfoComponent implements OnInit {
   validatorHash: string = '';
   validatorsInfo: ValidatorsInfo;
+  subscription: Subscription;
   validatorStakes: any;
   errors;
   activeOnly = false;
 
-  constructor(private nodeService: NodeService) {
+  constructor(private nodeService: NodeService,
+    private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.subscription = this.route.params.subscribe(params => {
+      const validatorRouteHash = params['validatorHash'];
+      this.validatorHash = (validatorRouteHash === null || validatorRouteHash === undefined) ? '' : validatorRouteHash;
+      this.onValidatorInfoButtonClick();
+    });
   }
 
   onValidatorInfoButtonClick() {

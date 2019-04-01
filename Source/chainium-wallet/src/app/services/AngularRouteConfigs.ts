@@ -27,5 +27,6 @@ export const ROUTERCONFIGS = [
   { path: 'assetInfo', component: AssetInfoComponent },
   { path: 'assetInfo/:assetHash', component: AssetInfoComponent },
   { path: 'validatorInfo', component: ValidatorInfoComponent },
+  { path: 'validatorInfo/:validatorHash', component: ValidatorInfoComponent },
   //{ path: 'generateaccount', component: GenerateAccountComponent }
 ];

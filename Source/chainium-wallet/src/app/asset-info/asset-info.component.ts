@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { NodeService } from "../services/node.service";
 import { AssetInfo } from "../models/AssetInfo.model";
+import { ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-asset-info",
@@ -11,11 +13,18 @@ import { AssetInfo } from "../models/AssetInfo.model";
 export class AssetInfoComponent implements OnInit {
   assetHash: string = '';
   assetInfo: AssetInfo;
+  subscription: Subscription;
   errors;
-  constructor(private nodeService: NodeService) { 
+  constructor(private nodeService: NodeService,
+    private route: ActivatedRoute) { 
   }
 
   ngOnInit() {
+    this.subscription = this.route.params.subscribe(params => {
+      const assetRouteHash = params['assetHash'];
+      this.assetHash = (assetRouteHash === null || assetRouteHash === undefined) ? '' : assetRouteHash;
+      this.onAssetInfoButtonClick();
+    });
   }
 
   onAssetInfoButtonClick() {

@@ -23,8 +23,9 @@ export const ROUTERCONFIGS = [
   { path: 'block/:blockNumber', component: BlockInfoComponent },
   { path: '', component: HomeScreenComponent },
   { path: 'addressinfo', component: AddressInfoComponent },
-  { path: 'assetInfo', component: AssetInfoComponent },
-  { path: 'validatorInfo', component: ValidatorInfoComponent },
   { path: 'addressinfo/:addressHash', component: AddressInfoComponent },
+  { path: 'assetInfo', component: AssetInfoComponent },
+  { path: 'assetInfo/:assetHash', component: AssetInfoComponent },
+  { path: 'validatorInfo', component: ValidatorInfoComponent },
   //{ path: 'generateaccount', component: GenerateAccountComponent }
 ];

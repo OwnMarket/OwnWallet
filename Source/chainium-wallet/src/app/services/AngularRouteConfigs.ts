@@ -20,6 +20,7 @@ export const ROUTERCONFIGS = [
   { path: 'transaction', component: TransactionInfoComponent },
   { path: 'transaction/:transactionHash', component: TransactionInfoComponent },
   { path: 'block', component: BlockInfoComponent },
+  { path: 'block/:blockNumber', component: BlockInfoComponent },
   { path: '', component: HomeScreenComponent },
   { path: 'addressinfo', component: AddressInfoComponent },
   { path: 'assetInfo', component: AssetInfoComponent },

@@ -17,7 +17,7 @@ export class FaucetService {
 
   public claimChx(chxAddress: string): Observable<any> {
     const claimChxUrl = `${this.baseServiceUrl}/chx`;
-    const data = {chainiumAddress : chxAddress};
+    const data = {blockchainAddress : chxAddress};
     return this.http.post(claimChxUrl, data);
   }
 

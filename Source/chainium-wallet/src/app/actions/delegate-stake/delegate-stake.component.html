@@ -3,7 +3,7 @@
     <mat-panel-title class="font-bold">
       Delegate stake
     </mat-panel-title>
-    <mat-panel-description *ngIf="delegateStake.amount || delegateStake.validatorAddress">{{delegateStake.amount}} Stake
+    <mat-panel-description *ngIf="delegateStake.amount || delegateStake.validatorAddress">{{delegateStake.amount}} CHX
       to {{delegateStake.validatorAddress}}
     </mat-panel-description>
     <button (click)="onRemoveDelegateStakeClick()" mat-icon-button color="accent"

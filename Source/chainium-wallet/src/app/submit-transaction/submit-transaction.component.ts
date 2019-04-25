@@ -27,7 +27,7 @@ export class SubmitTransactionComponent implements OnInit {
     [
       {
         value: 'TransferChx',
-        viewValue: 'Transfer Chx',
+        viewValue: 'Transfer CHX',
         onSelected() {
           let action = new TxAction();
           action.actionType = 'TransferChx';

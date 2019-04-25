@@ -1,7 +1,7 @@
 <div class="column-container align-center">
     <mat-form-field class="full-width">
         <input matInput placeholder="asset hash" [value]="assetHash" (input)="assetHash = $event.target.value"
-            type="text" required>
+            type="text" required (keydown.enter)="onAssetInfoButtonClick()">
     </mat-form-field>
     <button (click)="onAssetInfoButtonClick()" mat-raised-button color="accent"
         matTooltip="Click to get detailed block info.">GET ASSET</button>

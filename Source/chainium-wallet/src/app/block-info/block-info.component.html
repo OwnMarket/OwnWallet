@@ -1,7 +1,7 @@
 <div class="column-container align-center">
     <mat-form-field>
         <input matInput placeholder="block number" [value]="blockNumber>=0 ? blockNumber : (-1*blockNumber)"
-            (input)="blockNumber = $event.target.value" type="number" required>
+            (input)="blockNumber = $event.target.value" type="number" required (keydown.enter)="onBlockInfoButtonClick()">
     </mat-form-field>
     <button (click)="onBlockInfoButtonClick()" mat-raised-button color="accent"
         matTooltip="Click to get detailed block info.">GET BLOCK</button>

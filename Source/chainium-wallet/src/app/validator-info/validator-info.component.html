@@ -2,7 +2,7 @@
     <caption>Enter a valdiator hash to get specific validator stakes, leave blank to get all validators.</caption>
     <mat-form-field class="full-width">
         <input matInput placeholder="validator hash" [value]="validatorHash"
-            (input)="validatorHash = $event.target.value" type="text">
+            (input)="validatorHash = $event.target.value" type="text" (keydown.enter)="onValidatorInfoButtonClick()">
     </mat-form-field>
     <div style="display:flex">
         <button (click)="onValidatorInfoButtonClick()" mat-raised-button color="accent"

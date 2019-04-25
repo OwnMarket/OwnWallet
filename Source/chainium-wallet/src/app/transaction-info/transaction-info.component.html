@@ -1,7 +1,7 @@
 <div class="column-container align-center">
     <mat-form-field class="full-width">
         <textarea matInput placeholder="transaction hash" [value]="transactionHash"
-            (input)="transactionHash = $event.target.value" required></textarea>
+            (input)="transactionHash = $event.target.value" required (keydown.enter)="onTransactionInfoButtonClick()"></textarea>
     </mat-form-field>
     <button (click)="onTransactionInfoButtonClick()" mat-raised-button color="accent"
         matTooltip="Click to get info for entered transaction hash.">GET TRANSACTION</button>

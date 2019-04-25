@@ -5,8 +5,10 @@
         </mat-panel-title>
         <mat-panel-description *ngIf="configureValidator.sharedRewardPercent
                 || configureValidator.networkAddress">
-            {{configureValidator.sharedRewardPercent}}% Stake
-            to {{configureValidator.networkAddress}}
+            {{configureValidator.networkAddress}} &nbsp; / &nbsp; shares
+            {{configureValidator.sharedRewardPercent || 0}}% &nbsp; / &nbsp;
+            <ng-container *ngIf="!configureValidator.isEnabled">not &nbsp;</ng-container>
+            active
         </mat-panel-description>
         <button (click)="onRemoveConfigureValidatorClick()" mat-icon-button color="accent"
             aria-label="delete this row from actions list">

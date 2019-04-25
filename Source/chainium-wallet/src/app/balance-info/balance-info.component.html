@@ -13,6 +13,9 @@
         class="pointer margin-l-20 animate-click">file_copy</mat-icon>
     </mat-form-field>
     <mat-form-field class="full-width">
+      <input matInput placeholder="nonce" class="condensed" disabled value="{{addressInfo.nonce}}" type="text">
+    </mat-form-field>
+    <mat-form-field class="full-width">
       <input matInput placeholder="total balance" class="condensed" disabled value="{{addressInfo.balance.total}}"
         type="text">
     </mat-form-field>
@@ -27,9 +30,6 @@
     <mat-form-field class="full-width">
       <input matInput placeholder="available balance" class="condensed" disabled
         value="{{addressInfo.balance.available}}" type="text">
-    </mat-form-field>
-    <mat-form-field class="full-width">
-      <input matInput placeholder="nonce" class="condensed" disabled value="{{addressInfo.nonce}}" type="text">
     </mat-form-field>
   </div>
   <section class="mat-typography container-margin" *ngIf="!addressInfo">

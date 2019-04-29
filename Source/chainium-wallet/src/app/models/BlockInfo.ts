@@ -22,8 +22,16 @@ export class BlockInfo {
 
 export class BlockConfiguration {
     configurationBlockDelta: number;
-    maxTxCountPerBlock: number;
-    validatorBlacklistTime: number;
+    validators: BlockConfigurationValidator[];
+    validatorsBlackList: string [];
     validatorDepositLockTime: number;
-    validators: string[];
+    validatorBlacklistTime: number;
+    maxTxCountPerBlock: number;
+}
+
+export class BlockConfigurationValidator {
+    validatorAddress: string;
+    networkAddress: string;
+    sharedRewardPercent: number;
+    totalStake: number;
 }

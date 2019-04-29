@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ChxTransfer } from '../../models/SubmitTransactions';
+import { ChxTransfer } from '../../models/submit-transactions.model';
 import { ActionRemoval } from '../../services/ActionRemovalService';
 
 @Component({

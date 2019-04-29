@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { ActionRemoval } from "src/app/services/ActionRemovalService";
-import { DelegateStake } from "src/app/models/SubmitTransactions";
+import { DelegateStake } from "src/app/models/submit-transactions.model";
 
 @Component({
   selector: "app-delegate-stake",

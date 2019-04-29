@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NodeService } from '../services/node.service';
-import { TxResult, TxEnvelope, TxAction, Tx } from '../models/SubmitTransactions';
+import { TxResult, TxEnvelope, TxAction, Tx } from '../models/submit-transactions.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PrivatekeyService } from '../services/privatekey.service';
 import { CryptoService } from '../services/crypto.service';

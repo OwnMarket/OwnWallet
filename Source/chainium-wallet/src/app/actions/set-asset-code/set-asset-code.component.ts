@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { ActionRemoval } from "src/app/services/ActionRemovalService";
-import { SetAssetCode } from "src/app/models/SubmitTransactions";
+import { SetAssetCode } from "src/app/models/submit-transactions.model";
 
 @Component({
   selector: "app-set-asset-code",

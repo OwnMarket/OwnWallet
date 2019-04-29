@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 import { AccountInfo } from '../models/account-info.model';
-import { TxEnvelope } from '../models/SubmitTransactions';
+import { TxEnvelope } from '../models/submit-transactions.model';
 
 const TXENDPOINT = 'tx';
 

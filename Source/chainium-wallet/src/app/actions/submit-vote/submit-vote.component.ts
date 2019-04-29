@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { SubmitVote } from "src/app/models/SubmitTransactions";
+import { SubmitVote } from "src/app/models/submit-transactions.model";
 import { ActionRemoval } from "src/app/services/ActionRemovalService";
 
 @Component({

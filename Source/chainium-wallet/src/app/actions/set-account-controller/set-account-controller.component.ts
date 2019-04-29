@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { SetAccountController } from "src/app/models/SubmitTransactions";
+import { SetAccountController } from "src/app/models/submit-transactions.model";
 import { ActionRemoval } from "src/app/services/ActionRemovalService";
 
 @Component({

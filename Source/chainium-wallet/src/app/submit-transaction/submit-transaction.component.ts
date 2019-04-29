@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatOptionSelectionChange } from '@angular/material';
 
-import { Tx, ChxTransfer, TxAction, TxEnvelope, DelegateStake, ConfigureValidator, CreateAssetEmission, SetAssetCode, SetAssetController, SetAccountController, SubmitVote, SubmitVoteWeight, RemoveValidator, CreateAsset, CreateAccount, AssetTransfer } from '../models/SubmitTransactions'
+import { Tx, ChxTransfer, TxAction, TxEnvelope, DelegateStake, ConfigureValidator, CreateAssetEmission, SetAssetCode, SetAssetController, SetAccountController, SubmitVote, SubmitVoteWeight, RemoveValidator, CreateAsset, CreateAccount, AssetTransfer } from '../models/submit-transactions.model'
 import { PrivatekeyService } from '../services/privatekey.service';
 import { NodeService } from '../services/node.service';
 import { CryptoService } from '../services/crypto.service';

@@ -1,4 +1,4 @@
-import { TxAction } from "./SubmitTransactions";
+import { TxAction } from "./submit-transactions.model";
 
 export class TransactionInfo { 
     txHash : string;

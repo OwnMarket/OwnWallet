@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AssetTransfer, TxAction } from '../../models/SubmitTransactions';
+import { AssetTransfer, TxAction } from '../../models/submit-transactions.model';
 import { ActionRemoval } from '../../services/ActionRemovalService';
 
 @Component({

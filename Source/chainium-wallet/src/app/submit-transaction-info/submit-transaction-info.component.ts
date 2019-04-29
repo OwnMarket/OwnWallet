@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { TxEnvelope, TxResult } from '../models/SubmitTransactions';
+import { TxEnvelope, TxResult } from '../models/submit-transactions.model';
 import { NodeService } from '../services/node.service';
 import { ActivatedRoute, Router } from '@angular/router';
 

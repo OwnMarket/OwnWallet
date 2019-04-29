@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { CryptoService} from "../services/crypto.service"
-import { WalletInfo } from '../models/WalletInfo';
+import { WalletInfo } from '../models/wallet-info.model';
 
 @Component({
   selector: 'app-wallet',

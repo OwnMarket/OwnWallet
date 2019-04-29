@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AccountInfo } from '../models/AccountInfo';
+import { AccountInfo } from '../models/account-info.model';
 import { NodeService } from '../services/node.service'
 
 @Component({

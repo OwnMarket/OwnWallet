@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { NodeService } from "../services/node.service";
-import { ValidatorsInfo } from "../models/ValidatorInfo.model";
-import { StakeInfo } from "../models/StakesInfo.model";
+import { ValidatorsInfo } from "../models/validators-info.model";
+import { StakeInfo } from "../models/stakes-info.model";
 import { Subscription } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 

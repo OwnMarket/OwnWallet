@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NodeService } from "../services/node.service";
-import { AssetInfo } from "../models/AssetInfo.model";
+import { AssetInfo } from "../models/asset-info.model";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 

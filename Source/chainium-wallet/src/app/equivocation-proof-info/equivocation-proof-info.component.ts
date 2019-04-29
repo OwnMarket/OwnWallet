@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { EquivocationProofInfo } from "../models/EquivocationProofInfo.model";
+import { EquivocationProofInfo } from "../models/equivocation-proof-info.model";
 import { Subscription } from "rxjs";
 import { NodeService } from "../services/node.service";
 import { ActivatedRoute } from "@angular/router";

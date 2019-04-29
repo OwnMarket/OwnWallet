@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { NodeService } from '../services/node.service';
-import { BlockInfo } from '../models/BlockInfo';
+import { BlockInfo } from '../models/block-info.model';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 

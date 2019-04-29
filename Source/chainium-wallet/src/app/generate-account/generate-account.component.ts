@@ -4,7 +4,7 @@ import { TxResult, TxEnvelope, TxAction, Tx } from '../models/SubmitTransactions
 import { ActivatedRoute, Router } from '@angular/router';
 import { PrivatekeyService } from '../services/privatekey.service';
 import { CryptoService } from '../services/crypto.service';
-import { ChxAddressInfo } from '../models/ChxAddressInfo';
+import { ChxAddressInfo } from '../models/chx-address-info.model';
 
 @Component({
   selector: 'app-generate-account',

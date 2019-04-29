@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import {LoaderMessage } from '../models/LoaderMessage';
+import {LoaderMessage } from '../models/loader-message.enum';
 
 @Injectable({providedIn: 'root'})
 export class WalletHttpInterceptor implements HttpInterceptor {

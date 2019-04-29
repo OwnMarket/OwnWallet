@@ -1,4 +1,4 @@
-import { WalletRouteInfo } from '../models/WalletRouteInfo';
+import { WalletRouteInfo } from '../models/wallet-route-info.model';
 import { Injectable } from '@angular/core';
 
 const ROUTES: WalletRouteInfo[] = [

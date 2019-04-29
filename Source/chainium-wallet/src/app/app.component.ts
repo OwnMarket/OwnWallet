@@ -3,14 +3,14 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { WalletRoutes } from './services/walletroutes.service';
-import { WalletRouteInfo } from './models/WalletRouteInfo';
+import { WalletRouteInfo } from './models/wallet-route-info.model';
 import { PrivatekeyService } from './services/privatekey.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { GlobalErrorHandler } from './services/global.error.handler';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { WalletHttpInterceptor } from './services/wallet-http-interceptor';
 import { LoaderComponent } from './loader/loader.component';
-import { LoaderMessage } from './models/LoaderMessage';
+import { LoaderMessage } from './models/loader-message.enum';
 
 const LoaderDlg = 'LoaderDlg';
 @Component({

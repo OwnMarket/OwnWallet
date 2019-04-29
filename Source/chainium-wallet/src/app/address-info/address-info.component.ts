@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NodeService } from '../services/node.service';
-import { ChxAccountsInfo } from '../models/AddressInfo';
-import { ChxAddressInfo } from '../models/ChxAddressInfo';
-import { StakesInfo, StakeInfo } from '../models/StakesInfo.model';
+import { ChxAccountsInfo } from '../models/address-info.model';
+import { ChxAddressInfo } from '../models/chx-address-info.model';
+import { StakesInfo, StakeInfo } from '../models/stakes-info.model';
 
 @Component({
   selector: 'app-address-info',

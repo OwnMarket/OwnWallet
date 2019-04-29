@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NodeService } from '../services/node.service';
-import { TransactionInfo } from '../models/TransactionInfo';
+import { TransactionInfo } from '../models/transaction-info.model';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CryptoService } from '../services/crypto.service';

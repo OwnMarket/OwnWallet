@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-import { AccountInfo } from '../models/AccountInfo';
+import { AccountInfo } from '../models/account-info.model';
 import { TxEnvelope } from '../models/SubmitTransactions';
 
 const TXENDPOINT = 'tx';

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChxAddressInfo } from '../models/ChxAddressInfo';
+import { ChxAddressInfo } from '../models/chx-address-info.model';
 import { PrivatekeyService } from '../services/privatekey.service';
 import { CryptoService } from '../services/crypto.service';
 import { NodeService } from '../services/node.service';

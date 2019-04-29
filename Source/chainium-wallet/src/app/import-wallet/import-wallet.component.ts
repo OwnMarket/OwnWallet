@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrivatekeyService } from '../services/privatekey.service';
 import { CryptoService } from '../services/crypto.service';
-import { WalletInfo } from '../models/WalletInfo';
+import { WalletInfo } from '../models/wallet-info.model';
 
 
 @Component({

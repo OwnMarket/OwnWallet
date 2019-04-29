@@ -70,12 +70,17 @@ export class NodeService {
   }
 
   public getValidators(activeOnly: boolean): Observable<any> {
-    const stakesInfoUrl = `${this.baseServiceUrl}/validators?activeOnly=${activeOnly}`;
-    return this.http.get<any>(stakesInfoUrl);
+    const validatorsUrl = `${this.baseServiceUrl}/validators?activeOnly=${activeOnly}`;
+    return this.http.get<any>(validatorsUrl);
   }
 
   public getValidatorStakes(validatorHash: string): Observable<any> {
     const stakesInfoUrl = `${this.baseServiceUrl}/validator/${validatorHash}/stakes`;
     return this.http.get<any>(stakesInfoUrl);
+  }
+
+  public getequivocationProofInfo(equivocationProofHash: string): Observable<any> {
+    const equivocationProofInfoUrl = `${this.baseServiceUrl}/equivocation/${equivocationProofHash}`;
+    return this.http.get<any>(equivocationProofInfoUrl);
   }
 }

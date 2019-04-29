@@ -9,6 +9,7 @@ import { AddressInfoComponent } from '../address-info/address-info.component';
 import { GenerateAccountComponent } from '../generate-account/generate-account.component';
 import { AssetInfoComponent } from '../asset-info/asset-info.component';
 import { ValidatorInfoComponent } from '../validator-info/validator-info.component';
+import { EquivocationProofInfoComponent } from '../equivocation-proof-info/equivocation-proof-info.component';
 
 
 export const ROUTERCONFIGS = [
@@ -28,5 +29,6 @@ export const ROUTERCONFIGS = [
   { path: 'assetInfo/:assetHash', component: AssetInfoComponent },
   { path: 'validatorInfo', component: ValidatorInfoComponent },
   { path: 'validatorInfo/:validatorHash', component: ValidatorInfoComponent },
+  { path: 'equivocationInfo/:equivocationProofHash', component: EquivocationProofInfoComponent },
   //{ path: 'generateaccount', component: GenerateAccountComponent }
 ];

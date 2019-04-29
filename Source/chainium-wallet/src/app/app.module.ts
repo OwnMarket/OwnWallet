@@ -38,6 +38,7 @@ import { ValidatorInfoComponent } from './validator-info/validator-info.componen
 import { FormsModule } from '@angular/forms';
 import { CreateAssetComponent } from './actions/create-asset/create-asset.component';
 import { CreateAccountComponent } from './actions/create-account/create-account.component';
+import { EquivocationProofInfoComponent } from './equivocation-proof-info/equivocation-proof-info.component';
 
 @NgModule({
   entryComponents: [SubmitTransactionInfoComponent, ErrorDialogComponent, LoaderComponent],
@@ -52,6 +53,7 @@ import { CreateAccountComponent } from './actions/create-account/create-account.
     SubmitTransactionComponent,
     TransactionInfoComponent,
     BlockInfoComponent,
+    EquivocationProofInfoComponent,
     ChxTransferComponent,
     AssetTransferComponent,
     DelegateStakeComponent,

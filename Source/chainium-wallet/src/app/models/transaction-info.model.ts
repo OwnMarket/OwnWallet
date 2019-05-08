@@ -4,6 +4,7 @@ export class TransactionInfo {
     txHash : string;
     senderAddress : string;
     nonce : number;
+    expirationTime : number;
     actionFee : number;
     actions : TxAction[];
     status : string;

@@ -27,7 +27,7 @@
               "src/assets/themes/chainium-theme.scss"
             ],
             "scripts": [
-              "src/lib/chainium-sdk.js"
+              "src/lib/own-blockchain-sdk.js"
             ]
           },
           "configurations": {
@@ -78,7 +78,7 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/lib/chainium-sdk.js"
+              "src/lib/own-blockchain-sdk.js"
             ],
             "assets": [
               "src/favicon.ico",

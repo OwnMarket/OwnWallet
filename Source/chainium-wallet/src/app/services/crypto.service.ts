@@ -30,6 +30,14 @@ export class CryptoService {
     });
   }
 
+  public signMessage(privateKey: string, message: string): Observable<string> {
+    return of(ownBlockchainSdk.crypto.signPlainText(privateKey, message));
+  }
+
+  public verifySignature(signature: string, message: string): Observable<string> {
+    return of(ownBlockchainSdk.crypto.verifyPlainTextSignature(signature, message));
+  }
+
   public deriveHash(address: string, nonce: number, txActionNumber: number): string {
     return ownBlockchainSdk.crypto.deriveHash(address, nonce, txActionNumber);
   }

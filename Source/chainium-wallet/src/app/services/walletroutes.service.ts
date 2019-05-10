@@ -11,7 +11,8 @@ const ROUTES: WalletRouteInfo[] = [
   { route: 'submissions', linkText: 'Submit transaction', icon: 'next_week' },
   { route: 'transaction', linkText: 'Transaction info', icon: 'import_export' },
   { route: 'block', linkText: 'Block info', icon: 'widgets ' },
-  { route: 'validatorInfo', linkText: 'Validator info', icon: 'gavel' }
+  { route: 'validatorInfo', linkText: 'Validator info', icon: 'gavel' },
+  { route: 'messageSigningVerification', linkText: 'Message Signing and Verification', icon: 'gavel' },
 ];
 
 @Injectable({

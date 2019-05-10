@@ -39,6 +39,7 @@ import { FormsModule } from '@angular/forms';
 import { CreateAssetComponent } from './actions/create-asset/create-asset.component';
 import { CreateAccountComponent } from './actions/create-account/create-account.component';
 import { EquivocationProofInfoComponent } from './equivocation-proof-info/equivocation-proof-info.component';
+import { MessageSignVerificationComponent } from './msg-sign-verif/msg-sign-verif.component';
 
 @NgModule({
   entryComponents: [SubmitTransactionInfoComponent, ErrorDialogComponent, LoaderComponent],
@@ -72,7 +73,8 @@ import { EquivocationProofInfoComponent } from './equivocation-proof-info/equivo
     ErrorDialogComponent,
     AddressInfoComponent,
     GenerateAccountComponent,
-    LoaderComponent
+    LoaderComponent,
+    MessageSignVerificationComponent,
   ],
   imports: [
     BrowserModule,

@@ -10,6 +10,7 @@ import { GenerateAccountComponent } from '../generate-account/generate-account.c
 import { AssetInfoComponent } from '../asset-info/asset-info.component';
 import { ValidatorInfoComponent } from '../validator-info/validator-info.component';
 import { EquivocationProofInfoComponent } from '../equivocation-proof-info/equivocation-proof-info.component';
+import { MessageSignVerificationComponent } from '../msg-sign-verif/msg-sign-verif.component';
 
 
 export const ROUTERCONFIGS = [
@@ -30,5 +31,6 @@ export const ROUTERCONFIGS = [
   { path: 'validatorInfo', component: ValidatorInfoComponent },
   { path: 'validatorInfo/:validatorHash', component: ValidatorInfoComponent },
   { path: 'equivocationInfo/:equivocationProofHash', component: EquivocationProofInfoComponent },
-  //{ path: 'generateaccount', component: GenerateAccountComponent }
+  //{ path: 'generateaccount', component: GenerateAccountComponent },
+  { path: 'messageSigningVerification', component: MessageSignVerificationComponent },
 ];

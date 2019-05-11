@@ -1,4 +1,3 @@
-<div class="column-container">
   <div class="column-container align-center">
     <mat-form-field class="full-width">
       <textarea matInput placeholder="Own address" [value]="blockchainAddress"
@@ -7,20 +6,23 @@
     <button (click)="onAddressInfoButtonClick()" mat-raised-button color="accent"
       matTooltip="Click to get detailed address info.">GET ADDRESS</button>
   </div>
-  <div *ngIf="accountsInfo && ready">
-    <mat-form-field class="full-width">
+  <div class="column-container" *ngIf="accountsInfo && ready">
+    <mat-toolbar class="toolbar-header">Address info</mat-toolbar>
+    <mat-divider class="toolbar-bottom-margin"></mat-divider>
+
+    <mat-form-field class="info-item-margin">
       <textarea matInput placeholder="nonce" value="{{addressInfo.nonce}}" disabled></textarea>
     </mat-form-field>
-    <mat-form-field class="full-width">
+    <mat-form-field class="info-item-margin">
       <textarea matInput placeholder="total balance" disabled value="{{addressInfo.balance.total}}"></textarea>
     </mat-form-field>
-    <mat-form-field class="full-width">
+    <mat-form-field class="info-item-margin">
       <textarea matInput placeholder="staked balance" disabled value="{{addressInfo.balance.staked}}"></textarea>
     </mat-form-field>
-    <mat-form-field class="full-width">
+    <mat-form-field class="info-item-margin">
       <textarea matInput placeholder="deposit balance" disabled value="{{addressInfo.balance.deposit}}"></textarea>
     </mat-form-field>
-    <mat-form-field class="full-width">
+    <mat-form-field class="info-item-margin">
       <textarea matInput placeholder="available balance" disabled value="{{addressInfo.balance.available}}"></textarea>
     </mat-form-field>
     <ng-container *ngIf="stakeInfo.stakes.length > 0">
@@ -78,4 +80,3 @@
       <mat-list-item *ngFor="let error of errors">{{error}}</mat-list-item>
     </mat-list>
   </div>
-</div>

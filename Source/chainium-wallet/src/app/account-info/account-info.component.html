@@ -1,4 +1,3 @@
-<div class="column-container">
   <div class="column-container align-center">
     <mat-form-field class="full-width">
       <textarea matInput placeholder="account hash" [value]="accountHash"
@@ -6,15 +5,21 @@
     </mat-form-field>
     <button (click)="onAccountInfoButtonClick()" mat-raised-button color="accent" matTooltip="Click to get info for entered account hash.">GET ACCOUNT</button>
   </div>
-  <div *ngIf="accountInfo" class="column-container" style="margin-top:68px;">
-    <mat-form-field>
+  <div class="column-container" *ngIf="accountInfo">
+    <mat-toolbar class="toolbar-header">Account info</mat-toolbar>
+    <mat-divider class="toolbar-bottom-margin"></mat-divider>
+
+    <mat-form-field class="info-item-margin">
       <textarea matInput placeholder="account hash" [value]="accountInfo.accountHash" disabled></textarea>
     </mat-form-field>
-    
-    <mat-form-field>
+
+    <mat-form-field class="info-item-margin">
       <textarea matInput placeholder="controller address" [value]="accountInfo.controllerAddress" disabled></textarea>
       <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{accountInfo.controllerAddress}}" class="pointer margin-l-20 animate-click">file_copy</mat-icon>
     </mat-form-field>
+
+    <mat-toolbar class="toolbar-header">Holdings</mat-toolbar>
+    <mat-divider class="toolbar-bottom-margin"></mat-divider>
 
     <mat-table [dataSource]="accountInfo.holdings" class="mat-elevation-z8 full-width">
 
@@ -43,4 +48,4 @@
           <mat-list-item *ngFor="let error of errors">{{error}}</mat-list-item>
       </mat-list>
 
-</div>
+  </div>

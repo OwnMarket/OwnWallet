@@ -7,7 +7,7 @@ import { Subscription } from "rxjs";
 @Component({
   selector: "app-asset-info",
   templateUrl: "./asset-info.component.html",
-  styleUrls: ["./asset-info.component.scss"]
+  styleUrls: ["./asset-info.component.css"]
 })
 
 export class AssetInfoComponent implements OnInit {

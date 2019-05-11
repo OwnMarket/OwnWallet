@@ -5,7 +5,7 @@
         (input)="blockchainAddress = $event.target.value" required (keydown.enter)="onAddressInfoButtonClick()"></textarea>
     </mat-form-field>
     <button (click)="onAddressInfoButtonClick()" mat-raised-button color="accent"
-      matTooltip="Click to get detailed address info.">GET ADRESSS INFO</button>
+      matTooltip="Click to get detailed address info.">GET ADDRESS</button>
   </div>
   <div *ngIf="accountsInfo && ready">
     <mat-form-field class="full-width">

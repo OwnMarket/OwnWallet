@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { MessageSignVerificationComponent } from "./msg-sign-verif.component";
+import { MessageSignVerificationComponent } from "./msg-sign-verify.component";
 
 describe("MessageSignVerificationComponent", () => {
 

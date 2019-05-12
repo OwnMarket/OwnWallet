@@ -4,9 +4,9 @@ import { PrivatekeyService } from "../services/privatekey.service";
 import { CryptoService } from "../services/crypto.service";
 
 @Component({
-  selector: "app-msg-sign-verif",
-  templateUrl: "./msg-sign-verif.component.html",
-  styleUrls: ["./msg-sign-verif.component.scss"]
+  selector: "msg-sign-verify",
+  templateUrl: "./msg-sign-verify.component.html",
+  styleUrls: ["./msg-sign-verify.component.scss"]
 })
 
 export class MessageSignVerificationComponent implements OnInit {

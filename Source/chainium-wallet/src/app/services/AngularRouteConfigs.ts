@@ -10,27 +10,27 @@ import { GenerateAccountComponent } from '../generate-account/generate-account.c
 import { AssetInfoComponent } from '../asset-info/asset-info.component';
 import { ValidatorInfoComponent } from '../validator-info/validator-info.component';
 import { EquivocationProofInfoComponent } from '../equivocation-proof-info/equivocation-proof-info.component';
-import { MessageSignVerificationComponent } from '../msg-sign-verif/msg-sign-verif.component';
+import { MessageSignVerificationComponent } from '../msg-sign-verify/msg-sign-verify.component';
 
 
 export const ROUTERCONFIGS = [
   { path: 'wallet', component: WalletComponent },
   { path: 'importwallet', component: ImportWalletComponent },
-  { path: 'accountinfo', component: AccountInfoComponent },
-  { path: 'accountinfo/:accountHash', component: AccountInfoComponent },
-  { path: 'submissions', component: SubmitTransactionComponent },
-  { path: 'transaction', component: TransactionInfoComponent },
-  { path: 'transaction/:transactionHash', component: TransactionInfoComponent },
+  { path: 'account', component: AccountInfoComponent },
+  { path: 'account/:accountHash', component: AccountInfoComponent },
+  { path: 'submit-tx', component: SubmitTransactionComponent },
+  { path: 'tx', component: TransactionInfoComponent },
+  { path: 'tx/:transactionHash', component: TransactionInfoComponent },
   { path: 'block', component: BlockInfoComponent },
   { path: 'block/:blockNumber', component: BlockInfoComponent },
   { path: '', component: HomeScreenComponent },
-  { path: 'addressinfo', component: AddressInfoComponent },
-  { path: 'addressinfo/:addressHash', component: AddressInfoComponent },
-  { path: 'assetInfo', component: AssetInfoComponent },
-  { path: 'assetInfo/:assetHash', component: AssetInfoComponent },
-  { path: 'validatorInfo', component: ValidatorInfoComponent },
-  { path: 'validatorInfo/:validatorHash', component: ValidatorInfoComponent },
+  { path: 'address', component: AddressInfoComponent },
+  { path: 'address/:addressHash', component: AddressInfoComponent },
+  { path: 'asset', component: AssetInfoComponent },
+  { path: 'asset/:assetHash', component: AssetInfoComponent },
+  { path: 'validator', component: ValidatorInfoComponent },
+  { path: 'validator/:validatorHash', component: ValidatorInfoComponent },
   { path: 'equivocationInfo/:equivocationProofHash', component: EquivocationProofInfoComponent },
   //{ path: 'generateaccount', component: GenerateAccountComponent },
-  { path: 'messageSigningVerification', component: MessageSignVerificationComponent },
+  { path: 'sign-verify', component: MessageSignVerificationComponent },
 ];

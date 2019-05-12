@@ -39,7 +39,7 @@ import { FormsModule } from '@angular/forms';
 import { CreateAssetComponent } from './actions/create-asset/create-asset.component';
 import { CreateAccountComponent } from './actions/create-account/create-account.component';
 import { EquivocationProofInfoComponent } from './equivocation-proof-info/equivocation-proof-info.component';
-import { MessageSignVerificationComponent } from './msg-sign-verif/msg-sign-verif.component';
+import { MessageSignVerificationComponent } from './msg-sign-verify/msg-sign-verify.component';
 
 @NgModule({
   entryComponents: [SubmitTransactionInfoComponent, ErrorDialogComponent, LoaderComponent],

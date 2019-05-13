@@ -35,7 +35,7 @@ import { SubmitVoteWeightComponent } from './actions/submit-vote-weight/submit-v
 import { RemoveValidatorComponent } from './actions/remove-validator/remove-validator.component';
 import { AssetInfoComponent } from './asset-info/asset-info.component';
 import { ValidatorInfoComponent } from './validator-info/validator-info.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateAssetComponent } from './actions/create-asset/create-asset.component';
 import { CreateAccountComponent } from './actions/create-account/create-account.component';
 import { EquivocationProofInfoComponent } from './equivocation-proof-info/equivocation-proof-info.component';
@@ -79,6 +79,7 @@ import { MessageSignVerificationComponent } from './msg-sign-verify/msg-sign-ver
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     GoogleMaterialModule,
     BrowserAnimationsModule,
     AppRoutingModule,

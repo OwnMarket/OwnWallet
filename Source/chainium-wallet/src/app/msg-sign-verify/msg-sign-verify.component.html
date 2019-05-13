@@ -1,45 +1,41 @@
-<div *ngIf="!isKeyImported">
-    <h1 class="mat-display-1 accent-font-color ">Wallet has not been imported, please use import wallet feature from the
-        menu.</h1>
-</div>
-<div *ngIf="isKeyImported">
-    <div class="column-container">
+<div class="column-container">
 
+    <mat-form-field class="full-width">
+        <textarea matInput placeholder="message" [formControl]="message" required></textarea>            
+        <mat-error *ngIf="message.invalid">This field is required.</mat-error>
+    </mat-form-field>
+
+    <mat-toolbar class="toolbar-header full-width">Signing</mat-toolbar>
+    
+    <div class="margin-t-20">
+        <button (click)="onSignMessageButtonClick()" mat-raised-button color="accent" [disabled]="!isKeyImported" >SIGN MESSAGE</button>
+        <br>
+        <mat-hint *ngIf="!isKeyImported">Wallet has not been imported, please use import wallet feature from the menu in order to enable Sign Message.</mat-hint>
+        <mat-form-field class="full-width margin-t-20" *ngIf="signature">
+            <input matInput placeholder="signature" disabled value="{{signature}}" />
+            <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{signature}}"
+                class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+        </mat-form-field>
+    </div>
+
+    <div class="margin-t-20">
+        <mat-toolbar class="toolbar-header full-width">Verification</mat-toolbar>
+    </div>
+    <div class="margin-t-20">
         <mat-form-field class="full-width">
-            <textarea matInput placeholder="message" [value]="message" (input)="message = $event.target.value"
-                required></textarea>
+            <input matInput placeholder="signature" [formControl]="verificationSignature" required />
+                <mat-error *ngIf="verificationSignature.invalid">This field is required.</mat-error>
         </mat-form-field>
 
-        <mat-toolbar class="toolbar-header full-width">Signing</mat-toolbar>
-
-        <div class="margin-t-20">
-            <button (click)="onSignMessageButtonClick()" mat-raised-button color="accent">SIGN MESSAGE</button>
-            <mat-form-field class="full-width margin-t-20" *ngIf="signature">
-                <input matInput placeholder="signature" disabled value="{{signature}}" />
-                <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{signature}}"
-                    class="pointer margin-l-20 animate-click">file_copy</mat-icon>
-            </mat-form-field>
-        </div>
-
-        <div class="margin-t-20">
-            <mat-toolbar class="toolbar-header full-width">Verification</mat-toolbar>
-        </div>
-        <div class="margin-t-20">
-            <mat-form-field class="full-width">
-                <input matInput placeholder="signature" [value]="verificationSignature"
-                    (input)="verificationSignature = $event.target.value" required />
-            </mat-form-field>
-
-            <button (click)="onVerifySignature()" mat-raised-button color="accent">Verify signature</button>
+        <button (click)="onVerifySignature()" mat-raised-button color="accent">Verify signature</button>
 
 
-            <mat-form-field class="full-width margin-t-20" *ngIf="signerAddress">
-                <input matInput placeholder="signer address" disabled value="{{signerAddress}}" />
-                <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{signerAddress}}"
-                    class="pointer margin-l-20 animate-click">file_copy</mat-icon>
-            </mat-form-field>
-
-        </div>
+        <mat-form-field class="full-width margin-t-20" *ngIf="signerAddress">
+            <input matInput placeholder="signer address" disabled value="{{signerAddress}}" />
+            <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{signerAddress}}"
+                class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+        </mat-form-field>
 
     </div>
+
 </div>

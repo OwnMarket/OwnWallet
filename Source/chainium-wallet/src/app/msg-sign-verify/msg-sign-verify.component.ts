@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import {FormControl, Validators} from '@angular/forms';
 
 import { PrivatekeyService } from "../services/privatekey.service";
 import { CryptoService } from "../services/crypto.service";
@@ -12,39 +13,41 @@ import { CryptoService } from "../services/crypto.service";
 export class MessageSignVerificationComponent implements OnInit {
 
   isKeyImported: boolean;
-  message = '';
+  // message = '';
+  message = new FormControl('', [Validators.required]);
   signature = '';
-  verificationSignature = '';
+  verificationSignature = new FormControl('', [Validators.required]);
   signerAddress = '';
 
   constructor(private privateKeyService: PrivatekeyService,
     private cryptoService: CryptoService) {
     this.isKeyImported = this.privateKeyService.existsKey();
-    if (!this.isKeyImported) {
-      return;
-    }
   }
 
   ngOnInit() {
   }
 
   onSignMessageButtonClick(): void {
-    if (!this.message) {
+    this.message.markAsTouched();
+
+    if (!this.message.valid || !this.isKeyImported) {
       return;
     }
-    this.cryptoService.signMessage(this.privateKeyService.walletInfo.privateKey, this.message)
+    this.cryptoService.signMessage(this.privateKeyService.walletInfo.privateKey, this.message.value)
       .subscribe((signature: string) => {
         this.signature = signature;
       });
   }
 
   onVerifySignature(): void {
-    if (!this.verificationSignature || !this.message) {
+    this.verificationSignature.markAsTouched();
+    this.message.markAsTouched();
+
+    if (!this.verificationSignature.valid || !this.message.valid) {
       return;
     }
-    this.cryptoService.verifySignature(this.verificationSignature, this.message)
+    this.cryptoService.verifySignature(this.verificationSignature.value, this.message.value)
       .subscribe((res: any) => {
-        console.log(res);
         this.signerAddress = res;
       });
   }

@@ -3,6 +3,7 @@ import { ChxAddressInfo } from '../models/chx-address-info.model';
 import { PrivatekeyService } from '../services/privatekey.service';
 import { CryptoService } from '../services/crypto.service';
 import { NodeService } from '../services/node.service';
+import { WalletInfo } from '../models/wallet-info.model';
 
 @Component({
   selector: 'app-balance-info',
@@ -11,6 +12,7 @@ import { NodeService } from '../services/node.service';
 })
 export class BalanceInfoComponent implements OnInit {
   addressInfo: ChxAddressInfo;
+  selectedWallet: WalletInfo;
 
   constructor(private cryptoService: CryptoService,
     private privateKeyService: PrivatekeyService,
@@ -27,9 +29,10 @@ export class BalanceInfoComponent implements OnInit {
   onRefreshAddressInfoClick() {
     if (!this.privateKeyService.existsKey()) {
       this.addressInfo = null;
+      this.selectedWallet = null;
       return;
     }
-
+    this.selectedWallet = this.privateKeyService.walletInfo;
     this.cryptoService
       .getAddressFromKey(this.privateKeyService.walletInfo.privateKey)
       .subscribe(addr => this.setAddress(addr));

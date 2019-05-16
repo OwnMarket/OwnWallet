@@ -1,0 +1,13 @@
+<div class="column-container align-center">
+    <mat-form-field class="full-width">
+        <mat-label>Select wallet</mat-label>
+        <mat-select [(ngModel)]="selectedWallet" (selectionChange)="onWalletChange($event)">
+            <mat-option *ngFor="let wallet of wallets" [value]="wallet">
+                {{wallet.address}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+</div>
+
+<app-balance-info *ngIf="displayBalanceInfo"></app-balance-info>

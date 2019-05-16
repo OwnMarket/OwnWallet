@@ -1,0 +1,30 @@
+.sidenav-container {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .sidenav {
+    width: 350px;
+    height: 100%;
+    box-shadow: 3px 0 6px rgba(16, 16, 16, 0.24);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidenav-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  
+  .sidenav-content-header {
+    display: flex;
+  }
+  
+  .sidenav-content-content {
+    flex-direction: column;
+    flex-grow: 1;
+    display: flex;
+    margin: 68px;
+    justify-content: center;
+  }

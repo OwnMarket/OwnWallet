@@ -1,0 +1,32 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
+        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+        [opened]="!(isHandset$ | async)">
+        <!--<mat-toolbar>Menu</mat-toolbar>-->
+        <app-balance-info *ngIf="displayBalanceInfo"></app-balance-info>
+
+        <mat-nav-list>
+            <a mat-list-item *ngFor="let route of routes" routerLink="{{route.route}}">
+                <mat-icon color="accent" class="form-margin-right">{{route.icon}}</mat-icon>
+                {{route.linkText}}
+            </a>
+        </mat-nav-list>
+
+        <button mat-icon-button matTooltip="close menu" (click)="drawer.toggle()" color="accent" class="close-menu">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+
+    </mat-sidenav>
+    <mat-sidenav-content class="sidenav-content">
+        <mat-toolbar class="sidenav-content-header">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+                *ngIf="(isHandset$ | async) || !drawer.opened">
+                <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+            </button>
+            <span style="margin-left: 48px;">Own Wallet</span>
+        </mat-toolbar>
+        <div class="sidenav-content-content">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

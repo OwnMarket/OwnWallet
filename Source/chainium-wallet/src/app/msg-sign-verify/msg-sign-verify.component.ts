@@ -5,7 +5,7 @@ import { PrivatekeyService } from "../services/privatekey.service";
 import { CryptoService } from "../services/crypto.service";
 
 @Component({
-  selector: "msg-sign-verify",
+  selector: "app-msg-sign-verify",
   templateUrl: "./msg-sign-verify.component.html",
   styleUrls: ["./msg-sign-verify.component.scss"]
 })

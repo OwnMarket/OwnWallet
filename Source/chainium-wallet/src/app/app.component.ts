@@ -2,15 +2,13 @@ import { Component, OnDestroy } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { WalletRoutes } from './services/walletroutes.service';
-import { WalletRouteInfo } from './models/wallet-route-info.model';
-import { PrivatekeyService } from './services/privatekey.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
+
+import { LoaderMessage } from './models/loader-message.enum';
 import { GlobalErrorHandler } from './services/global.error.handler';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { WalletHttpInterceptor } from './services/wallet-http-interceptor';
 import { LoaderComponent } from './loader/loader.component';
-import { LoaderMessage } from './models/loader-message.enum';
 
 const LoaderDlg = 'LoaderDlg';
 @Component({
@@ -24,9 +22,7 @@ export class AppComponent implements OnDestroy {
   private prevMessage: LoaderMessage;
 
   title = 'app';
-  routes: WalletRouteInfo[];
-  displayBalanceInfo: boolean;
-  balanceChangeSubscription: Subscription;
+
   errorOccuredSubscription: Subscription;
   openLoadingDialogSubscription: Subscription;
 
@@ -36,17 +32,10 @@ export class AppComponent implements OnDestroy {
     );
 
   constructor(
-    private routeService: WalletRoutes,
-    private privateKeyService: PrivatekeyService,
     private errorHandler: GlobalErrorHandler,
     private breakpointObserver: BreakpointObserver,
     private interceptor: WalletHttpInterceptor,
     public dialog: MatDialog) {
-    this.routes = this.routeService.getRoutes();
-
-    this.balanceChangeSubscription = this.privateKeyService
-      .getMessage()
-      .subscribe(message => this.displayBalanceInfo = message);
 
     this.errorOccuredSubscription = this.errorHandler
       .getMessage()
@@ -56,10 +45,8 @@ export class AppComponent implements OnDestroy {
       .getMessage()
       .subscribe(msg => this.progressBarAction(msg));
   }
-
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
-    this.balanceChangeSubscription.unsubscribe();
     this.errorOccuredSubscription.unsubscribe();
     this.openLoadingDialogSubscription.unsubscribe();
   }
@@ -73,10 +60,10 @@ export class AppComponent implements OnDestroy {
   }
 
   private newLoaderDialog() {
-      this.loaderef = this.dialog.open(LoaderComponent, {
-        disableClose: true,
-        id: LoaderDlg
-      });
+    this.loaderef = this.dialog.open(LoaderComponent, {
+      disableClose: true,
+      id: LoaderDlg
+    });
   }
 
   private progressBarAction(message: LoaderMessage) {

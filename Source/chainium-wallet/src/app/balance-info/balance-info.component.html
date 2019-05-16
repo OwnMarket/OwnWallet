@@ -6,10 +6,16 @@
         autorenew</mat-icon>
     </button>
   </mat-toolbar>
-  <div class="container-margin" *ngIf="addressInfo">
+  <div class="container-margin" *ngIf="addressInfo && selectedWallet">
     <mat-form-field class="full-width address-font-size">
       <input matInput placeholder="CHX address" class="condensed" disabled value="{{addressInfo.blockchainAddress}}">
       <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{addressInfo.blockchainAddress}}"
+        class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+    </mat-form-field>
+  
+    <mat-form-field class="full-width address-font-size">
+      <input matInput placeholder="Private Key" class="condensed" type="password" disabled value="{{selectedWallet.privateKey}}">
+      <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{selectedWallet.privateKey}}"
         class="pointer margin-l-20 animate-click">file_copy</mat-icon>
     </mat-form-field>
     <mat-form-field class="full-width">

@@ -1,0 +1,20 @@
+<div class="column-container">
+
+    <div class="margin-t-20">
+        <mat-form-field class="full-width">
+            <textarea matInput placeholder="Mnemonic" [formControl]="mnemonic" required></textarea>
+            <mat-error *ngIf="mnemonic.invalid">This field is required.</mat-error>
+        </mat-form-field>
+
+        <button (click)="onGenerateMnemonic()" mat-raised-button color="accent">Generate mnemonic</button>
+
+    </div>
+    <div class="margin-t-20">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="password" type="password" [formControl]="password" required />
+            <mat-error *ngIf="password.invalid">This field is required.</mat-error>
+        </mat-form-field>
+
+        <button (click)="onSaveKeystore()" mat-raised-button color="accent">Save keystore</button>
+    </div>
+</div>

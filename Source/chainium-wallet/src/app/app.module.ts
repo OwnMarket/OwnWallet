@@ -40,10 +40,16 @@ import { CreateAssetComponent } from './actions/create-asset/create-asset.compon
 import { CreateAccountComponent } from './actions/create-account/create-account.component';
 import { EquivocationProofInfoComponent } from './equivocation-proof-info/equivocation-proof-info.component';
 import { MessageSignVerificationComponent } from './msg-sign-verify/msg-sign-verify.component';
+import { NewWalletComponent } from './hdcrypto/new-wallet.component';
+import { RestoreWalletComponent } from './hdcrypto/restore-wallet.component';
+import { LandingComponent } from './landing/landing.component';
+import { PrivateComponent } from './layout/private.component';
+import { OwnWalletComponent } from './own-wallet/own-wallet.component';
 
 @NgModule({
   entryComponents: [SubmitTransactionInfoComponent, ErrorDialogComponent, LoaderComponent],
   declarations: [
+    PrivateComponent,
     AppComponent,
     WalletComponent,
     ImportWalletComponent,
@@ -75,6 +81,10 @@ import { MessageSignVerificationComponent } from './msg-sign-verify/msg-sign-ver
     GenerateAccountComponent,
     LoaderComponent,
     MessageSignVerificationComponent,
+    NewWalletComponent,
+    RestoreWalletComponent,
+    OwnWalletComponent,
+    LandingComponent,
   ],
   imports: [
     BrowserModule,

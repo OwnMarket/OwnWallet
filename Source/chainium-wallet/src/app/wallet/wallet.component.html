@@ -1,12 +1,15 @@
 <div class="column-container align-center">
   <mat-form-field class="full-width" *ngIf="walletInfo">
     <input matInput placeholder="private key" disabled value="{{walletInfo.privateKey}}" />
-    <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{walletInfo.privateKey}}" class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+    <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{walletInfo.privateKey}}"
+      class="pointer margin-l-20 animate-click">file_copy</mat-icon>
   </mat-form-field>
   <mat-form-field class="full-width" *ngIf="walletInfo">
-    <input matInput placeholder="address" disabled value="{{walletInfo.address}}"/>
-    <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{walletInfo.address}}" class="pointer margin-l-20 animate-click">file_copy</mat-icon>
+    <input matInput placeholder="address" disabled value="{{walletInfo.address}}" />
+    <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{walletInfo.address}}"
+      class="pointer margin-l-20 animate-click">file_copy</mat-icon>
   </mat-form-field>
 
-  <button (click)="onGenerateWalletClick()" mat-raised-button color="accent" matTooltip="Clicking on this button, you will generate new Own address and private key.">GENERATE WALLET</button>
+  <button (click)="onGenerateWalletClick()" mat-raised-button color="accent"
+    matTooltip="Clicking on this button, you will generate new Own address and private key.">GENERATE WALLET</button>
 </div>

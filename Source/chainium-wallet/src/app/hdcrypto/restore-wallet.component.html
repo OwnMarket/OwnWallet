@@ -29,7 +29,10 @@
                     <mat-icon matSuffix (click)="hideWithKeystore = !hideWithKeystore" color="accent" class="pointer">{{hideWithKeystore ? 'visibility' : 'visibility_off'}}</mat-icon>            
                     <mat-error *ngIf="password.invalid">This field is required.</mat-error>
                 </mat-form-field>
-                <div class="row">
+                <div *ngIf="password.valid && wrongPassword">
+                    <mat-error class='error-font'>Invalid password!</mat-error>
+                </div>
+                <div class="row margin-t-20">
                     <button (click)="onRestoreWithFile()" mat-raised-button color="accent">Restore</button>
                 </div>                
             </div>

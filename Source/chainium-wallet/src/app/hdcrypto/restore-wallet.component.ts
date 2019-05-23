@@ -16,12 +16,14 @@ export class RestoreWalletComponent implements OnInit {
     mnemonic = new FormControl('', [Validators.required]);
     hideWithMnemonic: boolean;
     hideWithKeystore: boolean;
+    wrongPassword: boolean;
 
     constructor(private router: Router,
         private cryptoService: CryptoService,
         private walletService: WalletService) {
         this.hideWithMnemonic = true;
         this.hideWithKeystore = true;
+        this.wrongPassword = false;
     }
 
     ngOnInit() {
@@ -44,11 +46,22 @@ export class RestoreWalletComponent implements OnInit {
         if (this.password.valid && this.walletKeystore) {
             const passwordHash = this.cryptoService.hash(this.password.value);
             const walletContext = { walletKeystore: this.walletKeystore, passwordHash };
-            // TODO: check if wallet context is the same to restore all the a
-            this.walletService.setWalletContext(walletContext);
-            this.walletService.generateWalletFromContext();
+            try {
+                this.cryptoService.generateWalletFromKeystore(
+                    walletContext.walletKeystore, 
+                    walletContext.passwordHash,
+                    0
+                ).subscribe(w => {});
+                this.wrongPassword = false;
+                // TODO: check if wallet context is the same to restore all the a
+                this.walletService.setWalletContext(walletContext);
+                this.walletService.generateWalletFromContext();
 
-            this.router.navigate(['/home']);
+                this.router.navigate(['/home']);
+            }
+            catch {
+                this.wrongPassword = true;
+            }
         }
     }
 

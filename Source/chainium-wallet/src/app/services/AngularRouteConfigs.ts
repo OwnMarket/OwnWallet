@@ -10,7 +10,7 @@ import { AssetInfoComponent } from '../asset-info/asset-info.component';
 import { ValidatorInfoComponent } from '../validator-info/validator-info.component';
 import { EquivocationProofInfoComponent } from '../equivocation-proof-info/equivocation-proof-info.component';
 import { MessageSignVerificationComponent } from '../msg-sign-verify/msg-sign-verify.component';
-import { LandingComponent } from '../landing/landing.component';
+import { LoginComponent } from '../login/login.component';
 import { AccessGuard } from '../_guards/access.guard';
 import { PrivateComponent } from '../layout/private.component';
 import { NewWalletComponent } from '../hdcrypto/new-wallet.component';
@@ -46,5 +46,5 @@ export const ROUTERCONFIGS = [
             { path: 'sign-verify', component: MessageSignVerificationComponent },
         ]
     },
-    { path: 'landing', component: LandingComponent },
+    { path: 'login', component: LoginComponent },
 ];

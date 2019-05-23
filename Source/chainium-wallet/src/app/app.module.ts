@@ -42,7 +42,7 @@ import { MessageSignVerificationComponent } from './msg-sign-verify/msg-sign-ver
 import { NewWalletComponent } from './hdcrypto/new-wallet.component';
 import { RestoreWalletComponent } from './hdcrypto/restore-wallet.component';
 import { UnloadWalletComponent } from './hdcrypto/unload-wallet.component';
-import { LandingComponent } from './landing/landing.component';
+import { LoginComponent } from './login/login.component';
 import { PrivateComponent } from './layout/private.component';
 
 @NgModule({
@@ -82,7 +82,7 @@ import { PrivateComponent } from './layout/private.component';
         NewWalletComponent,
         RestoreWalletComponent,
         UnloadWalletComponent,
-        LandingComponent
+        LoginComponent
     ],
     imports: [
         BrowserModule,

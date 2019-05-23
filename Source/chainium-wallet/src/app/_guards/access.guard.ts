@@ -15,7 +15,7 @@ export class AccessGuard implements CanActivate {
     canActivate() {
         var context = this.walletService.getWalletContext();
         if (!context.passwordHash && context.walletKeystore) {
-            this.router.navigate(['/landing']);
+            this.router.navigate(['/login']);
             return false;
         }                
         

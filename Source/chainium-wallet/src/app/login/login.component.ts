@@ -6,15 +6,15 @@ import { CryptoService } from '../services/crypto.service';
 import { WalletService } from '../services/wallet.service';
 
 @Component({
-    selector: 'app-landing',
-    templateUrl: './landing.component.html',
-    styleUrls: ['./landing.component.scss']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss']
 
 })
-export class LandingComponent implements OnInit {
+export class LoginComponent implements OnInit {
 
-    needPasswordOnly: boolean = false;
-    wrongPassword : boolean = false;
+    needPasswordOnly: boolean;
+    wrongPassword : boolean;
     walletKeystore: string;
 
     password = new FormControl('', [Validators.required]);
@@ -22,6 +22,8 @@ export class LandingComponent implements OnInit {
     constructor(private router: Router,
         private cryptoService: CryptoService,
         private walletService: WalletService) {
+            this.needPasswordOnly = false;
+            this.wrongPassword = false;
     }
 
     ngOnInit() {        

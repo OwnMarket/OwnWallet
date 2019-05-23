@@ -11,7 +11,13 @@ export class UnloadWalletComponent implements OnInit {
     constructor(private router: Router,
         private walletService: WalletService) { }
 
-    ngOnInit() {
+    ngOnInit() {}
+
+    onCancel() {
+        this.router.navigate(['/home']);
+    }
+
+    onSubmit(){
         this.walletService.unloadWallet();
         this.router.navigate(['/home']);
     }

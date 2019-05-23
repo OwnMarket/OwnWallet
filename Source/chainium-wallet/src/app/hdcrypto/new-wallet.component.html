@@ -1,20 +1,24 @@
 <div class="column-container">
-
     <div class="margin-t-20">
-        <mat-form-field class="full-width">
-            <textarea matInput placeholder="Mnemonic" [formControl]="mnemonic" required></textarea>
-            <mat-error *ngIf="mnemonic.invalid">This field is required.</mat-error>
-        </mat-form-field>
-
-        <button (click)="onGenerateMnemonic()" mat-raised-button color="accent">Generate mnemonic</button>
-
+        <div class="row">            
+            <mat-form-field class="full-width">
+                <textarea matInput placeholder="Recovery phrase" style="resize:none;" [formControl]="mnemonic" readonly equired></textarea>
+                <mat-icon matSuffix (click)="onGenerateMnemonic()" color="accent" class="margin-l-20 pointer" matTooltip="Regenerate recovery phrase">autorenew</mat-icon>
+                <mat-error *ngIf="mnemonic.invalid">This field is required.</mat-error>
+            </mat-form-field>
+        </div>
     </div>
     <div class="margin-t-20">
-        <mat-form-field class="full-width">
-            <input matInput placeholder="password" type="password" [formControl]="password" required />
+        <mat-form-field>                       
+            <input matInput placeholder="password" [type]="hide ? 'password' : 'text'" [formControl]="password" required />
+            <mat-icon matSuffix (click)="hide = !hide" color="accent" class="pointer">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
             <mat-error *ngIf="password.invalid">This field is required.</mat-error>
         </mat-form-field>
-
-        <button (click)="onSaveKeystore()" mat-raised-button color="accent">Save keystore</button>
+        <div class="row">
+            <button (click)="onCreateNewWallet()" mat-raised-button color="accent">Create Wallet</button>
+            <mat-checkbox class="margin-l-20" name="saveKeystore" [(ngModel)]="saveKeystore" matTooltip="">
+                Save keystore 
+            </mat-checkbox>                
+        </div>
     </div>
 </div>

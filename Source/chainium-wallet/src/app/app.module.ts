@@ -6,7 +6,6 @@ import { AppRoutingModule } from './/app-routing.module';
 import { ClipboardModule } from 'ngx-clipboard';
 
 import { AppComponent } from './app.component';
-import { WalletComponent } from './wallet/wallet.component';
 import { ImportWalletComponent } from './import-wallet/import-wallet.component';
 import { BalanceInfoComponent } from './balance-info/balance-info.component';
 import { AccountInfoComponent } from './account-info/account-info.component';
@@ -42,71 +41,70 @@ import { EquivocationProofInfoComponent } from './equivocation-proof-info/equivo
 import { MessageSignVerificationComponent } from './msg-sign-verify/msg-sign-verify.component';
 import { NewWalletComponent } from './hdcrypto/new-wallet.component';
 import { RestoreWalletComponent } from './hdcrypto/restore-wallet.component';
+import { UnloadWalletComponent } from './hdcrypto/unload-wallet.component';
 import { LandingComponent } from './landing/landing.component';
 import { PrivateComponent } from './layout/private.component';
-import { OwnWalletComponent } from './own-wallet/own-wallet.component';
 
 @NgModule({
-  entryComponents: [SubmitTransactionInfoComponent, ErrorDialogComponent, LoaderComponent],
-  declarations: [
-    PrivateComponent,
-    AppComponent,
-    WalletComponent,
-    ImportWalletComponent,
-    BalanceInfoComponent,
-    AccountInfoComponent,
-    AssetInfoComponent,
-    ValidatorInfoComponent,
-    SubmitTransactionComponent,
-    TransactionInfoComponent,
-    BlockInfoComponent,
-    EquivocationProofInfoComponent,
-    ChxTransferComponent,
-    AssetTransferComponent,
-    DelegateStakeComponent,
-    ConfigureValidatorComponent,
-    RemoveValidatorComponent,
-    CreateAssetEmissionComponent,
-    CreateAssetComponent,
-    SetAssetCodeComponent,
-    SetAssetControllerComponent,
-    CreateAccountComponent,
-    SetAccountControllerComponent,
-    SubmitVoteComponent,
-    SubmitVoteWeightComponent,
-    SubmitTransactionInfoComponent,
-    HomeScreenComponent,
-    ErrorDialogComponent,
-    AddressInfoComponent,
-    GenerateAccountComponent,
-    LoaderComponent,
-    MessageSignVerificationComponent,
-    NewWalletComponent,
-    RestoreWalletComponent,
-    OwnWalletComponent,
-    LandingComponent,
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    GoogleMaterialModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ClipboardModule
-  ],
-  providers: [
-    {
-      provide: ErrorHandler,
-      useClass: GlobalErrorHandler
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: WalletHttpInterceptor,
-      multi: true
-    }
-  ],
-  bootstrap: [AppComponent]
+    entryComponents: [SubmitTransactionInfoComponent, ErrorDialogComponent, LoaderComponent],
+    declarations: [
+        PrivateComponent,
+        AppComponent,
+        ImportWalletComponent,
+        BalanceInfoComponent,
+        AccountInfoComponent,
+        AssetInfoComponent,
+        ValidatorInfoComponent,
+        SubmitTransactionComponent,
+        TransactionInfoComponent,
+        BlockInfoComponent,
+        EquivocationProofInfoComponent,
+        ChxTransferComponent,
+        AssetTransferComponent,
+        DelegateStakeComponent,
+        ConfigureValidatorComponent,
+        RemoveValidatorComponent,
+        CreateAssetEmissionComponent,
+        CreateAssetComponent,
+        SetAssetCodeComponent,
+        SetAssetControllerComponent,
+        CreateAccountComponent,
+        SetAccountControllerComponent,
+        SubmitVoteComponent,
+        SubmitVoteWeightComponent,
+        SubmitTransactionInfoComponent,
+        HomeScreenComponent,
+        ErrorDialogComponent,
+        AddressInfoComponent,
+        GenerateAccountComponent,
+        LoaderComponent,
+        MessageSignVerificationComponent,
+        NewWalletComponent,
+        RestoreWalletComponent,
+        UnloadWalletComponent,
+        LandingComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        GoogleMaterialModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ClipboardModule
+    ],
+    providers: [
+        {
+            provide: ErrorHandler,
+            useClass: GlobalErrorHandler
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: WalletHttpInterceptor,
+            multi: true
+        }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

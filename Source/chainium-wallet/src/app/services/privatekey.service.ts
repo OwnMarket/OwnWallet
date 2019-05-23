@@ -4,41 +4,39 @@ import { WalletInfo } from '../models/wallet-info.model';
 
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class PrivatekeyService {
 
-  constructor() { }
+    constructor() { }
 
-  walletInfo: WalletInfo;
-  seed: string;
-  private subject = new Subject<any>();
+    private walletInfo: WalletInfo;
+    private subject = new Subject<any>();
 
-  existsKey(): boolean {
-    if (this.walletInfo && this.walletInfo.privateKey) {
-      return true;
+    existsKey(): boolean {
+        if (this.walletInfo && this.walletInfo.privateKey)
+            return true;    
+
+        return false;
     }
 
-    return false;
-  }
-
-  existsSeed(): boolean {
-    if (this.seed) {
-      return true;
+    getWalletInfo() {
+        return this.walletInfo;
     }
-    return false;
-  }
 
-  sendMessage(message: boolean) {
-    this.subject.next(message);
-  }
+    setWalletInfo(walletInfo: WalletInfo) {
+        this.walletInfo = walletInfo;
+    }
 
-  clearMessage() {
-    this.subject.next();
-  }
+    sendMessage(message: boolean) {
+        this.subject.next(message);
+    }
 
-  getMessage(): Observable<any> {
-    return this.subject.asObservable();
-  }
+    clearMessage() {
+        this.subject.next();
+    }
 
+    getMessage(): Observable<any> {
+        return this.subject.asObservable();
+    }
 }

@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { WalletService } from '../services/wallet.service';
 
 @Component({
-  selector: 'app-home-screen',
-  templateUrl: './home-screen.component.html',
-  styleUrls: ['./home-screen.component.css']
+    selector: 'app-home-screen',
+    templateUrl: './home-screen.component.html',
+    styleUrls: ['./home-screen.component.css']
 })
 export class HomeScreenComponent implements OnInit {
 
-  constructor() { }
+    constructor(private walletService: WalletService) { }
 
-  ngOnInit() {
-  }
-
+    ngOnInit() {
+        this.walletService.generateWalletFromContext();
+    }
 }

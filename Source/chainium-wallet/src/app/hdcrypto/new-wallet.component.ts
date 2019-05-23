@@ -1,14 +1,15 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+
+import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 import { CryptoService } from "../services/crypto.service";
-import { NewWallet } from '../models/new-wallet.model';
+import { WalletService } from '../services/wallet.service';
 
 @Component({
     selector: 'app-new-wallet',
     templateUrl: './new-wallet.component.html',
 })
-export class NewWalletComponent {
+export class NewWalletComponent implements OnInit {
     private settings = {
         element: {
             download: null as HTMLElement
@@ -17,44 +18,50 @@ export class NewWalletComponent {
     // controlled inputs
     password = new FormControl('', [Validators.required]);
     mnemonic = new FormControl('', [Validators.required]);
+    saveKeystore : boolean;
+    hide: boolean;
 
-    @Output()
-    setSeedWalletKeystore = new EventEmitter<NewWallet>();
+    constructor(private cryptoService: CryptoService,
+        private walletService: WalletService) {
+        this.saveKeystore = true;
+        this.hide = true;
+    }
 
-    constructor(private cryptoService: CryptoService) {
+    ngOnInit() { 
+        this.onGenerateMnemonic();
     }
 
     onGenerateMnemonic() {
         this.cryptoService.generateMnemonic()
-            .subscribe((mnemonic: string) => {
-                this.mnemonic.setValue(mnemonic);
-            });
+            .subscribe((mnemonic: string) => this.mnemonic.setValue(mnemonic));
     }
 
-    onSaveKeystore() {
+    onCreateNewWallet() {
         this.mnemonic.markAsTouched();
         this.password.markAsTouched();
 
         if (this.mnemonic.valid && this.password.valid) {
-            this.cryptoService.generateWalletKeystore(this.mnemonic.value, this.password.value)
+            const passwordHash = this.cryptoService.hash(this.password.value);
+            this.cryptoService.generateWalletKeystore(this.mnemonic.value, passwordHash)
                 .subscribe((walletKeystore: string) => {
-                    this.saveFile({
-                        fileName: 'wallet-backup.own',
-                        text: walletKeystore
-                    });
+                    if (this.saveKeystore) {
+                        this.saveFile({
+                            fileName: 'wallet-backup.own',
+                            text: walletKeystore
+                        });    
+                    }
 
-                    this.setSeedWalletKeystore.emit({ walletKeystore, password: this.password.value });
+                    const walletContext = { walletKeystore, passwordHash };
+                    this.walletService.setWalletContext(walletContext);
+                    this.walletService.generateWalletFromContext();
                 });
         }
     }
 
-    private saveFile(arg: {
-        fileName: string,
-        text: string
-    }) {
-        if (!this.settings.element.download) {
+    private saveFile(arg: {fileName: string, text: string}) {
+        if (!this.settings.element.download)
             this.settings.element.download = document.createElement('a');
-        }
+        
         const element = this.settings.element.download;
         const fileType = 'text/plain';
         element.setAttribute('href', `data:${fileType};charset=utf-8,${encodeURIComponent(arg.text)}`);

@@ -5,50 +5,48 @@ import { PrivatekeyService } from "../services/privatekey.service";
 import { CryptoService } from "../services/crypto.service";
 
 @Component({
-  selector: "app-msg-sign-verify",
-  templateUrl: "./msg-sign-verify.component.html",
-  styleUrls: ["./msg-sign-verify.component.scss"]
+    selector: "app-msg-sign-verify",
+    templateUrl: "./msg-sign-verify.component.html",
+    styleUrls: ["./msg-sign-verify.component.scss"]
 })
 
 export class MessageSignVerificationComponent implements OnInit {
 
-  isKeyImported: boolean;
-  // message = '';
-  message = new FormControl('', [Validators.required]);
-  signature = '';
-  verificationSignature = new FormControl('', [Validators.required]);
-  signerAddress = '';
+    isKeyImported: boolean;
+    // message = '';
+    message = new FormControl('', [Validators.required]);
+    signature = '';
+    verificationSignature = new FormControl('', [Validators.required]);
+    signerAddress = '';
 
-  constructor(private privateKeyService: PrivatekeyService,
-    private cryptoService: CryptoService) {
-    this.isKeyImported = this.privateKeyService.existsKey();
-  }
-
-  ngOnInit() {
-  }
-
-  onSignMessageButtonClick(): void {
-    this.message.markAsTouched();
-
-    if (!this.message.valid || !this.isKeyImported) {
-      return;
+    constructor(private privateKeyService: PrivatekeyService,
+        private cryptoService: CryptoService) {
+        this.isKeyImported = this.privateKeyService.existsKey();
     }
-    this.cryptoService.signMessage(this.privateKeyService.walletInfo.privateKey, this.message.value)
-      .subscribe((signature: string) => {
-        this.signature = signature;
-      });
-  }
 
-  onVerifySignature(): void {
-    this.verificationSignature.markAsTouched();
-    this.message.markAsTouched();
-
-    if (!this.verificationSignature.valid || !this.message.valid) {
-      return;
+    ngOnInit() {
     }
-    this.cryptoService.verifySignature(this.verificationSignature.value, this.message.value)
-      .subscribe((res: any) => {
-        this.signerAddress = res;
-      });
-  }
+
+    onSignMessageButtonClick(): void {
+        this.message.markAsTouched();
+
+        if (!this.message.valid || !this.isKeyImported)
+            return;
+        
+        this.cryptoService.signMessage(this.privateKeyService.getWalletInfo().privateKey, this.message.value)
+            .subscribe((signature: string) => {
+                this.signature = signature;
+        });
+    }
+
+    onVerifySignature(): void {
+        this.verificationSignature.markAsTouched();
+        this.message.markAsTouched();
+
+        if (!this.verificationSignature.valid || !this.message.valid)
+            return;
+    
+        this.cryptoService.verifySignature(this.verificationSignature.value, this.message.value)
+            .subscribe((res: any) => this.signerAddress = res);
+    }
 }

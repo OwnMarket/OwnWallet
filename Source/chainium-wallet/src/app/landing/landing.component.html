@@ -1,42 +1,14 @@
-<div class="column-container align-center" *ngIf="!needPasswordOnly">
-    <div class="split-layout">
-        <div class="split-layout__item" [class.active]="visibleNewWallet">
-            <h2>Create new wallet</h2>
-            <button (click)="showNewWallet()" class="full-width" mat-raised-button color="accent">New Wallet</button>
-        </div>
-
-        <div class="split-layout__divider">
-            <div class="split-layout__rule"></div>
-            <div class="split-layout__label">Or</div>
-            <div class="split-layout__rule"></div>
-        </div>
-
-        <div class="split-layout__item" [class.active]="visibleRestoreWallet">
-            <h2>Restore wallet</h2>
-            <button (click)="showRestoreWallet()" class="full-width" mat-raised-button color="accent">Restore
-                Wallet</button>
-        </div>
-    </div>
-
-    <div class="wallet-action">
-        <div *ngIf="visibleNewWallet">
-            <app-new-wallet (setSeedWalletKeystore)="getSeedFromKeyStore($event)"></app-new-wallet>
-        </div>
-
-        <div *ngIf="visibleRestoreWallet">
-            <app-restore-wallet (setSeedWalletKeystore)="getSeedFromKeyStore($event)"
-                (setSeedMnemonic)="getSeedFromMnemonic($event)"></app-restore-wallet>
-        </div>
-    </div>
-</div>
-
 <div class="column-container align-center" *ngIf="needPasswordOnly">
     <div class="margin-t-20 wallet-password">
-        <mat-form-field class="full-width">
+        <mat-form-field>
             <input matInput placeholder="password" type="password" [formControl]="password" required />
-            <mat-error *ngIf="password.invalid">This field is required.</mat-error>
+            <mat-error *ngIf="password.invalid">This field is required.</mat-error>            
         </mat-form-field>
-
-        <button (click)="onSubmitPassword()" mat-raised-button color="accent">Submit</button>
+        <div *ngIf="password.valid && wrongPassword">
+            <mat-error class='error-font'>Invalid password!</mat-error>
+        </div>
+        <div class="row margin-t-20">
+            <button (click)="onSubmitPassword()" mat-raised-button color="accent">Submit</button>
+        </div>
     </div>
 </div>

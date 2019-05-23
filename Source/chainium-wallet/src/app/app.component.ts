@@ -12,77 +12,78 @@ import { LoaderComponent } from './loader/loader.component';
 
 const LoaderDlg = 'LoaderDlg';
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnDestroy {
 
-  private loaderef: MatDialogRef<LoaderComponent>;
-  private prevMessage: LoaderMessage;
+    private loaderef: MatDialogRef<LoaderComponent>;
+    private prevMessage: LoaderMessage;
 
-  title = 'app';
+    title = 'app';
 
-  errorOccuredSubscription: Subscription;
-  openLoadingDialogSubscription: Subscription;
+    errorOccuredSubscription: Subscription;
+    openLoadingDialogSubscription: Subscription;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches)
-    );
+    isHandset$: Observable<boolean> = this.breakpointObserver
+        .observe(Breakpoints.Handset)
+        .pipe(
+            map(result => result.matches)
+        );
 
-  constructor(
-    private errorHandler: GlobalErrorHandler,
-    private breakpointObserver: BreakpointObserver,
-    private interceptor: WalletHttpInterceptor,
-    public dialog: MatDialog) {
+    constructor(
+        private errorHandler: GlobalErrorHandler,
+        private breakpointObserver: BreakpointObserver,
+        private interceptor: WalletHttpInterceptor,
+        public dialog: MatDialog) {
 
-    this.errorOccuredSubscription = this.errorHandler
-      .getMessage()
-      .subscribe(error => this.loadErrorDialog(error));
+        this.errorOccuredSubscription = this.errorHandler
+            .getMessage()
+            .subscribe(error => this.loadErrorDialog(error));
 
-    this.openLoadingDialogSubscription = this.interceptor
-      .getMessage()
-      .subscribe(msg => this.progressBarAction(msg));
-  }
-  ngOnDestroy() {
-    // unsubscribe to ensure no memory leaks
-    this.errorOccuredSubscription.unsubscribe();
-    this.openLoadingDialogSubscription.unsubscribe();
-  }
-
-  private loadErrorDialog(error: any) {
-    this.dialog.open(ErrorDialogComponent, {
-      width: 'auto',
-      height: 'auto',
-      data: error
-    });
-  }
-
-  private newLoaderDialog() {
-    this.loaderef = this.dialog.open(LoaderComponent, {
-      disableClose: true,
-      id: LoaderDlg
-    });
-  }
-
-  private progressBarAction(message: LoaderMessage) {
-    if (this.prevMessage === message) {
-      return;
+        this.openLoadingDialogSubscription = this.interceptor
+            .getMessage()
+            .subscribe(msg => this.progressBarAction(msg));
+    }
+    ngOnDestroy() {
+        // unsubscribe to ensure no memory leaks
+        this.errorOccuredSubscription.unsubscribe();
+        this.openLoadingDialogSubscription.unsubscribe();
     }
 
-    if (message === LoaderMessage.Start) {
-      this.loaderef = this.dialog.getDialogById(LoaderDlg);
-
-      if (!this.loaderef) {
-        this.newLoaderDialog();
-      }
+    private loadErrorDialog(error: any) {
+        this.dialog.open(ErrorDialogComponent, {
+            width: 'auto',
+            height: 'auto',
+            data: error
+        });
     }
 
-    if (this.loaderef && message === LoaderMessage.End) {
-      setTimeout(() => { this.loaderef.close(); });
+    private newLoaderDialog() {
+        setTimeout(() => { 
+            this.loaderef = this.dialog.open(LoaderComponent, {
+                disableClose: true,
+                id: LoaderDlg
+            }); 
+        });      
     }
 
-    this.prevMessage = message;
-  }
+    private progressBarAction(message: LoaderMessage) {
+        if (this.prevMessage === message) {
+            return;
+        }
+
+        if (message === LoaderMessage.Start) {
+            this.loaderef = this.dialog.getDialogById(LoaderDlg);
+            if (!this.loaderef)
+                this.newLoaderDialog();
+        }
+
+        if (this.loaderef && message === LoaderMessage.End) {
+            setTimeout(() => this.loaderef.close());
+        }
+
+        this.prevMessage = message;
+    }
 }

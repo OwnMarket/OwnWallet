@@ -1,44 +1,60 @@
-<div class="column-container align-center chainium-gray">
-  <mat-toolbar>
-    <span>Address Info</span>
-    <button mat-icon-button (click)="onRefreshAddressInfoClick()" style="margin-left: auto;">
-      <mat-icon aria-label="Click to refresh balance info" color="accent" matTooltip="Click to refresh balance info.">
-        autorenew</mat-icon>
-    </button>
-  </mat-toolbar>
-  <div class="container-margin" *ngIf="addressInfo && selectedWallet">
-    <mat-form-field class="full-width address-font-size">
-      <input matInput placeholder="CHX address" class="condensed" disabled value="{{addressInfo.blockchainAddress}}">
-      <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{addressInfo.blockchainAddress}}"
-        class="pointer margin-l-20 animate-click">file_copy</mat-icon>
-    </mat-form-field>
-  
-    <mat-form-field class="full-width address-font-size">
-      <input matInput placeholder="Private Key" class="condensed" type="password" disabled value="{{selectedWallet.privateKey}}">
-      <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{selectedWallet.privateKey}}"
-        class="pointer margin-l-20 animate-click">file_copy</mat-icon>
-    </mat-form-field>
-    <mat-form-field class="full-width">
-      <input matInput placeholder="nonce" class="condensed" disabled value="{{addressInfo.nonce}}" type="text">
-    </mat-form-field>
-    <mat-form-field class="full-width">
-      <input matInput placeholder="total balance" class="condensed" disabled value="{{addressInfo.balance.total}}"
-        type="text">
-    </mat-form-field>
-    <mat-form-field class="full-width">
-      <input matInput placeholder="staked balance" class="condensed" disabled value="{{addressInfo.balance.staked}}"
-        type="text">
-    </mat-form-field>
-    <mat-form-field class="full-width">
-      <input matInput placeholder="deposit balance" class="condensed" disabled value="{{addressInfo.balance.deposit}}"
-        type="text">
-    </mat-form-field>
-    <mat-form-field class="full-width">
-      <input matInput placeholder="available balance" class="condensed" disabled
-        value="{{addressInfo.balance.available}}" type="text">
-    </mat-form-field>
-  </div>
-  <section class="mat-typography container-margin" *ngIf="!addressInfo">
-    <h2>Unable to load balance info for imported key. Please check value that you have entered...</h2>
-  </section>
-</div>
+    <div class="column-container align-center chainium-gray">
+    <mat-toolbar>
+        <span>Address Info</span>
+        <div style="margin-left: auto;">
+            <button mat-icon-button (click)="onRefreshAddressInfoClick()">
+                <mat-icon aria-label="Click to refresh balance info" color="accent" matTooltip="Click to refresh balance info.">
+                    autorenew
+                </mat-icon>
+            </button>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon color="accent">more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="onAddChxAddressClick()">
+                    <mat-icon color="accent">add</mat-icon>
+                    <span>Add Chx Address</span>
+                </button>
+                <button mat-menu-item *ngIf="selectedWallet" ngxClipboard cbContent="{{selectedWallet.privateKey}}">
+                    <mat-icon color="accent">file_copy</mat-icon>
+                    <span>Export Private Key</span>
+                </button>
+                <button mat-menu-item (click)="onImportPrivateKeyClick()"> 
+                    <mat-icon color="accent">unarchive</mat-icon>
+                    <span>Import Private Key</span>
+                </button>
+            </mat-menu>        
+        </div> 
+    </mat-toolbar>
+    <div class="container-margin" *ngIf="addressInfo && selectedWallet">
+        <mat-form-field class="full-width address-font-size">
+            <input matInput placeholder="CHX address" class="condensed" disabled value="{{addressInfo.blockchainAddress}}" *ngIf="showImportedPk">
+            <mat-icon matSuffix color="accent" matTooltip="Imported private keys are not recoverable" class="pointer margin-l-20" *ngIf="showImportedPk">report_problem</mat-icon>
+
+            <mat-select placeholder="CHX address" [(ngModel)]="selectedChxAddress" (selectionChange)="onChxAddressChange($event)" *ngIf="!showImportedPk">
+                <mat-option *ngFor="let chxAddress of chxAddresses" [value]="chxAddress">
+                    {{chxAddress}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <input matInput placeholder="nonce" class="condensed" disabled value="{{addressInfo.nonce}}" type="text">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <input matInput placeholder="total balance" class="condensed" disabled value="{{addressInfo.balance.total}}" type="text">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <input matInput placeholder="staked balance" class="condensed" disabled value="{{addressInfo.balance.staked}}" type="text">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <input matInput placeholder="deposit balance" class="condensed" disabled value="{{addressInfo.balance.deposit}}" type="text">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <input matInput placeholder="available balance" class="condensed" disabled
+                value="{{addressInfo.balance.available}}" type="text">
+        </mat-form-field>
+    </div>
+    <section class="mat-typography container-margin" *ngIf="!addressInfo">
+        <h2>Unable to load balance info for imported key. Please check value that you have entered...</h2>
+    </section>
+    </div>

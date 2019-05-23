@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-
-import { NewWallet } from '../models/new-wallet.model';
+import { CryptoService } from "../services/crypto.service";
+import { WalletService } from '../services/wallet.service';
 
 @Component({
     selector: 'app-restore-wallet',
@@ -13,12 +13,14 @@ export class RestoreWalletComponent implements OnInit {
     walletKeystore: string;
     password = new FormControl('', [Validators.required]);
     mnemonic = new FormControl('', [Validators.required]);
+    hideWithMnemonic: boolean;
+    hideWithKeystore: boolean;
 
-    @Output()
-    setSeedWalletKeystore = new EventEmitter<NewWallet>();
-
-    @Output()
-    setSeedMnemonic = new EventEmitter<{ mnemonic: string, password: string }>();
+    constructor(private cryptoService: CryptoService,
+        private walletService: WalletService) {
+        this.hideWithMnemonic = true;
+        this.hideWithKeystore = true;
+    }
 
     ngOnInit() {
     }
@@ -36,7 +38,10 @@ export class RestoreWalletComponent implements OnInit {
     onRestoreWithFile() {
         this.password.markAsTouched();
         if (this.password.valid && this.walletKeystore) {
-            this.setSeedWalletKeystore.emit({ walletKeystore: this.walletKeystore, password: this.password.value });
+            const passwordHash = this.cryptoService.hash(this.password.value);
+            const walletContext = { walletKeystore: this.walletKeystore, passwordHash };
+            this.walletService.setWalletContext(walletContext);
+            this.walletService.generateWalletFromContext();
         }
     }
 
@@ -45,7 +50,13 @@ export class RestoreWalletComponent implements OnInit {
         this.password.markAsTouched();
 
         if (this.password.valid && this.mnemonic.valid) {
-            this.setSeedMnemonic.emit({ mnemonic: this.mnemonic.value, password: this.password.value });
+            const passwordHash = this.cryptoService.hash(this.password.value);
+            this.cryptoService.generateWalletKeystore(this.mnemonic.value, passwordHash)
+                .subscribe((walletKeystore: string) => {
+                    const walletContext = { walletKeystore, passwordHash };
+                    this.walletService.setWalletContext(walletContext);
+                    this.walletService.generateWalletFromContext();
+                });
         }
     }
 }

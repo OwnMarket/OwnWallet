@@ -1,19 +1,21 @@
 <div class="column-container">
     <mat-tab-group>
-        <mat-tab label="Mnemonic">
+        <mat-tab label="Recovery phrase">
             <div class="margin-t-20">
                 <mat-form-field class="full-width">
-                    <textarea matInput placeholder="Mnemonic" [formControl]="mnemonic" required></textarea>
+                    <textarea matInput placeholder="Recovery phrase" [formControl]="mnemonic" required></textarea>
                     <mat-error *ngIf="mnemonic.invalid">This field is required.</mat-error>
                 </mat-form-field>
             </div>
             <div class="margin-t-20">
-                <mat-form-field class="full-width">
-                    <input matInput placeholder="password" type="password" [formControl]="password" required />
+                <mat-form-field>
+                    <input matInput placeholder="password" [type]="hideWithMnemonic ? 'password' : 'text'" [formControl]="password" required />
+                    <mat-icon matSuffix (click)="hideWithMnemonic = !hideWithMnemonic" color="accent" class="pointer">{{hideWithMnemonic ? 'visibility' : 'visibility_off'}}</mat-icon>            
                     <mat-error *ngIf="password.invalid">This field is required.</mat-error>
                 </mat-form-field>
-
-                <button (click)="onRestoreWithMnemonic()" mat-raised-button color="accent">Restore</button>
+                <div class="row">
+                    <button (click)="onRestoreWithMnemonic()" mat-raised-button color="accent">Restore</button>
+                </div>                
             </div>
         </mat-tab>
 
@@ -22,13 +24,15 @@
                 <input type="file" (change)="fileChanged($event)" />
             </div>
             <div class="margin-t-20">
-                <mat-form-field class="full-width">
-                    <input matInput placeholder="password" type="password" [formControl]="password" required />
+                <mat-form-field>
+                    <input matInput placeholder="password" [type]="hideWithKeystore ? 'password' : 'text'" [formControl]="password" required />
+                    <mat-icon matSuffix (click)="hideWithKeystore = !hideWithKeystore" color="accent" class="pointer">{{hideWithKeystore ? 'visibility' : 'visibility_off'}}</mat-icon>            
                     <mat-error *ngIf="password.invalid">This field is required.</mat-error>
                 </mat-form-field>
-                <button (click)="onRestoreWithFile()" mat-raised-button color="accent">Restore</button>
+                <div class="row">
+                    <button (click)="onRestoreWithFile()" mat-raised-button color="accent">Restore</button>
+                </div>                
             </div>
-
         </mat-tab>
     </mat-tab-group>
 </div>

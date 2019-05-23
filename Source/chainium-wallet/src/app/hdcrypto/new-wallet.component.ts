@@ -1,9 +1,9 @@
 
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-
 import { CryptoService } from "../services/crypto.service";
 import { WalletService } from '../services/wallet.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-new-wallet',
@@ -21,7 +21,8 @@ export class NewWalletComponent implements OnInit {
     saveKeystore : boolean;
     hide: boolean;
 
-    constructor(private cryptoService: CryptoService,
+    constructor(private router: Router,
+        private cryptoService: CryptoService,
         private walletService: WalletService) {
         this.saveKeystore = true;
         this.hide = true;
@@ -37,6 +38,7 @@ export class NewWalletComponent implements OnInit {
     }
 
     onCreateNewWallet() {
+        this.walletService.clearWalletContext();
         this.mnemonic.markAsTouched();
         this.password.markAsTouched();
 
@@ -54,6 +56,7 @@ export class NewWalletComponent implements OnInit {
                     const walletContext = { walletKeystore, passwordHash };
                     this.walletService.setWalletContext(walletContext);
                     this.walletService.generateWalletFromContext();
+                    this.router.navigate(['/home']);
                 });
         }
     }

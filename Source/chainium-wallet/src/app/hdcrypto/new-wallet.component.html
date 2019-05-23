@@ -2,7 +2,7 @@
     <div class="margin-t-20">
         <div class="row">            
             <mat-form-field class="full-width">
-                <textarea matInput placeholder="Recovery phrase" style="resize:none;" [formControl]="mnemonic" readonly equired></textarea>
+                <textarea matInput placeholder="Recovery phrase" style="resize:none;" [formControl]="mnemonic" readonly required></textarea>
                 <mat-icon matSuffix (click)="onGenerateMnemonic()" color="accent" class="margin-l-20 pointer" matTooltip="Regenerate recovery phrase">autorenew</mat-icon>
                 <mat-error *ngIf="mnemonic.invalid">This field is required.</mat-error>
             </mat-form-field>

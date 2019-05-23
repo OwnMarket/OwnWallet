@@ -5,6 +5,7 @@ import { WalletContext } from '../models/wallet-context.model';
 import * as _ from 'lodash';
 import { CryptoService } from "../services/crypto.service";
 import { PrivatekeyService } from './privatekey.service';
+import { RestoreWalletComponent } from '../hdcrypto/restore-wallet.component';
 
 @Injectable({
 providedIn: 'root'
@@ -78,10 +79,15 @@ export class WalletService {
         this.createChxAddress(0);     
     }
 
-    unloadWallet() {
+    clearWalletContext() {
         localStorage.removeItem('walletKeyStore');
         localStorage.removeItem('walletChxAddresses');
         localStorage.removeItem('walletSelectedChxAddress');
+        this.context = null;
+    }
+
+    unloadWallet() {
+        this.clearWalletContext();
         this.privateKeyService.setWalletInfo(null);
         this.sendMessage(true);
     }

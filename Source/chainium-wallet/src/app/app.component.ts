@@ -61,12 +61,13 @@ export class AppComponent implements OnDestroy {
     }
 
     private newLoaderDialog() {
-        setTimeout(() => { 
+        this.loaderef = this.dialog.getDialogById(LoaderDlg);
+        if (!this.loaderef) {
             this.loaderef = this.dialog.open(LoaderComponent, {
                 disableClose: true,
                 id: LoaderDlg
-            }); 
-        });      
+            });     
+        }
     }
 
     private progressBarAction(message: LoaderMessage) {
@@ -74,10 +75,8 @@ export class AppComponent implements OnDestroy {
             return;
         }
 
-        if (message === LoaderMessage.Start) {
-            this.loaderef = this.dialog.getDialogById(LoaderDlg);
-            if (!this.loaderef)
-                this.newLoaderDialog();
+        if (message === LoaderMessage.Start) {                       
+            setTimeout(() => this.newLoaderDialog());
         }
 
         if (this.loaderef && message === LoaderMessage.End) {

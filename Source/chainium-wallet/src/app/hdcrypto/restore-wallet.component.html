@@ -3,7 +3,7 @@
         <mat-tab label="Recovery phrase">
             <div class="margin-t-20">
                 <mat-form-field class="full-width">
-                    <textarea matInput placeholder="Recovery phrase" [formControl]="mnemonic" required></textarea>
+                    <textarea matInput placeholder="Recovery phrase" style="resize:none" [formControl]="mnemonic" required></textarea>
                     <mat-error *ngIf="mnemonic.invalid">This field is required.</mat-error>
                 </mat-form-field>
             </div>

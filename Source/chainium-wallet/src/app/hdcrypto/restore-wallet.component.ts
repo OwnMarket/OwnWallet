@@ -53,7 +53,6 @@ export class RestoreWalletComponent implements OnInit {
                     0
                 ).subscribe(w => {});
                 this.wrongPassword = false;
-                // TODO: check if wallet context is the same to restore all the a
                 this.walletService.setWalletContext(walletContext);
                 this.walletService.generateWalletFromContext();
 

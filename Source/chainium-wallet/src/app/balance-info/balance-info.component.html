@@ -30,16 +30,17 @@
         </div> 
     </mat-toolbar>
     <div class="container-margin" *ngIf="addressInfo && selectedWallet">        
-        <mat-form-field class="full-width address-font-size">
-            <input *ngIf="showImportedPk" matInput placeholder="CHX address" class="condensed" disabled value="{{addressInfo.blockchainAddress}}">                                    
-            <!-- <mat-icon matSuffix color="accent" matTooltip="Copy Chx Address" ngxClipboard cbContent="{{selectedWallet.address}}">file_copy</mat-icon> -->
+        <mat-form-field style="width:85%" class="address-font-size">
+            <input *ngIf="showImportedPk" matInput placeholder="CHX address" class="condensed" disabled value="{{addressInfo.blockchainAddress}}">                                                
             <mat-select placeholder="CHX address" [(ngModel)]="selectedChxAddress" (selectionChange)="onChxAddressChange($event)" *ngIf="!showImportedPk">
                 <mat-option *ngFor="let chxAddress of chxAddresses" [value]="chxAddress">
                     {{chxAddress}}
                 </mat-option>
-            </mat-select>
+            </mat-select>            
             <mat-icon *ngIf="showImportedPk"  matSuffix color="accent" (click)="onRemovePrivateAddress()" matTooltip="Unload Private Key" class="pointer margin-l-20">remove_circle</mat-icon>
         </mat-form-field>
+        <mat-icon matSuffix class="margin-l-20 pointer animate-click" color="accent" matTooltip="Copy Chx Address" ngxClipboard cbContent="{{selectedWallet.address}}">file_copy</mat-icon>
+
         <mat-form-field class="full-width">
             <input matInput placeholder="nonce" class="condensed" disabled value="{{addressInfo.nonce}}" type="text">
         </mat-form-field>

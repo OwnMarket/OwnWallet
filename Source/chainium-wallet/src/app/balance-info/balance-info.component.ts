@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatOptionSelectionChange } from '@angular/material';
 import { ChxAddressInfo } from '../models/chx-address-info.model';
 import { CryptoService } from '../services/crypto.service';
 import { PrivatekeyService } from '../services/privatekey.service';
@@ -57,9 +56,8 @@ export class BalanceInfoComponent implements OnInit {
         this.router.navigate(['/importwallet']);
     }
 
-    onChxAddressChange(e) {
-        if (this.selectedChxAddress) {     
-        this.walletService.getWalletInfo(this.selectedChxAddress)
+    private setActiveWallet(chxAddress: string) {
+        this.walletService.getWalletInfo(chxAddress)
             .subscribe((walletInfo) => {
                 this.selectWallet(walletInfo);
                 if (this.selectedWallet) {
@@ -67,6 +65,20 @@ export class BalanceInfoComponent implements OnInit {
                     this.privateKeyService.sendMessage(this.privateKeyService.existsKey());
                 }               
             });       
+    }
+
+    onChxAddressChange(e: any) {
+        if (this.selectedChxAddress) {     
+            this.setActiveWallet(this.selectedChxAddress);
+        }
+    }
+
+    onRemovePrivateAddress(){
+        if(this.selectedChxAddress) {
+            if(this.chxAddresses.indexOf(this.selectedChxAddress) == -1){
+                this.selectedChxAddress = this.chxAddresses[0];
+                this.setActiveWallet(this.selectedChxAddress);
+            }
         }
     }
 

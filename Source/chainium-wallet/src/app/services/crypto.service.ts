@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
-
 import { WalletInfo } from '../models/wallet-info.model';
 import { Tx, TxEnvelope } from '../models/submit-transactions.model';
 

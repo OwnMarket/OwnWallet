@@ -1,4 +1,4 @@
-import { TxAction, Tx } from "../models/submit-transactions.model";
+import { Tx } from "../models/submit-transactions.model";
 
 export interface ActionRemoval{
     tx : Tx;

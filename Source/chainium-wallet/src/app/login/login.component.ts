@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
-
 import { CryptoService } from '../services/crypto.service';
 import { WalletService } from '../services/wallet.service';
 

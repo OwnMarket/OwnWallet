@@ -5,7 +5,6 @@ import { WalletContext } from '../models/wallet-context.model';
 import * as _ from 'lodash';
 import { CryptoService } from "../services/crypto.service";
 import { PrivatekeyService } from './privatekey.service';
-import { RestoreWalletComponent } from '../hdcrypto/restore-wallet.component';
 
 @Injectable({
 providedIn: 'root'
@@ -15,7 +14,7 @@ export class WalletService {
     constructor(private cryptoService: CryptoService, 
         private privateKeyService: PrivatekeyService) { }
 
-    private context: WalletContext;
+    private context: WalletContext; 
 
     private subject = new Subject<any>();
 

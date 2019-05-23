@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
-
 import { PrivatekeyService } from '../services/privatekey.service';
 import { WalletService } from '../services/wallet.service';
 

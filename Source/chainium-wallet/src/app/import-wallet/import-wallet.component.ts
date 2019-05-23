@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrivatekeyService } from '../services/privatekey.service';
 import { CryptoService } from '../services/crypto.service';
-import { WalletInfo } from '../models/wallet-info.model';
+import { WalletService } from '../services/wallet.service';
 
 @Component({
     selector: 'app-import-wallet',
@@ -11,7 +11,10 @@ import { WalletInfo } from '../models/wallet-info.model';
 export class ImportWalletComponent implements OnInit {
     hide : boolean;
     privateKey : string;
-    constructor(private privateKeyService : PrivatekeyService, private cryptoService : CryptoService) {
+    errors: string[];
+    constructor(private privateKeyService : PrivatekeyService, 
+        private cryptoService : CryptoService,
+        private walletService : WalletService) {
         this.hide = true;
         this.privateKey = '';
     }
@@ -28,11 +31,27 @@ export class ImportWalletComponent implements OnInit {
                 privateKey : this.privateKey,
                 address : (address as string)
             });
+
+            this.displayErrors(address);            
             this.privateKeyService.sendMessage(this.privateKeyService.existsKey());
         });     
     }
 
     ngOnInit() {
+        this.privateKeyService.getMessage().subscribe(msg => {
+            let walletInfo = this.privateKeyService.getWalletInfo();
+            this.displayErrors(walletInfo.address);
+        });
+    }
+
+    private displayErrors(address: string) {
+        let chxAddresses = this.walletService.getAllChxAddresses();
+        if (chxAddresses.indexOf(address) == -1){
+            this.errors = ["Imported key is not recoverable. Use 'Unload Private Key' option to get back to recoverable wallet"];
+        }
+        else {
+            this.errors = null;
+        }
     }
 }
 

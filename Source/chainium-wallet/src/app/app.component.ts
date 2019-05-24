@@ -1,7 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subscription, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { LoaderMessage } from './models/loader-message.enum';
@@ -26,15 +24,8 @@ export class AppComponent implements OnDestroy {
     errorOccuredSubscription: Subscription;
     openLoadingDialogSubscription: Subscription;
 
-    isHandset$: Observable<boolean> = this.breakpointObserver
-        .observe(Breakpoints.Handset)
-        .pipe(
-            map(result => result.matches)
-        );
-
     constructor(
         private errorHandler: GlobalErrorHandler,
-        private breakpointObserver: BreakpointObserver,
         private interceptor: WalletHttpInterceptor,
         public dialog: MatDialog) {
 

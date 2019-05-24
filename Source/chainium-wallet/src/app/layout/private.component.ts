@@ -1,5 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Subscription, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { WalletRoutes } from '../services/walletroutes.service';
 import { PrivatekeyService } from '../services/privatekey.service';
 import { WalletRouteInfo } from '../models/wallet-route-info.model';
@@ -15,10 +17,18 @@ export class PrivateComponent implements OnDestroy {
     routesSubscription: Subscription;
     balanceChangeSubscription: Subscription;
     displayBalanceInfo: boolean;
+    
+    isHandset$: Observable<boolean> = this.breakpointObserver
+        .observe(Breakpoints.Handset)
+        .pipe(
+            map(result => result.matches)
+        );
+
     constructor(
         private routeService: WalletRoutes,
         private privateKeyService: PrivatekeyService,
-        private walletService: WalletService) {        
+        private walletService: WalletService,
+        private breakpointObserver: BreakpointObserver,) {        
         this.loadRoutes();
 
         this.routesSubscription = this.walletService.getMessage()

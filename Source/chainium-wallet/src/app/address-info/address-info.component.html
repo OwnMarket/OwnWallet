@@ -17,22 +17,24 @@
       <textarea matInput placeholder="total balance" disabled value="{{addressInfo.balance.total}}"></textarea>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
-      <textarea matInput placeholder="staked balance" disabled value="{{addressInfo.balance.staked}}"></textarea>
+      <textarea matInput placeholder="delegated" disabled value="{{addressInfo.balance.staked}}"></textarea>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
-      <textarea matInput placeholder="deposit balance" disabled value="{{addressInfo.balance.deposit}}"></textarea>
+      <textarea matInput placeholder="deposit" disabled value="{{addressInfo.balance.deposit}}"></textarea>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
       <textarea matInput placeholder="available balance" disabled value="{{addressInfo.balance.available}}"></textarea>
     </mat-form-field>
     <ng-container *ngIf="stakeInfo.stakes.length > 0">
-      <ng-container *ngFor="let stake of stakeInfo.stakes">
-        <mat-form-field class="stakes">
-          <textarea matInput placeholder="stakes" disabled value="{{stake.validatorAddress}}"></textarea>
+      <ng-container *ngFor="let stake of stakeInfo.stakes; let i = index">
+        <mat-toolbar class="toolbar-header">Stake {{i + 1}}</mat-toolbar>
+        <br>
+        <mat-form-field class="info-item-margin">
+          <textarea matInput placeholder="validator address" disabled value="{{stake.validatorAddress}}"></textarea>
           <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{stake.validatorAddress}}"
             class="pointer margin-l-20 animate-click">file_copy</mat-icon>
         </mat-form-field>
-        <mat-form-field class="form-margin-right">
+        <mat-form-field class="info-item-margin">
           <input matInput placeholder="amount" disabled value="{{stake.amount}}" type="number">
         </mat-form-field>
       </ng-container>

@@ -34,9 +34,7 @@ export class NodeService {
   }
 
   public getMinFee(): number {
-    // TODO: decide on how to get this value
-    // for now return 0.001
-    return 0.001;
+    return 0.01;
   }
 
   public submitTransaction(txEnvelope: TxEnvelope): Observable<any> {

@@ -45,7 +45,7 @@ export class SubmitTransactionInfoComponent implements OnInit {
 
   onTransactionHashClick() {
     this.onCloseClick();
-    this.router.navigate([`/transaction/${this.txResult.txHash}`], { relativeTo: this.activatedRoute });
+    this.router.navigate([`/tx/${this.txResult.txHash}`], { relativeTo: this.activatedRoute });
   }
 
   onCloseClick(): void {

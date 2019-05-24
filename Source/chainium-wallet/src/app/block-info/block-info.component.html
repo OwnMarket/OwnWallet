@@ -65,59 +65,71 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
     <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="transaction set root" disabled 
-            value="{{blockInfo.txSetRoot}}">
+        <textarea matInput placeholder="transactions root" disabled
+            value="{{blockInfo.txSetRoot || '-'}}">
         </textarea>
         <mat-icon matSuffix color="accent" ngxClipboard 
-            cbContent="{{blockInfo.txSetRoot}}"
+            cbContent="{{blockInfo.txSetRoot || ''}}"
             class="pointer margin-l-20 animate-click">
                 file_copy
         </mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="transaction result set root" disabled
-            value="{{blockInfo.txResultSetRoot}}">
+        <textarea matInput placeholder="transaction results root" disabled
+            value="{{blockInfo.txResultSetRoot || '-'}}">
         </textarea>
         <mat-icon matSuffix color="accent" ngxClipboard 
-            cbContent="{{blockInfo.txResultSetRoot}}"
+            cbContent="{{blockInfo.txResultSetRoot || ''}}"
             class="pointer margin-l-20 animate-click">
                 file_copy
         </mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
-        <input matInput placeholder="equivocation proofs root" disabled 
-            value="{{blockInfo.equivocationProofsRoot}}"
-            type="text">
+        <textarea matInput placeholder="equivocation proofs root" disabled
+            value="{{blockInfo.equivocationProofsRoot || '-'}}">
+        </textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard
+            cbContent="{{blockInfo.equivocationProofsRoot || ''}}"
+            class="pointer margin-l-20 animate-click">
+                file_copy
+        </mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
-        <input matInput placeholder="equivocation proof results root" disabled
-            value="{{blockInfo.equivocationProofResultsRoot}}" type="text">
+        <textarea matInput placeholder="equivocation proof results root" disabled
+            value="{{blockInfo.equivocationProofResultsRoot || '-'}}">
+        </textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard
+            cbContent="{{blockInfo.equivocationProofResultsRoot || ''}}"
+            class="pointer margin-l-20 animate-click">
+                file_copy
+        </mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <textarea matInput placeholder="state root" disabled 
-            value="{{blockInfo.stateRoot}}">
+            value="{{blockInfo.stateRoot || '-'}}">
         </textarea>
         <mat-icon matSuffix color="accent" ngxClipboard 
-            cbContent="{{blockInfo.stateRoot}}"
+            cbContent="{{blockInfo.stateRoot || ''}}"
             class="pointer margin-l-20 animate-click">
                 file_copy
         </mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
         <textarea matInput placeholder="staking rewards set root" disabled
-            value="{{blockInfo.stakingRewardsRoot}}">
+            value="{{blockInfo.stakingRewardsRoot || '-'}}">
         </textarea>
         <mat-icon matSuffix color="accent" ngxClipboard 
-            cbContent="{{blockInfo.stakingRewardsRoot}}"
+            cbContent="{{blockInfo.stakingRewardsRoot || ''}}"
             class="pointer margin-l-20 animate-click">
                 file_copy
         </mat-icon>
     </mat-form-field>
     <mat-form-field class="info-item-margin">
-        <input matInput placeholder="configuration root" disabled 
-            value="{{blockInfo.configurationRoot}}" type="text">
-        <mat-icon matSuffix color="accent" ngxClipboard 
-            cbContent="{{blockInfo.configurationRoot}}"
+        <textarea matInput placeholder="staking rewards set root" disabled
+            value="{{blockInfo.configurationRoot || '-'}}">
+        </textarea>
+        <mat-icon matSuffix color="accent" ngxClipboard
+            cbContent="{{blockInfo.configurationRoot || ''}}"
             class="pointer margin-l-20 animate-click">
                 file_copy
         </mat-icon>
@@ -275,8 +287,8 @@
         <mat-divider>
         </mat-divider>
         <mat-nav-list>
-        <a mat-list-item *ngFor="let transaction of blockInfo.txSet" 
-            routerLink="/transaction/{{transaction}}"
+        <a mat-list-item *ngFor="let transaction of blockInfo.txSet"
+            routerLink="/tx/{{transaction}}"
             matTooltip="Click to get detailed transaction info.">
                 {{transaction}}
         </a>

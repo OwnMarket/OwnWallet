@@ -77,6 +77,6 @@ export class GenerateAccountComponent implements OnInit {
     }
 
     onTransactionHashClick() {
-        this.router.navigate([`/transaction/${this.txResult.txHash}`], { relativeTo: this.activatedRoute });
+        this.router.navigate([`/tx/${this.txResult.txHash}`], { relativeTo: this.activatedRoute });
     }
 }

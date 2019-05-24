@@ -41,7 +41,7 @@ export const ROUTERCONFIGS = [
             { path: 'asset/:assetHash', component: AssetInfoComponent },
             { path: 'validator', component: ValidatorInfoComponent },
             { path: 'validator/:validatorHash', component: ValidatorInfoComponent },
-            { path: 'equivocationInfo/:equivocationProofHash', component: EquivocationProofInfoComponent },
+            { path: 'equivocation/:equivocationProofHash', component: EquivocationProofInfoComponent },
             //{ path: 'generateaccount', component: GenerateAccountComponent },
             { path: 'sign-verify', component: MessageSignVerificationComponent },
         ]

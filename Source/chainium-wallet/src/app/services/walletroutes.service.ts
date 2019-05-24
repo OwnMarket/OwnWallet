@@ -23,12 +23,12 @@ export class WalletRoutes {
     public getRoutes(walletExists: boolean): WalletRouteInfo[] {    
         var routes = [...ROUTES];
         if (walletExists) {
-            var unloadWalletRoute = { route: '/unloadWallet', linkText: 'Unload Wallet', icon: 'remove_circle'};      
+            var unloadWalletRoute = { route: '/unload-wallet', linkText: 'Unload Wallet', icon: 'remove_circle'};
             routes.unshift(unloadWalletRoute);
         } 
         else {
-            var createWalletRoute = { route: '/createWallet', linkText: 'Create Wallet', icon: 'add_circle' };
-            var restoreWalletRoute = { route: '/restoreWallet', linkText: 'Restore Wallet', icon: 'restore' };
+            var createWalletRoute = { route: '/create-wallet', linkText: 'Create Wallet', icon: 'add_circle' };
+            var restoreWalletRoute = { route: '/restore-wallet', linkText: 'Restore Wallet', icon: 'restore' };
             routes.unshift(createWalletRoute, restoreWalletRoute);
         }
         return routes;

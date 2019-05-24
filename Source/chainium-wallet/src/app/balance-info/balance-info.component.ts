@@ -57,7 +57,7 @@ export class BalanceInfoComponent implements OnInit {
     }
 
     onImportPrivateKeyClick () {
-        this.router.navigate(['/importwallet']);
+        this.router.navigate(['/import-wallet']);
     }
 
     private setActiveWallet(chxAddress: string) {

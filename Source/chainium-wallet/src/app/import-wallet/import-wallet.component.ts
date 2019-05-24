@@ -48,7 +48,7 @@ export class ImportWalletComponent implements OnInit {
     private displayErrors(address: string) {
         let chxAddresses = this.walletService.getAllChxAddresses();
         if (chxAddresses.indexOf(address) == -1){
-            this.errors = ["Imported key is not recoverable. Use 'Unload Private Key' option to get back to recoverable wallet"];
+            this.errors = ["Imported key is not recoverable. Your PK will be unloaded from the wallet upon closing the application or clicking the Unload Private Key button"];
         }
         else {
             this.errors = null;

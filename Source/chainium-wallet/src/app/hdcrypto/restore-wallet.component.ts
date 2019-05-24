@@ -106,6 +106,7 @@ export class RestoreWalletComponent implements OnInit {
             });
 
             this.privateKeyService.sendMessage(this.privateKeyService.existsKey());
+            this.router.navigate(['/home']);
         }); 
     }
 }

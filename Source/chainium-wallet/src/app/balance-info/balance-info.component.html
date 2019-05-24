@@ -14,7 +14,7 @@
                 <mat-icon color="accent">more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="onAddChxAddressClick()">
+                <button *ngIf="isWalletContextValid" mat-menu-item (click)="onAddChxAddressClick()">
                     <mat-icon color="accent">add</mat-icon>
                     <span>Add Chx Address</span>
                 </button>

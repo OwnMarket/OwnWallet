@@ -40,7 +40,8 @@ export class ImportWalletComponent implements OnInit {
     ngOnInit() {
         this.privateKeyService.getMessage().subscribe(msg => {
             let walletInfo = this.privateKeyService.getWalletInfo();
-            this.displayErrors(walletInfo.address);
+            if (walletInfo) 
+                this.displayErrors(walletInfo.address);
         });
     }
 

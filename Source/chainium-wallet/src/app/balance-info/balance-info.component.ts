@@ -19,6 +19,7 @@ export class BalanceInfoComponent implements OnInit {
     selectedChxAddress: string;
     chxAddresses: string[] = []
     showImportedPk: boolean;
+    isWalletContextValid: boolean;
 
     constructor(private cryptoService: CryptoService,
         private privateKeyService: PrivatekeyService,
@@ -26,8 +27,10 @@ export class BalanceInfoComponent implements OnInit {
         private router: Router,
         private nodeService: NodeService) {
         this.onRefreshAddressInfoClick();
-    
         this.privateKeyService.getMessage().subscribe(msg => this.onRefreshAddressInfoClick());
+        this.walletService.getMessage().subscribe(() => {
+            this.validateWalletContext();
+        });
     }
 
     ngOnInit() {
@@ -37,9 +40,10 @@ export class BalanceInfoComponent implements OnInit {
         if (!this.privateKeyService.existsKey()) {
             this.addressInfo = null;
             this.selectWallet(null);    
-            this.showImportedPk = false;
+            this.showImportedPk = false;            
             return;
         }
+        this.validateWalletContext();
         this.selectWallet(this.privateKeyService.getWalletInfo());
         this.chxAddresses = this.walletService.getAllChxAddresses();
         this.showImportedPk = this.chxAddresses.indexOf(this.selectedChxAddress) == -1;
@@ -57,14 +61,21 @@ export class BalanceInfoComponent implements OnInit {
     }
 
     private setActiveWallet(chxAddress: string) {
-        this.walletService.getWalletInfo(chxAddress)
-            .subscribe((walletInfo) => {
+        let walletInfoPromise = this.walletService.getWalletInfo(chxAddress);
+        if (walletInfoPromise) {
+            walletInfoPromise.subscribe((walletInfo) => {
                 this.selectWallet(walletInfo);
                 if (this.selectedWallet) {
                     this.privateKeyService.setWalletInfo(this.selectedWallet);
                     this.privateKeyService.sendMessage(this.privateKeyService.existsKey());
                 }               
             });       
+        }
+        else 
+        {
+            this.privateKeyService.setWalletInfo(null);
+            this.privateKeyService.sendMessage(false);
+        }
     }
 
     onChxAddressChange(e: any) {
@@ -78,6 +89,7 @@ export class BalanceInfoComponent implements OnInit {
             if(this.chxAddresses.indexOf(this.selectedChxAddress) == -1){
                 this.selectedChxAddress = this.chxAddresses[0];
                 this.setActiveWallet(this.selectedChxAddress);
+                this.router.navigate(['/home']);
             }
         }
     }
@@ -102,5 +114,10 @@ export class BalanceInfoComponent implements OnInit {
             this.selectedChxAddress = this.walletService.getSelectedChxAddress();    
         if (this.selectedChxAddress)
             this.walletService.setSelectedChxAddress(this.selectedChxAddress);
+    }
+
+    private validateWalletContext() {
+        var walletContext = this.walletService.getWalletContext();
+        this.isWalletContextValid = walletContext.passwordHash != null && walletContext.walletKeystore != null;
     }
 }

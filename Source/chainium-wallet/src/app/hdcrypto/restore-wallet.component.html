@@ -37,5 +37,12 @@
                 </div>                
             </div>
         </mat-tab>
+        <mat-tab label="Private Key">
+            <mat-form-field class="full-width margin-t-20">
+                <input matInput placeholder="enter private key" [type]="hideWithPrivateKey ? 'password' : 'text'" [value]="privateKey" (input)="privateKey = $event.target.value" required/>
+                <mat-icon matSuffix (click)="hideWithPrivateKey = !hideWithPrivateKey" color="accent" class="pointer">{{hideWithPrivateKey ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </mat-form-field>
+            <button (click)="onRestoreWithPrivateKey()" mat-raised-button color="accent" matTooltip="Enter your private key and click import in order to view info about account.">IMPORT</button>     
+        </mat-tab>
     </mat-tab-group>
 </div>

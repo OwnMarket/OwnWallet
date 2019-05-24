@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { PrivatekeyService } from '../services/privatekey.service';
 import { CryptoService } from "../services/crypto.service";
 import { WalletService } from '../services/wallet.service';
 import { Router } from '@angular/router';
@@ -9,21 +10,27 @@ import { Router } from '@angular/router';
     templateUrl: './restore-wallet.component.html',
 })
 export class RestoreWalletComponent implements OnInit {
+    password = new FormControl('', [Validators.required]);
+    mnemonic = new FormControl('', [Validators.required]);
 
     file: any;
     walletKeystore: string;
-    password = new FormControl('', [Validators.required]);
-    mnemonic = new FormControl('', [Validators.required]);
+    privateKey : string;
+
     hideWithMnemonic: boolean;
     hideWithKeystore: boolean;
+    hideWithPrivateKey : boolean;
     wrongPassword: boolean;
-
+    
     constructor(private router: Router,
+        private privateKeyService: PrivatekeyService,
         private cryptoService: CryptoService,
         private walletService: WalletService) {
         this.hideWithMnemonic = true;
         this.hideWithKeystore = true;
+        this.hideWithPrivateKey = true;
         this.wrongPassword = false;
+        this.privateKey = ''
     }
 
     ngOnInit() {
@@ -81,5 +88,24 @@ export class RestoreWalletComponent implements OnInit {
                     this.router.navigate(['/home']);
                 });
         }
+    }
+
+    onRestoreWithPrivateKey() {
+        this.walletService.clearWalletContext();
+        
+        if(!this.privateKey)
+        return;
+    
+        this.cryptoService.getAddressFromKey(this.privateKey).subscribe(address => {
+            if(!address && !address.errors)
+                return;        
+
+            this.privateKeyService.setWalletInfo({
+                privateKey : this.privateKey,
+                address : (address as string)
+            });
+
+            this.privateKeyService.sendMessage(this.privateKeyService.existsKey());
+        }); 
     }
 }

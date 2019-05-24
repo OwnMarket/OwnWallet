@@ -131,3 +131,8 @@ button {
     line-height: 1.125;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.monospace-font {
+    font-family: monospace !important;
+    font-size: xx-large !important;
+}

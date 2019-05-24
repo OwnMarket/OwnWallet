@@ -28,7 +28,7 @@ export class PrivateComponent implements OnDestroy {
         private routeService: WalletRoutes,
         private privateKeyService: PrivatekeyService,
         private walletService: WalletService,
-        private breakpointObserver: BreakpointObserver,) {        
+        private breakpointObserver: BreakpointObserver) {        
         this.loadRoutes();
 
         this.routesSubscription = this.walletService.getMessage()

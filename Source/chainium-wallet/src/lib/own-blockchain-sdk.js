@@ -31815,13 +31815,7 @@ module.exports = {
     }
 
     function generateSeedFromKeyStore(keyStoreEncrypted, passwordHash) {
-        var mnemonic = decrypt(keyStoreEncrypted, passwordHash);
-        if (validateMnemonic(mnemonic)) {
-            return generateSeedFromMnemonic(mnemonic, passwordHash);
-        }
-        else {
-            throw 'Invalid keystore';
-        }
+        return decrypt(keyStoreEncrypted, passwordHash);
     }
 
     function generateMasterNodeFromSeed(seed) {
@@ -31845,12 +31839,8 @@ module.exports = {
 
 
     function generateKeystore(mnemonic, passwordHash) {
-        if (validateMnemonic(mnemonic)) {
-            return encrypt(mnemonic, passwordHash);
-        }
-        else {
-            throw 'Invalid mnemonic';
-        }
+        var seed = generateSeedFromMnemonic(mnemonic);
+        return encrypt(seed, passwordHash);
     }
 
     function generateWalletFromSeed(seed, index) {
@@ -34050,6 +34040,7 @@ module.exports=[
             function addCreateAssetAction() {
                 addAction('CreateAsset', {
                 });
+                return ownSdkCrypto.deriveHash(tx.senderAddress, tx.nonce, tx.actions.length);
             }
 
             function addSetAssetCodeAction(assetHash, assetCode) {
@@ -34069,6 +34060,7 @@ module.exports=[
             function addCreateAccountAction() {
                 addAction('CreateAccount', {
                 });
+                return ownSdkCrypto.deriveHash(tx.senderAddress, tx.nonce, tx.actions.length);
             }
 
             function addSetAccountControllerAction(accountHash, controllerAddress) {

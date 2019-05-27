@@ -16,7 +16,7 @@
             <mat-menu #menu="matMenu">
                 <button *ngIf="isWalletContextValid" mat-menu-item (click)="onAddChxAddressClick()">
                     <mat-icon color="accent">add</mat-icon>
-                    <span>Add Chx Address</span>
+                    <span>Add CHX Address</span>
                 </button>
                 <button mat-menu-item *ngIf="selectedWallet" ngxClipboard cbContent="{{selectedWallet.privateKey}}">
                     <mat-icon color="accent">file_copy</mat-icon>

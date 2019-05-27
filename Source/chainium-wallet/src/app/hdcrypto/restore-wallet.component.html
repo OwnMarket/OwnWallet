@@ -1,4 +1,10 @@
-<div class="column-container">
+<div class="row-container" style="font-family:Roboto, 'Helvetica Neue', sans-serif">
+    <mat-icon color="accent">info_outline</mat-icon>
+    <div class="margin-l-20">
+        Restoring the wallet with a recovery phrase or keystore file enables users to restore all of the CHX Addresses that have been created from it by clicking "Add CHX Address".
+    </div>
+</div>
+<div class="column-container margin-t-20">
     <mat-tab-group>
         <mat-tab label="Recovery phrase">
             <div class="margin-t-20">
@@ -45,16 +51,16 @@
             <div class="column-container margin-t-20">
                 <mat-toolbar class="toolbar-header">Warnings</mat-toolbar>                
                 <mat-divider class="toolbar-bottom-margin"></mat-divider>
-                    <mat-list-item>
-                        <mat-icon color="accent">report_problem</mat-icon>
-                        Wallets restored with private keys are not recoverable if the private key is lost. 
-                        Your private key will be unloaded from the wallet upon closing the application or clicking the Unload Private Key button.
-                    </mat-list-item>
-                    <mat-list-item>
-                        <mat-icon color="accent">report_problem</mat-icon>
-                        This is not a recommended way to access your wallet. Due to the sensitivity of the information involved, this option should only be used in offline settings by experienced users.
-                    </mat-list-item>
-                </div>             
+                <mat-list-item>
+                    <mat-icon color="accent">report_problem</mat-icon>
+                    Wallets restored with private keys are not recoverable if the private key is lost. 
+                    Your private key will be unloaded from the wallet upon closing the application or clicking the "Unload Private Key" button.
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-icon color="accent">report_problem</mat-icon>
+                    This is not a recommended way to access your wallet. Due to the sensitivity of the information involved, this option should only be used in offline settings by experienced users.
+                </mat-list-item>
+            </div>             
         </mat-tab>
     </mat-tab-group>
 </div>

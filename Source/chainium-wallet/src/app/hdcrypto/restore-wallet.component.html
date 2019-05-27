@@ -18,7 +18,6 @@
                 </div>                
             </div>
         </mat-tab>
-
         <mat-tab label="Keystore">
             <div class="margin-t-20">
                 <input type="file" (change)="fileChanged($event)" />
@@ -44,13 +43,17 @@
             </mat-form-field>
             <button (click)="onRestoreWithPrivateKey()" mat-raised-button color="accent" matTooltip="Enter your private key and click import in order to view info about account.">IMPORT</button>     
             <div class="column-container margin-t-20">
-                <mat-toolbar class="toolbar-header">Notes</mat-toolbar>
+                <mat-toolbar class="toolbar-header">Warnings</mat-toolbar>                
                 <mat-divider class="toolbar-bottom-margin"></mat-divider>
-
                     <mat-list-item>
-                        This is not a recommended way to access your wallet. Due to the sensitivity of the information involved, these options should only be used in offline settings by experienced users.
+                        <mat-icon color="accent">report_problem</mat-icon>
+                        Wallets restored with private keys are not recoverable if the private key is lost. 
+                        Your private key will be unloaded from the wallet upon closing the application or clicking the Unload Private Key button.
                     </mat-list-item>
-
+                    <mat-list-item>
+                        <mat-icon color="accent">report_problem</mat-icon>
+                        This is not a recommended way to access your wallet. Due to the sensitivity of the information involved, this option should only be used in offline settings by experienced users.
+                    </mat-list-item>
                 </div>             
         </mat-tab>
     </mat-tab-group>

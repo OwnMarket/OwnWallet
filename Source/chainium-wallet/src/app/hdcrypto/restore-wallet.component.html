@@ -43,6 +43,15 @@
                 <mat-icon matSuffix (click)="hideWithPrivateKey = !hideWithPrivateKey" color="accent" class="pointer">{{hideWithPrivateKey ? 'visibility' : 'visibility_off'}}</mat-icon>
             </mat-form-field>
             <button (click)="onRestoreWithPrivateKey()" mat-raised-button color="accent" matTooltip="Enter your private key and click import in order to view info about account.">IMPORT</button>     
+            <div class="column-container margin-t-20">
+                <mat-toolbar class="toolbar-header">Notes</mat-toolbar>
+                <mat-divider class="toolbar-bottom-margin"></mat-divider>
+
+                    <mat-list-item>
+                        This is not a recommended way to access your wallet. Due to the sensitivity of the information involved, these options should only be used in offline settings by experienced users.
+                    </mat-list-item>
+
+                </div>             
         </mat-tab>
     </mat-tab-group>
 </div>

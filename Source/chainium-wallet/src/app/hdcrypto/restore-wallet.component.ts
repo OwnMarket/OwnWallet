@@ -6,8 +6,9 @@ import { WalletService } from '../services/wallet.service';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-restore-wallet',
+    selector: 'app-restore-wallet',    
     templateUrl: './restore-wallet.component.html',
+    styleUrls: ['./restore-wallet.component.css']
 })
 export class RestoreWalletComponent implements OnInit {
     password = new FormControl('', [Validators.required]);

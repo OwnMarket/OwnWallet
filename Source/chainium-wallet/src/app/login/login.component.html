@@ -1,7 +1,8 @@
 <div class="column-container align-center" *ngIf="needPasswordOnly">
     <div class="margin-t-20 wallet-password">
         <mat-form-field>
-            <input matInput placeholder="password" type="password" [formControl]="password" required />
+            <input matInput placeholder="password" [type]="hide ? 'password' : 'text'" [formControl]="password" required />
+            <mat-icon matSuffix (click)="hide = !hide" color="accent" class="pointer">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
             <mat-error *ngIf="password.invalid">This field is required.</mat-error>            
         </mat-form-field>
         <div *ngIf="password.valid && wrongPassword">

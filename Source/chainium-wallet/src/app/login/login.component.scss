@@ -1,48 +1,5 @@
-.split-layout {
-    display: flex;
-    flex-direction: column;
-    margin-top: 15%;
-
-    @media screen and (min-width: 30em) {
-        flex-direction: row;
-        align-items: stretch;
-    }
-}
-
-.split-layout__item {
-    color: #CF6B02;
-    padding: 2em;
-
-}
-
-.split-layout__divider {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    @media screen and (min-width: 30em) {
-        flex-direction: column;
-    }
-}
-
-.split-layout__label {
-    padding: 1em;
-    color: #CF6B02;
-}
-
 .active {
     color: rgba(255, 255, 255, 0.8);
-}
-
-.split-layout__rule {
-    flex: 1;
-    border-style: solid;
-    border-color: #CF6B02;
-    border-width: 1px 0 0 0;
-
-    @media screen and (min-width: 30em) {
-        border-width: 0 1px 0 0;
-    }
 }
 
 .wallet-action {
@@ -52,6 +9,10 @@
 }
 
 .wallet-password {
-    width: 30%;
+    width: 10%;
     color: #CF6B02;
+}
+
+.font-white {
+    color: white !important;
 }

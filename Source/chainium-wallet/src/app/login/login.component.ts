@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
 import { CryptoService } from '../services/crypto.service';
 import { WalletService } from '../services/wallet.service';
-import { FileService } from '../services/file.service';
+import { MatDialog } from '@angular/material';
+import { UnloadWalletInfoComponent } from '../unload-wallet-info/unload-wallet-info.component';
 
 @Component({
     selector: 'app-login',
@@ -26,7 +27,7 @@ export class LoginComponent implements OnInit {
     constructor(private router: Router,
         private cryptoService: CryptoService,
         private walletService: WalletService,
-        private fileService: FileService) {
+        public dialog: MatDialog) {
             this.hide = true;
             this.saveKeystore = true;
             this.needPasswordOnly = false;
@@ -65,4 +66,9 @@ export class LoginComponent implements OnInit {
             }            
         }
     } 
+    
+
+    onUnloadWallet() {
+        let dialogRef = this.dialog.open(UnloadWalletInfoComponent, {width: '50%'});
+    }
 }

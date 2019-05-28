@@ -1,0 +1,13 @@
+<div class="column-container">
+    <h1 mat-dialog-title>Unload Wallet</h1>
+    <div mat-dialog-content>
+        <mat-label style="font-family:Roboto, 'Helvetica Neue', sans-serif">Are you sure you want to unload your wallet? Unloading your wallet will remove the wallet context as if no wallet ever has been generated. However, once your wallet has been unloaded, you can use the 'Create Wallet' or 'Restore Wallet' options again.
+            Do you want to continue unloading your wallet?</mat-label>           
+    </div>
+    <div mat-dialog-actions class="align-center">
+        <button mat-button (click)="onCloseClick()">CLOSE</button>
+        <button (click)="onSubmitButtonClick()" color="accent" mat-raised-button *ngIf="!isSubmited">
+            SUBMIT
+        </button>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 <div class="column-container align-center" *ngIf="needPasswordOnly">
-    <div class="row-container margin-t-20 wallet-password">
+    <div class="row-container margin-t-20 wallet-password align-center">
         <mat-form-field class="row-container align-center">
             <input matInput placeholder="password" [type]="hide ? 'password' : 'text'" [formControl]="password" 
                 (keydown.enter)="onSubmitPassword()" required />
@@ -8,9 +8,10 @@
         </mat-form-field>
         <div *ngIf="password.valid && wrongPassword">
             <mat-error class='error-font'>Invalid password!</mat-error>
-        </div>       
+        </div>               
     </div>
     <div class="row-container margin-t-20 align-center">
         <button (click)="onSubmitPassword()" mat-raised-button color="accent">LOGIN</button>
+        <button (click)="onUnloadWallet()" mat-raised-button color="accent" style="margin-left:20px">UNLOAD WALLET</button>
     </div>   
 </div>

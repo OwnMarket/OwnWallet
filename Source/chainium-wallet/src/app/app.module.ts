@@ -15,6 +15,7 @@ import { BlockInfoComponent } from './block-info/block-info.component';
 import { ChxTransferComponent } from './actions/chx-transfer/chx-transfer.component';
 import { AssetTransferComponent } from './actions/asset-transfer/asset-transfer.component';
 import { SubmitTransactionInfoComponent } from './submit-transaction-info/submit-transaction-info.component';
+import { UnloadWalletInfoComponent } from './unload-wallet-info/unload-wallet-info.component';
 import { HomeScreenComponent } from './home-screen/home-screen.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GlobalErrorHandler } from './services/global.error.handler';
@@ -46,7 +47,7 @@ import { LoginComponent } from './login/login.component';
 import { PrivateComponent } from './layout/private.component';
 
 @NgModule({
-    entryComponents: [SubmitTransactionInfoComponent, ErrorDialogComponent, LoaderComponent],
+    entryComponents: [SubmitTransactionInfoComponent, UnloadWalletInfoComponent, ErrorDialogComponent, LoaderComponent],
     declarations: [
         PrivateComponent,
         AppComponent,
@@ -73,6 +74,7 @@ import { PrivateComponent } from './layout/private.component';
         SubmitVoteComponent,
         SubmitVoteWeightComponent,
         SubmitTransactionInfoComponent,
+        UnloadWalletInfoComponent,
         HomeScreenComponent,
         ErrorDialogComponent,
         AddressInfoComponent,

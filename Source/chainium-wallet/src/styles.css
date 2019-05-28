@@ -136,12 +136,3 @@ button {
     font-family: monospace !important;
     font-size: xx-large !important;
 }
-
-.login .mat-tab-body-wrapper {
-    width: 220% !important; 
-}
-
-.login .mat-tab-body-content {
-    height: 100%;
-    overflow: hidden !important;
-}

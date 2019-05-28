@@ -12,53 +12,5 @@
     </div>
     <div class="row-container margin-t-20 align-center">
         <button (click)="onSubmitPassword()" mat-raised-button color="accent">LOGIN</button>
-    </div>
-
-    <div class="row-container margin-t-20 align-center">
-        <mat-slide-toggle [(ngModel)]="showRestore" class="font-white">Click to restore</mat-slide-toggle>
-    </div>
-    <mat-tab-group *ngIf="showRestore" class="margin-t-20 align-center login">
-        <mat-tab label="Recovery phrase">
-            <div class="margin-t-20">
-                <mat-form-field class="full-width">                    
-                    <textarea matInput placeholder="Recovery phrase" class="monospace-font font-white" rows="5" [formControl]="restoreMnemonic" required></textarea>
-                    <mat-error *ngIf="restoreMnemonic.invalid">This field is required.</mat-error>
-                </mat-form-field>
-            </div>            
-            <div class="margin-t-20">
-                <mat-form-field>
-                    <input matInput placeholder="password" [type]="hideRestorePassword ? 'password' : 'text'" [formControl]="restorePassword" required />
-                    <mat-icon matSuffix (click)="hideRestorePassword = !hideRestorePassword" color="accent" class="pointer">{{hideRestorePassword ? 'visibility' : 'visibility_off'}}</mat-icon>            
-                    <mat-error *ngIf="restorePassword.invalid">This field is required.</mat-error>
-                </mat-form-field>
-                <div class="row">
-                    <button (click)="onRestoreWithMnemonic()" mat-raised-button color="accent">RESTORE</button>
-                </div>                
-            </div>
-        </mat-tab>
-        <mat-tab label="Create Wallet" class="mat-tab-no-overflow">
-            <div class="margin-t-20">
-                <div class="row">            
-                    <mat-form-field class="full-width">
-                        <textarea matInput placeholder="Recovery phrase" class="monospace-font font-white" rows="5" [formControl]="createMnemonic" readonly required></textarea>
-                        <mat-icon matSuffix (click)="onGenerateMnemonic()" color="accent" class="margin-l-20 pointer" matTooltip="Regenerate recovery phrase">autorenew</mat-icon>
-                        <mat-error *ngIf="createMnemonic.invalid">This field is required.</mat-error>
-                    </mat-form-field>
-                </div>
-            </div>            
-            <div class="margin-t-20">
-                <mat-form-field>                       
-                    <input matInput placeholder="password" [type]="hide ? 'password' : 'text'" [formControl]="createPassword" required />
-                    <mat-icon matSuffix (click)="hideCreatePassword = !hideCreatePassword" color="accent" class="pointer">{{hideCreatePassword ? 'visibility' : 'visibility_off'}}</mat-icon>
-                    <mat-error *ngIf="createPassword.invalid">This field is required.</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="row">
-                <button (click)="onCreateNewWallet()" mat-raised-button color="accent">CREATE WALLET</button>
-                <mat-checkbox class="margin-l-20 font-white" name="saveKeystore" [(ngModel)]="saveKeystore" matTooltip="">
-                    Save keystore file
-                </mat-checkbox>                                
-            </div>
-        </mat-tab>
-    </mat-tab-group>
+    </div>   
 </div>

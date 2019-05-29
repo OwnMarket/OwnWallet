@@ -11,28 +11,18 @@ import { PrivatekeyService } from '../services/privatekey.service';
 
 export class CopyPrivateKeyComponent implements OnInit {
   
-  walletInfo: WalletInfo;
+    walletInfo: WalletInfo;
 
-  constructor(
-    public dialogRef: MatDialogRef<CopyPrivateKeyComponent>,
-    private privateKeyService: PrivatekeyService,) {
-  }
+    constructor(
+        public dialogRef: MatDialogRef<CopyPrivateKeyComponent>,
+        private privateKeyService: PrivatekeyService,) {
+    }
 
-  ngOnInit() {
-    this.walletInfo = this.privateKeyService.getWalletInfo()
-  }
+    ngOnInit() {
+        this.walletInfo = this.privateKeyService.getWalletInfo()
+    }
 
-  onCopyButtonClick() {
-    var el = document.getElementById('private-key-input');
-    el.focus();
-    document.execCommand('selectAll');
-    document.execCommand('copy');
-    el.setAttribute('contenteditable','false');
-    el.blur();
-  }
-
-  onCloseClick(): void {
-    this.dialogRef.close();
-  }
-
+    onCloseClick(): void {
+        this.dialogRef.close();
+    }
 }

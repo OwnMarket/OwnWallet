@@ -55,10 +55,10 @@
                 <mat-icon matSuffix (click)="hideWithPrivateKey = !hideWithPrivateKey" color="accent" class="pointer">{{hideWithPrivateKey ? 'visibility' : 'visibility_off'}}</mat-icon>
             </mat-form-field>
             <button (click)="onRestoreWithPrivateKey()" mat-raised-button color="accent" matTooltip="Enter your private key and click import in order to view info about account.">IMPORT</button>     
-            <div class="column-container margin-t-20">
+            <div class="column-container">
                 <mat-toolbar class="toolbar-header">Warnings</mat-toolbar>                
                 <mat-divider class="toolbar-bottom-margin"></mat-divider>
-                <div class="row-container margin-t-20" style="font-family:Roboto, 'Helvetica Neue', sans-serif">
+                <div class="row-container" style="font-family:Roboto, 'Helvetica Neue', sans-serif">
                     <mat-icon color="accent">report_problem</mat-icon>
                     <div class="margin-l-20">
                         Wallets restored with private keys are not recoverable if the private key is lost. 

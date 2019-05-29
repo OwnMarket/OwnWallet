@@ -48,7 +48,13 @@ import { PrivateComponent } from './layout/private.component';
 import { CopyPrivateKeyComponent } from './copy-private-key/copy-private-key.component';
 
 @NgModule({
-    entryComponents: [SubmitTransactionInfoComponent, ErrorDialogComponent, LoaderComponent, CopyPrivateKeyComponent],
+    entryComponents: [
+        SubmitTransactionInfoComponent, 
+        UnloadWalletInfoComponent,
+        ErrorDialogComponent, 
+        LoaderComponent, 
+        CopyPrivateKeyComponent
+    ],
     declarations: [
         PrivateComponent,
         AppComponent,

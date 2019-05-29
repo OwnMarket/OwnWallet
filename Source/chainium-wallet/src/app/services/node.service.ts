@@ -52,6 +52,11 @@ export class NodeService {
     return this.http.get<any>(blockInfoUrl);
   }
 
+  public getLatestBlockNumber(): Observable<any> {
+    const latestBlockNumberUrl = `${this.baseServiceUrl}/block/head/number`;
+    return this.http.get<any>(latestBlockNumberUrl);
+  }
+
   public getChxAddressAccounts(chxAddress: string): Observable<any> {
     const addressAccountsInfoUrl = `${this.baseServiceUrl}/address/${chxAddress}/accounts`;
     return this.http.get<any>(addressAccountsInfoUrl);

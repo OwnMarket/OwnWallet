@@ -22,7 +22,18 @@ export class BlockInfoComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.route.params.subscribe(params => {
       const blockNo = params['blockNumber'];
-      this.blockNumber = (blockNo === null || blockNo === undefined) ? null : blockNo;
+
+      if (blockNo === undefined || blockNo === null) {
+          this.blockNumber = null;
+          this.nodeService.getLatestBlockNumber().subscribe(latestBlockNo => {
+              if (latestBlockNo && !isNaN(Number.parseInt(latestBlockNo))) {
+                  this.blockNumber = latestBlockNo;
+              }
+          })
+      } else {
+          this.blockNumber = blockNo;
+      }
+
       this.onBlockInfoButtonClick();
     });
   }

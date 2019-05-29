@@ -159,7 +159,7 @@
     </mat-expansion-panel>
     <!--END EQUIVOCATION-->
     <!--BEGIN STAKING REWARDS-->
-    <mat-expansion-panel *ngIf="blockInfo.stakingRewards && blockInfo.stakingRewards.length > 0">
+    <mat-expansion-panel *ngIf="showStakingRewards">
         <mat-expansion-panel-header>
             <mat-panel-title class="font-bold">
                 Staking rewards
@@ -167,13 +167,13 @@
         </mat-expansion-panel-header>
         <table class="full-width">
             <tr class="info-item-margin" *ngFor="let reward of blockInfo.stakingRewards">
-                <td>
+                <td *ngIf="reward.amount > 0">
                     <mat-form-field class="full-width">
                         <input matInput placeholder="staker address" disabled type="text"
                             value="{{reward.stakerAddress}}">
                     </mat-form-field>
                 </td>
-                <td>
+                <td *ngIf="reward.amount > 0">
                     <mat-form-field class="full-width">
                         <input matInput placeholder="amount" disabled type="number"
                             value="{{reward.amount}}">

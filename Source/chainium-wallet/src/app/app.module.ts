@@ -45,9 +45,10 @@ import { RestoreWalletComponent } from './hdcrypto/restore-wallet.component';
 import { UnloadWalletComponent } from './hdcrypto/unload-wallet.component';
 import { LoginComponent } from './login/login.component';
 import { PrivateComponent } from './layout/private.component';
+import { CopyPrivateKeyComponent } from './copy-private-key/copy-private-key.component';
 
 @NgModule({
-    entryComponents: [SubmitTransactionInfoComponent, UnloadWalletInfoComponent, ErrorDialogComponent, LoaderComponent],
+    entryComponents: [SubmitTransactionInfoComponent, ErrorDialogComponent, LoaderComponent, CopyPrivateKeyComponent],
     declarations: [
         PrivateComponent,
         AppComponent,
@@ -84,7 +85,8 @@ import { PrivateComponent } from './layout/private.component';
         NewWalletComponent,
         RestoreWalletComponent,
         UnloadWalletComponent,
-        LoginComponent
+        LoginComponent,
+        CopyPrivateKeyComponent
     ],
     imports: [
         BrowserModule,

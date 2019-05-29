@@ -18,9 +18,9 @@
                     <mat-icon color="accent">add</mat-icon>
                     <span>Add CHX Address</span>
                 </button>
-                <button mat-menu-item *ngIf="selectedWallet" ngxClipboard cbContent="{{selectedWallet.privateKey}}">
+                <button mat-menu-item *ngIf="selectedWallet" (click)="openPrivateKeyDialog()">
                     <mat-icon color="accent">file_copy</mat-icon>
-                    <span>Export Private Key</span>
+                    <span>Show Private Key</span>
                 </button>
                 <button mat-menu-item (click)="onImportPrivateKeyClick()"> 
                     <mat-icon color="accent">unarchive</mat-icon>
@@ -30,7 +30,7 @@
         </div> 
     </mat-toolbar>
     <div class="container-margin" *ngIf="addressInfo && selectedWallet">        
-        <mat-form-field style="width:85%" class="address-font-size">
+        <mat-form-field style="width:86%" class="address-font-size">
             <input *ngIf="showImportedPk" matInput placeholder="CHX address" class="condensed" disabled value="{{addressInfo.blockchainAddress}}">                                                
             <mat-select placeholder="CHX address" [(ngModel)]="selectedChxAddress" (selectionChange)="onChxAddressChange($event)" *ngIf="!showImportedPk">
                 <mat-option *ngFor="let chxAddress of chxAddresses" [value]="chxAddress">
@@ -39,7 +39,7 @@
             </mat-select>            
             <mat-icon *ngIf="showImportedPk"  matSuffix color="accent" (click)="onRemovePrivateAddress()" matTooltip="Unload Private Key" class="pointer margin-l-20">remove_circle</mat-icon>
         </mat-form-field>
-        <mat-icon matSuffix class="margin-l-20 pointer animate-click" color="accent" matTooltip="Copy CHX Address" ngxClipboard cbContent="{{selectedWallet.address}}">file_copy</mat-icon>
+        <mat-icon matSuffix class="margin-l-15 pointer animate-click" color="accent" matTooltip="Copy CHX Address" ngxClipboard cbContent="{{selectedWallet.address}}">file_copy</mat-icon>
 
         <mat-form-field class="full-width">
             <input matInput placeholder="nonce" class="condensed" disabled value="{{addressInfo.nonce}}" type="text">

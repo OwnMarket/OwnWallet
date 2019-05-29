@@ -5,14 +5,22 @@
 <div *ngIf="isKeyImported && tx">
   <div class="column-container">
     <div class="row-container">
-      <mat-form-field class="form-margin-right">
-        <input matInput placeholder="nonce" value="{{tx.nonce}}" type="number" (input)="tx.nonce = $event.target.value">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="fee" value="{{tx.actionFee}}" type="number"
-          (input)="tx.actionFee = $event.target.value"
-          matTooltip="this is a recommended minimum fee which will be charged for each action in action list">
-      </mat-form-field>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Advanced options
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field class="form-margin-right">
+          <input matInput placeholder="nonce" value="{{tx.nonce}}" type="number"
+            (input)="tx.nonce = $event.target.value">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="fee" value="{{tx.actionFee}}" type="number"
+            (input)="tx.actionFee = $event.target.value"
+            matTooltip="this is a recommended minimum fee which will be charged for each action in action list">
+        </mat-form-field>
+      </mat-expansion-panel>
     </div>
     <div class="column-container" *ngIf="displayActions">
       <mat-toolbar>

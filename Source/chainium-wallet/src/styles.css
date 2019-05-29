@@ -108,6 +108,10 @@ button {
     margin-left: 20px;
 }
 
+.margin-l-15 {
+    margin-left: 15px;
+}
+
 .condensed {
     font-family: 'Roboto Condensed', Roboto, 'Helvetica Neue', sans-serif !important;
 }

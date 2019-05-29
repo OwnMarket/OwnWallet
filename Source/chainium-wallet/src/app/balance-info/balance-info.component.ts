@@ -6,6 +6,8 @@ import { WalletService } from '../services/wallet.service';
 import { NodeService } from '../services/node.service';
 import { WalletInfo } from '../models/wallet-info.model';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { CopyPrivateKeyComponent } from '../copy-private-key/copy-private-key.component';
 
 @Component({
     selector: 'app-balance-info',
@@ -25,6 +27,7 @@ export class BalanceInfoComponent implements OnInit {
         private privateKeyService: PrivatekeyService,
         private walletService: WalletService,
         private router: Router,
+        public dialog: MatDialog,
         private nodeService: NodeService) {
         this.onRefreshAddressInfoClick();
         this.privateKeyService.getMessage().subscribe(msg => this.onRefreshAddressInfoClick());
@@ -92,6 +95,12 @@ export class BalanceInfoComponent implements OnInit {
                 this.router.navigate(['/home']);
             }
         }
+    }
+
+    openPrivateKeyDialog() {
+        this.dialog.open(CopyPrivateKeyComponent, {
+            width: '50%', data: this.selectedWallet
+        });
     }
 
     private setAddress(addr: any): void {

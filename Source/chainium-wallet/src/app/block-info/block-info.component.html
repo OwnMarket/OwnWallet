@@ -123,7 +123,7 @@
             class="pointer margin-l-20 animate-click">
                 file_copy
         </mat-icon>
-    </mat-form-field>
+    </mat-form-field>  
     <mat-form-field class="info-item-margin">
         <textarea matInput placeholder="staking rewards set root" disabled
             value="{{blockInfo.configurationRoot || '-'}}">
@@ -159,24 +159,28 @@
     </mat-expansion-panel>
     <!--END EQUIVOCATION-->
     <!--BEGIN STAKING REWARDS-->
-    <mat-expansion-panel *ngIf="blockInfo.stakingRewards > 0">
+    <mat-expansion-panel *ngIf="blockInfo.stakingRewards && blockInfo.stakingRewards.length > 0">
         <mat-expansion-panel-header>
             <mat-panel-title class="font-bold">
                 Staking rewards
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-form-field class="info-item-margin" *ngFor="let reward of blockInfo.stakingRewards">
-            <div class="validators-container">
-                <textarea matInput placeholder="staking rewards" disabled
-                    value="{{reward}}">
-                </textarea>
-                <mat-icon matSuffix color="accent" ngxClipboard
-                    cbContent="{{reward}}"
-                    class="pointer margin-l-20 animate-click">
-                        file_copy
-                </mat-icon>
-            </div>
-        </mat-form-field>
+        <table class="full-width">
+            <tr class="info-item-margin" *ngFor="let reward of blockInfo.stakingRewards">
+                <td>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="staker address" disabled type="text"
+                            value="{{reward.stakerAddress}}">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="amount" disabled type="number"
+                            value="{{reward.amount}}">
+                    </mat-form-field>
+                </td>              
+            </tr>
+        </table>        
     </mat-expansion-panel>
     <!--END STAKING REWARDS-->
     <!--BEGIN CONFIGURATION-->

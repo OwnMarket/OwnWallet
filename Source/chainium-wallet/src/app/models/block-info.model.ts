@@ -16,11 +16,11 @@ export class BlockInfo {
     equivocationProofs: string[];
     equivocationProofsRoot: string;
     equivocationProofResultsRoot: string;
-    stakingRewards: StakerReward[];
+    stakingRewards: StakingReward[];
     stakingRewardsRoot: string;
 }
 
-export class StakerReward { 
+export class StakingReward { 
     stakerAddress: string;
     amount: number; 
 }

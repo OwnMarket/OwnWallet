@@ -46,6 +46,13 @@ export class LoginComponent implements OnInit {
         }                       
     }
 
+    onKeyDown(event) {
+        this.wrongPassword = false;
+        if (event && event.key === "Enter") {
+            this.onSubmitPassword();
+        }
+    }
+
     onSubmitPassword() {
         this.password.markAsTouched();
         if (this.password.valid && this.walletKeystore) {
@@ -65,8 +72,7 @@ export class LoginComponent implements OnInit {
                 this.wrongPassword = true;
             }            
         }
-    } 
-    
+    }    
 
     onUnloadWallet() {
         let dialogRef = this.dialog.open(UnloadWalletInfoComponent, {width: '50%'});

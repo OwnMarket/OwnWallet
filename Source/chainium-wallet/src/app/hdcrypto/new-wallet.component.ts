@@ -1,10 +1,11 @@
 
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { CryptoService } from "../services/crypto.service";
 import { WalletService } from '../services/wallet.service';
 import { FileService } from '../services/file.service';
 import { Router } from '@angular/router';
+import { MustMatch } from '../helpers/must-match.validator';
 
 @Component({
     selector: 'app-new-wallet',
@@ -12,12 +13,13 @@ import { Router } from '@angular/router';
 })
 export class NewWalletComponent implements OnInit {
     // controlled inputs
-    password = new FormControl('', [Validators.required]);
+    registerForm: FormGroup;
     mnemonic = new FormControl('', [Validators.required]);
     saveKeystore : boolean;
     hide: boolean;
 
-    constructor(private router: Router,
+    constructor(private formBuilder: FormBuilder,
+        private router: Router,
         private cryptoService: CryptoService,
         private walletService: WalletService,
         private fileService: FileService) {
@@ -26,8 +28,17 @@ export class NewWalletComponent implements OnInit {
     }
 
     ngOnInit() { 
+        this.registerForm = this.formBuilder.group({
+            password: new FormControl('', [Validators.required]),
+            confirmPassword: new FormControl('', [Validators.required]),
+        }, {
+            validator: MustMatch('password', 'confirmPassword')
+        });
         this.onGenerateMnemonic();
     }
+
+    // Convenience getter for easy access to form fields.
+    get f() { return this.registerForm.controls; }
 
     onGenerateMnemonic() {
         this.cryptoService.generateMnemonic()
@@ -37,10 +48,9 @@ export class NewWalletComponent implements OnInit {
     onCreateNewWallet() {
         this.walletService.clearWalletContext();
         this.mnemonic.markAsTouched();
-        this.password.markAsTouched();
 
-        if (this.mnemonic.valid && this.password.valid) {
-            const passwordHash = this.cryptoService.hash(this.password.value);
+        if (this.mnemonic.valid && this.registerForm.valid) {
+            const passwordHash = this.cryptoService.hash(this.f.password.value);
             this.cryptoService.generateWalletKeystore(this.mnemonic.value, passwordHash)
                 .subscribe((walletKeystore: string) => {
                     if (this.saveKeystore) {

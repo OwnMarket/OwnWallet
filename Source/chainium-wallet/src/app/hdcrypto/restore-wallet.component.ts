@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PrivatekeyService } from '../services/privatekey.service';
 import { CryptoService } from "../services/crypto.service";
 import { WalletService } from '../services/wallet.service';
 import { FileService } from '../services/file.service';
 import { Router } from '@angular/router';
+import { MustMatch } from '../helpers/must-match.validator';
 
 @Component({
     selector: 'app-restore-wallet',    
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./restore-wallet.component.css']
 })
 export class RestoreWalletComponent implements OnInit {
-    password = new FormControl('', [Validators.required]);
+    registerForm: FormGroup;
     mnemonic = new FormControl('', [Validators.required]);
     saveKeystore : boolean;
     file: any;
@@ -24,7 +25,8 @@ export class RestoreWalletComponent implements OnInit {
     hideWithPrivateKey : boolean;
     wrongPassword: boolean;
     
-    constructor(private router: Router,
+    constructor(private formBuilder: FormBuilder,
+        private router: Router,
         private privateKeyService: PrivatekeyService,
         private cryptoService: CryptoService,
         private walletService: WalletService,
@@ -38,7 +40,16 @@ export class RestoreWalletComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.registerForm = this.formBuilder.group({
+            password: new FormControl('', [Validators.required]),
+            confirmPassword: new FormControl('', [Validators.required]),
+        }, {
+            validator: MustMatch('password', 'confirmPassword')
+        });
     }
+
+    // Convenience getter for easy access to form fields.
+    get f() { return this.registerForm.controls; }
 
     fileChanged(e) {
         // note: For security reasons browsers do not allow getting full path of selected file.
@@ -53,9 +64,8 @@ export class RestoreWalletComponent implements OnInit {
     onRestoreWithFile() {
         this.walletService.clearWalletContext();
 
-        this.password.markAsTouched();
-        if (this.password.valid && this.walletKeystore) {
-            const passwordHash = this.cryptoService.hash(this.password.value);
+        if (this.f.password.valid && this.walletKeystore) {
+            const passwordHash = this.cryptoService.hash(this.f.password.value);
             const walletContext = { walletKeystore: this.walletKeystore, passwordHash };
             try {
                 this.cryptoService.generateWalletFromKeystore(
@@ -77,12 +87,10 @@ export class RestoreWalletComponent implements OnInit {
 
     onRestoreWithMnemonic() {
         this.walletService.clearWalletContext();
-
         this.mnemonic.markAsTouched();
-        this.password.markAsTouched();
 
-        if (this.password.valid && this.mnemonic.valid) {
-            const passwordHash = this.cryptoService.hash(this.password.value);
+        if (this.registerForm.valid && this.mnemonic.valid) {
+            const passwordHash = this.cryptoService.hash(this.f.password.value);
             this.cryptoService.generateWalletKeystore(this.mnemonic.value, passwordHash)
                 .subscribe((walletKeystore: string) => {
                     if (this.saveKeystore) {

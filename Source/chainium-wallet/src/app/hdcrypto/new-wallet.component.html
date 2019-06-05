@@ -25,13 +25,22 @@
         </div>
     </div>
     <div class="margin-t-20">
-        <mat-form-field>
-            <input matInput placeholder="password" [type]="hide ? 'password' : 'text'" [formControl]="password"
-                required />
-            <mat-icon matSuffix (click)="hide = !hide" color="accent" class="pointer">
-                {{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-            <mat-error *ngIf="password.invalid">This field is required.</mat-error>
-        </mat-form-field>
+        <div [formGroup]="registerForm">
+            <mat-form-field>
+                <input matInput placeholder="password" [type]="hide ? 'password' : 'text'" formControlName="password"
+                    required />              
+                <mat-error *ngIf="f.password.errors && f.password.errors.required">This field is required.</mat-error>
+            </mat-form-field>
+            <mat-form-field class="margin-l-20">
+                <input matInput placeholder="confirm password" [type]="hide ? 'password' : 'text'" formControlName="confirmPassword"
+                    required />
+                <mat-icon matSuffix (click)="hide = !hide" color="accent" class="pointer">
+                    {{hide ? 'visibility' : 'visibility_off'}}
+                </mat-icon>
+                <mat-error *ngIf="f.confirmPassword.errors && f.confirmPassword.errors.required">This field is required.</mat-error>
+                <mat-error *ngIf="f.confirmPassword.errors && f.confirmPassword.errors.mustMatch">Passwords must match</mat-error>
+            </mat-form-field>            
+        </div>
         <div class="row">
             <button (click)="onCreateNewWallet()" mat-raised-button color="accent">CREATE WALLET</button>
             <mat-checkbox class="margin-l-20" name="saveKeystore" [(ngModel)]="saveKeystore" matTooltip="">

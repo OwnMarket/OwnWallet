@@ -16,11 +16,20 @@
                 </mat-form-field>
             </div>
             <div class="margin-t-20">
-                <mat-form-field>
-                    <input matInput placeholder="password" [type]="hideWithMnemonic ? 'password' : 'text'" [formControl]="password" required />
-                    <mat-icon matSuffix (click)="hideWithMnemonic = !hideWithMnemonic" color="accent" class="pointer">{{hideWithMnemonic ? 'visibility' : 'visibility_off'}}</mat-icon>            
-                    <mat-error *ngIf="password.invalid">This field is required.</mat-error>
-                </mat-form-field>
+                <div [formGroup]="registerForm">
+                    <mat-form-field>
+                        <input matInput placeholder="password" [type]="hideWithMnemonic ? 'password' : 'text'" formControlName="password" required />                      
+                        <mat-error *ngIf="f.password.errors && f.password.errors.required">This field is required.</mat-error>
+                    </mat-form-field>        
+                    <mat-form-field class="margin-l-20">
+                        <input matInput placeholder="confirm password" [type]="hideWithMnemonic ? 'password' : 'text'" formControlName="confirmPassword" required />
+                        <mat-icon matSuffix (click)="hideWithMnemonic = !hideWithMnemonic" color="accent" class="pointer">
+                            {{hideWithMnemonic ? 'visibility' : 'visibility_off'}}
+                        </mat-icon>            
+                        <mat-error *ngIf="f.confirmPassword.errors && f.confirmPassword.errors.required">This field is required.</mat-error>
+                        <mat-error *ngIf="f.confirmPassword.errors && f.confirmPassword.errors.mustMatch">Passwords must match.</mat-error>
+                    </mat-form-field>     
+                </div>
                 <div class="row">
                     <button (click)="onRestoreWithMnemonic()" mat-raised-button color="accent">RESTORE</button>
                     <mat-checkbox class="margin-l-20" name="saveKeystore" [(ngModel)]="saveKeystore" matTooltip="">
@@ -34,12 +43,14 @@
                 <input type="file" (change)="fileChanged($event)" />
             </div>
             <div class="margin-t-20">
-                <mat-form-field>
-                    <input matInput placeholder="password" [type]="hideWithKeystore ? 'password' : 'text'" [formControl]="password" required />
-                    <mat-icon matSuffix (click)="hideWithKeystore = !hideWithKeystore" color="accent" class="pointer">{{hideWithKeystore ? 'visibility' : 'visibility_off'}}</mat-icon>            
-                    <mat-error *ngIf="password.invalid">This field is required.</mat-error>
-                </mat-form-field>
-                <div *ngIf="password.valid && wrongPassword">
+                <div [formGroup]="registerForm">
+                    <mat-form-field>
+                        <input matInput placeholder="password" [type]="hideWithMnemonic ? 'password' : 'text'" formControlName="password" required />                      
+                        <mat-icon matSuffix (click)="hideWithKeystore = !hideWithKeystore" color="accent" class="pointer">{{hideWithKeystore ? 'visibility' : 'visibility_off'}}</mat-icon>                                        
+                        <mat-error *ngIf="f.password.errors && f.password.errors.required">This field is required.</mat-error>
+                    </mat-form-field>
+                </div>                
+                <div *ngIf="f.password.valid && wrongPassword">
                     <mat-error class='error-font'>Invalid password!</mat-error>
                 </div>
                 <div class="row margin-t-20">

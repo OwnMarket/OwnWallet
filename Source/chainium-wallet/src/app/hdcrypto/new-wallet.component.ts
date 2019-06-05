@@ -48,10 +48,12 @@ export class NewWalletComponent implements OnInit {
     onCreateNewWallet() {
         this.walletService.clearWalletContext();
         this.mnemonic.markAsTouched();
+        this.f.password.markAsTouched();
+        this.f.confirmPassword.markAsTouched();
 
         if (this.mnemonic.valid && this.registerForm.valid) {
             const passwordHash = this.cryptoService.hash(this.f.password.value);
-            this.cryptoService.generateWalletKeystore(this.mnemonic.value, passwordHash)
+            this.cryptoService.generateWalletKeystore(this.mnemonic.value.trim(), passwordHash)
                 .subscribe((walletKeystore: string) => {
                     if (this.saveKeystore) {
                         this.fileService.saveFile({

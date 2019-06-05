@@ -63,7 +63,7 @@ export class RestoreWalletComponent implements OnInit {
 
     onRestoreWithFile() {
         this.walletService.clearWalletContext();
-
+        
         if (this.f.password.valid && this.walletKeystore) {
             const passwordHash = this.cryptoService.hash(this.f.password.value);
             const walletContext = { walletKeystore: this.walletKeystore, passwordHash };
@@ -88,10 +88,13 @@ export class RestoreWalletComponent implements OnInit {
     onRestoreWithMnemonic() {
         this.walletService.clearWalletContext();
         this.mnemonic.markAsTouched();
-
+        this.f.password.markAsTouched();
+        this.f.confirmPassword.markAsTouched();
+        
         if (this.registerForm.valid && this.mnemonic.valid) {
             const passwordHash = this.cryptoService.hash(this.f.password.value);
-            this.cryptoService.generateWalletKeystore(this.mnemonic.value, passwordHash)
+            try {
+                this.cryptoService.generateWalletKeystore(this.mnemonic.value.trim(), passwordHash)
                 .subscribe((walletKeystore: string) => {
                     if (this.saveKeystore) {
                         this.fileService.saveFile({
@@ -99,13 +102,16 @@ export class RestoreWalletComponent implements OnInit {
                             text: walletKeystore
                         });    
                     }
-
                     const walletContext = { walletKeystore, passwordHash };
                     this.walletService.setWalletContext(walletContext);
                     this.walletService.generateWalletFromContext();
 
                     this.router.navigate(['/home']);
                 });
+            }
+            catch {                
+                this.mnemonic.setErrors({'incorrect': true});
+            }           
         }
     }
 

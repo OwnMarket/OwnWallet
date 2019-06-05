@@ -140,3 +140,8 @@ button {
     font-family: monospace !important;
     font-size: xx-large !important;
 }
+
+.mat-tab-body-content { 
+    height: 100%;
+    overflow: hidden !important; 
+}

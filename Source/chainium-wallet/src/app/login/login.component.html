@@ -4,12 +4,10 @@
             <input matInput placeholder="password" [type]="hide ? 'password' : 'text'" [formControl]="password" 
                 (keydown)="onKeyDown($event)" required />
             <mat-icon matSuffix (click)="hide = !hide" color="accent" class="pointer">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-            <mat-error *ngIf="password.invalid">This field is required.</mat-error>               
+            <mat-error *ngIf="password.errors && password.errors.required">This field is required.</mat-error>
+            <mat-error *ngIf="password.errors && password.errors.incorrect">Invalid password!</mat-error>                
         </mat-form-field>    
-    </div> 
-    <mat-error *ngIf="password.valid && wrongPassword" class="row-container error-font">
-        Invalid password!
-    </mat-error> 
+    </div>
     <div class="row-container margin-t-20">
         <button (click)="onSubmitPassword()" mat-raised-button color="accent">LOGIN</button>
         <button (click)="onUnloadWallet()" mat-raised-button color="accent" style="margin-left:20px">UNLOAD WALLET</button>

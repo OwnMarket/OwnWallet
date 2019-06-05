@@ -15,7 +15,6 @@ import { UnloadWalletInfoComponent } from '../unload-wallet-info/unload-wallet-i
 export class LoginComponent implements OnInit {
 
     needPasswordOnly: boolean;
-    wrongPassword : boolean;
     walletKeystore: string;
     hide: boolean;
     showRestore: boolean;
@@ -31,7 +30,6 @@ export class LoginComponent implements OnInit {
             this.hide = true;
             this.saveKeystore = true;
             this.needPasswordOnly = false;
-            this.wrongPassword = false;
             this.showRestore = false;
     }
 
@@ -47,7 +45,6 @@ export class LoginComponent implements OnInit {
     }
 
     onKeyDown(event) {
-        this.wrongPassword = false;
         if (event && event.key === "Enter") {
             this.onSubmitPassword();
         }
@@ -64,12 +61,11 @@ export class LoginComponent implements OnInit {
                     walletContext.passwordHash,
                     0
                 ).subscribe(w => {});
-                this.wrongPassword = false;
                 this.walletService.setWalletContext(walletContext);
                 this.router.navigate(['/home']);
             }
             catch {
-                this.wrongPassword = true;
+                this.password.setErrors({'incorrect': true});
             }            
         }
     }    

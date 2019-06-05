@@ -49,11 +49,9 @@
                         <input matInput placeholder="password" [type]="hideWithMnemonic ? 'password' : 'text'" formControlName="password" required />                      
                         <mat-icon matSuffix (click)="hideWithKeystore = !hideWithKeystore" color="accent" class="pointer">{{hideWithKeystore ? 'visibility' : 'visibility_off'}}</mat-icon>                                        
                         <mat-error *ngIf="f.password.errors && f.password.errors.required">This field is required.</mat-error>
+                        <mat-error *ngIf="f.password.errors && f.password.errors.incorrect">Invalid password!</mat-error>
                     </mat-form-field>
                 </div>                
-                <div *ngIf="f.password.valid && wrongPassword">
-                    <mat-error class='error-font'>Invalid password!</mat-error>
-                </div>
                 <div class="row margin-t-20">
                     <button (click)="onRestoreWithFile()" mat-raised-button color="accent">RESTORE</button>
                 </div>                

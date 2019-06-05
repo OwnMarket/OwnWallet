@@ -23,7 +23,6 @@ export class RestoreWalletComponent implements OnInit {
     hideWithMnemonic: boolean;
     hideWithKeystore: boolean;
     hideWithPrivateKey : boolean;
-    wrongPassword: boolean;
     
     constructor(private formBuilder: FormBuilder,
         private router: Router,
@@ -35,7 +34,6 @@ export class RestoreWalletComponent implements OnInit {
         this.hideWithMnemonic = true;
         this.hideWithKeystore = true;
         this.hideWithPrivateKey = true;
-        this.wrongPassword = false;
         this.privateKey = ''
     }
 
@@ -73,14 +71,13 @@ export class RestoreWalletComponent implements OnInit {
                     walletContext.passwordHash,
                     0
                 ).subscribe(w => {});
-                this.wrongPassword = false;
                 this.walletService.setWalletContext(walletContext);
                 this.walletService.generateWalletFromContext();
 
                 this.router.navigate(['/home']);
             }
             catch {
-                this.wrongPassword = true;
+                this.f.password.setErrors({'incorrect' : true});
             }
         }
     }

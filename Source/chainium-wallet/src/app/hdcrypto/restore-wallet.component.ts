@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { PrivatekeyService } from '../services/privatekey.service';
 import { CryptoService } from "../services/crypto.service";
 import { WalletService } from '../services/wallet.service';
+import { FileService } from '../services/file.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,7 +14,7 @@ import { Router } from '@angular/router';
 export class RestoreWalletComponent implements OnInit {
     password = new FormControl('', [Validators.required]);
     mnemonic = new FormControl('', [Validators.required]);
-
+    saveKeystore : boolean;
     file: any;
     walletKeystore: string;
     privateKey : string;
@@ -26,7 +27,9 @@ export class RestoreWalletComponent implements OnInit {
     constructor(private router: Router,
         private privateKeyService: PrivatekeyService,
         private cryptoService: CryptoService,
-        private walletService: WalletService) {
+        private walletService: WalletService,
+        private fileService: FileService) {
+        this.saveKeystore = true;
         this.hideWithMnemonic = true;
         this.hideWithKeystore = true;
         this.hideWithPrivateKey = true;
@@ -82,6 +85,13 @@ export class RestoreWalletComponent implements OnInit {
             const passwordHash = this.cryptoService.hash(this.password.value);
             this.cryptoService.generateWalletKeystore(this.mnemonic.value, passwordHash)
                 .subscribe((walletKeystore: string) => {
+                    if (this.saveKeystore) {
+                        this.fileService.saveFile({
+                            fileName: 'wallet-backup.own',
+                            text: walletKeystore
+                        });    
+                    }
+
                     const walletContext = { walletKeystore, passwordHash };
                     this.walletService.setWalletContext(walletContext);
                     this.walletService.generateWalletFromContext();

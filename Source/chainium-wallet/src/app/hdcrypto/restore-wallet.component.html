@@ -23,6 +23,9 @@
                 </mat-form-field>
                 <div class="row">
                     <button (click)="onRestoreWithMnemonic()" mat-raised-button color="accent">RESTORE</button>
+                    <mat-checkbox class="margin-l-20" name="saveKeystore" [(ngModel)]="saveKeystore" matTooltip="">
+                        Save keystore file
+                    </mat-checkbox>
                 </div>                
             </div>
         </mat-tab>

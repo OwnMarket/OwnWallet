@@ -13,7 +13,8 @@ export class AccessGuard implements CanActivate {
 
     canActivate() {
         var context = this.walletService.getWalletContext();
-        if (!context.passwordHash && context.walletKeystore) {
+        if (!context.passwordHash && context.walletKeystore 
+            && window.location.pathname !== '/recover-pk-from-old-derivation-path') {
             this.router.navigate(['/login']);
             return false;
         }                

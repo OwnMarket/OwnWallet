@@ -56,9 +56,13 @@ export class CryptoService {
 
     public generateWalletFromKeystore(keystore: string, passwordHash: string, walletIndex: number): Observable<any> {
         return of(ownBlockchainSdk.crypto.generateWalletFromKeystore(keystore, passwordHash, walletIndex));
-    }
+    } 
     
     public restoreWalletsFromKeystore(keystore: string, passwordHash: string, walletCount: number): Observable<any> {
         return of(ownBlockchainSdk.crypto.restoreWalletsFromKeystore(keystore, passwordHash, walletCount));
+    }
+
+    public restoreOldWalletsFromMnemonic(mnemonic: string, walletCount: number): Observable<any> {
+        return of(ownBlockchainSdk.crypto.restoreOldWalletsFromMnemonic(mnemonic, walletCount));
     }
 }

@@ -1,0 +1,34 @@
+<div class="column-container margin-t-20">
+    <div class="margin-t-20">
+        <mat-form-field class="full-width">
+            <textarea matInput placeholder="Recovery phrase" class="monospace-font" rows="5" [formControl]="mnemonic" required></textarea>
+            <mat-error *ngIf="mnemonic.errors && mnemonic.errors.required">This field is required.</mat-error>
+            <mat-error *ngIf="mnemonic.errors && mnemonic.errors.incorrect">Invalid Recovery phrase</mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="row margin-t-20">
+        <button (click)="onShowChxAddresses()" mat-raised-button color="accent">Recover</button>        
+    </div>     
+
+    <table class="full-width margin-t-20">
+        <tr class="info-item-margin" *ngFor="let addressInfo of addresses; let i = index">
+            <td>
+                <mat-form-field class="full-width">
+                    <input matInput placeholder="CHX address" disabled type="text"
+                        value="{{addressInfo.blockchainAddress}}">
+                </mat-form-field>
+            </td>
+            <td>
+                <mat-form-field class="full-width">
+                    <input matInput placeholder="Balance" disabled type="number"
+                        value="{{addressInfo.balance.total}}">                        
+                </mat-form-field>
+            </td>
+            <td>                    
+                <mat-icon matSuffix (click)="openPrivateKeyDialog(i)" class="margin-l-15 pointer animate-click" color="accent" matTooltip="Show Private Key">backup_outline</mat-icon>
+            </td>              
+        </tr>
+    </table>        
+
+</div>

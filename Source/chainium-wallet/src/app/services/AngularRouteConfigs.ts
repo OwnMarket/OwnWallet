@@ -1,4 +1,5 @@
 import { ImportWalletComponent } from '../import-wallet/import-wallet.component';
+import { RecoverPkFromOldDerivationPathComponent } from '../recover-pk-from-old-derivation-path/recover-pk-from-old-derivation-path.component';
 import { AccountInfoComponent } from '../account-info/account-info.component';
 import { SubmitTransactionComponent } from '../submit-transaction/submit-transaction.component';
 import { TransactionInfoComponent } from '../transaction-info/transaction-info.component';
@@ -44,7 +45,8 @@ export const ROUTERCONFIGS = [
             { path: 'equivocation/:equivocationProofHash', component: EquivocationProofInfoComponent },
             //{ path: 'generateaccount', component: GenerateAccountComponent },
             { path: 'sign-verify', component: MessageSignVerificationComponent },
+            { path: 'recover-pk-from-old-derivation-path', component: RecoverPkFromOldDerivationPathComponent }
         ]
     },
-    { path: 'login', component: LoginComponent },
+    { path: 'login', component: LoginComponent }
 ];

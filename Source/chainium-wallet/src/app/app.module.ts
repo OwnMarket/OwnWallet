@@ -7,6 +7,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 
 import { AppComponent } from './app.component';
 import { ImportWalletComponent } from './import-wallet/import-wallet.component';
+import { RecoverPkFromOldDerivationPathComponent } from './recover-pk-from-old-derivation-path/recover-pk-from-old-derivation-path.component';
 import { BalanceInfoComponent } from './balance-info/balance-info.component';
 import { AccountInfoComponent } from './account-info/account-info.component';
 import { SubmitTransactionComponent } from './submit-transaction/submit-transaction.component';
@@ -59,6 +60,7 @@ import { CopyPrivateKeyComponent } from './copy-private-key/copy-private-key.com
         PrivateComponent,
         AppComponent,
         ImportWalletComponent,
+        RecoverPkFromOldDerivationPathComponent,
         BalanceInfoComponent,
         AccountInfoComponent,
         AssetInfoComponent,

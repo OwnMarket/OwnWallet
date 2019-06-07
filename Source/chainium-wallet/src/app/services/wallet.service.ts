@@ -45,7 +45,7 @@ export class WalletService {
         }
     }
 
-    getAllChxAddresses () {
+    getAllChxAddresses () : string[] {
         return JSON.parse(localStorage.getItem('walletChxAddresses')) || []
     }
 
@@ -60,7 +60,7 @@ export class WalletService {
     sendMessage(message: boolean) {
         this.subject.next(message);
     }
-
+ 
     clearMessage() {
         this.subject.next();
     }
@@ -90,17 +90,32 @@ export class WalletService {
         this.privateKeyService.setWalletInfo(null);
         this.sendMessage(true);
     }
-
+   
     private createChxAddress(index: number) {
         let context = this.getWalletContext();
         if (!context.passwordHash || !context.walletKeystore)
-            return;
-                
+            return;           
+
         this.cryptoService.generateWalletFromKeystore(context.walletKeystore, context.passwordHash, index)
             .subscribe((wallet: WalletInfo) => {
-                this.addAddressToStorage(wallet.address);
                 let selectedChxAddress = this.getSelectedChxAddress();
                 let chxAddresses = this.getAllChxAddresses();
+
+                // sanitize non-recoverable peristed addresses
+                if (index == 0 && chxAddresses.length > 0 && wallet.address !== chxAddresses[0]) {
+                    // clear active address selection
+                    let selectedChxAddress = this.getSelectedChxAddress();
+                    if (selectedChxAddress == chxAddresses[0]) {
+                        this.setSelectedChxAddress(null);
+                    }                    
+
+                    // remove old chx address form the storage              
+                    chxAddresses.shift();
+                    localStorage.setItem('walletChxAddresses', JSON.stringify(chxAddresses));                       
+                }
+
+                this.addAddressToStorage(wallet.address);
+
                 let isValidSelectedChxAddress = selectedChxAddress && chxAddresses.indexOf(selectedChxAddress) >= 0;
                 if (index == 0 && isValidSelectedChxAddress) {
                     this.getWalletInfo(selectedChxAddress)

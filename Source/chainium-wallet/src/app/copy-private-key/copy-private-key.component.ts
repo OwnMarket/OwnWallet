@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { WalletInfo } from '../models/wallet-info.model';
 import { PrivatekeyService } from '../services/privatekey.service';
 
@@ -15,11 +15,11 @@ export class CopyPrivateKeyComponent implements OnInit {
 
     constructor(
         public dialogRef: MatDialogRef<CopyPrivateKeyComponent>,
-        private privateKeyService: PrivatekeyService,) {
+        @Inject(MAT_DIALOG_DATA) public data: WalletInfo) {
     }
 
     ngOnInit() {
-        this.walletInfo = this.privateKeyService.getWalletInfo()
+        this.walletInfo = this.data
     }
 
     onCloseClick(): void {

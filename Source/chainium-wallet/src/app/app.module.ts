@@ -9,10 +9,7 @@ import { AppComponent } from './app.component';
 import { ImportWalletComponent } from './import-wallet/import-wallet.component';
 import { RecoverPkFromOldDerivationPathComponent } from './recover-pk-from-old-derivation-path/recover-pk-from-old-derivation-path.component';
 import { BalanceInfoComponent } from './balance-info/balance-info.component';
-import { AccountInfoComponent } from './account-info/account-info.component';
 import { SubmitTransactionComponent } from './submit-transaction/submit-transaction.component';
-import { TransactionInfoComponent } from './transaction-info/transaction-info.component';
-import { BlockInfoComponent } from './block-info/block-info.component';
 import { ChxTransferComponent } from './actions/chx-transfer/chx-transfer.component';
 import { AssetTransferComponent } from './actions/asset-transfer/asset-transfer.component';
 import { SubmitTransactionInfoComponent } from './submit-transaction-info/submit-transaction-info.component';
@@ -21,7 +18,6 @@ import { HomeScreenComponent } from './home-screen/home-screen.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GlobalErrorHandler } from './services/global.error.handler';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
-import { AddressInfoComponent } from './address-info/address-info.component';
 import { GenerateAccountComponent } from './generate-account/generate-account.component';
 import { WalletHttpInterceptor } from './services/wallet-http-interceptor';
 import { LoaderComponent } from './loader/loader.component';
@@ -34,7 +30,6 @@ import { SetAccountControllerComponent } from './actions/set-account-controller/
 import { SubmitVoteComponent } from './actions/submit-vote/submit-vote.component';
 import { SubmitVoteWeightComponent } from './actions/submit-vote-weight/submit-vote-weight.component';
 import { RemoveValidatorComponent } from './actions/remove-validator/remove-validator.component';
-import { AssetInfoComponent } from './asset-info/asset-info.component';
 import { ValidatorInfoComponent } from './validator-info/validator-info.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateAssetComponent } from './actions/create-asset/create-asset.component';
@@ -46,14 +41,15 @@ import { RestoreWalletComponent } from './hdcrypto/restore-wallet.component';
 import { UnloadWalletComponent } from './hdcrypto/unload-wallet.component';
 import { LoginComponent } from './login/login.component';
 import { PrivateComponent } from './layout/private.component';
+import { OwnNavbarModule } from './shared';
 import { CopyPrivateKeyComponent } from './copy-private-key/copy-private-key.component';
 
 @NgModule({
     entryComponents: [
-        SubmitTransactionInfoComponent, 
+        SubmitTransactionInfoComponent,
         UnloadWalletInfoComponent,
-        ErrorDialogComponent, 
-        LoaderComponent, 
+        ErrorDialogComponent,
+        LoaderComponent,
         CopyPrivateKeyComponent
     ],
     declarations: [
@@ -62,12 +58,8 @@ import { CopyPrivateKeyComponent } from './copy-private-key/copy-private-key.com
         ImportWalletComponent,
         RecoverPkFromOldDerivationPathComponent,
         BalanceInfoComponent,
-        AccountInfoComponent,
-        AssetInfoComponent,
         ValidatorInfoComponent,
         SubmitTransactionComponent,
-        TransactionInfoComponent,
-        BlockInfoComponent,
         EquivocationProofInfoComponent,
         ChxTransferComponent,
         AssetTransferComponent,
@@ -86,7 +78,6 @@ import { CopyPrivateKeyComponent } from './copy-private-key/copy-private-key.com
         UnloadWalletInfoComponent,
         HomeScreenComponent,
         ErrorDialogComponent,
-        AddressInfoComponent,
         GenerateAccountComponent,
         LoaderComponent,
         MessageSignVerificationComponent,
@@ -100,10 +91,11 @@ import { CopyPrivateKeyComponent } from './copy-private-key/copy-private-key.com
         BrowserModule,
         FormsModule,
         ReactiveFormsModule,
+        HttpClientModule,
         GoogleMaterialModule,
         BrowserAnimationsModule,
+        OwnNavbarModule,
         AppRoutingModule,
-        HttpClientModule,
         ClipboardModule
     ],
     providers: [

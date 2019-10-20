@@ -1,0 +1,48 @@
+.tabs ul {
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  border-bottom: 1px solid var(--color-text-info);
+}
+.tabs ul li {
+  position: relative;
+  padding: 10px;
+}
+.tabs ul li svg {
+  width: 30px;
+  fill: var(--color-text-info);
+  margin-right: 10px;
+}
+.tabs ul li a {
+  color: var(--color-text-info);
+  font-weight: 600;
+}
+.tabs ul li:hover a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+.tabs ul li.active {
+  border-bottom: 2px solid var(--color-brand);
+}
+.tabs ul li.active a {
+  color: var(--color-brand);
+}
+.tabs ul li.active svg {
+  fill: var(--color-brand);
+}
+.tabs ul li.active:focus {
+  outline: none;
+}
+
+@media only screen and (max-width: 450px) {
+  .tabs ul li svg {
+    width: 20px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+  }
+  .tabs ul li a {
+    font-size: .8rem;
+  }
+}
+

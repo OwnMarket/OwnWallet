@@ -1,0 +1,33 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { SharedModule } from '../shared/shared.module';
+import { ClipboardModule } from 'ngx-clipboard';
+
+import { InfoRoutingModule } from './info-routing.module';
+import { InfoPageComponent } from './info-page/info-page.component';
+import { AddressInfoComponent } from './address-info/address-info.component';
+import { AccountInfoComponent } from './account-info/account-info.component';
+import { AssetInfoComponent } from './asset-info/asset-info.component';
+import { TransactionInfoComponent } from './transaction-info/transaction-info.component';
+import { BlockInfoComponent } from './block-info/block-info.component';
+
+
+@NgModule({
+  declarations: [
+    InfoPageComponent,
+    AddressInfoComponent,
+    AccountInfoComponent,
+    AssetInfoComponent,
+    TransactionInfoComponent,
+    BlockInfoComponent
+  ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    NgxDatatableModule,
+    ClipboardModule,
+    InfoRoutingModule
+  ]
+})
+export class InfoModule { }

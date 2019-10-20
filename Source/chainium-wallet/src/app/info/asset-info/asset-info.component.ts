@@ -1,22 +1,22 @@
-import { Component, OnInit } from "@angular/core";
-import { NodeService } from "../services/node.service";
-import { AssetInfo } from "../models/asset-info.model";
-import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AssetInfo } from 'src/app/models/asset-info.model';
+import { NodeService } from 'src/app/services/node.service';
 
 @Component({
-  selector: "app-asset-info",
-  templateUrl: "./asset-info.component.html",
-  styleUrls: ["./asset-info.component.css"]
+  selector: 'app-asset-info',
+  templateUrl: './asset-info.component.html',
+  styleUrls: ['./asset-info.component.css']
 })
 
 export class AssetInfoComponent implements OnInit {
-  assetHash: string = '';
+  assetHash = '';
   assetInfo: AssetInfo;
   subscription: Subscription;
-  errors;
+  errors: any;
   constructor(private nodeService: NodeService,
-    private route: ActivatedRoute) { 
+    private route: ActivatedRoute) {
   }
 
   ngOnInit() {

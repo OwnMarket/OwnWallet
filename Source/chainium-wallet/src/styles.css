@@ -1,140 +1,263 @@
+/** NEW STYLES */
+
 /* You can add global styles to this file, and also import other style files */
-/*@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';*/
-body {
- background-color : #161616;
+:root {
+  --color-bg: #f4f4f4;
+  --color-brand: #eb6723;
+  --color-text: #333447;
+  --color-text-info: #848484;
+  --color-navbar-bg: #ffffff;
+  --color-link: #0073dd;
+  --color-link-hover: #373737;
+  --color-navbar-link: #373737;
+  --color-navbar-link-active: #22242A;
+  --color-card-bg-inactive: #EAEAEA;
+  --base-font-family: "Open Sans", sans-serif;
+  --heading-font-family: "Nunito", sans-serif;
 }
 
-.column-container {
-    display: flex;
-    flex-direction: column;
+*,
+*:after,
+*:before {
+  box-sizing: inherit;
+}
+/* ROOT FONT STYLES */
+
+* {
+  font-family: var(--base-font-family);
+  line-height: 1.5;
+  box-sizing: border-box;
+  font-size: 100%;
 }
 
-.align-center {
-    align-items: center;
-    justify-content: center;
-}
-
-.full-width {
-    width: 100%;
-}
-
-.submit-transaction {
-    z-index: 1500 !important;
-    margin-top: 40px;
-    justify-content: end;
-}
-
-.close-menu {
-    top: auto !important;
-    right: 30px !important;
-    bottom: 30px !important;
-    left: auto !important;
-    position: absolute !important;
-    z-index: 1500 !important;
-}
-
-.row-container {
-    display: flex;
-    flex-direction: row;
-}
-
-.form-margin-right {
-    margin-right: 24px;    
-}
-
-.font-bold {
-    font-weight: bold;
-}
-
-.align-left {
-    margin-right:auto;
-}
-
-.address-field-width {
-    width: 350px;
-    margin-right: 15px;
-}
-
-.align-right {
-    margin-left: auto;
-}
-
-.chainium-gray {
-    background-color: #161616;
+html {
+  box-sizing: border-box;
+  font-size: 14px;
 }
 
 body {
-    margin:0px;
-    padding: 0px;
-    border-width: 0px;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.6;
 }
 
-button {
-    font-weight: bold;
+b,
+strong {
+  font-weight: bold;
 }
 
-.info-item-margin {
-    margin-left: 16px;
-    margin-right: 16px;
+p {
+  margin-top: 0;
 }
 
-.toolbar-bottom-margin {
-    margin-bottom: 24px;
+button:focus {
+  outline: none;
 }
 
-.toolbar-header {
-    margin-top:68px; 
-    background-color: transparent;
+.text-center {
+  text-align: center;
 }
 
-.tx-action-card .mat-card-header-text {
-    margin: 0;
+.text-right {
+  text-align: right;
 }
 
-.tx-action-card table {
-    border-spacing: 0;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 600;
+	letter-spacing: -.1rem;
+	margin-bottom: 2.0rem;
+  margin-top: 0;
+  font-family: var(--heading-font-family);
 }
 
-.tx-action-card td {
-    padding: 0;
-    width: 50%;
+h1 {
+	font-size: 3rem;
+	line-height: 1.2;
 }
 
-.pointer {
-    cursor: pointer;
+h2 {
+	font-size: 2.5rem;
+	line-height: 1.25;
 }
 
-.margin-l-20 {
-    margin-left: 20px;
+h3 {
+	font-size: 2rem;
+	line-height: 1.3;
 }
 
-.margin-l-15 {
-    margin-left: 15px;
+h4 {
+	font-size: 1.8rem;
+	letter-spacing: -.08rem;
+	line-height: 1.35;
 }
 
-.condensed {
-    font-family: 'Roboto Condensed', Roboto, 'Helvetica Neue', sans-serif !important;
+h5 {
+	font-size: 1.5rem;
+	letter-spacing: -.05rem;
+	line-height: 1.5;
 }
 
-.animate-click:active {
-    transform: translateX(2px) translateY(2px);
-    color: #CF6B02;
+h6 {
+	font-size: 1.3rem;
+	letter-spacing: 0;
+	line-height: 1.4;
 }
 
-.margin-t-20 {
-    margin-top: 20px;
+a {
+	color: var(--color-link);
+  text-decoration: none;
 }
 
-.--hide {
-    display: none;
+a:focus,
+a:hover {
+    color: var(--color-link-hover);
 }
 
-.monospace-font {
-    font-family: monospace !important;
-    font-size: xx-large !important;
+.card {
+  box-shadow: 0 3px 14px rgba(0,0,0,.11);
+  background-color: #fff;
+  border: none;
+  border-radius: 15px;
+  height: 100%;
+  overflow: hidden;
 }
 
-.mat-tab-body-content { 
-    height: 100%;
-    overflow: hidden !important; 
+.card-title {
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+h4 {
+  margin-bottom: .5rem;
+}
+
+/* Forms */
+.input-group {
+  border: 1px solid var(--color-brand);
+  border-radius: .3em;
+  margin: .2em 0;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+  line-height: calc(1.5em + .75rem + 2px);
+}
+
+.wallet-table {
+  width: 100%;
+}
+
+.wallet-table .datatable-header,
+.wallet-table .datatable-footer {
+  background-color: var(--color-bg);
+  color: var(--color-text-info);
+}
+
+.wallet-table .datatable-header,
+.wallet-table .datatable-body-row,
+.wallet-table .empty-row {
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.wallet-table .datatable-header,
+.wallet-table .datatable-body-row,
+.wallet-table .datatable-footer,
+.wallet-table .empty-row {
+  padding: 1rem 1.5rem;
+}
+
+.input-group input {
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.input-group .form-control {
+  position: relative;
+  flex: 1 1 auto;
+  width: 1%;
+  margin-bottom: 0;
+  display: block;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-clip: padding-box;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.input-group .form-control:focus {
+  border: 1px solid var(--color-brand);
+  outline: none;
+}
+
+.search-button {
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.border-top {
+  border-top: none;
+}
+
+.border-right {
+  border-right: 1px solid #dee2e6;
+}
+
+.border-left {
+  border-left: 1px solid #dee2e6;
+}
+
+.brand {
+  color: var(--color-brand);
+  fill: var(--color-brand);
+}
+
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.info-value {
+  text-transform: capitalize;
+}
+
+.search-icon {
+  fill: #86909A;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 766px) {
+  .border-top {
+    border-top: 1px solid #dee2e6;
+  }
+  .border-right {
+    border-right: none;
+  }
+  .border-left {
+    border-left: none;
+  }
+  .text-truncate {
+    font-size: .8rem;
+  }
 }

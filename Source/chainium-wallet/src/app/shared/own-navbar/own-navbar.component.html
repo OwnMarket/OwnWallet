@@ -1,0 +1,35 @@
+<nav class="own-navbar">
+
+  <div class="container">
+    <div class="row justify-content-between align-items-center">
+
+    <div class="col-12 col-md-2">
+      <a routerLink="/" class="navbar-brand">
+        <img src="/assets/images/logo.png" alt="logo">
+      </a>
+    </div>
+
+    <div class="col-12 col-md-4 own-nav-collapse" [class.collapsed]="menuOpen">
+      <ul class="nav row justify-content-end">
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" routerLink="/info">Info</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" routerLink="/wallet">Wallet</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="own-toggler">
+      <button (click)="toggleMenu()">
+          <svg viewBox="0 0 40 40" width="10px">
+              <path *ngIf="!menuOpen" class="path" d="M0 2 L20 2 L40 2 M0 20 L40 20 M0 38 L20 38 L40 38"></path>
+              <path *ngIf="menuOpen" class="path" d="M2 2 L20 20 L38 2 M20 20 L20 20 M2 38 L20 20 L38 38"></path>
+          </svg>
+      </button>
+    </div>
+
+  </div>
+  </div>
+
+</nav>

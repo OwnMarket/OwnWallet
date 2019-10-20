@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { NodeService } from '../services/node.service';
-import { ChxAccountsInfo } from '../models/address-info.model';
-import { ChxAddressInfo } from '../models/chx-address-info.model';
-import { StakesInfo, StakeInfo } from '../models/stakes-info.model';
+import { ChxAccountsInfo } from 'src/app/models/address-info.model';
+import { ChxAddressInfo } from 'src/app/models/chx-address-info.model';
+import { NodeService } from 'src/app/services/node.service';
+import { StakesInfo, StakeInfo } from 'src/app/models/stakes-info.model';
+import { ColumnMode } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-address-info',
@@ -12,6 +13,9 @@ import { StakesInfo, StakeInfo } from '../models/stakes-info.model';
   styleUrls: ['./address-info.component.css']
 })
 export class AddressInfoComponent implements OnInit, OnDestroy {
+
+  @ViewChild('copy') copy: TemplateRef<any>;
+
   blockchainAddress = '';
   errors: string[];
   accountsInfo: ChxAccountsInfo;
@@ -20,6 +24,37 @@ export class AddressInfoComponent implements OnInit, OnDestroy {
   stakeInfo: any;
   routeSubscription: Subscription;
   ready = false;
+
+  ColumnMode = ColumnMode;
+
+  stakeColumns = [
+    {
+      name: 'Validator address',
+      prop: 'validatorAddress',
+      flexGrow: 5
+    },
+    {
+      name: 'Amount',
+      prop: 'amount',
+      flexGrow: 1
+    }
+  ];
+
+  accountColumns = [
+    {
+      name: 'Account',
+      prop: 'account',
+      flexGrow: 5
+    }
+  ];
+
+  assetColumns = [
+    {
+      name: 'Asset',
+      prop: 'asset',
+      flexGrow: 5
+    }
+  ];
 
   constructor(private nodeService: NodeService,
     private route: ActivatedRoute) { }
@@ -63,9 +98,9 @@ export class AddressInfoComponent implements OnInit, OnDestroy {
               .getChxAddressStakes(this.blockchainAddress)
               .subscribe(stakes => {
                 this.stakeInfo = stakes as StakesInfo;
-                this.sortStakes("amount","DESC");
+                this.sortStakes('amount', 'DESC');
                 this.ready = true;
-              })
+              });
           });
       });
 
@@ -82,15 +117,22 @@ export class AddressInfoComponent implements OnInit, OnDestroy {
     });
   }
 
-  sortStakes(propName: keyof StakeInfo, order: "ASC" | "DESC"): void {
-    this.stakeInfo.stakes.sort((a, b) => {
-      if (a[propName] < b[propName])
+  sortStakes(propName: keyof StakeInfo, order: 'ASC' | 'DESC'): void {
+    this.stakeInfo.stakes.sort((a: number, b: number) => {
+
+      if (a[propName] < b[propName]) {
         return -1;
-      if (a[propName] > b[propName])
+      }
+
+      if (a[propName] > b[propName]) {
         return 1;
+      }
+
       return 0;
+
     });
-    if (order === "DESC") {
+
+    if (order === 'DESC') {
       this.stakeInfo.stakes.reverse();
     }
   }

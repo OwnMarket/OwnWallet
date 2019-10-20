@@ -23,8 +23,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "src/assets/themes/chainium-theme.scss"
+              "node_modules/bootstrap/dist/css/bootstrap-reboot.css",
+              "node_modules/bootstrap/dist/css/bootstrap-grid.css",
+              "src/styles.css"
             ],
             "scripts": [
               "src/lib/own-blockchain-sdk.js"

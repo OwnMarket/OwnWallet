@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NodeService } from '../services/node.service';
-import { TransactionInfo } from '../models/transaction-info.model';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { CryptoService } from '../services/crypto.service';
+import { TransactionInfo } from 'src/app/models/transaction-info.model';
+import { NodeService } from 'src/app/services/node.service';
+import { CryptoService } from 'src/app/services/crypto.service';
 
 @Component({
   selector: 'app-transaction-info',
@@ -11,12 +11,17 @@ import { CryptoService } from '../services/crypto.service';
   styleUrls: ['./transaction-info.component.css']
 })
 export class TransactionInfoComponent implements OnInit, OnDestroy {
+
+  actionsExpanded = false;
+  expandedTransactionActions: any;
+  selectedActions: any;
+
   transactionHash = '';
   txInfo: TransactionInfo;
   subscription: Subscription;
   errors: string[];
-  totalFee: number = 0;
-  showErrorCode: boolean = false;
+  totalFee = 0;
+  showErrorCode = false;
   ready = false;
 
   constructor(private nodeService: NodeService,
@@ -60,4 +65,31 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
   deriveHash(address: string, nonce: number, txActionNumber: number) {
     return this.cryptoService.deriveHash(address, nonce, txActionNumber);
   }
+
+  expandActions(val: boolean) {
+    this.actionsExpanded = !this.actionsExpanded;
+  }
+
+  expandActionData(action: any, index: number) {
+    this.expandedTransactionActions = {};
+    if (action && action.actionData) {
+      if (action.actionType === 'CreateAsset' || action.actionType === 'CreateAccount') {
+        this.expandedTransactionActions.isEmpty = false;
+        const hash = this.deriveHash(this.txInfo.senderAddress, this.txInfo.nonce, index + 1);
+        const label = action.actionType === 'CreateAsset' ? 'assetHash' : 'accountHash';
+        this.expandedTransactionActions = JSON.parse(`{"${label}": "${hash}"}`);
+      } else {
+        this.expandedTransactionActions = action.actionData;
+      }
+      if (this.selectedActions !== action) {
+        this.expandedTransactionActions.custom_index = index;
+        this.expandedTransactionActions.isEmpty = Object.keys(this.expandedTransactionActions).length === 1;
+        this.selectedActions = action;
+      } else {
+        this.selectedActions = {};
+      }
+    }
+
+  }
+
 }

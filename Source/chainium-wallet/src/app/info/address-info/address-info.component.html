@@ -50,7 +50,7 @@
         <div class="card p-4 p-md-5 text-center mt-4 mt-md-0">
           <div class="row full-height justify-content-center align-items-center">
             <div class="col-12">
-              <h6>{{ addressInfo.balance.total }} CHX</h6>
+              <h6 class="m-0">{{ addressInfo.balance.total }} CHX</h6>
             </div>
             <div class="col-12">
               <b>Total Balance</b>
@@ -63,28 +63,28 @@
 
   <div class="container mt-5">
     <div class="row">
-      <div class="col-12 col-md-4 text-center border-right">
+      <div class="col-12 col-md-4 text-center border-right mt-3 mt-md-0">
           <div class="col-12">
-              <h6>{{ addressInfo.balance.staked }} CHX</h6>
+              <h6 class="m-0">{{ addressInfo.balance.staked }} CHX</h6>
            </div>
            <div class="col-12">
-             <b>Staked</b>
+             <b class="wallet-info">Delegated</b>
            </div>
       </div>
       <div class="col-12 col-md-4 text-center border-right mt-4 mt-md-0 border-top">
           <div class="col-12 pt-4 pt-md-0">
-              <h6>{{ addressInfo.balance.deposit }} CHX</h6>
+              <h6 class="m-0">{{ addressInfo.balance.deposit }} CHX</h6>
            </div>
            <div class="col-12">
-             <b>Deposit</b>
+             <b class="wallet-info">Deposit</b>
            </div>
       </div>
       <div class="col-12 col-md-4 text-center mt-4 mt-md-0 border-top">
           <div class="col-12 brand pt-4 pt-md-0">
-              <h6>{{ addressInfo.balance.available }} CHX</h6>
+              <h6 class="m-0">{{ addressInfo.balance.available }} CHX</h6>
            </div>
            <div class="col-12">
-             <b>Available</b>
+             <b class="wallet-info">Available</b>
            </div>
       </div>
     </div>
@@ -92,7 +92,7 @@
         <div class="col-12">
           <div class="card">
             <p class="m-0 card-title p-4">
-              <b>Stakes</b>
+              <b>Stakes delegated by this address</b>
             </p>
               <ngx-datatable
                 *ngIf="stakeInfo.stakes && stakeInfo.stakes.length > 0; else noStakes"
@@ -112,7 +112,7 @@
           </div>
         </div>
       </div>
-      <div class="row my-5">
+      <div class="row mt-5 mb-5">
           <div class="col-12 col-md-6">
             <div class="card">
               <p class="m-0 card-title p-4">

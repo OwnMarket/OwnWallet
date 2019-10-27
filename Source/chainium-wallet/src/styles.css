@@ -72,6 +72,17 @@ button.button-transparent {
   padding: 0 0 0 20px;
 }
 
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand);
+}
+
 .text-center {
   text-align: center;
 }

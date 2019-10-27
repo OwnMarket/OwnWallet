@@ -1,3 +1,7 @@
-<div [ngClass]="padding ? 'card-body p-4 p-md-5' : 'card-body'">
+<div
+  [ngClass]="padding ? 'card-body p-4 p-md-5' : 'card-body'"
+  [ngStyle]="height ? { 'height': height + 'px'} : { 'height' : '100%' }"
+  [class.scrollY]="scrollY"
+>
   <ng-content></ng-content>
 </div>

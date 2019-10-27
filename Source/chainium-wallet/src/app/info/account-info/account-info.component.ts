@@ -29,7 +29,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
       name: 'Balance',
       prop: 'balance',
       sortable: true,
-      flexGrow: 1
+      flexGrow: 2
     }
   ];
 

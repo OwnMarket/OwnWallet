@@ -14,8 +14,6 @@ import { ColumnMode } from '@swimlane/ngx-datatable';
 })
 export class AddressInfoComponent implements OnInit, OnDestroy {
 
-  @ViewChild('copy') copy: TemplateRef<any>;
-
   blockchainAddress = '';
   errors: string[];
   accountsInfo: ChxAccountsInfo;
@@ -37,22 +35,6 @@ export class AddressInfoComponent implements OnInit, OnDestroy {
       name: 'Amount',
       prop: 'amount',
       flexGrow: 1
-    }
-  ];
-
-  accountColumns = [
-    {
-      name: 'Account',
-      prop: 'account',
-      flexGrow: 5
-    }
-  ];
-
-  assetColumns = [
-    {
-      name: 'Asset',
-      prop: 'asset',
-      flexGrow: 5
     }
   ];
 

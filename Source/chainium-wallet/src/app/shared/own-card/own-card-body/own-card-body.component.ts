@@ -7,4 +7,6 @@ import { Component, Input } from '@angular/core';
 })
 export class OwnCardBodyComponent {
   @Input() padding = false;
+  @Input() scrollY = false;
+  @Input() height: number;
 }

@@ -1,0 +1,39 @@
+.card {
+  box-shadow: 0 3px 14px rgba(0,0,0,.11);
+  background-color: #fff;
+  border: none;
+  border-radius: 15px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.card.transparent {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.card.collapsable {
+  height: 64px;
+  transition: all .5s;
+}
+
+.card.collapsable.collapsed {
+  height: 100%;
+}
+
+.card.collapsable .card-trigger {
+  position: absolute;
+  right: 40px;
+  top: 20px;
+  cursor: pointer;
+}
+
+.card.collapsable svg {
+  fill: var(--color-brand);
+  transform: rotate(0);
+  transition: all .5s;
+}
+
+.card.collapsable.collapsed svg {
+  transform: rotate(180deg);
+}

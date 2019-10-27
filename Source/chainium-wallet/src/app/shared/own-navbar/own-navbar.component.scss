@@ -7,11 +7,18 @@
 
 .navbar-brand {
   display: block;
-  padding-bottom: 1rem;
+  svg {
+    width: 120px;
+  }
 }
 
 .nav {
   list-style: none;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  padding-inline-start: 0;
 }
 
 .nav-item {
@@ -35,6 +42,10 @@
 
 .nav-item:hover .nav-link {
   color: var(--color-brand);
+}
+
+.nav-item:focus, .nav-link:focus {
+  outline: none;
 }
 
 .own-toggler {
@@ -104,6 +115,7 @@
     transform: translateY(0);
     overflow: hidden;
     background-color: #ffffff;
+    box-shadow: 0 10px 4px 2px rgba(0,0,0,.1);
     z-index: 2;
   }
 

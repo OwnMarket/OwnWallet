@@ -11,18 +11,19 @@ export class BlockInfo {
     txSet: string[];
     proposerAddress: string;
     txSetRoot: string;
-    txResultSetRoot: string
+    txResultSetRoot: string;
     stateRoot: string;
     equivocationProofs: string[];
     equivocationProofsRoot: string;
     equivocationProofResultsRoot: string;
+    signatures: string[];
     stakingRewards: StakingReward[];
     stakingRewardsRoot: string;
 }
 
-export class StakingReward { 
+export class StakingReward {
     stakerAddress: string;
-    amount: number; 
+    amount: number;
 }
 
 export class BlockConfiguration {

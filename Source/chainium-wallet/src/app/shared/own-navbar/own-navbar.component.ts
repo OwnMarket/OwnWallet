@@ -5,14 +5,9 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './own-navbar.component.html',
   styleUrls: ['./own-navbar.component.scss']
 })
-export class OwnNavbarComponent implements OnInit {
+export class OwnNavbarComponent {
 
   menuOpen = false;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;

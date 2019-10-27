@@ -4,6 +4,7 @@
 :root {
   --color-bg: #f4f4f4;
   --color-brand: #eb6723;
+  --color-accent:#39a2ae;
   --color-text: #333447;
   --color-text-info: #848484;
   --color-navbar-bg: #ffffff;
@@ -54,8 +55,21 @@ p {
   margin-top: 0;
 }
 
+button {
+  border: none;
+  background-color: var(--color-brand);
+  color: white;
+  font-weight: 600;
+}
+
 button:focus {
   outline: none;
+}
+
+button.button-transparent {
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0 0 0 20px;
 }
 
 .text-center {
@@ -64,6 +78,27 @@ button:focus {
 
 .text-right {
   text-align: right;
+}
+
+.progress {
+  display: flex;
+  height: 1rem;
+  overflow: hidden;
+  font-size: .75rem;
+  background-color: var(--color-card-bg-inactive);
+  border-radius: .25rem;
+}
+
+.progress-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  background-color: var(--color-accent);
+  transition: width .6s ease;
 }
 
 h1,
@@ -97,7 +132,8 @@ h3 {
 h4 {
 	font-size: 1.8rem;
 	letter-spacing: -.08rem;
-	line-height: 1.35;
+  line-height: 1.35;
+  margin-bottom: .5rem;
 }
 
 h5 {
@@ -135,8 +171,20 @@ a:hover {
   border-bottom: 1px solid rgba(0,0,0,.125);
 }
 
-h4 {
-  margin-bottom: .5rem;
+.own-list-header, .own-list-item {
+  list-style: none;
+  min-height: 50px;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.own-list-header {
+  background-color: var(--color-bg);
+  color: var(--color-text-info);
+}
+
+.own-list-item:last-child {
+  border-bottom: none;
 }
 
 /* Forms */
@@ -229,6 +277,11 @@ h4 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.text-wrap {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
 
 .full-height {

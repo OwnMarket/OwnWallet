@@ -11,9 +11,7 @@
             (keydown.enter)="onBlockInfoButtonClick()"
             required>
             <button class="search-button" (click)="onBlockInfoButtonClick()" title="Click to get detailed block info.">
-              <svg width="20px" viewBox="0 0 475.084 475.084">
-                <path class="search-icon" d="M464.524,412.846l-97.929-97.925c23.6-34.068,35.406-72.047,35.406-113.917c0-27.218-5.284-53.249-15.852-78.087 c-10.561-24.842-24.838-46.254-42.825-64.241c-17.987-17.987-39.396-32.264-64.233-42.826 C254.246 5.285,228.217,0.003,200.999,0.003c-27.216,0-53.247,5.282-78.085,15.847C98.072,26.412,76.66,40.689,58.673,58.676 c-17.989,17.987-32.264,39.403-42.827,64.241C5.282,147.758,0,173.786,0,201.004c0,27.216,5.282,53.238,15.846,78.083 c10.562,24.838,24.838,46.247,42.827,64.234c17.987,17.993,39.403,32.264,64.241,42.832c24.841,10.563,50.869,15.844,78.085,15.844 c41.879,0,79.852-11.807,113.922-35.405l97.929,97.641c6.852,7.231,15.406,10.849,25.693,10.849 c9.897,0,18.467-3.617,25.694-10.849c7.23-7.23,10.848-15.796,10.848-25.693C475.088,428.458,471.567,419.889,464.524,412.846z M291.363,291.358c-25.029,25.033-55.148,37.549-90.364,37.549c-35.21,0-65.329-12.519-90.36-37.549 c-25.031-25.029-37.546-55.144-37.546-90.36c0-35.21,12.518-65.334,37.546-90.36c25.026-25.032,55.15-37.546,90.36-37.546 c35.212,0,65.331,12.519,90.364,37.546c25.033,25.026,37.548,55.15,37.548,90.36C328.911,236.214,316.392,266.329,291.363,291.358z" />
-              </svg>
+              <own-icon icon="search"></own-icon>
             </button>
         </div>
       </div>
@@ -23,53 +21,59 @@
     <div class="container mt-5">
 
       <div class="row">
-        <div class="col-12 col-md-6">
-          <div class="card p-4 p-md-5">
-            <div class="row justify-content-between align-items-center">
-              <div class="col-12">
-                <div class="row">
-                  <div class="col-6">
-                      <b>Block number:</b>
+        <div class="col-12 col-md-6 mb-3 mb-md-0">
+          <own-card>
+            <own-card-body [padding]="true">
+              <div class="row justify-content-between align-items-center">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-6">
+                        <b>Block number:</b>
+                    </div>
+                    <div class="col-6 mt-2 mt-2 mt-md-0 brand text-right">
+                      <h6 class="m-0">{{ blockInfo.number }}</h6>
+                    </div>
                   </div>
-                  <div class="col-6 mt-2 mt-2 mt-md-0 brand text-right">
-                    <h6 class="m-0">{{ blockInfo.number }}</h6>
-                  </div>
+                  <div class="row">
+                      <div class="col-4 mt-2 mt-md-0">
+                          <b>Block hash:</b>
+                      </div>
+                      <div class="col-8 mt-2 mt-md-0 text-truncate text-right">
+                        {{ blockInfo.hash }}
+                      </div>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="col-4 mt-2 mt-md-0">
-                        <b>Block hash:</b>
-                    </div>
-                    <div class="col-8 mt-2 mt-md-0 text-truncate">
-                      {{ blockInfo.hash }}
-                    </div>
-                  </div>
               </div>
-            </div>
-          </div>
+            </own-card-body>
+          </own-card>
         </div>
         <div class="col-12 col-md-6 mb-3 mb-md-0">
-          <div class="card p-4 p-md-5 mt-4 mt-md-0">
-            <div class="row">
-              <div class="col-12">
+          <own-card>
+            <own-card-body [padding]="true">
+              <div class="row">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-6">
+                      <b>Configuration block number:</b>
+                    </div>
+                      <div class="col-6 mt-2 mt-2 mt-md-0 text-right">
+                        <h6 class="m-0">
+                          {{blockInfo.configurationBlockNumber}}
+                        </h6>
+                      </div>
+                    </div>
                 <div class="row">
                   <div class="col-6">
-                    <b>Configuration block number:</b>
+                    <b>Previous block hash:</b>
                   </div>
-                    <div class="col-6 mt-2 mt-2 mt-md-0 text-right">
-                      <h6 class="m-0">{{blockInfo.configurationBlockNumber}}</h6>
-                    </div>
+                  <div class="col-6 mt-2 mt-md-0 text-right text-truncate">
+                    {{ blockInfo.previousHash }}
                   </div>
-              <div class="row">
-                <div class="col-6">
-                  <b>Previous block hash:</b>
                 </div>
-                <div class="col-6 mt-2 mt-md-0 text-right text-truncate">
-                  {{ blockInfo.previousHash }}
                 </div>
               </div>
-              </div>
-            </div>
-          </div>
+            </own-card-body>
+          </own-card>
         </div>
       </div>
     </div>
@@ -78,27 +82,351 @@
         <div class="row mt-5 mt-md-0">
           <div class="col-12 col-md-6">
             <div class="row">
-              <div class="col">
+              <div class="col-2">
                 <b>Timestamp</b>
               </div>
-              <div class="col border-right text-right">
-                {{ blockInfo.blockTime }} {{ blockInfo.timestamp }}
+              <div class="col-10 border-right text-right text-truncate">
+                {{ blockInfo.blockTime }}
+                <br>
+                {{ blockInfo.timestamp }}
               </div>
             </div>
           </div>
           <div class="col-12 col-md-6 border-top mt-5 mt-md-0">
             <div class="row mt-5 mt-md-0">
-              <div class="col">
+              <div class="col-4">
                 <b>Proposer Address</b>
               </div>
-              <div class="col text-right text-truncate">
+              <div class="col-8 text-right text-truncate">
                 {{ blockInfo.proposerAddress }}
               </div>
             </div>
           </div>
         </div>
       </div>
+
+    <div class="container mt-3">
+      <div class="row">
+          <div class="col">
+            <own-card [collapsable]="true" [transparent]="true">
+              <own-card-title>
+                <b>Merkle Roots</b>
+              </own-card-title>
+              <own-card-body>
+                <li class="own-list-item">
+                    <div class="row justify-content-between align-items-center">
+                      <div class="col-12 col-md-4">
+                        <b>Transactions root</b>
+                      </div>
+                      <div class="col-12 col-md-8 text-wrap text-right">
+                        {{ blockInfo.txSetRoot || '-' }}
+                        <button class="button-transparent" ngxClipboard cbContent="{{ blockInfo.txSetRoot || '-' }}">
+                          <own-icon icon="copy" color="#eb6723"></own-icon>
+                        </button>
+                      </div>
+                    </div>
+                </li>
+                <li class="own-list-item">
+                  <div class="row justify-content-between align-items-center">
+                    <div class="col-12 col-md-4">
+                      <b>Transactions results root</b>
+                    </div>
+                    <div class="col-12 col-md-8 text-wrap text-right">
+                      {{ blockInfo.txResultSetRoot || '-' }}
+                      <button class="button-transparent" ngxClipboard cbContent="{{ blockInfo.txResultSetRoot || '-' }}">
+                        <own-icon icon="copy" color="#eb6723"></own-icon>
+                      </button>
+                    </div>
+                  </div>
+               </li>
+               <li class="own-list-item">
+                <div class="row justify-content-between align-items-center">
+                  <div class="col-12 col-md-4">
+                    <b>Equivocation proofs root</b>
+                  </div>
+                  <div class="col-12 col-md-8 text-wrap text-right">
+                    {{ blockInfo.equivocationProofsRoot || '-' }}
+                    <button class="button-transparent" ngxClipboard cbContent="{{ blockInfo.equivocationProofsRoot || '-' }}">
+                      <own-icon icon="copy" color="#eb6723"></own-icon>
+                    </button>
+                  </div>
+                </div>
+             </li>
+             <li class="own-list-item">
+              <div class="row justify-content-between align-items-center">
+                <div class="col-12 col-md-4">
+                  <b>Equivocation proofs results root</b>
+                </div>
+                <div class="col-12 col-md-8 text-wrap text-right">
+                  {{ blockInfo.equivocationProofResultsRoot || '' }}
+                  <button class="button-transparent" ngxClipboard cbContent="{{ blockInfo.equivocationProofResultsRoot || '' }}">
+                    <own-icon icon="copy" color="#eb6723"></own-icon>
+                  </button>
+                </div>
+              </div>
+             </li>
+             <li class="own-list-item">
+              <div class="row justify-content-between align-items-center">
+                <div class="col-12 col-md-4">
+                  <b>State root</b>
+                </div>
+                <div class="col-12 col-md-8 text-wrap text-right">
+                  {{ blockInfo.stateRoot || '-' }}
+                  <button class="button-transparent" ngxClipboard cbContent="{{ blockInfo.stateRoot || '-' }}">
+                    <own-icon icon="copy" color="#eb6723"></own-icon>
+                  </button>
+                </div>
+              </div>
+             </li>
+             <li class="own-list-item">
+              <div class="row justify-content-between align-items-center">
+                <div class="col-12 col-md-4">
+                  <b>Staking rewards set root</b>
+                </div>
+                <div class="col-12 col-md-8 text-wrap text-right">
+                  {{ blockInfo.stakingRewardsRoot || '-' }}
+                  <button class="button-transparent" ngxClipboard cbContent="{{ blockInfo.stakingRewardsRoot || '-' }}">
+                    <own-icon icon="copy" color="#eb6723"></own-icon>
+                  </button>
+                </div>
+              </div>
+             </li>
+             <li class="own-list-item">
+              <div class="row justify-content-between align-items-center">
+                <div class="col-12 col-md-4">
+                  <b>Configuration root</b>
+                </div>
+                <div class="col-12 col-md-8 text-wrap text-right">
+                  {{ blockInfo.configurationRoot || '-' }}
+                  <button class="button-transparent" ngxClipboard cbContent="{{ blockInfo.configurationRoot || '-' }}">
+                    <own-icon icon="copy" color="#eb6723"></own-icon>
+                  </button>
+                </div>
+              </div>
+             </li>
+            </own-card-body>
+          </own-card>
+      </div>
+    </div>
+  </div>
+
+      <ng-container class="info-item-margin" *ngIf="blockInfo.signatures.length > 0">
+          <div class="container mt-5">
+              <div class="row">
+                  <div class="col">
+                    <own-card [collapsable]="true">
+                      <own-card-title>
+                        <b>Signatures</b>
+                      </own-card-title>
+                      <own-card-body>
+                        <div class="own-list-header">
+                          <div class="row justify-content-between">
+                            <div class="col-2">
+                              consensus round
+                            </div>
+                            <div class="col-4 text-right">
+                              {{ blockInfo.consensusRound }}
+                            </div>
+                          </div>
+                        </div>
+                        <li class="own-list-item" *ngFor="let signature of blockInfo.signatures; let i=index">
+                            <div class="row justify-content-between align-items-center">
+                              <div class="col-12 col-md-2">
+                                <b>Signature {{ i + 1 }}</b>
+                              </div>
+                              <div class="col-12 col-md-10 text-wrap text-right">
+                                {{ signature }}
+                              </div>
+                            </div>
+                        </li>
+                      </own-card-body>
+                  </own-card>
+              </div>
+            </div>
+          </div>
+      </ng-container>
+
+      <ng-container *ngIf="blockInfo.txSet.length > 0">
+          <div class="container mt-3">
+            <div class="row">
+                <div class="col">
+                  <own-card [collapsable]="true">
+                    <own-card-title>
+                      <b>Transactions</b>
+                    </own-card-title>
+                    <own-card-body>
+                      <li class="own-list-item" *ngFor="let transaction of blockInfo.txSet">
+                        <a routerLink="/tx/{{transaction}}"
+                        title="Click to get detailed transaction info.">
+                            {{ transaction }}
+                        </a>
+                      </li>
+                    </own-card-body>
+                </own-card>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="blockInfo.equivocationProofs.length > 0">
+          <div class="container mt-3">
+              <div class="row">
+                  <div class="col">
+                    <own-card [collapsable]="true">
+                      <own-card-title>
+                        <b>Equivocation Proofs</b>
+                      </own-card-title>
+                      <own-card-body>
+                        <li class="own-list-item" *ngFor="let equivocationProof of blockInfo.equivocationProofs">
+                          <a routerLink="/equivocation/{{equivocationProof}}"
+                            title="Click to get detailed equivocation proof info.">
+                              {{ equivocationProof }}
+                          </a>
+                        </li>
+                      </own-card-body>
+                    </own-card>
+                </div>
+              </div>
+            </div>
+      </ng-container>
+
+      <ng-container *ngIf="showStakingRewards">
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col">
+                  <own-card [collapsable]="true">
+                    <own-card-title>
+                      <b>Staking rewards</b>
+                    </own-card-title>
+                    <own-card-body>
+                        <div class="own-list-header">
+                          <div class="row justify-content-between">
+                            <div class="col-6">
+                              Staker address
+                            </div>
+                            <div class="col-4 text-right">
+                              Amount
+                            </div>
+                          </div>
+                      </div>
+                      <li class="own-list-item" *ngFor="let reward of blockInfo.stakingRewards">
+                        <ng-container *ngIf="reward.amount > 0">
+                          <div class="row justify-content-between align-items-center">
+                            <div class="col-5 text-truncate">
+                              {{ reward.stakerAddress }}
+                            </div>
+                            <div class="col-4 text-right">
+                              {{ reward.amount }}
+                            </div>
+                          </div>
+                        </ng-container>
+                      </li>
+                    </own-card-body>
+                  </own-card>
+              </div>
+            </div>
+          </div>
+    </ng-container>
+
+    <ng-container *ngIf="blockInfo.configuration">
+        <div class="container mt-5">
+          <h5 class="pl-2">Configuration</h5>
+            <div class="row">
+              <div class="col-12 col-md-6 mb-3 mb-md-0">
+                <own-card>
+                  <own-card-body [padding]="true">
+                    <div class="row justify-content-between align-items-center">
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col-6">
+                              <b>Block delta:</b>
+                          </div>
+                          <div class="col-6 mt-2 mt-2 mt-md-0 text-right">
+                            {{ blockInfo.configuration.configurationBlockDelta }}
+                          </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 mt-2 mt-md-0">
+                                <b>Max tx per block:</b>
+                            </div>
+                            <div class="col-8 mt-2 mt-md-0 text-right">
+                              {{ blockInfo.configuration.maxTxCountPerBlock }}
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                  </own-card-body>
+                </own-card>
+              </div>
+              <div class="col-12 col-md-6 mb-3 mb-md-0">
+                <own-card>
+                  <own-card-body [padding]="true">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col-6">
+                            <b>Validator depsit lock time:</b>
+                          </div>
+                            <div class="col-6 mt-2 mt-2 mt-md-0 text-right">
+                              {{ blockInfo.configuration.validatorDepositLockTime }}
+                            </div>
+                          </div>
+                      <div class="row">
+                        <div class="col-6">
+                          <b>Blacklist time:</b>
+                        </div>
+                        <div class="col-6 mt-2 mt-md-0 text-right">
+                          {{ blockInfo.configuration.validatorBlacklistTime }}
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                  </own-card-body>
+                </own-card>
+              </div>
+            </div>
+          </div>
+          <div class="container mt-5" *ngIf="blockInfo.configuration.validators.length > 0">
+            <div class="row">
+              <div class="col-12">
+                <own-card>
+                  <own-card-title>Validators</own-card-title>
+                  <own-card-body>
+                      <ngx-datatable
+                      class="wallet-table"
+                      [rows]="blockInfo.configuration.validators"
+                      [columns]="validatorColumns"
+                      [columnMode]="ColumnMode.flex"
+                      [headerHeight]="50"
+                      [footerHeight]="20"
+                      [rowHeight]="'auto'">
+                    </ngx-datatable>
+                  </own-card-body>
+                </own-card>
+              </div>
+            </div>
+          </div>
+    </ng-container>
+
+    <div class="container mt-5"></div>
+
 </ng-container>
+
+<ng-template #rewardPerc let-row="row" let-value="value">
+    <div class="progress" style="height: 15px; margin-right: 25px;">
+      <div
+        class="progress-bar"
+        role="progressbar"
+        [ngStyle]="{ width: value + '%' }"
+        [attr.aria-valuenow]="value"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+        {{ value }}%
+      </div>
+    </div>
+  </ng-template>
+
 <!--
 <div class="column-container align-center">
     <mat-form-field>

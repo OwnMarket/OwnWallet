@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BlockInfo } from 'src/app/models/block-info.model';
 import { NodeService } from 'src/app/services/node.service';
+import { ColumnMode } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-block-info',
@@ -12,11 +13,15 @@ import { NodeService } from 'src/app/services/node.service';
 })
 export class BlockInfoComponent implements OnInit, OnDestroy {
 
+  @ViewChild('rewardPerc') rewardPerc: TemplateRef<any>;
+
   blockNumber = 0;
   blockInfo: BlockInfo;
   subscription: Subscription;
   errors: string[];
   showStakingRewards: boolean;
+  validatorColumns: any[];
+  ColumnMode = ColumnMode;
 
   constructor(
     private nodeService: NodeService,
@@ -24,6 +29,7 @@ export class BlockInfoComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.setupValidatorsTable();
     this.subscription = this.route.params.subscribe(params => {
       const blockNo = params['blockNumber'];
 
@@ -73,5 +79,35 @@ export class BlockInfoComponent implements OnInit, OnDestroy {
         && this.blockInfo.stakingRewards.length > 0
         && this.blockInfo.stakingRewards.some(r => r.amount > 0);
     });
+  }
+
+  setupValidatorsTable() {
+    this.validatorColumns = [
+      {
+        name: 'Address',
+        prop: 'validatorAddress',
+        sortable: false,
+        flexGrow: 3
+      },
+      {
+        name: 'Network Address',
+        prop: 'networkAddress',
+        sortable: false,
+        flexGrow: 2
+      },
+      {
+        name: 'Shared Reward %',
+        prop: 'sharedRewardPercent',
+        sortable: true,
+        flexGrow: 1,
+        cellTemplate: this.rewardPerc
+      },
+      {
+        name: 'Stake',
+        prop: 'totalStake',
+        sortable: true,
+        flexGrow: 1
+      }
+    ];
   }
 }

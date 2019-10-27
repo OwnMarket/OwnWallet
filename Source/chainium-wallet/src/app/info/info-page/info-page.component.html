@@ -93,4 +93,6 @@
 </nav>
 </div>
 
-<router-outlet></router-outlet>
+<div [@routerTransition]="getState(o)">
+  <router-outlet #o="outlet"></router-outlet>
+</div>

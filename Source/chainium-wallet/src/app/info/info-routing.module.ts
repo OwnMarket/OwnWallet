@@ -19,43 +19,53 @@ const routes: Routes = [
       },
       {
         path: 'address',
-        component: AddressInfoComponent
+        component: AddressInfoComponent,
+        data: { state: 'address' }
       },
       {
         path: 'address/:addressHash',
-        component: AddressInfoComponent
+        component: AddressInfoComponent,
+        data: { state: 'address' }
       },
       {
         path: 'account',
-        component: AccountInfoComponent
+        component: AccountInfoComponent,
+        data: { state: 'account' }
       },
       {
         path: 'account/:accountHash',
-        component: AccountInfoComponent
+        component: AccountInfoComponent,
+        data: { state: 'account' }
       },
       {
         path: 'asset',
-        component: AssetInfoComponent
+        component: AssetInfoComponent,
+        data: { state: 'asset' }
       },
       {
         path: 'asset/:assetHash',
-        component: AssetInfoComponent
+        component: AssetInfoComponent,
+        data: { state: 'asset' }
       },
       {
         path: 'tx',
-        component: TransactionInfoComponent
+        component: TransactionInfoComponent,
+        data: { state: 'tx' }
       },
       {
         path: 'tx/:transactionHash',
-        component: TransactionInfoComponent
+        component: TransactionInfoComponent,
+        data: { state: 'tx' }
       },
       {
         path: 'block',
-        component: BlockInfoComponent
+        component: BlockInfoComponent,
+        data: { state: 'block' }
       },
       {
         path: 'block/:blockNumber',
-        component: BlockInfoComponent
+        component: BlockInfoComponent,
+        data: { state: 'block' }
       },
     ]
   }

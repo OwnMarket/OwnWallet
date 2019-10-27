@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
+import { OwnAnimations } from '../../shared';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BlockInfo } from 'src/app/models/block-info.model';
@@ -9,6 +10,7 @@ import { ColumnMode } from '@swimlane/ngx-datatable';
   selector: 'app-block-info',
   templateUrl: './block-info.component.html',
   styleUrls: ['./block-info.component.css'],
+  animations: [ OwnAnimations.contentInOut ],
   encapsulation: ViewEncapsulation.None
 })
 export class BlockInfoComponent implements OnInit, OnDestroy {

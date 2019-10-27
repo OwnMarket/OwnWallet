@@ -3,11 +3,13 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AssetInfo } from 'src/app/models/asset-info.model';
 import { NodeService } from 'src/app/services/node.service';
+import { OwnAnimations } from '../../shared';
 
 @Component({
   selector: 'app-asset-info',
   templateUrl: './asset-info.component.html',
-  styleUrls: ['./asset-info.component.css']
+  styleUrls: ['./asset-info.component.css'],
+  animations: [ OwnAnimations.contentInOut ]
 })
 
 export class AssetInfoComponent implements OnInit {

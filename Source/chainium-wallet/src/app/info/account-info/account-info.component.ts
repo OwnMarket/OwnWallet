@@ -4,11 +4,13 @@ import { Subscription } from 'rxjs';
 import { AccountInfo } from 'src/app/models/account-info.model';
 import { NodeService } from 'src/app/services/node.service';
 import { ColumnMode } from '@swimlane/ngx-datatable';
+import { OwnAnimations } from '../../shared';
 
 @Component({
   selector: 'app-account-info',
   templateUrl: './account-info.component.html',
-  styleUrls: ['./account-info.component.css']
+  styleUrls: ['./account-info.component.css'],
+  animations: [ OwnAnimations.contentInOut ]
 })
 export class AccountInfoComponent implements OnInit, OnDestroy {
 

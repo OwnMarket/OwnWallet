@@ -4,11 +4,13 @@ import { Subscription } from 'rxjs';
 import { TransactionInfo } from 'src/app/models/transaction-info.model';
 import { NodeService } from 'src/app/services/node.service';
 import { CryptoService } from 'src/app/services/crypto.service';
+import { OwnAnimations } from '../../shared';
 
 @Component({
   selector: 'app-transaction-info',
   templateUrl: './transaction-info.component.html',
-  styleUrls: ['./transaction-info.component.css']
+  styleUrls: ['./transaction-info.component.css'],
+  animations: [ OwnAnimations.contentInOut ]
 })
 export class TransactionInfoComponent implements OnInit, OnDestroy {
 

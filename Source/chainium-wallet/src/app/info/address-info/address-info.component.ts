@@ -6,11 +6,13 @@ import { ChxAddressInfo } from 'src/app/models/chx-address-info.model';
 import { NodeService } from 'src/app/services/node.service';
 import { StakesInfo, StakeInfo } from 'src/app/models/stakes-info.model';
 import { ColumnMode } from '@swimlane/ngx-datatable';
+import { OwnAnimations } from '../../shared';
 
 @Component({
   selector: 'app-address-info',
   templateUrl: './address-info.component.html',
-  styleUrls: ['./address-info.component.css']
+  styleUrls: ['./address-info.component.css'],
+  animations: [ OwnAnimations.contentInOut ]
 })
 export class AddressInfoComponent implements OnInit, OnDestroy {
 

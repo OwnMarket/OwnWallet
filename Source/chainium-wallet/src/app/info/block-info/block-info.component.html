@@ -387,6 +387,7 @@
               </div>
             </div>
           </div>
+
           <div class="container mt-5" *ngIf="blockInfo.configuration.validators.length > 0">
             <div class="row">
               <div class="col-12">
@@ -407,6 +408,25 @@
               </div>
             </div>
           </div>
+
+          <div class="container mt-5" *ngIf="blockInfo.configuration.validatorsBlacklist.length > 0">
+            <div class="row">
+              <div class="col-12">
+                <own-card>
+                  <own-card-title>Validators Blacklist</own-card-title>
+                  <own-card-body>
+                    <li class="own-list-header">
+                      Address
+                    </li>
+                    <li class="own-list-item" *ngFor="let validator of blockInfo.configuration.validatorsBlacklist">
+                        {{ validator }}
+                    </li>
+                  </own-card-body>
+                </own-card>
+              </div>
+            </div>
+          </div>
+
     </ng-container>
 
     <div class="container mt-5"></div>

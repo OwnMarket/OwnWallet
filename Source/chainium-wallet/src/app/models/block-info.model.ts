@@ -29,7 +29,7 @@ export class StakingReward {
 export class BlockConfiguration {
     configurationBlockDelta: number;
     validators: BlockConfigurationValidator[];
-    validatorsBlackList: string [];
+    validatorsBlacklist: string [];
     validatorDepositLockTime: number;
     validatorBlacklistTime: number;
     maxTxCountPerBlock: number;

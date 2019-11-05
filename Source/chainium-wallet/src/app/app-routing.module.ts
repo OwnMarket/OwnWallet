@@ -21,7 +21,7 @@ export const ROUTERCONFIGS: Routes = [
       path: '',
       redirectTo: '/info',
       pathMatch: 'full'
-    },
+    }, /*
     {
         path: 'wallet',
         component: PrivateComponent,
@@ -40,10 +40,14 @@ export const ROUTERCONFIGS: Routes = [
             { path: 'sign-verify', component: MessageSignVerificationComponent },
             { path: 'recover-pk-from-old-derivation-path', component: RecoverPkFromOldDerivationPathComponent }
         ]
-    },
+    }, */
     {
       path: 'login',
       component: LoginComponent
+    },
+    {
+      path: 'wallet',
+      loadChildren: './wallet/wallet.module#WalletModule'
     },
     {
       path: 'info',

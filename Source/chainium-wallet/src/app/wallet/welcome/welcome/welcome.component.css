@@ -1,0 +1,47 @@
+.welcome-token {
+  width: 100%;
+}
+
+.welcome-button {
+  width: 100%;
+  padding: 10px 20px;
+  color: var(--color-text);
+  background-color: transparent;
+  border: 1px dashed var(--color-text-info);
+  border-radius: 2rem;
+  text-align: left;
+  box-shadow: none;
+  overflow: hidden;
+  position: relative;
+  transition: all .5s ease-in-out;
+}
+
+.plus-icon {
+  position: absolute;
+  transform: scale(1);
+  top: 5px;
+  left: 20px;
+  padding-top: 4px;
+  transition: all .5s ease-in-out;
+}
+
+.welcome-button:hover {
+  color: white;
+  box-shadow: inset -350px 0 0 0 var(--color-accent);
+  border: 1px solid var(--color-accent);
+}
+
+.welcome-button.active {
+  border: none;
+  background-color: var(--color-bg);
+}
+
+.welcome-button:hover .plus-icon {
+  top: -2px;
+  left: 5px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 50%;
+  transform: scale(1.5);
+}
+

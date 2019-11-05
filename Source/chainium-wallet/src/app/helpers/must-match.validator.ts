@@ -1,4 +1,4 @@
-import { FormGroup } from '@angular/forms';
+import { FormGroup, AbstractControl } from '@angular/forms';
 
 // custom validator to check that two fields match
 export function MustMatch(controlName: string, matchingControlName: string) {
@@ -18,4 +18,10 @@ export function MustMatch(controlName: string, matchingControlName: string) {
             matchingControl.setErrors(null);
         }
     }
+}
+
+export function validatePasswordMatch(formGroup: AbstractControl) {
+   const password = formGroup.get('password').value;
+   const confirmPassword = formGroup.get('confirmPassword').value;
+   return password === confirmPassword ? null : { mustMatch: true };
 }

@@ -1,0 +1,39 @@
+<div class="container my-5">
+  <own-card>
+    <own-card-body [padding]="true">
+      <div class="row align-items-center">
+        <div class="col-12 col-sm-4">
+          <img class="welcome-token" src="/assets/images/token.png" alt="token image">
+        </div>
+        <div class="col-12 col-sm-8">
+          <h2 class="brand mb-2">Wellcome</h2>
+          <p class="mb-4">
+            You still don't have a wallet ?
+            <br>
+            Please import an existing address hash or create a new one.
+          </p>
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <button class="welcome-button" routerLink="create" routerLinkActive="active">
+                <span class="plus-icon">
+                  <own-icon icon="plus" color="#39a2ae"></own-icon>
+                </span>
+                <span class="ml-5">Create a Wallet</span>
+              </button>
+            </div>
+            <div class="col-12 col-md-6 mt-4 mt-md-0">
+              <button class="welcome-button" routerLink="import" routerLinkActive="active">
+                <span class="plus-icon">
+                  <own-icon icon="plus" color="#39a2ae"></own-icon>
+                </span>
+                <span class="ml-5">Import an existing wallet</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </own-card-body>
+  </own-card>
+</div>
+
+<router-outlet></router-outlet>

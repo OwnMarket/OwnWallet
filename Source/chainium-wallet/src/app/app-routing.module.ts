@@ -19,7 +19,7 @@ import { UnloadWalletComponent } from './hdcrypto/unload-wallet.component';
 export const ROUTERCONFIGS: Routes = [
     {
       path: '',
-      redirectTo: '/info',
+      redirectTo: '/wallet',
       pathMatch: 'full'
     }, /*
     {

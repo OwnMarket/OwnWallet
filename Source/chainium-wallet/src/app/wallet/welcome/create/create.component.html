@@ -21,26 +21,38 @@
         <b>Create Wallet</b>
       </own-card-title>
       <own-card-body [padding]="true">
-        <div class="row align-items-center">
+        <div class="row align-items-center justify-content-between">
           <div class="col-12 col-md-6 border-right">
               <textarea
                 placeholder="Recovery phrase"
-                class="monospace-font"
+                class="monospace-font block"
                 rows="5"
                 [formControl]="mnemonic"
                 readonly
                 required>
               </textarea>
-              <br>
-              <label class="info">Recovery phrase</label>
+                <div class="row justify-content-between">
+                  <div class="col-6 info">
+                      Recovery phrase
+                  </div>
+                  <div class="col-6 text-right">
+                    <button class="button-transparent" title="Generate new phrase" (click)="onGenerateMnemonic()">
+                      <own-icon icon="refresh"></own-icon>
+                    </button>
+                    <button class="button-transparent" title="Copy Recovery phrase" ngxClipboard cbContent="{{mnemonic.value}}">
+                      <own-icon icon="copy"></own-icon>
+                    </button>
+                  </div>
+                </div>
           </div>
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-6 mt-5 mt-md-0">
             <form [formGroup]="registerForm" class="p-4">
 
               <div class="row mb-4">
                 <div class="col-12">
-                  <input placeholder="password" [type]="hide ? 'password' : 'text'" formControlName="password" />
-                  <div *ngIf="registerForm.get('password').errors && registerForm.get('password').errors.required && registerForm.get('password').touched">
+                  <label>Password</label>
+                  <input class="block" [type]="hide ? 'password' : 'text'" formControlName="password" />
+                  <div class="info mt-1" *ngIf="registerForm.get('password').errors && registerForm.get('password').errors.required && registerForm.get('password').touched">
                     This field is required.
                   </div>
                 </div>
@@ -48,26 +60,30 @@
 
               <div class="row mb-4">
                   <div class="col-12">
-                    <input placeholder="confirm password" [type]="hide ? 'password' : 'text'" formControlName="confirmPassword"
+                    <label>Confirm Password</label>
+                    <input class="block" [type]="hide ? 'password' : 'text'" formControlName="confirmPassword"
                     required />
 
-                    <div *ngIf="registerForm.get('confirmPassword').errors && registerForm.get('confirmPassword').errors && registerForm.get('confirmPassword').touched">
+                    <div class="info mt-1" *ngIf="registerForm.get('confirmPassword').errors && registerForm.get('confirmPassword').errors && registerForm.get('confirmPassword').touched">
                       This field is required.
                     </div>
-                    <div *ngIf="registerForm.errors && registerForm.errors.mustMatch && registerForm.get('confirmPassword').touched">
+                    <div class="info mt-1" *ngIf="registerForm.errors && registerForm.errors.mustMatch && registerForm.get('confirmPassword').touched">
                       Passwords must match
                     </div>
 
                 </div>
               </div>
 
-
               <div class="row justify-content-between">
-                <div class="col-12 col-md-6">
-                    <button (click)="onCreateNewWallet()">CREATE WALLET</button>
+                <div class="col-12 col-sm-6">
+                    <button class="block own-effect" (click)="onCreateNewWallet()">CREATE WALLET</button>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-sm-6 mt-5 mt-sm-0 text-right">
                     <input type="checkbox" formControlName="saveKeystore"> Save keystore file
+                    <button class="button-transparent" (click)="hide = !hide">
+                      <own-icon *ngIf="hide" icon="eye" size="25"></own-icon>
+                      <own-icon *ngIf="!hide" icon="eye-crossed" size="25"></own-icon>
+                    </button>
                 </div>
               </div>
             </form>
@@ -76,51 +92,4 @@
       </own-card-body>
     </own-card>
 
-
-<!--
-<div class="row-container" style="font-family:Roboto, 'Helvetica Neue', sans-serif">
-
-<div class="column-container margin-t-20">
-    <div class="margin-t-20">
-        <div class="row">
-            <mat-form-field class="full-width">
-                <textarea matInput placeholder="Recovery phrase" class="monospace-font" rows="5"
-                    [formControl]="mnemonic" readonly required></textarea>
-                <mat-icon matSuffix (click)="onGenerateMnemonic()" color="accent" class="margin-l-20 pointer"
-                    matTooltip="Generate new recovery phrase">
-                    autorenew
-                </mat-icon>
-                <mat-icon matSuffix class="margin-l-15 pointer animate-click" color="accent" matTooltip="Copy Recovery phrase" ngxClipboard cbContent="{{mnemonic.value}}">
-                    file_copy
-                </mat-icon>
-                <mat-error *ngIf="mnemonic.invalid">This field is required.</mat-error>
-            </mat-form-field>
-        </div>
-    </div>
-    <div class="margin-t-20">
-        <div [formGroup]="registerForm">
-            <mat-form-field>
-                <input matInput placeholder="password" [type]="hide ? 'password' : 'text'" formControlName="password"
-                    required />
-                <mat-error *ngIf="f.password.errors && f.password.errors.required">This field is required.</mat-error>
-            </mat-form-field>
-            <mat-form-field class="margin-l-20">
-                <input matInput placeholder="confirm password" [type]="hide ? 'password' : 'text'" formControlName="confirmPassword"
-                    required />
-                <mat-icon matSuffix (click)="hide = !hide" color="accent" class="pointer">
-                    {{hide ? 'visibility' : 'visibility_off'}}
-                </mat-icon>
-                <mat-error *ngIf="f.confirmPassword.errors && f.confirmPassword.errors.required">This field is required.</mat-error>
-                <mat-error *ngIf="f.confirmPassword.errors && f.confirmPassword.errors.mustMatch">Passwords must match</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="row">
-            <button (click)="onCreateNewWallet()" mat-raised-button color="accent">CREATE WALLET</button>
-            <mat-checkbox class="margin-l-20" name="saveKeystore" [(ngModel)]="saveKeystore" matTooltip="">
-                Save keystore file
-            </mat-checkbox>
-        </div>
-    </div>
-</div>
--->
 </div>

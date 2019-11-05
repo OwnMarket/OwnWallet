@@ -1,0 +1,53 @@
+<div class="container my-5">
+
+    <div class="row px-5 mb-5 info">
+      <div class="col-2 text-right">
+        <own-icon icon="info" size="30" color="#39a2ae"></own-icon>
+      </div>
+      <div class="col-10">
+        <p>
+            Restoring the Wallet with a recovery phrase or keystore file (but not with private key) enables users to restore all of the CHX Addresses that have been previously created from it by clicking "Add CHX Address" (this option is available once the wallet is restored and the first CHX address is created).
+        </p>
+      </div>
+    </div>
+
+      <own-card>
+        <own-card-title>
+          <b>Import Wallet</b>
+        </own-card-title>
+        <own-card-body>
+
+          <ul class="tabs">
+            <li [class.selected]="method==='phrase'" (click)="method='phrase'">Recovery phrase</li>
+            <li [class.selected]="method==='keystore'" (click)="method='keystore'">Keystore</li>
+            <li [class.selected]="method==='key'" (click)="method='key'">Private Key</li>
+          </ul>
+
+          <div class="tab-content">
+
+            <div class="row p-5" *ngIf="method==='phrase'">
+              <div class="col-12 col-md-6 border-right">
+                  <textarea
+                    placeholder="Recovery phrase"
+                    class="monospace-font block"
+                    rows="5"
+                    [formControl]="mnemonic"
+                    readonly
+                    required>
+                  </textarea>
+                  <div class="row">
+                    <div class="col-12 info">
+                        Recovery phrase *
+                    </div>
+                  </div>
+              </div>
+              <div class="col-12 col-md-6">
+
+              </div>
+            </div>
+
+          </div>
+
+        </own-card-body>
+      </own-card>
+</div>

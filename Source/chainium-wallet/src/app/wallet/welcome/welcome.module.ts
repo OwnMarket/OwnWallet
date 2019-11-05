@@ -8,11 +8,13 @@ import { OwnCardModule, OwnIconModule } from '../../shared';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { WelcomeRoutingModule } from './welcome-routing.module';
 import { CreateComponent } from './create/create.component';
+import { ImportComponent } from './import/import.component';
 
 @NgModule({
   declarations: [
     WelcomeComponent,
-    CreateComponent
+    CreateComponent,
+    ImportComponent
   ],
   imports: [
     CommonModule,

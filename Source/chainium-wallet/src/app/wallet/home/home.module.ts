@@ -4,23 +4,19 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SharedModule } from '../../shared/shared.module';
 import { ClipboardModule } from 'ngx-clipboard';
 
-import { WelcomeComponent } from './welcome/welcome.component';
-import { WelcomeRoutingModule } from './welcome-routing.module';
-import { CreateComponent } from './create/create.component';
-import { ImportComponent } from './import/import.component';
+import { HomeScreenComponent } from './home-screen/home-screen.component';
+import { HomeRoutingModule } from './home-routing.module';
 
 @NgModule({
   declarations: [
-    WelcomeComponent,
-    CreateComponent,
-    ImportComponent
+    HomeScreenComponent
   ],
   imports: [
     CommonModule,
     NgxDatatableModule,
     SharedModule,
     ClipboardModule,
-    WelcomeRoutingModule
+    HomeRoutingModule
   ]
 })
-export class WelcomeModule { }
+export class HomeModule { }

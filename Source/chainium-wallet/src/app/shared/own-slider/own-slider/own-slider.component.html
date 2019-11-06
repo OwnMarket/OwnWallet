@@ -1,0 +1,27 @@
+<div class="own-slider-container" tabindex="0" (keydown)="keyboardControl($event)">
+  <!-- stage -->
+  <div
+    #stage
+    class="own-slider-stage"
+    [ngStyle]="{ 'width': stageWidth + 'px' }"
+    (swiperight)="prev()"
+    (swipeleft)="next()"
+    >
+
+    <!-- slides -->
+    <ng-content></ng-content>
+
+  </div>
+
+  <!-- dots nav -->
+  <ul class="dots" *ngIf="showDots && dots.length > 1">
+    <li *ngFor="let slide of dots; let i = index">
+      <a (click)="goTo(i)" [class.active]="i === currentSlide">
+      <svg width="10" height="10">
+        <circle cx="5" cy="5" r="5" />
+      </svg>
+      </a>
+    </li>
+  </ul>
+
+</div>

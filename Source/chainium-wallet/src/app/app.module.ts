@@ -14,7 +14,6 @@ import { ChxTransferComponent } from './actions/chx-transfer/chx-transfer.compon
 import { AssetTransferComponent } from './actions/asset-transfer/asset-transfer.component';
 import { SubmitTransactionInfoComponent } from './submit-transaction-info/submit-transaction-info.component';
 import { UnloadWalletInfoComponent } from './unload-wallet-info/unload-wallet-info.component';
-import { HomeScreenComponent } from './home-screen/home-screen.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GlobalErrorHandler } from './services/global.error.handler';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
@@ -39,7 +38,6 @@ import { MessageSignVerificationComponent } from './msg-sign-verify/msg-sign-ver
 import { NewWalletComponent } from './hdcrypto/new-wallet.component';
 import { RestoreWalletComponent } from './hdcrypto/restore-wallet.component';
 import { UnloadWalletComponent } from './hdcrypto/unload-wallet.component';
-import { LoginComponent } from './login/login.component';
 import { PrivateComponent } from './layout/private.component';
 import { OwnNavbarModule } from './shared';
 import { CopyPrivateKeyComponent } from './copy-private-key/copy-private-key.component';
@@ -76,7 +74,6 @@ import { CopyPrivateKeyComponent } from './copy-private-key/copy-private-key.com
         SubmitVoteWeightComponent,
         SubmitTransactionInfoComponent,
         UnloadWalletInfoComponent,
-        HomeScreenComponent,
         ErrorDialogComponent,
         GenerateAccountComponent,
         LoaderComponent,
@@ -84,7 +81,6 @@ import { CopyPrivateKeyComponent } from './copy-private-key/copy-private-key.com
         NewWalletComponent,
         RestoreWalletComponent,
         UnloadWalletComponent,
-        LoginComponent,
         CopyPrivateKeyComponent
     ],
     imports: [

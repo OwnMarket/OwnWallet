@@ -1,0 +1,36 @@
+.own-slider-container {
+  overflow: hidden;
+}
+.own-slider-stage {
+  padding: 10px 0;
+  position: relative;
+  display: inline-flex;
+  transition: all .5s;
+}
+.dots {
+  margin: 0;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+.dots li {
+  margin-right: 1rem;
+}
+.dots li a {
+  cursor: pointer;
+}
+.dots li a svg {
+  transform: scale(1);
+  fill: var(--main-secondary-text-color);
+  opacity: .7;
+  transition: all .5s;
+}
+.dots li a:hover svg {
+  opacity: 1;
+}
+.dots li a.active svg {
+  opacity: 1;
+  fill: var(--brand-color);
+  transform: scale(1.5);
+}

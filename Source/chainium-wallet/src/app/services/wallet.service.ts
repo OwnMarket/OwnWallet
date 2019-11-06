@@ -11,10 +11,10 @@ providedIn: 'root'
 })
 export class WalletService {
 
-    constructor(private cryptoService: CryptoService, 
+    constructor(private cryptoService: CryptoService,
         private privateKeyService: PrivatekeyService) { }
 
-    private context: WalletContext; 
+    private context: WalletContext;
 
     private subject = new Subject<any>();
 
@@ -26,7 +26,7 @@ export class WalletService {
     getWalletContext (): WalletContext {
         return {
             walletKeystore: localStorage.getItem('walletKeyStore'),
-            passwordHash: this.context ? this.context.passwordHash : null 
+            passwordHash: this.context ? this.context.passwordHash : null
         }
     }
 
@@ -34,18 +34,18 @@ export class WalletService {
         let context = this.getWalletContext();
         if (!context.passwordHash || !context.walletKeystore)
             return null;
-            
+
         var addresses = JSON.parse(localStorage.getItem('walletChxAddresses')) || [];
         var index = addresses.indexOf(chxAddress);
-        if (index >= 0) {     
+        if (index >= 0) {
             return this.cryptoService.generateWalletFromKeystore(
                 context.walletKeystore,
-                context.passwordHash, 
-                index);        
+                context.passwordHash,
+                index);
         }
     }
 
-    getAllChxAddresses () : string[] {
+    getAllChxAddresses (): string[] {
         return JSON.parse(localStorage.getItem('walletChxAddresses')) || []
     }
 
@@ -60,7 +60,7 @@ export class WalletService {
     sendMessage(message: boolean) {
         this.subject.next(message);
     }
- 
+
     clearMessage() {
         this.subject.next();
     }
@@ -70,12 +70,12 @@ export class WalletService {
     }
 
     createNewChxAddress () {
-        let index = this.getNextWalletIndex(); 
+        let index = this.getNextWalletIndex();
         this.createChxAddress(index);
     }
 
-    generateWalletFromContext() { 
-        this.createChxAddress(0);     
+    generateWalletFromContext() {
+        this.createChxAddress(0);
     }
 
     clearWalletContext() {
@@ -90,11 +90,11 @@ export class WalletService {
         this.privateKeyService.setWalletInfo(null);
         this.sendMessage(true);
     }
-   
+
     private createChxAddress(index: number) {
         let context = this.getWalletContext();
         if (!context.passwordHash || !context.walletKeystore)
-            return;           
+            return;
 
         this.cryptoService.generateWalletFromKeystore(context.walletKeystore, context.passwordHash, index)
             .subscribe((wallet: WalletInfo) => {
@@ -107,11 +107,11 @@ export class WalletService {
                     let selectedChxAddress = this.getSelectedChxAddress();
                     if (selectedChxAddress == chxAddresses[0]) {
                         this.setSelectedChxAddress(null);
-                    }                    
+                    }
 
-                    // remove old chx address form the storage              
+                    // remove old chx address form the storage
                     chxAddresses.shift();
-                    localStorage.setItem('walletChxAddresses', JSON.stringify(chxAddresses));                       
+                    localStorage.setItem('walletChxAddresses', JSON.stringify(chxAddresses));
                 }
 
                 this.addAddressToStorage(wallet.address);
@@ -120,13 +120,13 @@ export class WalletService {
                 if (index == 0 && isValidSelectedChxAddress) {
                     this.getWalletInfo(selectedChxAddress)
                         .subscribe (walletInfo => this.privateKeyService.setWalletInfo(walletInfo));
-                } 
+                }
                 else {
                     this.privateKeyService.setWalletInfo(wallet);
                 }
-                
-                this.privateKeyService.sendMessage(this.privateKeyService.existsKey());          
-        });        
+
+                this.privateKeyService.sendMessage(this.privateKeyService.existsKey());
+        });
     }
 
     private addAddressToStorage(address : string) {
@@ -134,8 +134,8 @@ export class WalletService {
         var addressExists = addresses.find((a: string) => a == address);
         if (!addressExists) {
             addresses.push(address);
-            localStorage.setItem('walletChxAddresses', JSON.stringify(addresses));      
-        }    
+            localStorage.setItem('walletChxAddresses', JSON.stringify(addresses));
+        }
     }
 
     private getNextWalletIndex(){

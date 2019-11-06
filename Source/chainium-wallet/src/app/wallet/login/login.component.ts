@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
-import { CryptoService } from '../services/crypto.service';
-import { WalletService } from '../services/wallet.service';
-import { MatDialog } from '@angular/material';
-import { UnloadWalletInfoComponent } from '../unload-wallet-info/unload-wallet-info.component';
+
+import { UnloadWalletInfoComponent } from '../../unload-wallet-info/unload-wallet-info.component';
+import { CryptoService } from 'src/app/services/crypto.service';
+import { WalletService } from 'src/app/services/wallet.service';
 
 @Component({
     selector: 'app-login',
@@ -19,33 +19,33 @@ export class LoginComponent implements OnInit {
     hide: boolean;
     showRestore: boolean;
 
-    password = new FormControl('', [Validators.required]);    
-    saveKeystore : boolean;
+    password = new FormControl('', [Validators.required]);
+    saveKeystore: boolean;
 
 
-    constructor(private router: Router,
+    constructor(
+      private router: Router,
         private cryptoService: CryptoService,
         private walletService: WalletService,
-        public dialog: MatDialog) {
+        ) {
             this.hide = true;
             this.saveKeystore = true;
             this.needPasswordOnly = false;
             this.showRestore = false;
     }
 
-    ngOnInit() {            
-        let walletContext = this.walletService.getWalletContext();
+    ngOnInit() {
+        const walletContext = this.walletService.getWalletContext();
         if (walletContext.walletKeystore) {
             this.walletKeystore = walletContext.walletKeystore;
             this.needPasswordOnly = true;
+        } else {
+            this.router.navigate(['/wallet']);
         }
-        else {
-            this.router.navigate(['/home']);
-        }                       
     }
 
-    onKeyDown(event) {
-        if (event && event.key === "Enter") {
+    onKeyDown(event: KeyboardEvent) {
+        if (event && event.key === 'Enter') {
             this.onSubmitPassword();
         }
     }
@@ -57,20 +57,20 @@ export class LoginComponent implements OnInit {
             const walletContext = { walletKeystore: this.walletKeystore, passwordHash };
             try {
                 this.cryptoService.generateWalletFromKeystore(
-                    walletContext.walletKeystore, 
+                    walletContext.walletKeystore,
                     walletContext.passwordHash,
                     0
                 ).subscribe(w => {});
                 this.walletService.setWalletContext(walletContext);
-                this.router.navigate(['/home']);
-            }
-            catch {
+                this.router.navigate(['/wallet/home']);
+            } catch {
                 this.password.setErrors({'incorrect': true});
-            }            
+            }
         }
-    }    
+    }
+
 
     onUnloadWallet() {
-        let dialogRef = this.dialog.open(UnloadWalletInfoComponent, {width: '50%'});
+       // let dialogRef = this.dialog.open(UnloadWalletInfoComponent, {width: '50%'});
     }
 }

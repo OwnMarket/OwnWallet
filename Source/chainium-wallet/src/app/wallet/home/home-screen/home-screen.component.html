@@ -1,0 +1,36 @@
+<div class="container my-5" *ngIf="addressInfo && selectedWallet">
+
+  <own-card>
+    <own-card-body [padding]="true">
+      <div class="row">
+        <div class="col-12 col-md-6 border-right">
+          <h6 class="m-2">My Addresses</h6>
+          <own-slider>
+            <own-slide *ngFor="let address of chxAddresses; let i = index" [width]="200">
+              <div class="address-item" [class.selected]="selectedChxAddress">
+                <div class="address-index mb-3">
+                  Address 0{{ i + 1}}
+                </div>
+                <h4 class="address-balance-chx m-0">
+                    470.785 CHX
+                </h4>
+                <div class="address-balance-currency">
+                  $244.30
+                </div>
+              </div>
+            </own-slide>
+          </own-slider>
+        </div>
+        <div class="col-12 col-md-6">
+
+        </div>
+      </div>
+    </own-card-body>
+  </own-card>
+
+</div>
+
+
+<div class="container my-5" *ngIf="!addressInfo">
+    <h2>Unable to load balance info for imported key. Please check value that you have entered...</h2>
+</div>

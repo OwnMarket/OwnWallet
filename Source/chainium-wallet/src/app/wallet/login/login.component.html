@@ -1,0 +1,24 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-6">
+      <own-card>
+        <own-card-title>
+          <b>Login</b>
+        </own-card-title>
+        <own-card-body [padding]="true">
+          <div class="row">
+            <label>Password</label>
+            <input class="block" [type]="hide ? 'password' : 'text'" [formControl]="password"
+            (keydown)="onKeyDown($event)" required />
+            <div class="info" *ngIf="password.errors && password.errors.required && password.touched">This field is required.</div>
+            <div class="info" *ngIf="password.errors && password.errors.incorrect && password.touched">Invalid password!</div>
+          </div>
+          <div class="row justify-content-between mt-5">
+              <button class="own-effect" (click)="onSubmitPassword()">LOGIN</button>
+              <button class="own-effect" (click)="onUnloadWallet()">UNLOAD WALLET</button>
+          </div>
+        </own-card-body>
+      </own-card>
+    </div>
+  </div>
+</div>

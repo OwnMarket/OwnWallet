@@ -1,0 +1,16 @@
+.address-item {
+  padding: 20px;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border-radius: 20px;
+}
+
+.address-item.selected {
+  color: white;
+  background: linear-gradient(to right, rgba(227,85,34,1) 0%, rgba(244,113,53,1) 100%);
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, .5);
+}
+
+.address-item:hover {
+  cursor: pointer;
+}

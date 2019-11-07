@@ -33,6 +33,10 @@
   font-size: 100%;
 }
 
+*:focus {
+  outline: none;
+}
+
 html {
   box-sizing: border-box;
   font-size: 14px;
@@ -277,6 +281,35 @@ button.own-effect:hover::before {
 
 button:hover {
   text-shadow: 0 0 2px rgba(0,0,0,.5);
+}
+
+.action-button-small {
+  line-height: 1.5rem;
+  color: var(--color-text-info);
+  background: transparent;
+  padding: .1rem 1rem;
+  font-size: .9rem;
+  box-shadow: none;
+  border: 2px solid var(--color-text-info);
+}
+
+.action-button-small:hover {
+  text-shadow: none;
+  color: var(--color-navbar-bg);
+  background: var(--color-accent);
+  border: 2px solid var(--color-accent);
+}
+
+.action-button-small span {
+  padding-top: 4px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-accent);
+}
+
+.action-button-small:hover span {
+  font-size: 1rem;
+  color: var(--color-navbar-bg);
 }
 
 input {

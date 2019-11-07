@@ -1,13 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, HostListener } from '@angular/core';
 import { ownIcons } from './own-icons';
 @Component({
   selector: 'own-icon',
   templateUrl: './own-icon.component.html',
   styleUrls: ['./own-icon.component.css']
 })
-export class OwnIconComponent implements OnInit {
+export class OwnIconComponent {
 
-
+  _icon: any;
+  _oldColor: string;
 
   @Input() set icon(value: string) {
     if (typeof ownIcons[value] !== 'undefined') {
@@ -17,12 +18,21 @@ export class OwnIconComponent implements OnInit {
 
   @Input() size = 20;
   @Input() color = '#848484';
+  @Input() hoverColor: string;
 
-  _icon: any;
+  @HostListener('mouseover')
+  onHover() {
+    if (this.hoverColor) {
+      this._oldColor = this.color;
+      this.color = this.hoverColor;
+    }
+  }
 
-  constructor() { }
-
-  ngOnInit() {
+  @HostListener('mouseout')
+  onHoverEnd() {
+    if (this.hoverColor) {
+      this.color = this._oldColor;
+    }
   }
 
 }

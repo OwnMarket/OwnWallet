@@ -4,6 +4,8 @@
 .own-slider-stage {
   padding: 10px 0;
   position: relative;
+  flex-wrap: nowrap;
+  flex-direction: row;
   display: inline-flex;
   transition: all .5s;
 }

@@ -14,7 +14,7 @@ export class PrivatekeyService {
 
     existsKey(): boolean {
         if (this.walletInfo && this.walletInfo.privateKey)
-            return true;    
+            return true;
 
         return false;
     }

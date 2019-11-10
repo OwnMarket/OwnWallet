@@ -46,7 +46,7 @@ export class WalletService {
     }
 
     getAllChxAddresses (): string[] {
-        return JSON.parse(localStorage.getItem('walletChxAddresses')) || []
+        return JSON.parse(localStorage.getItem('walletChxAddresses')) || [];
     }
 
     getSelectedChxAddress () {
@@ -70,7 +70,7 @@ export class WalletService {
     }
 
     createNewChxAddress () {
-        let index = this.getNextWalletIndex();
+        const index = this.getNextWalletIndex();
         this.createChxAddress(index);
     }
 

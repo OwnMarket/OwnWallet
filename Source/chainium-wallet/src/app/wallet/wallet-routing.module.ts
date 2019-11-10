@@ -1,22 +1,29 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AccessGuard } from '../_guards/access.guard';
-import { LoginComponent } from './login/login.component';
+
+import { WelcomeComponent } from './welcome/welcome.component';
+import { CreateComponent } from './create/create.component';
+import { ImportComponent } from './import/import.component';
+import { LoginComponent } from '../login/login.component';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: './welcome/welcome.module#WelcomeModule'
+    component: WelcomeComponent,
+    canActivate: [ AccessGuard ],
+    children: [
+      {
+        path: 'create',
+        component: CreateComponent,
+      },
+      {
+        path: 'import',
+        component: ImportComponent,
+      }
+    ]
   },
-  {
-    path: 'home',
-    loadChildren: './home/home.module#HomeModule',
-    // canActivate: [ AccessGuard ]
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  }
+
 ];
 
 @NgModule({

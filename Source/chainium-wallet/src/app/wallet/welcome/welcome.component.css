@@ -1,8 +1,51 @@
+.welcome-token {
+  width: 100%;
+}
+
+.welcome-button {
+  width: 100%;
+  padding: 10px 20px;
+  color: var(--color-text);
+  background-color: transparent;
+  border: 1px dashed var(--color-text-info);
+  border-radius: 2rem;
+  text-align: left;
+  box-shadow: none;
+  overflow: hidden;
+  position: relative;
+  transition: all .5s ease-in-out;
+}
+
+.plus-icon {
+  position: absolute;
+  top: -7px;
+  left: 0;
+  padding: 15px;
+  transition: all .5s ease-in-out;
+}
+
+.welcome-button:hover {
+  color: white;
+  box-shadow: inset -350px 0 0 0 var(--color-accent);
+  border: 1px solid var(--color-accent);
+}
+
+.welcome-button.active {
+  border: none;
+  background-color: var(--color-bg);
+}
+
+.welcome-button:hover .plus-icon {
+  background-color: white;
+  border-radius: 50%;
+}
+
 .address-item {
   padding: 20px;
   color: var(--color-text);
   background: var(--color-bg);
   border-radius: 10px;
+  overflow: hidden;
   transition: all .4s ease-in-out;
 }
 
@@ -71,7 +114,8 @@
   position: absolute;
   top: -.2rem;
   left: -.3rem;
-  text-align: center;
+  text-align: right;
+  padding-right: .7rem;
   padding-top: .5rem;
   height: 3rem;
   width: 3rem;
@@ -100,3 +144,4 @@
   text-shadow: none;
   box-shadow: 0 0 4px rgba(0, 0, 0, .3);
 }
+

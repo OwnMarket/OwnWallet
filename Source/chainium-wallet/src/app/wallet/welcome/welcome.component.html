@@ -1,0 +1,165 @@
+<div class="container my-5" *ngIf="!addressInfo && !selectedWallet">
+  <own-card>
+    <own-card-body [padding]="true">
+      <div class="row align-items-center">
+        <div class="col-12 col-sm-4">
+          <img class="welcome-token" src="/assets/images/token.png" alt="token image">
+        </div>
+        <div class="col-12 col-sm-8">
+          <h2 class="brand mb-2">Welcome</h2>
+          <p class="mb-4">
+            You still don't have a wallet ?
+            <br>
+            Please import an existing address hash or create a new one.
+          </p>
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <button class="welcome-button" routerLink="create" routerLinkActive="active">
+                <span class="plus-icon">
+                  <own-icon icon="plus" color="#39a2ae"></own-icon>
+                </span>
+                <span class="ml-5">Create a Wallet</span>
+              </button>
+            </div>
+            <div class="col-12 col-md-6 mt-4 mt-md-0">
+              <button class="welcome-button" routerLink="import" routerLinkActive="active">
+                <span class="plus-icon">
+                  <own-icon icon="plus" color="#39a2ae"></own-icon>
+                </span>
+                <span class="ml-5">Import an existing wallet</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </own-card-body>
+  </own-card>
+</div>
+
+<div class="container my-5" *ngIf="addressInfo && selectedWallet">
+
+    <div class="container my-5">
+        <div class="row">
+          <div class="col">
+            <own-card>
+              <own-card-body [padding]="true">
+                <div class="row">
+                  <div class="col-12 col-md-6 pr-0">
+                    <div class="mx-4 mb-2">
+                      <div class="row justify-content-between">
+                        <b>My Addresses</b>
+                        <div>
+                          <button class="previous" (click)="slider.prev()">
+                            <
+                          </button>
+                          <button class="next" (click)="slider.next()">
+                            >
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="border-right">
+                      <own-slider [showDots]="false" #slider>
+                        <own-slide [width]="200" *ngFor="let address of chxAddresses; let i = index">
+                          <div class="address-item"
+                                [class.selected]="selectedChxAddress === address"
+                                (click)="onChxAddressChange(address)">
+                            <div class="address-index mb-3">
+                              Address {{ i + 1 }}
+                            </div>
+                            <h4 class="address-balance-chx m-0" *ngIf="addressInfo.blockchainAddress === address">
+                                {{ addressInfo.balance.total }} CHX
+                            </h4>
+                          </div>
+                        </own-slide>
+                      </own-slider>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+
+                      <h6 class="mx-4 mb-2">
+                          <div class="row justify-content-end">
+                            <button class="action-button-small" (click)="onAddChxAddressClick()">
+                              <span>+</span>
+                              Action
+                            </button>
+                            <button class="button-transparent">
+                                <own-icon icon="refresh"></own-icon>
+                            </button>
+                          </div>
+                        </h6>
+
+                        <div class="row mt-4">
+                          <div class="col-12 address-hash text-center">
+                            {{ addressInfo.blockchainAddress }}
+                            <button class="button-transparent" title="Copy address hash" ngxClipboard cbContent="{{ addressInfo.blockchainAddress }}">
+                                <own-icon icon="copy" color="#eb6723"></own-icon>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="row mt-5 ml-0 ml-md-5">
+                          <div class="col-3">Delegated</div>
+                          <div class="col-3"><b>{{ addressInfo.balance.staked }}</b></div>
+                          <div class="col-3">Nonce</div>
+                          <div class="col-3"><b>{{ addressInfo.nonce }}</b></div>
+                        </div>
+
+                        <div class="row ml-0 ml-md-5">
+                            <div class="col-3">Available</div>
+                            <div class="col-3"><b>{{ addressInfo.balance.available }}</b></div>
+                            <div class="col-3">Deposit</div>
+                            <div class="col-3"><b>{{ addressInfo.balance.deposit }}</b></div>
+                          </div>
+
+
+                  </div>
+                </div>
+              </own-card-body>
+            </own-card>
+
+          </div>
+        </div>
+
+        <div class="row mt-4 px-5 justify-content-between">
+          <div class="col-9">
+            <div class="quick-actions">
+              <b class="mr-4">Quick actions:</b>
+              <button class="quick-action-button selected mr-4">
+                <span>
+                  <own-icon icon="send" size="15" color="#39a2ae"></own-icon>
+                </span>
+                Send CHX
+              </button>
+
+              <button class="quick-action-button mr-4">
+                <span>
+                  <own-icon icon="receive" size="15" color="#39a2ae"></own-icon>
+                </span>
+                  Receive CHX
+              </button>
+
+              <button class="quick-action-button">
+                <span>
+                  <own-icon icon="staking" size="15" color="#39a2ae"></own-icon>
+                </span>
+                  Staking
+              </button>
+            </div>
+          </div>
+
+          <div class="col-3 text-right">
+            <button class="advanced-dropdown-button">
+              <b class="mr-2">Advanced actions</b>
+              <own-icon icon="arrow-down"></own-icon>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+
+</div>
+
+<router-outlet></router-outlet>

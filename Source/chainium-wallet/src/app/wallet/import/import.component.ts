@@ -80,7 +80,7 @@ export class ImportComponent implements OnInit {
               this.walletService.setWalletContext(walletContext);
               this.walletService.generateWalletFromContext();
 
-              this.router.navigate(['/wallet/home']);
+              this.router.navigate(['/wallet']);
           } catch {
               this.f.password.setErrors({'incorrect' : true});
           }
@@ -108,7 +108,7 @@ export class ImportComponent implements OnInit {
                   this.walletService.setWalletContext(walletContext);
                   this.walletService.generateWalletFromContext();
 
-                  this.router.navigate(['/wallet/home']);
+                  this.router.navigate(['/wallet']);
               });
           } catch {
               this.mnemonic.setErrors({'incorrect': true});
@@ -130,7 +130,7 @@ export class ImportComponent implements OnInit {
           });
 
           this.privateKeyService.sendMessage(this.privateKeyService.existsKey());
-          this.router.navigate(['/wallet/home']);
+          this.router.navigate(['/wallet']);
       });
   }
 

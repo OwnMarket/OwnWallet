@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
 
-import { UnloadWalletInfoComponent } from '../../unload-wallet-info/unload-wallet-info.component';
+import { UnloadWalletInfoComponent } from '../unload-wallet-info/unload-wallet-info.component';
 import { CryptoService } from 'src/app/services/crypto.service';
 import { WalletService } from 'src/app/services/wallet.service';
 
@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
                     0
                 ).subscribe(w => {});
                 this.walletService.setWalletContext(walletContext);
-                this.router.navigate(['/wallet/home']);
+                this.router.navigate(['/wallet']);
             } catch {
                 this.password.setErrors({'incorrect': true});
             }

@@ -1,3 +1,4 @@
+import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { GoogleMaterialModule } from './/google-material.module';
@@ -41,6 +42,8 @@ import { UnloadWalletComponent } from './hdcrypto/unload-wallet.component';
 import { PrivateComponent } from './layout/private.component';
 import { OwnNavbarModule } from './shared';
 import { CopyPrivateKeyComponent } from './copy-private-key/copy-private-key.component';
+import { LoginComponent } from './login/login.component';
+
 
 @NgModule({
     entryComponents: [
@@ -81,18 +84,18 @@ import { CopyPrivateKeyComponent } from './copy-private-key/copy-private-key.com
         NewWalletComponent,
         RestoreWalletComponent,
         UnloadWalletComponent,
-        CopyPrivateKeyComponent
+        CopyPrivateKeyComponent,
+        LoginComponent
     ],
     imports: [
         BrowserModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        GoogleMaterialModule,
         BrowserAnimationsModule,
-        OwnNavbarModule,
+        HttpClientModule,
+        FormsModule,
+        SharedModule,
+        GoogleMaterialModule,
+        ClipboardModule,
         AppRoutingModule,
-        ClipboardModule
     ],
     providers: [
         {

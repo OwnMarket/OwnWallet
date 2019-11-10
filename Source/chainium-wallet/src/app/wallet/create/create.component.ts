@@ -68,7 +68,7 @@ export class CreateComponent implements OnInit {
                      const walletContext = { walletKeystore, passwordHash };
                      this.walletService.setWalletContext(walletContext);
                      this.walletService.generateWalletFromContext();
-                     this.router.navigate(['/home']);
+                     this.router.navigate(['/wallet']);
                  });
          }
      }

@@ -5,7 +5,7 @@ import { AccessGuard } from '../_guards/access.guard';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { CreateComponent } from './create/create.component';
 import { ImportComponent } from './import/import.component';
-import { LoginComponent } from '../login/login.component';
+import { SendChxComponent } from './actions/send-chx/send-chx.component';
 
 const routes: Routes = [
   {
@@ -20,6 +20,10 @@ const routes: Routes = [
       {
         path: 'import',
         component: ImportComponent,
+      },
+      {
+        path: 'send-chx',
+        component: SendChxComponent
       }
     ]
   },

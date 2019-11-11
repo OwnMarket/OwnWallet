@@ -121,11 +121,13 @@
           </div>
         </div>
 
-        <div class="row mt-4 px-5 justify-content-between">
-          <div class="col-9">
+        <div class="row mt-4 px-0 px-md-5 justify-content-between">
+          <div class="col-12 col-md-2 mb-4 mb-md-0">
+            <b>Quick actions:</b>
+          </div>
+          <div class="col-12 col-md-7">
             <div class="quick-actions">
-              <b class="mr-4">Quick actions:</b>
-              <button class="quick-action-button selected mr-4">
+              <button class="quick-action-button mr-4" routerLink="send-chx" routerLinkActive="selected">
                 <span>
                   <own-icon icon="send" size="15" color="#39a2ae"></own-icon>
                 </span>
@@ -148,18 +150,51 @@
             </div>
           </div>
 
-          <div class="col-3 text-right">
-            <button class="advanced-dropdown-button">
+          <div class="col-12 col-md-3 text-right mt-4 mt-md-0">
+            <button class="advanced-dropdown-button" (click)="showAdvanced = !showAdvanced">
               <b class="mr-2">Advanced actions</b>
-              <own-icon icon="arrow-down"></own-icon>
+                <own-icon icon="arrow-down"></own-icon>
             </button>
           </div>
 
         </div>
 
+        <div class="row advanced-actions mt-3 px-0 px-md-5" *ngIf="showAdvanced">
+          <div class="col-12 col-md-3">
+            <button class="quick-action-button block">
+              <span>
+                <own-icon icon="validator" size="15" color="#39a2ae"></own-icon>
+              </span>
+              Validator Management
+            </button>
+          </div>
+          <div class="col-12 col-md-3">
+            <button class="quick-action-button block">
+              <span>
+                <own-icon icon="arrows-up" size="25" color="#39a2ae"></own-icon>
+              </span>
+              Multi-action Transaction
+            </button>
+          </div>
+          <div class="col-12 col-md-3">
+            <button class="quick-action-button block">
+              <span>
+                <own-icon icon="signature" size="15" color="#39a2ae"></own-icon>
+              </span>
+              Message Signing
+            </button>
+          </div>
+          <div class="col-12 col-md-3">
+              <button class="quick-action-button block">
+                <span>
+                  <own-icon icon="key" size="20" color="#39a2ae"></own-icon>
+                </span>
+                Import Private Key
+              </button>
+            </div>
+        </div>
+
       </div>
-
-
 </div>
 
 <router-outlet></router-outlet>

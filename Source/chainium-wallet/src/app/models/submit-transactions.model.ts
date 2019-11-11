@@ -23,6 +23,10 @@ export class TxResult {
 export class ChxTransfer {
     recipientAddress: string;
     amount: number;
+    constructor(recipientAddress?: string, amount?: number) {
+      this.recipientAddress = recipientAddress;
+      this.amount = amount;
+    }
 }
 
 export class DelegateStake {

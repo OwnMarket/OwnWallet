@@ -1,0 +1,121 @@
+<div class="container my-5" *ngIf="isKeyImported">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8">
+
+        <!-- tx form -->
+        <own-card *ngIf="step === 1 && !isSubmited">
+          <own-card-title>
+            <b>Send CHX</b>
+          </own-card-title>
+          <own-card-body [padding]="true">
+            <form [formGroup]="sendChxForm" *ngIf="tx">
+              <div class="row">
+                <div class="col-12">
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <label class="block mt-3 mt-md-0">Amount</label>
+                    <input class="block" type="number" formControlName="amount">
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label class="block mt-3 mt-md-0">Address</label>
+                    <input class="block" type="text" formControlName="recipientAddress">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                      <button class="button-transparent my-3 my-md-0">Advances Options</button>
+                      <div class="row">
+                        <div class="col-12 col-md-6">
+                          <label class="block mt-3 mt-md-0">Nonce</label>
+                          <input class="block" type="number" formControlName="nonce">
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="block mt-3 mt-md-0">Action Fee</label>
+                          <input class="block" type="number" formControlName="actionFee">
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6 text-right mt-5">
+                    <button class="own-effect" [disabled]="sendChxForm.invalid" type="button" (click)="step = 2">
+                      Continue
+                    </button>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </form>
+          </own-card-body>
+        </own-card>
+
+        <!-- tx summary -->
+        <own-card *ngIf="step === 2 && !isSubmited">
+            <own-card-title>
+              <b>Summary</b>
+            </own-card-title>
+            <own-card-body [padding]="true">
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <div class="row">
+                    <div class="col-6">
+                      Amount:
+                    </div>
+                    <div class="col-6 text-right">
+                      <b>{{ sendChxForm.get('amount').value }} CHX</b>
+                    </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-6">
+                        Action Fee:
+                      </div>
+                      <div class="col-6 text-right">
+                        <b>{{ sendChxForm.get('actionFee').value }} CHX</b>
+                      </div>
+                  </div>
+                  <div class="row brand mt-5 border-top">
+                    <div class="col-4">
+                      Total:
+                    </div>
+                    <div class="col-8 text-right">
+                      <b>{{ sendChxForm.get('amount').value + sendChxForm.get('actionFee').value }} CHX</b>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="row">
+                    <div class="col-4 text-center">
+                      ADDRESS
+                    </div>
+                    <div class="col-4">
+                      <div id="arrow-wrapper">
+                        <div id="arrow-stem">
+                            <div id="arrow-head"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-4 text-center">
+                      RECIPIENT
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-4 text-truncate">
+                      <b>
+                        {{ tx.senderAddress }}
+                      </b>
+                    </div>
+                    <div class="col-4">
+
+                    </div>
+                    <div class="col-4 text-truncate">
+                      <b>
+                        {{ sendChxForm.get('recipientAddress').value }}
+                      </b>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </own-card-body>
+          </own-card>
+
+      </div>
+    </div>
+  </div>

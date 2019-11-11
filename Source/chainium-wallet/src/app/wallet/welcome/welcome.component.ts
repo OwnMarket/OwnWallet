@@ -26,6 +26,7 @@ export class WelcomeComponent implements OnInit {
   showImportedPk: boolean;
   isWalletContextValid: boolean;
   addresses: Observable<ChxAddressInfo[]>;
+  showAdvanced = false;
 
   constructor(
     private cryptoService: CryptoService,

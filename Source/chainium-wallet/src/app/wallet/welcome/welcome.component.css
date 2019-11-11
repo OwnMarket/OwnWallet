@@ -41,6 +41,7 @@
 }
 
 .address-item {
+  height: 100%;
   padding: 20px;
   color: var(--color-text);
   background: var(--color-bg);
@@ -102,7 +103,7 @@
   background-color: var(--color-navbar-bg);
   box-shadow: none;
   overflow: hidden;
-  transition: all .3s ease-in;
+  transition: all .3s ease-in-out;
 }
 
 .quick-action-button:hover {
@@ -145,3 +146,27 @@
   box-shadow: 0 0 4px rgba(0, 0, 0, .3);
 }
 
+.advanced-actions .quick-action-button,
+.advanced-actions .quick-action-button span {
+  background-color: var(--color-bg-advanced);
+  transition: all .9s ease-in-out;
+}
+
+.advanced-actions .quick-action-button:hover {
+  box-shadow: inset -430px 0 0 0 var(--color-accent);
+}
+
+.advanced-actions .quick-action-button:hover span {
+  background-color: var(--color-navbar-bg);
+}
+
+@media screen and (max-width: 496px) {
+  .quick-action-button {
+    display: block;
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  .quick-action-button:hover {
+    box-shadow: inset -430px 0 0 0 var(--color-accent);
+  }
+}

@@ -1,0 +1,15 @@
+#arrow-stem {
+  position: relative;
+  background: transparent;
+  width: 100%;
+  height: 8px;
+  border-bottom: 2px solid var(--color-border);
+}
+
+#arrow-head {
+  position: absolute;
+  right: -2px;
+  border-top: 10px solid transparent;
+  border-left: 10px solid var(--color-border);
+  border-bottom: 10px solid transparent;
+}

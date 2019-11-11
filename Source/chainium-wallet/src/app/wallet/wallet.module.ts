@@ -9,12 +9,14 @@ import { ImportComponent } from './import/import.component';
 import { CreateComponent } from './create/create.component';
 
 import { WalletRoutingModule } from './wallet-routing.module';
+import { SendChxComponent } from './actions/send-chx/send-chx.component';
 
 @NgModule({
   declarations: [
     CreateComponent,
     ImportComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    SendChxComponent
   ],
   imports: [
     CommonModule,

@@ -6,6 +6,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { CreateComponent } from './create/create.component';
 import { ImportComponent } from './import/import.component';
 import { SendChxComponent } from './actions/send-chx/send-chx.component';
+import { ReceiveChxComponent } from './actions/receive-chx/receive-chx.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path: 'send-chx',
         component: SendChxComponent
+      },
+      {
+        path: 'receive-chx',
+        component: ReceiveChxComponent
       }
     ]
   },

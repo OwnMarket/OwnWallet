@@ -96,9 +96,14 @@ export class SendChxComponent implements OnDestroy {
     }
   }
 
+  reset() {
+    this.step = 1;
+    this.setupForm();
+  }
+
   ngOnDestroy() {
-    this.addressSub.unsubscribe();
-    this.txSub.unsubscribe();
+    if (this.addressSub) { this.addressSub.unsubscribe(); }
+    if (this.txSub) { this.txSub.unsubscribe(); }
   }
 
 }

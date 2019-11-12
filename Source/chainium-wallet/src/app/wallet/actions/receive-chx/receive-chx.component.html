@@ -1,0 +1,31 @@
+<div class="container my-5" *ngIf="isKeyImported && wallet">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-12 col-md-8">
+      <own-card>
+        <own-card-title>
+          Receive CHX
+        </own-card-title>
+        <own-card-body [padding]="true">
+          <div class="row">
+            <div class="col-12 col-md-4 border-right text-center">
+                <qr-code [value]="wallet.address" errorCorrectionLevel="M"></qr-code>
+            </div>
+            <div class="col-12 col-md-8 mt-5 mt-md-0 pt-5 pt-md-0 border-top">
+                <div class="row full-height align-items-center pl-2">
+                  <div class="col-12">
+                  <b>{{ wallet.address }}</b>
+                  <button class="button-transparent" title="Copy Address" ngxClipboard cbContent="{{ wallet.address }}">
+                      <own-icon icon="copy" color="#eb6723"></own-icon>
+                  </button>
+                  <div>
+                    <small>Send CHX to this address.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </own-card-body>
+      </own-card>
+    </div>
+  </div>
+</div>

@@ -92,7 +92,7 @@
                         <div class="row mt-4">
                           <div class="col-12 address-hash text-center">
                             {{ addressInfo.blockchainAddress }}
-                            <button class="button-transparent" title="Copy address hash" ngxClipboard cbContent="{{ addressInfo.blockchainAddress }}">
+                            <button class="button-transparent" title="Copy Address" ngxClipboard cbContent="{{ addressInfo.blockchainAddress }}">
                                 <own-icon icon="copy" color="#eb6723"></own-icon>
                             </button>
                           </div>
@@ -111,7 +111,6 @@
                             <div class="col-3">Deposit</div>
                             <div class="col-3"><b>{{ addressInfo.balance.deposit }}</b></div>
                           </div>
-
 
                   </div>
                 </div>
@@ -134,7 +133,7 @@
                 Send CHX
               </button>
 
-              <button class="quick-action-button mr-4">
+              <button class="quick-action-button mr-4" routerLink="receive-chx" routerLinkActive="selected">
                 <span>
                   <own-icon icon="receive" size="15" color="#39a2ae"></own-icon>
                 </span>

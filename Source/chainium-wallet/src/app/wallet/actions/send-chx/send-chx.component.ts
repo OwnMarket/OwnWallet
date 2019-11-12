@@ -82,7 +82,9 @@ export class SendChxComponent implements OnDestroy {
         this.txAction
       ];
 
-      this.txSub = this.cryptoService.signTransaction(this.privateKeyService.getWalletInfo().privateKey, txToSign)
+      this.txSub = this.cryptoService.signTransaction(
+        this.privateKeyService.getWalletInfo().privateKey, txToSign
+        )
           .pipe(
             switchMap(env => this.nodeService.submitTransaction(env))
           ).subscribe(result => {
@@ -98,6 +100,9 @@ export class SendChxComponent implements OnDestroy {
 
   reset() {
     this.step = 1;
+    this.isSubmited = false;
+    this.submissionErrors = null;
+    this.displayActions = false;
     this.setupForm();
   }
 

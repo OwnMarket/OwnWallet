@@ -94,6 +94,11 @@ button.link {
   padding: 0 4px;
 }
 
+.img-responsive {
+  width: 100%;
+  height: auto;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 5px;

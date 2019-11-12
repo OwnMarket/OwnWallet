@@ -89,7 +89,7 @@
                       SENDER
                     </div>
                     <div class="col-8 text-truncate">
-                      {{ tx.senderAddress }}
+                      <b>{{ tx.senderAddress }}</b>
                     </div>
                   </div>
                   <div class="row">
@@ -97,14 +97,12 @@
                         RECIPIENT
                     </div>
                     <div class="col-8 text-truncate">
-                      <b>
-                        {{ sendChxForm.get('recipientAddress').value }}
-                      </b>
+                      <b>{{ sendChxForm.get('recipientAddress').value }}</b>
                     </div>
                   </div>
                   <div class="row mt-5 pt-3 border-top-all">
                     <div class="col-6 col-md-4 offset-md-4">
-                      <button class="block own-effect">
+                      <button class="block own-effect" (click)="submit(sendChxForm)">
                         SEND
                       </button>
                     </div>
@@ -120,3 +118,57 @@
       </div>
     </div>
   </div>
+
+<div class="container mb-5" *ngIf="isSubmited && txResult && !submissionErrors">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8">
+        <div class="row full-height align-items-center">
+            <div class="col-12 col-md-6">
+              <img class="img-responsive" src="/assets/images/token-success.png" alt="token success">
+            </div>
+            <div class="col-12 col-md-6">
+              <h4>Success!</h4>
+              <p class="info">
+                Your transaction has been succesfull.
+              </p>
+              <p>
+                <b>Transaction: {{ txResult.txHash }}</b>
+              </p>
+              <p class="text-center mt-5">
+                <button class="outline own-effect" [routerLink]="['/info/tx/' + txResult.txHash]">
+                  VIEW TRANSACTION INFO
+                </button>
+                <button class="button-transparent" title="Copy Transaction" ngxClipboard cbContent="{{ txResult.txHash }}">
+                    <own-icon icon="copy" color="#eb6723"></own-icon>
+                </button>
+              </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mb-5" *ngIf="isSubmited && submissionErrors">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8">
+        <div class="row full-height align-items-center">
+            <div class="col-12 col-md-6">
+              <img class="img-responsive" src="/assets/images/token-fail.png" alt="token success">
+            </div>
+            <div class="col-12 col-md-6">
+              <h4>Sorry, your transaction was rejected.</h4>
+              <p class="info">
+                <li *ngFor="let error of submissionErrors">
+                  {{ error }}
+                </li>
+              </p>
+              <p class="text-center mt-5">
+                  <button class="outline own-effect" (click)="reset()">
+                    TRY AGAIN ?
+                  </button>
+              </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

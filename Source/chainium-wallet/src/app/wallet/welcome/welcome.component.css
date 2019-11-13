@@ -130,7 +130,17 @@
   box-shadow: inset 0 0 4px rgba(0, 0, 0, .3);
 }
 
-.quick-action-button.selected span {
+.quick-action-button.selected span,
+.advanced-actions .quick-action-button.selected span {
+  background-color: transparent;
+}
+
+.quick-action-button.selected:hover,
+.advanced-actions .quick-action-button.selected:hover {
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, .3);
+}
+
+.advanced-actions .quick-action-button.selected:hover span {
   background-color: transparent;
 }
 

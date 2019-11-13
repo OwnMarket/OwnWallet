@@ -1,0 +1,84 @@
+<div class="container">
+  <nav class="tabs mt-2 mt-md-5">
+    <ul>
+      <li
+      class="tab text-center text-md-left cursor-pointer"
+      [class.active]="tab === 'config'"
+      (click)="tab = 'config'">
+            <a>
+              Configure Validator
+            </a>
+      </li>
+      <li
+      class="tab text-center text-md-left cursor-pointer ml-2"
+      [class.active]="tab === 'remove'"
+      (click)="tab = 'remove'">
+        <a>
+          Remove Validator
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<div class="container my-5" *ngIf="tab === 'config' && tx">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8">
+        <own-card>
+          <own-card-title>
+            <b>Configure Validator</b>
+          </own-card-title>
+          <own-card-body [padding]="true">
+            <div class="row justify-content-center">
+              <div class="col-12 col-md-8">
+                <form [formGroup]="configForm" (ngSubmit)="submit(configForm)">
+                  <div class="row">
+                    <div class="col-12 col-md-4">
+                      Validator Address:
+                    </div>
+                    <div class="col-12 col-md-8">
+                      <b>{{ wallet.address }}</b>
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <label class="block">Network Address</label>
+                    </div>
+                    <div class="col-12">
+                      <input class="block" type="text" formControlName="networkAddress">
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-12 col-md-6">
+                      <label class="block">Shared Reward %</label>
+                      <input type="number" class="block" formControlName="sharedRewardPercent">
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <label class="block">Enabled</label>
+                      <label>
+                      <input type="radio" formControlName="isEnabled" value="true">
+                      YES
+                      <span></span>
+                    </label>
+                    <label>
+                      <input type="radio" formControlName="isEnabled" value="false">
+                      NO
+                      <span></span>
+                    </label>
+                    </div>
+                  </div>
+                  <div class="row justify-content-center mt-4">
+                    <div class="col-12 col-md-10">
+                      <button type="submit" class="block own-effect" [disabled]="configForm.invalid">
+                        CONFIGURE VALIDATOR
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </own-card-body>
+        </own-card>
+      </div>
+  </div>
+</div>

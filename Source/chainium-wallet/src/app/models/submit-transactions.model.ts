@@ -38,6 +38,11 @@ export class ConfigureValidator {
     networkAddress: string;
     sharedRewardPercent: number;
     isEnabled: boolean;
+    constructor(networkAddress?: string, sharedRewardPercent?: number, isEnabled?: boolean) {
+      this.networkAddress = networkAddress;
+      this.sharedRewardPercent = sharedRewardPercent;
+      this.isEnabled = isEnabled;
+    }
 }
 
 export class RemoveValidator {

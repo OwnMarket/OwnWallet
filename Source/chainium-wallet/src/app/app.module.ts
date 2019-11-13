@@ -22,14 +22,12 @@ import { GenerateAccountComponent } from './generate-account/generate-account.co
 import { WalletHttpInterceptor } from './services/wallet-http-interceptor';
 import { LoaderComponent } from './loader/loader.component';
 import { DelegateStakeComponent } from './actions/delegate-stake/delegate-stake.component';
-import { ConfigureValidatorComponent } from './actions/configure-validator/configure-validator.component';
 import { CreateAssetEmissionComponent } from './actions/create-asset-emission/create-asset-emission.component';
 import { SetAssetCodeComponent } from './actions/set-asset-code/set-asset-code.component';
 import { SetAssetControllerComponent } from './actions/set-asset-controller/set-asset-controller.component';
 import { SetAccountControllerComponent } from './actions/set-account-controller/set-account-controller.component';
 import { SubmitVoteComponent } from './actions/submit-vote/submit-vote.component';
 import { SubmitVoteWeightComponent } from './actions/submit-vote-weight/submit-vote-weight.component';
-import { RemoveValidatorComponent } from './actions/remove-validator/remove-validator.component';
 import { ValidatorInfoComponent } from './validator-info/validator-info.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateAssetComponent } from './actions/create-asset/create-asset.component';
@@ -40,7 +38,6 @@ import { NewWalletComponent } from './hdcrypto/new-wallet.component';
 import { RestoreWalletComponent } from './hdcrypto/restore-wallet.component';
 import { UnloadWalletComponent } from './hdcrypto/unload-wallet.component';
 import { PrivateComponent } from './layout/private.component';
-import { OwnNavbarModule } from './shared';
 import { CopyPrivateKeyComponent } from './copy-private-key/copy-private-key.component';
 import { LoginComponent } from './login/login.component';
 
@@ -65,8 +62,6 @@ import { LoginComponent } from './login/login.component';
         ChxTransferComponent,
         AssetTransferComponent,
         DelegateStakeComponent,
-        ConfigureValidatorComponent,
-        RemoveValidatorComponent,
         CreateAssetEmissionComponent,
         CreateAssetComponent,
         SetAssetCodeComponent,

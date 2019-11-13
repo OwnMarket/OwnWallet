@@ -12,6 +12,9 @@ import { CreateComponent } from './create/create.component';
 import { WalletRoutingModule } from './wallet-routing.module';
 import { SendChxComponent } from './actions/send-chx/send-chx.component';
 import { ReceiveChxComponent } from './actions/receive-chx/receive-chx.component';
+import { RemoveValidatorComponent } from './actions/remove-validator/remove-validator.component';
+import { ConfigureValidatorComponent } from './actions/configure-validator/configure-validator.component';
+import { ValidatorManagmentComponent } from './validator-managment/validator-managment.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,10 @@ import { ReceiveChxComponent } from './actions/receive-chx/receive-chx.component
     ImportComponent,
     WelcomeComponent,
     SendChxComponent,
-    ReceiveChxComponent
+    ReceiveChxComponent,
+    ConfigureValidatorComponent,
+    RemoveValidatorComponent,
+    ValidatorManagmentComponent
   ],
   imports: [
     CommonModule,

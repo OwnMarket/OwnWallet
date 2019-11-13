@@ -271,6 +271,11 @@ textarea {
 
 label {
   font-weight: 600;
+  position: relative;
+}
+
+label + label {
+  margin-right: 1.5rem;
 }
 
 button {
@@ -376,6 +381,39 @@ input[type=email]:focus {
 
 input[type=number]::-webkit-inner-spin-button {
   opacity: 1;
+}
+
+input[type=radio] {
+  position: relative;
+  box-shadow: none;
+  margin-right: 1rem;
+  visibility: hidden;
+}
+
+input[type=radio]:checked + span {
+  visibility: visible;
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  display: block;
+  width: 10px;
+  height: 10px;
+  background: var(--color-brand);
+  border-radius: 50%;
+}
+
+input[type=radio]:hover {
+  cursor: pointer;
+}
+
+input[type=radio]::after {
+  visibility: visible;
+  content: "";
+  display: block;
+  height: 20px;
+  width: 20px;
+  border: 2px solid var(--color-brand);
+  border-radius: 50%;
 }
 
 .own-upload {
@@ -492,6 +530,63 @@ input[type=number]::-webkit-inner-spin-button {
 
 .wallet-info {
   color: var(--color-text-info);
+}
+
+.tabs ul {
+  padding: 0;
+  display: flex;
+  list-style: none;
+  border-bottom: 1px solid var(--color-bg-advanced);
+}
+.tabs ul li {
+  color: var(--color-text-info);
+  position: relative;
+  padding: 10px;
+}
+.tabs ul li svg {
+  width: 20px;
+  fill: var(--color-text-info);
+  margin-right: 10px;
+}
+.tabs ul li a {
+  font-weight: 600;
+}
+.tabs ul li:hover a {
+  color: var(--color-brand);
+  text-decoration: none;
+}
+.tabs ul li.active {
+  border-bottom: 2px solid var(--color-brand);
+}
+.tabs ul li.active a {
+  color: var(--color-brand);
+}
+.tabs ul li.active svg {
+  fill: var(--color-brand);
+}
+.tabs ul li.active:focus {
+  outline: none;
+}
+
+.jsb {
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 767px) {
+  .tabs ul li svg {
+    margin: 0 auto;
+    margin-bottom: 10px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .tabs ul li svg {
+    margin: 0 auto;
+    margin-bottom: 10px;
+  }
+  .tabs ul li a {
+    font-size: .8rem;
+  }
 }
 
 .card-tabs {

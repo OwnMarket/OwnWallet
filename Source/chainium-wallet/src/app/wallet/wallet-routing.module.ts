@@ -1,3 +1,4 @@
+import { ValidatorManagmentComponent } from './validator-managment/validator-managment.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AccessGuard } from '../_guards/access.guard';
@@ -29,6 +30,10 @@ const routes: Routes = [
       {
         path: 'receive-chx',
         component: ReceiveChxComponent
+      },
+      {
+        path: 'validator-managment',
+        component: ValidatorManagmentComponent
       }
     ]
   },

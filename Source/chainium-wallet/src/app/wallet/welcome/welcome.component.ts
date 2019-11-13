@@ -10,7 +10,7 @@ import { WalletService } from 'src/app/services/wallet.service';
 import { NodeService } from 'src/app/services/node.service';
 
 import { from, Observable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, reduce } from 'rxjs/operators';
 
 @Component({
   selector: 'app-welcome',
@@ -25,7 +25,6 @@ export class WelcomeComponent implements OnInit {
   chxAddresses: string[] = [];
   showImportedPk: boolean;
   isWalletContextValid: boolean;
-  addresses: Observable<ChxAddressInfo[]>;
   showAdvanced = false;
 
   constructor(
@@ -89,6 +88,7 @@ export class WelcomeComponent implements OnInit {
   onChxAddressChange(address: string) {
       this.selectedChxAddress = address;
       this.setActiveWallet(this.selectedChxAddress);
+      this.router.navigate(['/wallet']);
   }
 
   onRemovePrivateAddress() {
@@ -110,7 +110,8 @@ export class WelcomeComponent implements OnInit {
 
   private populateAddresses(): Observable<ChxAddressInfo[]> {
     return from(this.chxAddresses).pipe(
-      mergeMap(address => this.nodeService.getAddressInfo(address))
+      mergeMap(address => this.nodeService.getAddressInfo(address)),
+      reduce((x, y) => x.concat(y), [])
     );
   }
 

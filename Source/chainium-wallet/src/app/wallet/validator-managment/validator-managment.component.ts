@@ -3,26 +3,26 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { NodeService } from 'src/app/services/node.service';
 import { PrivatekeyService } from 'src/app/services/privatekey.service';
-import { CryptoService } from 'src/app/services/crypto.service';
 
 import { WalletInfo } from './../../models/wallet-info.model';
-import { Tx, TxAction, TxResult, ConfigureValidator } from 'src/app/models/submit-transactions.model';
+import { TxResult } from 'src/app/models/submit-transactions.model';
 import { Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { OwnAnimations } from '../../shared';
 
+declare var ownBlockchainSdk: any;
 
 @Component({
   selector: 'app-validator-managment',
   templateUrl: './validator-managment.component.html',
-  styleUrls: ['./validator-managment.component.css']
+  styleUrls: ['./validator-managment.component.css'],
+  animations: [OwnAnimations.contentInOut]
 })
 export class ValidatorManagmentComponent implements OnDestroy {
 
   configForm: FormGroup;
   submissionErrors: string[];
 
-  tx: Tx;
-  txAction: TxAction;
   txResult: TxResult;
   wallet: WalletInfo;
 
@@ -32,13 +32,14 @@ export class ValidatorManagmentComponent implements OnDestroy {
   addressSub: Subscription;
   txSub: Subscription;
 
+  nonce: number;
+  fee: number;
   tab = 'config';
 
   constructor(
     private formBuilder: FormBuilder,
     private nodeService: NodeService,
-    private privateKeyService: PrivatekeyService,
-    private cryptoService: CryptoService
+    private privateKeyService: PrivatekeyService
   ) {
 
     this.isKeyImported = privateKeyService.existsKey();
@@ -48,12 +49,9 @@ export class ValidatorManagmentComponent implements OnDestroy {
 
     this.addressSub = this.nodeService.getAddressInfo(this.wallet.address)
       .subscribe(balInfo => {
-
-        this.tx = new Tx();
-        this.tx.nonce = balInfo.nonce + 1;
-        this.tx.actionFee = this.nodeService.getMinFee();
+        this.nonce = balInfo.nonce + 1;
+        this.fee = this.nodeService.getMinFee();
         this.setupForm();
-
       });
    }
 
@@ -67,32 +65,29 @@ export class ValidatorManagmentComponent implements OnDestroy {
 
   submit({ value, valid }: { value: any, valid: boolean }) {
     if (valid) {
+      const txToSign = ownBlockchainSdk.transactions.createTx(
+        this.wallet.address,
+        this.nonce,
+        this.fee
+      );
 
-     this.tx.senderAddress = this.wallet.address;
+    txToSign.addConfigureValidatorAction(
+      value.networkAddress,
+      value.sharedRewardPercent,
+      value.isEnabled
+    );
 
-     this.txAction = new TxAction();
-     this.txAction.actionType = 'ConfigureValidator';
-     this.txAction.actionData = new ConfigureValidator(
-       value.networkAddress,
-       value.sharedRewardPercent,
-       value.isEnabled
-     );
+    const signature = txToSign.sign(environment.networkCode, this.wallet.privateKey);
 
-     this.tx.actions = [ this.txAction ];
-
-      this.txSub = this.cryptoService.signTransaction(
-        this.wallet.privateKey, this.tx
-        )
-          .pipe(
-            switchMap(env => this.nodeService.submitTransaction(env))
-          ).subscribe(result => {
-            this.isSubmited = true;
-            if (result.errors) {
-              this.submissionErrors = result.errors;
-              return;
-            }
-            this.txResult = (result as TxResult);
-          });
+    this.txSub = this.nodeService.submitTransaction(signature).subscribe(
+      result => {
+        this.isSubmited = true;
+        if (result.errors) {
+          this.submissionErrors = result.errors;
+          return;
+        }
+        this.txResult = (result as TxResult);
+      });
     }
   }
 

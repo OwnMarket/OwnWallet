@@ -41,19 +41,37 @@
 }
 
 .address-item {
+  overflow: hidden;
+  position: relative;
   height: 100%;
   padding: 20px;
   color: var(--color-text);
   background: var(--color-bg);
   border-radius: 10px;
-  overflow: hidden;
   transition: all .4s ease-in-out;
+}
+
+.address-item .wallet {
+  position: absolute;
+  left: 0;
+  top: 150px;
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  box-shadow: -4px 0 4px rgba(0, 0, 0, .3);
+  background: var(--color-text-info);
+  transform: translateY(-100px);
+  transition: all .5s ease-in-out;
 }
 
 .address-item.selected {
   color: var(--color-navbar-bg);;
   background: linear-gradient(to right, rgba(227,85,34,1) 0%, rgba(244,113,53,1) 100%);
   box-shadow: 0 4px 7px 0 rgba(0, 0, 0, .3);
+}
+
+.address-item.selected .wallet {
+  transform: translateX(0);
 }
 
 .address-item.selected:hover {

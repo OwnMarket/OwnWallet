@@ -18,22 +18,27 @@ const routes: Routes = [
       {
         path: 'create',
         component: CreateComponent,
+        data: { state: 'create' }
       },
       {
         path: 'import',
         component: ImportComponent,
+        data: { state: 'import' }
       },
       {
         path: 'send-chx',
-        component: SendChxComponent
+        component: SendChxComponent,
+        data: { state: 'send-chx' }
       },
       {
         path: 'receive-chx',
-        component: ReceiveChxComponent
+        component: ReceiveChxComponent,
+        data: { state: 'receive-chx' }
       },
       {
         path: 'validator-managment',
-        component: ValidatorManagmentComponent
+        component: ValidatorManagmentComponent,
+        data: { state: 'validator-managment' }
       }
     ]
   },

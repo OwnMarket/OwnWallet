@@ -68,8 +68,12 @@
                               Address {{ i + 1 }}
                             </div>
                             <h4 class="address-balance-chx m-0" *ngIf="addressInfo.blockchainAddress === address">
-                                {{ addressInfo.balance.total }} CHX
+                                {{ addressInfo.balance.total }}
                             </h4>
+                            <div>
+                              CHX
+                            </div>
+                            <div class="wallet"></div>
                           </div>
                         </own-slide>
                       </own-slider>
@@ -158,7 +162,7 @@
 
         </div>
 
-        <div class="row advanced-actions mt-3 px-0 px-md-5" *ngIf="showAdvanced">
+        <div class="row advanced-actions mt-3 px-0 px-md-5" *ngIf="showAdvanced" @flyUp>
           <div class="col-12 col-md-3">
             <button class="quick-action-button block" routerLink="validator-managment" routerLinkActive="selected">
               <span>
@@ -196,4 +200,6 @@
       </div>
 </div>
 
-<router-outlet></router-outlet>
+<div [@flyDown]="getState(a)">
+  <router-outlet #a="outlet"></router-outlet>
+</div>

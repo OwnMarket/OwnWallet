@@ -21,8 +21,8 @@
   </nav>
 </div>
 
-<div class="container my-5" *ngIf="tab === 'config' && tx">
-    <div class="row justify-content-center">
+<div class="container my-5" *ngIf="tab === 'config' && configForm">
+    <div class="row justify-content-center" @contentInOut>
       <div class="col-12 col-md-8">
         <own-card>
           <own-card-title>
@@ -33,11 +33,14 @@
               <div class="col-12 col-md-8">
                 <form [formGroup]="configForm" (ngSubmit)="submit(configForm)">
                   <div class="row">
-                    <div class="col-12 col-md-4">
-                      Validator Address:
+                    <div class="col-12">
+                      <b>Validator Address:</b>
                     </div>
-                    <div class="col-12 col-md-8">
-                      <b>{{ wallet.address }}</b>
+                    <div class="col-12">
+                      {{ wallet.address }}
+                      <button class="button-transparent" title="Copy Address" ngxClipboard cbContent=" {{ wallet.address }}">
+                        <own-icon icon="copy" color="#eb6723"></own-icon>
+                      </button>
                     </div>
                   </div>
                   <div class="row mt-4">
@@ -67,7 +70,7 @@
                     </label>
                     </div>
                   </div>
-                  <div class="row justify-content-center mt-4">
+                  <div class="row justify-content-center mt-5">
                     <div class="col-12 col-md-10">
                       <button type="submit" class="block own-effect" [disabled]="configForm.invalid">
                         CONFIGURE VALIDATOR
@@ -81,4 +84,20 @@
         </own-card>
       </div>
   </div>
+</div>
+
+
+<div class="container my-5" *ngIf="tab === 'remove'">
+  <div class="row justify-content-center" @contentInOut>
+    <div class="col-12 col-md-8">
+      <own-card>
+        <own-card-title>
+          <b>Remove Validator</b>
+        </own-card-title>
+        <own-card-body [padding]="true">
+         Remove validator
+        </own-card-body>
+      </own-card>
+    </div>
+</div>
 </div>

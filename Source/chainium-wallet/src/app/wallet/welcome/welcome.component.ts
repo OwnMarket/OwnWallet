@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 
 import { ChxAddressInfo } from 'src/app/models/chx-address-info.model';
 import { WalletInfo } from 'src/app/models/wallet-info.model';
@@ -12,10 +12,13 @@ import { NodeService } from 'src/app/services/node.service';
 import { from, Observable } from 'rxjs';
 import { mergeMap, reduce } from 'rxjs/operators';
 
+import { OwnAnimations } from '../../shared';
+
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
-  styleUrls: ['./welcome.component.css']
+  styleUrls: ['./welcome.component.css'],
+  animations: [OwnAnimations.flyDown, OwnAnimations.flyUp]
 })
 export class WelcomeComponent implements OnInit {
 
@@ -144,6 +147,10 @@ export class WelcomeComponent implements OnInit {
   private validateWalletContext() {
       const walletContext = this.walletService.getWalletContext();
      this.isWalletContextValid = walletContext.passwordHash != null && walletContext.walletKeystore != null;
+  }
+
+  getState(outlet: RouterOutlet) {
+    return outlet.activatedRouteData.state;
   }
 
 }

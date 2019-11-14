@@ -8,11 +8,13 @@ import { WalletService } from 'src/app/services/wallet.service';
 import { FileService } from 'src/app/services/file.service';
 
 import { validatePasswordMatch } from 'src/app/helpers/must-match.validator';
+import { OwnAnimations } from '../../shared';
 
 @Component({
   selector: 'app-import',
   templateUrl: './import.component.html',
-  styleUrls: ['./import.component.css']
+  styleUrls: ['./import.component.css'],
+  animations: [OwnAnimations.contentInOut]
 })
 export class ImportComponent implements OnInit {
 

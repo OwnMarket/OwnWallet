@@ -26,7 +26,7 @@
           <div class="tab-content">
 
             <div class="row p-5" *ngIf="method==='phrase'">
-              <div class="col-12 col-md-6 border-right">
+              <div class="col-12 col-md-6 border-right" @contentInOut>
                   <textarea
                     placeholder="Enter your recovery phrase"
                     class="monospace-font block"
@@ -89,7 +89,7 @@
             </div>
 
             <div class="row p-5" *ngIf="method==='keystore'">
-              <div class="col-12 col-md-6 border-right">
+              <div class="col-12 col-md-6 border-right" @contentInOut>
                   <label class="block">Select keystore file</label>
                   <input class="own-upload" type="file" (change)="fileChanged($event)" placeholder="Select keystore file"/>
               </div>
@@ -124,7 +124,7 @@
             </div>
 
             <div class="row p-5 align-items-center" *ngIf="method==='key'">
-                <div class="col-12 col-md-6 border-right">
+                <div class="col-12 col-md-6 border-right" @contentInOut>
                   <h6>
                     <own-icon icon="danger" color="#d3240c" size="25"></own-icon>
                     &nbsp; Warnings

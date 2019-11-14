@@ -10,7 +10,6 @@ import { Tx, TxAction, TxResult, ConfigureValidator } from 'src/app/models/submi
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-declare var ownBlockchainSdk: any;
 
 @Component({
   selector: 'app-validator-managment',
@@ -22,12 +21,11 @@ export class ValidatorManagmentComponent implements OnDestroy {
   configForm: FormGroup;
   submissionErrors: string[];
 
-  tx: any;
+  tx: Tx;
   txAction: TxAction;
   txResult: TxResult;
   wallet: WalletInfo;
 
-  displayActions = false;
   isKeyImported = false;
   isSubmited = false;
 
@@ -48,16 +46,14 @@ export class ValidatorManagmentComponent implements OnDestroy {
 
     this.wallet = this.privateKeyService.getWalletInfo();
 
-    this.addressSub = this.nodeService.getAddressInfo(this.privateKeyService.getWalletInfo().address)
+    this.addressSub = this.nodeService.getAddressInfo(this.wallet.address)
       .subscribe(balInfo => {
 
-          this.tx = ownBlockchainSdk.transactions.createTx(
-            this.wallet.address,
-            balInfo.nonce + 1,
-            this.nodeService.getMinFee()
-          );
+        this.tx = new Tx();
+        this.tx.nonce = balInfo.nonce + 1;
+        this.tx.actionFee = this.nodeService.getMinFee();
+        this.setupForm();
 
-          this.setupForm();
       });
    }
 
@@ -72,11 +68,17 @@ export class ValidatorManagmentComponent implements OnDestroy {
   submit({ value, valid }: { value: any, valid: boolean }) {
     if (valid) {
 
-      this.tx.addConfigureValidatorAction(
-        value.networkAddress,
-        value.sharedRewardPercent,
-        value.isEnabled
-      );
+     this.tx.senderAddress = this.wallet.address;
+
+     this.txAction = new TxAction();
+     this.txAction.actionType = 'ConfigureValidator';
+     this.txAction.actionData = new ConfigureValidator(
+       value.networkAddress,
+       value.sharedRewardPercent,
+       value.isEnabled
+     );
+
+     this.tx.actions = [ this.txAction ];
 
       this.txSub = this.cryptoService.signTransaction(
         this.wallet.privateKey, this.tx
@@ -97,7 +99,6 @@ export class ValidatorManagmentComponent implements OnDestroy {
   reset() {
     this.isSubmited = false;
     this.submissionErrors = null;
-    this.displayActions = false;
     this.setupForm();
   }
 

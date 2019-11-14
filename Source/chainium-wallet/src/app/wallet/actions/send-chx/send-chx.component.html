@@ -1,4 +1,4 @@
-<div class="container my-5" *ngIf="isKeyImported && tx">
+<div class="container my-5" *ngIf="isKeyImported && this.sendChxForm">
     <div class="row justify-content-center">
       <div class="col-12 col-md-8">
 
@@ -89,7 +89,7 @@
                       SENDER
                     </div>
                     <div class="col-8 text-truncate">
-                      <b>{{ tx.senderAddress }}</b>
+                      <b>{{ wallet.address }}</b>
                     </div>
                   </div>
                   <div class="row">

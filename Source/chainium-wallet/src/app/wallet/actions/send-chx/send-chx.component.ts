@@ -3,12 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { NodeService } from 'src/app/services/node.service';
 import { PrivatekeyService } from 'src/app/services/privatekey.service';
-import { CryptoService } from 'src/app/services/crypto.service';
 
-import { Tx } from 'src/app/models/submit-transactions.model';
-import { TxAction, ChxTransfer, TxResult } from './../../../models/submit-transactions.model';
+import { TxResult } from './../../../models/submit-transactions.model';
 import { Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { WalletInfo } from 'src/app/models/wallet-info.model';
+import { environment } from 'src/environments/environment';
+
+declare var ownBlockchainSdk: any;
 
 @Component({
   selector: 'app-send-chx',
@@ -20,9 +21,8 @@ export class SendChxComponent implements OnDestroy {
   sendChxForm: FormGroup;
   submissionErrors: string[];
 
-  tx: Tx;
-  txAction: TxAction;
   txResult: TxResult;
+  wallet: WalletInfo;
 
   displayActions = false;
   isKeyImported = false;
@@ -31,70 +31,71 @@ export class SendChxComponent implements OnDestroy {
   addressSub: Subscription;
   txSub: Subscription;
 
+  balance: number;
+  nonce: number;
+  fee: number;
+
   step = 1;
 
   constructor(
     private formBuilder: FormBuilder,
     private nodeService: NodeService,
-    private privateKeyService: PrivatekeyService,
-    private cryptoService: CryptoService
+    private privateKeyService: PrivatekeyService
   ) {
 
     this.isKeyImported = privateKeyService.existsKey();
     if (!this.isKeyImported) { return; }
 
-    this.addressSub = this.nodeService.getAddressInfo(this.privateKeyService.getWalletInfo().address)
+    this.wallet = this.privateKeyService.getWalletInfo();
+    this.addressSub = this.nodeService.getAddressInfo(this.wallet.address)
       .subscribe(balInfo => {
-          this.tx = new Tx();
-          this.tx.senderAddress = this.privateKeyService.getWalletInfo().address;
-          this.tx.nonce = balInfo.nonce + 1;
-          this.tx.actionFee = this.nodeService.getMinFee();
-          this.setupForm();
+        this.balance = balInfo.balance;
+        this.nonce = balInfo.nonce + 1;
+        this.fee = this.nodeService.getMinFee();
+        this.setupForm();
       });
    }
 
   setupForm() {
     this.sendChxForm = this.formBuilder.group({
-      amount: [0, [Validators.required, Validators.min(0.1)]],
+      amount: [0, [
+        Validators.required,
+        Validators.min(0.1),
+        Validators.max(this.balance)
+      ]],
       recipientAddress: ['', Validators.required],
-      nonce: [this.tx.nonce, Validators.required],
-      actionFee: [this.tx.actionFee, Validators.required]
+      nonce: [this.nonce, Validators.required],
+      actionFee: [this.fee, Validators.required]
     });
   }
 
   submit({ value, valid }: { value: any, valid: boolean }) {
 
     if (valid) {
-      const txToSign = new Tx();
-      txToSign.senderAddress = this.privateKeyService.getWalletInfo().address;
-      txToSign.nonce = value.nonce;
-      txToSign.actionFee = value.actionFee;
 
-      this.txAction = new TxAction();
-      this.txAction.actionType = 'TransferChx';
+        const txToSign = ownBlockchainSdk.transactions.createTx(
+          this.wallet.address,
+          value.nonce,
+          value.actionFee
+        );
 
-      this.txAction.actionData = new ChxTransfer(
+      txToSign.addTransferChxAction(
         value.recipientAddress,
         value.amount
       );
 
-      txToSign.actions = [
-        this.txAction
-      ];
+      const signature = txToSign.sign(environment.networkCode, this.wallet.privateKey);
 
-      this.txSub = this.cryptoService.signTransaction(
-        this.privateKeyService.getWalletInfo().privateKey, txToSign
-        )
-          .pipe(
-            switchMap(env => this.nodeService.submitTransaction(env))
-          ).subscribe(result => {
-            this.isSubmited = true;
-            if (result.errors) {
-              this.submissionErrors = result.errors;
-              return;
-            }
-            this.txResult = (result as TxResult);
-          });
+      this.txSub = this.nodeService.submitTransaction(signature).subscribe(
+        result => {
+          this.isSubmited = true;
+          if (result.errors) {
+            this.submissionErrors = result.errors;
+            return;
+          }
+          this.txResult = (result as TxResult);
+        });
+
     }
   }
 

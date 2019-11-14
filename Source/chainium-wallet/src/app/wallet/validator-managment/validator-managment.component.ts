@@ -63,8 +63,9 @@ export class ValidatorManagmentComponent implements OnDestroy {
     });
   }
 
-  submit({ value, valid }: { value: any, valid: boolean }) {
+  configureValidator({ value, valid }: { value: any, valid: boolean }) {
     if (valid) {
+
       const txToSign = ownBlockchainSdk.transactions.createTx(
         this.wallet.address,
         this.nonce,
@@ -78,7 +79,27 @@ export class ValidatorManagmentComponent implements OnDestroy {
     );
 
     const signature = txToSign.sign(environment.networkCode, this.wallet.privateKey);
+    this.submit(signature);
 
+    }
+  }
+
+  removeValidator() {
+
+    const txToSign = ownBlockchainSdk.transactions.createTx(
+      this.wallet.address,
+      this.nonce,
+      this.fee
+    );
+
+    txToSign.addRemoveValidatorAction();
+
+    const signature = txToSign.sign(environment.networkCode, this.wallet.privateKey);
+    this.submit(signature);
+
+  }
+
+  submit(signature: any) {
     this.txSub = this.nodeService.submitTransaction(signature).subscribe(
       result => {
         this.isSubmited = true;
@@ -87,8 +108,7 @@ export class ValidatorManagmentComponent implements OnDestroy {
           return;
         }
         this.txResult = (result as TxResult);
-      });
-    }
+    });
   }
 
   reset() {

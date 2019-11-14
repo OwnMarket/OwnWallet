@@ -21,7 +21,7 @@
   </nav>
 </div>
 
-<div class="container my-5" *ngIf="tab === 'config' && configForm">
+<div class="container my-5" *ngIf="tab === 'config' && configForm && !submissionErrors && !isSubmited">
     <div class="row justify-content-center" @contentInOut>
       <div class="col-12 col-md-8">
         <own-card>
@@ -31,7 +31,7 @@
           <own-card-body [padding]="true">
             <div class="row justify-content-center">
               <div class="col-12 col-md-8">
-                <form [formGroup]="configForm" (ngSubmit)="submit(configForm)">
+                <form [formGroup]="configForm" (ngSubmit)="configureValidator(configForm)">
                   <div class="row">
                     <div class="col-12">
                       <b>Validator Address:</b>
@@ -87,7 +87,7 @@
 </div>
 
 
-<div class="container my-5" *ngIf="tab === 'remove'">
+<div class="container my-5" *ngIf="tab === 'remove' && !submissionErrors && !isSubmited">
   <div class="row justify-content-center" @contentInOut>
     <div class="col-12 col-md-8">
       <own-card>
@@ -95,9 +95,77 @@
           <b>Remove Validator</b>
         </own-card-title>
         <own-card-body [padding]="true">
-         Remove validator
+          <div class="row text-center">
+            <div class="col-12">
+              <b>Validator Address</b>
+            </div>
+            <div class="col-12">
+              {{ wallet.address }}
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-12 col-md-6 mt-5">
+              <button class="block own-effect" (click)="removeValidator()">
+                REMOVE VALIDATOR
+              </button>
+            </div>
+          </div>
         </own-card-body>
       </own-card>
     </div>
+  </div>
+</div>
+
+<div class="container mb-5" *ngIf="isSubmited && txResult && !submissionErrors">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8">
+      <div class="row full-height align-items-center">
+          <div class="col-12 col-md-6">
+            <img class="img-responsive" src="/assets/images/token-success.png" alt="token success">
+          </div>
+          <div class="col-12 col-md-6">
+            <h4>Success!</h4>
+            <p class="info">
+              Your transaction has been succesfull.
+            </p>
+            <p>
+              <b>Transaction: {{ txResult.txHash }}</b>
+            </p>
+            <p class="text-center mt-5">
+              <button class="outline own-effect" [routerLink]="['/info/tx/' + txResult.txHash]">
+                VIEW TRANSACTION INFO
+              </button>
+              <button class="button-transparent" title="Copy Transaction" ngxClipboard cbContent="{{ txResult.txHash }}">
+                  <own-icon icon="copy" color="#eb6723"></own-icon>
+              </button>
+            </p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="container mb-5" *ngIf="isSubmited && submissionErrors">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8">
+      <div class="row full-height align-items-center">
+          <div class="col-12 col-md-6">
+            <img class="img-responsive" src="/assets/images/token-fail.png" alt="token success">
+          </div>
+          <div class="col-12 col-md-6">
+            <h4>Sorry, your transaction was rejected.</h4>
+            <p class="info">
+              <li *ngFor="let error of submissionErrors">
+                {{ error }}
+              </li>
+            </p>
+            <p class="text-center mt-5">
+                <button class="outline own-effect" (click)="reset()">
+                  TRY AGAIN ?
+                </button>
+            </p>
+      </div>
+    </div>
+  </div>
 </div>
 </div>

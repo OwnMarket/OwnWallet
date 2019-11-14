@@ -12,8 +12,6 @@ import { CreateComponent } from './create/create.component';
 import { WalletRoutingModule } from './wallet-routing.module';
 import { SendChxComponent } from './actions/send-chx/send-chx.component';
 import { ReceiveChxComponent } from './actions/receive-chx/receive-chx.component';
-import { RemoveValidatorComponent } from './actions/remove-validator/remove-validator.component';
-import { ConfigureValidatorComponent } from './actions/configure-validator/configure-validator.component';
 import { ValidatorManagmentComponent } from './validator-managment/validator-managment.component';
 
 @NgModule({
@@ -23,8 +21,6 @@ import { ValidatorManagmentComponent } from './validator-managment/validator-man
     WelcomeComponent,
     SendChxComponent,
     ReceiveChxComponent,
-    ConfigureValidatorComponent,
-    RemoveValidatorComponent,
     ValidatorManagmentComponent
   ],
   imports: [

@@ -13,6 +13,7 @@ import { WalletRoutingModule } from './wallet-routing.module';
 import { SendChxComponent } from './actions/send-chx/send-chx.component';
 import { ReceiveChxComponent } from './actions/receive-chx/receive-chx.component';
 import { ValidatorManagmentComponent } from './validator-managment/validator-managment.component';
+import { StakingComponent } from './staking/staking.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ValidatorManagmentComponent } from './validator-managment/validator-man
     WelcomeComponent,
     SendChxComponent,
     ReceiveChxComponent,
-    ValidatorManagmentComponent
+    ValidatorManagmentComponent,
+    StakingComponent
   ],
   imports: [
     CommonModule,

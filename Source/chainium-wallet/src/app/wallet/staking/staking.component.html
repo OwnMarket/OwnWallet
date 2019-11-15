@@ -1,0 +1,58 @@
+<div class="container">
+  <nav class="tabs mt-2 mt-md-5">
+    <ul>
+      <li
+        class="tab text-center text-md-left cursor-pointer"
+        [class.active]="tab === 'mystakes'"
+        (click)="tab = 'mystakes'">
+        <a>
+            My Stakes
+        </a>
+      </li>
+      <li
+        class="tab text-center text-md-left cursor-pointer ml-2"
+        [class.active]="tab === 'delegated'"
+        (click)="tab = 'delegated'">
+        <a>
+            Delegate
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<div class="container my-5" *ngIf="tab === 'mystakes'">
+  <div class="row justify-content-center" @contentInOut>
+    <div class="col-12" *ngIf="(myStakes | async) as stakes">
+
+      <ngx-datatable
+        class="wallet-table"
+        [rows]="stakes.stakes"
+        [columns]="myStakesColumns"
+        [columnMode]="ColumnMode.flex"
+        [headerHeight]="50"
+        [footerHeight]="20"
+        [rowHeight]="'auto'">
+      </ngx-datatable>
+
+    </div>
+  </div>
+</div>
+
+<div class="container my-5" *ngIf="tab === 'delegated'">
+    <div class="row justify-content-center" @contentInOut>
+      <div class="col-12" *ngIf="(delegated | async) as items">
+
+        <ngx-datatable
+          class="wallet-table"
+          [rows]="items"
+          [columns]="validatorsColumns"
+          [columnMode]="ColumnMode.flex"
+          [headerHeight]="50"
+          [footerHeight]="20"
+          [rowHeight]="'auto'">
+        </ngx-datatable>
+
+      </div>
+    </div>
+  </div>

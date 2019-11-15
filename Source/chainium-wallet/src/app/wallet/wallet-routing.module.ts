@@ -1,3 +1,4 @@
+import { StakingComponent } from './staking/staking.component';
 import { ValidatorManagmentComponent } from './validator-managment/validator-managment.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -39,6 +40,11 @@ const routes: Routes = [
         path: 'validator-managment',
         component: ValidatorManagmentComponent,
         data: { state: 'validator-managment' }
+      },
+      {
+        path: 'staking',
+        component: StakingComponent,
+        data: { state: 'staking' }
       }
     ]
   },

@@ -1,5 +1,5 @@
 export class ValidatorsInfo {
-    validators: ValidatorInfo[]
+    validators: ValidatorInfo[];
 }
 
 export class ValidatorInfo {

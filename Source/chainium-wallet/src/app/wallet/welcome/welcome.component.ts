@@ -13,6 +13,7 @@ import { from, Observable } from 'rxjs';
 import { mergeMap, reduce } from 'rxjs/operators';
 
 import { OwnAnimations } from '../../shared';
+import { OwnSliderComponent } from 'src/app/shared/own-slider/own-slider/own-slider.component';
 
 @Component({
   selector: 'app-welcome',
@@ -88,7 +89,8 @@ export class WelcomeComponent implements OnInit {
       }
   }
 
-  onChxAddressChange(address: string) {
+  onChxAddressChange(address: string, slider: OwnSliderComponent, index: number) {
+      slider.goTo(index);
       this.selectedChxAddress = address;
       this.setActiveWallet(this.selectedChxAddress);
       this.router.navigate(['/wallet']);

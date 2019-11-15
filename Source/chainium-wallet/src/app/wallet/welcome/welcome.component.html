@@ -63,7 +63,7 @@
                         <own-slide [width]="200" *ngFor="let address of chxAddresses; let i = index">
                           <div class="address-item"
                                 [class.selected]="selectedChxAddress === address"
-                                (click)="onChxAddressChange(address)">
+                                (click)="onChxAddressChange(address, slider, i)">
                             <div class="address-index mb-3">
                               Address {{ i + 1 }}
                             </div>

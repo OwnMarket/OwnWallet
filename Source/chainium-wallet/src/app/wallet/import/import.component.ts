@@ -18,7 +18,7 @@ import { OwnAnimations } from '../../shared';
 })
 export class ImportComponent implements OnInit {
 
-  method = 'phrase';
+  method = 'key';
   registerForm: FormGroup;
   mnemonic = new FormControl('', [Validators.required]);
 

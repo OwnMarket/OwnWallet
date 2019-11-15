@@ -14,7 +14,6 @@ const routes: Routes = [
   {
     path: '',
     component: WelcomeComponent,
-    canActivate: [ AccessGuard ],
     children: [
       {
         path: 'create',

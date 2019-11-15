@@ -3,7 +3,7 @@ import { Subject, Observable } from 'rxjs';
 import { WalletInfo } from '../models/wallet-info.model';
 import { WalletContext } from '../models/wallet-context.model';
 import * as _ from 'lodash';
-import { CryptoService } from "../services/crypto.service";
+import { CryptoService } from '../services/crypto.service';
 import { PrivatekeyService } from './privatekey.service';
 
 @Injectable({
@@ -20,7 +20,7 @@ export class WalletService {
 
     setWalletContext (context: WalletContext) {
         this.context = context;
-        localStorage.setItem("walletKeyStore", context.walletKeystore);
+        localStorage.setItem('walletKeyStore', context.walletKeystore);
     }
 
     getWalletContext (): WalletContext {
@@ -30,13 +30,13 @@ export class WalletService {
         }
     }
 
-    getWalletInfo (chxAddress: string) : Observable<any>{
-        let context = this.getWalletContext();
-        if (!context.passwordHash || !context.walletKeystore)
+    getWalletInfo (chxAddress: string): Observable<any>{
+        const context = this.getWalletContext();
+        if (!context.passwordHash || !context.walletKeystore) {
             return null;
-
-        var addresses = JSON.parse(localStorage.getItem('walletChxAddresses')) || [];
-        var index = addresses.indexOf(chxAddress);
+        }
+        const addresses = JSON.parse(localStorage.getItem('walletChxAddresses')) || [];
+        const index = addresses.indexOf(chxAddress);
         if (index >= 0) {
             return this.cryptoService.generateWalletFromKeystore(
                 context.walletKeystore,
@@ -92,20 +92,20 @@ export class WalletService {
     }
 
     private createChxAddress(index: number) {
-        let context = this.getWalletContext();
-        if (!context.passwordHash || !context.walletKeystore)
-            return;
+
+        const context = this.getWalletContext();
+        if (!context.passwordHash || !context.walletKeystore) { return; }
 
         this.cryptoService.generateWalletFromKeystore(context.walletKeystore, context.passwordHash, index)
             .subscribe((wallet: WalletInfo) => {
-                let selectedChxAddress = this.getSelectedChxAddress();
-                let chxAddresses = this.getAllChxAddresses();
+                const selectedChxAddress = this.getSelectedChxAddress();
+                const chxAddresses = this.getAllChxAddresses();
 
                 // sanitize non-recoverable peristed addresses
-                if (index == 0 && chxAddresses.length > 0 && wallet.address !== chxAddresses[0]) {
+                if (index === 0 && chxAddresses.length > 0 && wallet.address !== chxAddresses[0]) {
                     // clear active address selection
-                    let selectedChxAddress = this.getSelectedChxAddress();
-                    if (selectedChxAddress == chxAddresses[0]) {
+                    const selectedChxAddress = this.getSelectedChxAddress();
+                    if (selectedChxAddress === chxAddresses[0]) {
                         this.setSelectedChxAddress(null);
                     }
 
@@ -116,12 +116,11 @@ export class WalletService {
 
                 this.addAddressToStorage(wallet.address);
 
-                let isValidSelectedChxAddress = selectedChxAddress && chxAddresses.indexOf(selectedChxAddress) >= 0;
-                if (index == 0 && isValidSelectedChxAddress) {
+                const isValidSelectedChxAddress = selectedChxAddress && chxAddresses.indexOf(selectedChxAddress) >= 0;
+                if (index === 0 && isValidSelectedChxAddress) {
                     this.getWalletInfo(selectedChxAddress)
                         .subscribe (walletInfo => this.privateKeyService.setWalletInfo(walletInfo));
-                }
-                else {
+                } else {
                     this.privateKeyService.setWalletInfo(wallet);
                 }
 
@@ -129,9 +128,11 @@ export class WalletService {
         });
     }
 
-    private addAddressToStorage(address : string) {
-        var addresses = JSON.parse(localStorage.getItem('walletChxAddresses')) || [];
-        var addressExists = addresses.find((a: string) => a == address);
+    private addAddressToStorage(address: string) {
+
+        const addresses = JSON.parse(localStorage.getItem('walletChxAddresses')) || [];
+        const addressExists = addresses.find((a: string) => a === address);
+
         if (!addressExists) {
             addresses.push(address);
             localStorage.setItem('walletChxAddresses', JSON.stringify(addresses));
@@ -139,7 +140,7 @@ export class WalletService {
     }
 
     private getNextWalletIndex(){
-        var addresses = JSON.parse(localStorage.getItem('walletChxAddresses')) || [];
+        const addresses = JSON.parse(localStorage.getItem('walletChxAddresses')) || [];
         return addresses.length;
     }
 }

@@ -46,7 +46,8 @@ export const ROUTERCONFIGS: Routes = [
     },
     {
       path: 'wallet',
-      loadChildren: './wallet/wallet.module#WalletModule'
+      loadChildren: './wallet/wallet.module#WalletModule',
+      canActivate: [AccessGuard]
     },
     {
       path: '',

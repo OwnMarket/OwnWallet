@@ -23,7 +23,7 @@ export class UnloadWalletInfoComponent implements OnInit {
         this.walletService.unloadWallet();
         this.isSubmited = true;
         this.dialogRef.close();
-        this.router.navigate(['/home']);        
+        this.router.navigate(['/wallet']);
     }
 
     onCloseClick(): void {

@@ -6,6 +6,7 @@ import { OwnNavbarModule } from './own-navbar/own-navbar.module';
 import { OwnCardModule } from './own-card/own-card.module';
 import { OwnIconModule } from './own-icon/own-icon.module';
 import { OwnSliderModule } from './own-slider/own-slider.module';
+import { OwnModalModule } from './own-modal/own-modal.module';
 
 import { CamelToSpacePipe } from './pipes/camel-to-space.pipe';
 
@@ -16,7 +17,8 @@ import { CamelToSpacePipe } from './pipes/camel-to-space.pipe';
     OwnNavbarModule,
     OwnCardModule,
     OwnIconModule,
-    OwnSliderModule
+    OwnSliderModule,
+    OwnModalModule
   ],
   exports: [
     ReactiveFormsModule,
@@ -24,7 +26,8 @@ import { CamelToSpacePipe } from './pipes/camel-to-space.pipe';
     OwnCardModule,
     OwnIconModule,
     CamelToSpacePipe,
-    OwnSliderModule
+    OwnSliderModule,
+    OwnModalModule
   ],
   declarations: [
     CamelToSpacePipe

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
+import { OwnModalService } from '../shared/own-modal/services/own-modal.service';
 
 import { UnloadWalletInfoComponent } from '../unload-wallet-info/unload-wallet-info.component';
 import { CryptoService } from 'src/app/services/crypto.service';
@@ -24,9 +25,10 @@ export class LoginComponent implements OnInit {
 
 
     constructor(
-      private router: Router,
+        private router: Router,
         private cryptoService: CryptoService,
         private walletService: WalletService,
+        private ownModalService: OwnModalService
         ) {
             this.hide = true;
             this.saveKeystore = true;
@@ -69,8 +71,13 @@ export class LoginComponent implements OnInit {
         }
     }
 
+    openModal(id: string) {
+      this.ownModalService.open(id);
+    }
 
-    onUnloadWallet() {
-       // let dialogRef = this.dialog.open(UnloadWalletInfoComponent, {width: '50%'});
+    onUnloadWallet(id: string) {
+      this.walletService.unloadWallet();
+      this.ownModalService.close(id);
+      this.router.navigate(['/wallet']);
     }
 }

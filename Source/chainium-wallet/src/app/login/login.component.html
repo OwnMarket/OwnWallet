@@ -22,7 +22,7 @@
                     <button class="own-effect block" (click)="onSubmitPassword()">LOGIN</button>
                   </div>
                   <div class="col-12 col-md-7">
-                    <button class="own-effect outline flat block" (click)="onUnloadWallet()">UNLOAD WALLET</button>
+                    <button class="own-effect outline flat block" (click)="openModal('unload-modal')">UNLOAD WALLET</button>
                   </div>
               </div>
             </div>
@@ -32,3 +32,10 @@
     </div>
   </div>
 </div>
+
+<own-modal id="unload-modal">
+  <h6>Are you sure?</h6>
+  <p>Please confirm that you want to unload your wallet.</p>
+  <button class="own-effect block" (click)="onUnloadWallet('unload-modal')">CONFIRM</button>
+</own-modal>
+

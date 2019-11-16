@@ -1,0 +1,13 @@
+<div
+class="own-modal"
+[class.open]="isOpen"
+(click)="onClickBg($event)">
+  <div class="own-modal-body" [ngStyle]="{ 'width': width + 'px' }">
+      <button class="close button-transparent">
+          <svg viewBox="0 0 40 40" width="10px" (click)="close()">
+            <path class="path" d="M2 2 L20 20 L38 2 M20 20 L20 20 M2 38 L20 20 L38 38" />
+          </svg>
+      </button>
+      <ng-content></ng-content>
+  </div>
+</div>

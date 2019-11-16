@@ -1,0 +1,55 @@
+.own-modal {
+  opacity: 0;
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow: auto;
+  background-color: rgba(0,0,0,.3);
+  transition: all .5s;
+}
+
+.own-modal-body {
+  position: relative;
+  border-radius: 10px;
+  padding: 20px;
+  background: #fff;
+  margin: 40px;
+  z-index: 1001;
+  transform: scale(0);
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,.3);
+  transition: all .5s;
+  transition-delay: .5s;
+}
+
+.own-modal.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.own-modal.open .own-modal-body {
+  transform: scale(1);
+}
+
+.own-modal-body .close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.path {
+  stroke: #333;
+  fill: none;
+  stroke-width: 10;
+  transition: 300ms ease;
+}
+
+
+

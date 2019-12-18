@@ -19,7 +19,7 @@ import { OwnSliderComponent } from 'src/app/shared/own-slider/own-slider/own-sli
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.css'],
-  animations: [OwnAnimations.flyDown, OwnAnimations.flyUp]
+  animations: [OwnAnimations.flyDown, OwnAnimations.flyUp, OwnAnimations.flyUpDown]
 })
 export class WelcomeComponent implements OnInit {
 

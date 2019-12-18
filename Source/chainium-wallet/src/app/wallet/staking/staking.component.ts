@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
-import { switchMap, filter, map, toArray, tap } from 'rxjs/operators';
+import { mergeMap, map } from 'rxjs/operators';
 
 import { ColumnMode } from '@swimlane/ngx-datatable';
 
@@ -12,6 +12,8 @@ import { MyStakeInfo, MyStakes } from 'src/app/models/stakes-info.model';
 import { ValidatorInfo } from './../../models/validators-info.model';
 import { OwnAnimations } from '../../shared';
 
+declare var ownBlockchainSdk: any;
+
 @Component({
   selector: 'app-staking',
   templateUrl: './staking.component.html',
@@ -20,50 +22,16 @@ import { OwnAnimations } from '../../shared';
 })
 export class StakingComponent implements OnInit {
 
-  ColumnMode = ColumnMode;
-  myStakesColumns = [
-    {
-      name: 'Validator address',
-      prop: 'validatorAddress',
-      flexGrow: 5
-    },
-    {
-      name: 'Amount',
-      prop: 'amount',
-      flexGrow: 1
-    }
-  ];
+  @ViewChild('validatorStatus') validatorStatus: TemplateRef<any>;
+  @ViewChild('validatorActions') validatorActions: TemplateRef<any>;
 
-  validatorsColumns = [
-    {
-      name: 'Validator address',
-      prop: 'validatorAddress',
-      flexGrow: 2
-    },
-    {
-      name: 'Network Address',
-      prop: 'networkAddress',
-      flexGrow: 2
-    },
-    {
-      name: 'Reward %',
-      prop: 'sharedRewardPercent',
-      flexGrow: 1
-    },
-    {
-      name: 'Amount',
-      prop: 'amount',
-      flexGrow: 1
-    },
-    {
-      name: 'Status',
-      prop: 'isActive',
-      flexGrow: 1
-    }
-  ];
+  ColumnMode = ColumnMode;
+  myStakesColumns: any[];
+  validatorsColumns: any[];
 
   wallet: WalletInfo;
   isKeyImported = false;
+  isLoading = false;
 
   myStakes: Observable<any>;
   validators: Observable<any>;
@@ -83,24 +51,106 @@ export class StakingComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.isLoading = true;
+    this.setupValidatorColumns();
+  
     this.myStakes = this.nodeService.getChxAddressStakes(this.wallet.address);
     this.validators = this.nodeService.getValidators(false);
 
     this.delegated = this.myStakes.pipe(
       map(response => response.stakes),
-      switchMap(stake => {
-        if (stake.length === 0) { return []; }
-        return this.validators.pipe(
+      mergeMap(stakes => this.validators.pipe(
         map(response => response.validators),
-        filter(validator => stake.validatorAddress === validator.validatorAddress),
-        map(result => {
-          return {...result, amount: stake.amount };
-        }));
-      }),
-        toArray()
-    );
+        map(validators => {
+          
+          this.isLoading = false;
 
+          if (stakes.length > 0) {
+            const newValidators = [];
+
+            for (let validator of validators) {
+              for (let stake of stakes) {
+                if (stake.validatorAddress === validator.validatorAddress) {
+                  newValidators.push({ ...validator, amount: stake.amount });
+                } else {
+                  newValidators.push(validator);
+                }
+              }
+            }
+            return newValidators;
+          } else {
+            return validators;
+          }
+      }
+    ))));
+  }
+
+
+  delegate(row, value) {
+
+    console.log(row, value);
+
+  }
+
+  revoke(row, value) {
+    console.log(row, value);
+  }
+
+  setupValidatorColumns() {
+
+    this.myStakesColumns = [
+      {
+        name: 'Validator address',
+        prop: 'validatorAddress',
+        flexGrow: 4
+      },
+      {
+        name: 'Amount',
+        prop: 'amount',
+        flexGrow: 1
+      },
+      {
+        name: '',
+        prop: 'amount',
+        flexGrow: 2,
+        cellTemplate: this.validatorActions,
+      }
+    ];
+
+    this.validatorsColumns = [
+      {
+        name: 'Validator address',
+        prop: 'validatorAddress',
+        flexGrow: 3
+      },
+      {
+        name: 'Network Address',
+        prop: 'networkAddress',
+        flexGrow: 2
+      },
+      {
+        name: 'Reward %',
+        prop: 'sharedRewardPercent',
+        flexGrow: 1
+      },
+      {
+        name: 'Amount',
+        prop: 'amount',
+        flexGrow: 1
+      },
+      {
+        name: 'Status',
+        prop: 'isActive',
+        flexGrow: 1,
+        cellTemplate: this.validatorStatus
+      },
+      {
+        name: '',
+        prop: 'amount',
+        flexGrow: 2,
+        cellTemplate: this.validatorActions
+      }
+    ];
   }
 
 }

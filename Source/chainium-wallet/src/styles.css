@@ -334,7 +334,7 @@ button:disabled:hover {
   cursor: not-allowed;
 }
 
-.action-button-small {
+.action-button-small, .action-button-small:disabled:hover {
   line-height: 1.5rem;
   color: var(--color-text-info);
   background: transparent;
@@ -361,6 +361,19 @@ button:disabled:hover {
 .action-button-small:hover span {
   font-size: 1rem;
   color: var(--color-navbar-bg);
+}
+
+.action-button-small:disabled {
+  background-color: transparent;
+  opacity: .7;
+}
+
+.action-button-small:disabled:hover {
+  opacity: .7;
+}
+
+.action-button-small:disabled:hover span {
+  color: var(--color-accent);
 }
 
 input {

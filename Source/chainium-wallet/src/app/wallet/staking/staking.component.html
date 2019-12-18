@@ -3,7 +3,7 @@
     <ul>
       <li
         class="tab text-center text-md-left cursor-pointer"
-        [class.active]="tab === 'mystakes'"
+        [class.active]="tab==='mystakes'"
         (click)="tab = 'mystakes'">
         <a>
             My Stakes
@@ -11,7 +11,7 @@
       </li>
       <li
         class="tab text-center text-md-left cursor-pointer ml-2"
-        [class.active]="tab === 'delegated'"
+        [class.active]="tab==='delegated'"
         (click)="tab = 'delegated'">
         <a>
             Delegate
@@ -21,9 +21,9 @@
   </nav>
 </div>
 
-<div class="container my-5" *ngIf="tab === 'mystakes'">
+<div class="container my-5" *ngIf="tab==='mystakes'">
   <div class="row justify-content-center" @contentInOut>
-    <div class="col-12" *ngIf="(myStakes | async) as stakes">
+    <div class="col-12" *ngIf="myStakes | async as stakes">
 
       <ngx-datatable
         class="wallet-table"
@@ -32,6 +32,7 @@
         [columnMode]="ColumnMode.flex"
         [headerHeight]="50"
         [footerHeight]="20"
+        [loadingIndicator]="isLoading"
         [rowHeight]="'auto'">
       </ngx-datatable>
 
@@ -39,19 +40,36 @@
   </div>
 </div>
 
-<div class="container my-5" *ngIf="tab === 'delegated'">
+<div class="container my-5" [hidden]="tab!=='delegated'">
     <div class="row justify-content-center" @contentInOut>
-      <div class="col-12" *ngIf="(delegated | async) as items">
+      <div class="col-12">
 
         <ngx-datatable
           class="wallet-table"
-          [rows]="items"
+          [rows]="delegated | async"
           [columns]="validatorsColumns"
           [columnMode]="ColumnMode.flex"
           [headerHeight]="50"
           [footerHeight]="20"
+          [loadingIndicator]="isLoading"
           [rowHeight]="'auto'">
         </ngx-datatable>
+
+        <ng-template #validatorStatus let-row="row" let-value="value">
+          <img *ngIf="value === true" src="assets/images/success-icon.svg" />
+          <img *ngIf="value === false" src="assets/images/failed-icon.svg" />
+        </ng-template>
+
+        <ng-template #validatorActions let-row="row" let-value="value">
+          <button class="action-button-small mr-1" (click)="delegate(row, value)">
+            <span>+</span>
+            Delegate
+          </button>
+          <button class="action-button-small" [disabled]="!value" (click)="revoke(row, value)">
+            <span>-</span>
+            Revoke
+          </button>
+        </ng-template>
 
       </div>
     </div>

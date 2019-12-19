@@ -1,16 +1,18 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, ViewChild, TemplateRef, OnDestroy } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
 
 import { ColumnMode } from '@swimlane/ngx-datatable';
 
 import { PrivatekeyService } from './../../services/privatekey.service';
+import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
 import { NodeService } from './../../services/node.service';
 
 import { WalletInfo } from 'src/app/models/wallet-info.model';
-import { MyStakeInfo, MyStakes } from 'src/app/models/stakes-info.model';
-import { ValidatorInfo } from './../../models/validators-info.model';
 import { OwnAnimations } from '../../shared';
+import { environment } from 'src/environments/environment';
+import { TxResult } from 'src/app/models/submit-transactions.model';
 
 declare var ownBlockchainSdk: any;
 
@@ -20,8 +22,9 @@ declare var ownBlockchainSdk: any;
   styleUrls: ['./staking.component.css'],
   animations: [OwnAnimations.contentInOut]
 })
-export class StakingComponent implements OnInit {
+export class StakingComponent implements OnInit, OnDestroy {
 
+  @ViewChild('rewardPerc') rewardPerc: TemplateRef<any>;
   @ViewChild('validatorStatus') validatorStatus: TemplateRef<any>;
   @ViewChild('validatorActions') validatorActions: TemplateRef<any>;
 
@@ -33,20 +36,49 @@ export class StakingComponent implements OnInit {
   isKeyImported = false;
   isLoading = false;
 
+  actionForm: FormGroup;
+  action: string;
+  validator: string;
+
   myStakes: Observable<any>;
   validators: Observable<any>;
   delegated: Observable<any>;
+  addressSub: Subscription;
+  txSub: Subscription;
+
+  nonce: number;
+  fee: number;
+
+  txResult: TxResult;
+
+  isSubmited = false;
+  submissionErrors: any;
 
   tab = 'mystakes';
 
   constructor(
+    private formBuilder: FormBuilder,
     private privateKeyService: PrivatekeyService,
-    private nodeService: NodeService
+    private nodeService: NodeService,
+    private ownModalService: OwnModalService
   ) {
 
     this.isKeyImported = this.privateKeyService.existsKey();
     if (!this.isKeyImported) { return; }
     this.wallet = this.privateKeyService.getWalletInfo();
+
+    this.addressSub = this.nodeService.getAddressInfo(this.wallet.address)
+    .subscribe(balInfo => {
+      this.nonce = balInfo.nonce + 1;
+      this.fee = this.nodeService.getMinFee();
+
+      this.actionForm = this.formBuilder.group({
+        'amount': ['', Validators.required]
+      });
+
+    });
+
+    this.fetchData();
 
   }
 
@@ -54,46 +86,77 @@ export class StakingComponent implements OnInit {
     this.isLoading = true;
     this.setupValidatorColumns();
   
-    this.myStakes = this.nodeService.getChxAddressStakes(this.wallet.address);
-    this.validators = this.nodeService.getValidators(false);
+  
+  }
+
+  fetchData() {
+    this.myStakes = this.nodeService.getChxAddressStakes(this.wallet.address).pipe(map(response => response.stakes));
+    this.validators = this.nodeService.getValidators(false).pipe(map(response => response.validators));
 
     this.delegated = this.myStakes.pipe(
-      map(response => response.stakes),
       mergeMap(stakes => this.validators.pipe(
-        map(response => response.validators),
-        map(validators => {
-          
+        map(validators => {  
           this.isLoading = false;
-
           if (stakes.length > 0) {
-            const newValidators = [];
-
-            for (let validator of validators) {
-              for (let stake of stakes) {
-                if (stake.validatorAddress === validator.validatorAddress) {
-                  newValidators.push({ ...validator, amount: stake.amount });
-                } else {
-                  newValidators.push(validator);
-                }
-              }
-            }
-            return newValidators;
+            return validators.map((item: any, i: number) => Object.assign({}, item, stakes[i]));
           } else {
             return validators;
           }
-      }
+        }
     ))));
   }
 
-
-  delegate(row, value) {
-
-    console.log(row, value);
-
+  get amount() {
+    return this.actionForm.get('amount').value;
   }
 
-  revoke(row, value) {
-    console.log(row, value);
+  set amount(value: number) {
+    this.actionForm.get('amount').patchValue(value);
+  }
+
+  showActionForm(row, action) {
+    this.ownModalService.open('form-modal');
+    this.action = action;
+    this.validator = row.validatorAddress;
+    this.amount = row.amount;
+  }
+
+  completeTx() {
+
+    const txToSign = ownBlockchainSdk.transactions.createTx(
+      this.wallet.address,
+      this.nonce,
+      this.fee
+    );
+
+    let value = this.amount;
+
+    if (this.action === 'revoke') {
+      value = -Math.abs(this.amount);
+    }
+
+    txToSign.addDelegateStakeAction(
+        this.validator,
+        value
+    );
+
+    const signature = txToSign.sign(
+      environment.networkCode, 
+      this.wallet.privateKey
+    );
+
+    this.txSub = this.nodeService.submitTransaction(signature)
+    .subscribe(
+      result => {
+        this.isSubmited = true;
+        this.fetchData();
+        this.ownModalService.close('form-modal');
+        if (result.errors) {
+          this.submissionErrors = result.errors;
+          return;
+        }
+        this.txResult = (result as TxResult);
+      });
   }
 
   setupValidatorColumns() {
@@ -131,12 +194,14 @@ export class StakingComponent implements OnInit {
       {
         name: 'Reward %',
         prop: 'sharedRewardPercent',
-        flexGrow: 1
+        flexGrow: 1,
+        cellTemplate: this.rewardPerc
       },
       {
         name: 'Amount',
         prop: 'amount',
-        flexGrow: 1
+        flexGrow: 1,
+        cellTemplate: this.rewardPerc
       },
       {
         name: 'Status',
@@ -151,6 +216,11 @@ export class StakingComponent implements OnInit {
         cellTemplate: this.validatorActions
       }
     ];
+  }
+
+  ngOnDestroy() {
+    if (this.addressSub) { this.addressSub.unsubscribe(); }
+    if (this.txSub) { this.txSub.unsubscribe(); }
   }
 
 }

@@ -364,12 +364,14 @@ button:disabled:hover {
 }
 
 .action-button-small:disabled {
+  border: 1px solid #dee2e6;
   background-color: transparent;
   opacity: .7;
 }
 
 .action-button-small:disabled:hover {
   opacity: .7;
+  border: 1px solid #dee2e6;
 }
 
 .action-button-small:disabled:hover span {

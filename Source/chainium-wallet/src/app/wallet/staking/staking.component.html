@@ -23,11 +23,11 @@
 
 <div class="container my-5" *ngIf="tab==='mystakes'">
   <div class="row justify-content-center" @contentInOut>
-    <div class="col-12" *ngIf="myStakes | async as stakes">
+    <div class="col-12">
 
       <ngx-datatable
         class="wallet-table"
-        [rows]="stakes.stakes"
+        [rows]="myStakes | async"
         [columns]="myStakesColumns"
         [columnMode]="ColumnMode.flex"
         [headerHeight]="50"
@@ -56,21 +56,54 @@
         </ngx-datatable>
 
         <ng-template #validatorStatus let-row="row" let-value="value">
-          <img *ngIf="value === true" src="assets/images/success-icon.svg" />
-          <img *ngIf="value === false" src="assets/images/failed-icon.svg" />
+          <div class="text-center mobile-hidden">
+            <img *ngIf="value === true" src="assets/images/success-icon.svg" />
+            <img *ngIf="value === false" src="assets/images/failed-icon.svg" />
+          </div>
         </ng-template>
 
+        <ng-template #rewardPerc let-row="row" let-value="value">
+            <div class="text-center mobile-hidden">
+              {{ value }}
+            </div>
+          </ng-template>
+  
+
         <ng-template #validatorActions let-row="row" let-value="value">
-          <button class="action-button-small mr-1" (click)="delegate(row, value)">
+          <button 
+            class="action-button-small mr-1" 
+            (click)="showActionForm(row, 'delegate')">
             <span>+</span>
-            Delegate
+              Delegate
           </button>
-          <button class="action-button-small" [disabled]="!value" (click)="revoke(row, value)">
+          <button 
+            class="action-button-small" 
+            [disabled]="!value" 
+            (click)="showActionForm(row, 'revoke')">
             <span>-</span>
-            Revoke
+              Revoke
           </button>
         </ng-template>
 
       </div>
     </div>
   </div>
+
+  <own-modal id="form-modal">
+    <h6>Delegate to validator</h6>
+    <p>
+      {{ validator }}
+    </p>
+    <ng-container *ngIf="actionForm">
+      <form [formGroup]="actionForm">
+        <input class="block" type="number" formControlName="amount" placeholder="Enter amount">
+        <button 
+        type="button" 
+        class="own-effect block mt-3" 
+        [disabled]="!actionForm.valid" 
+        (click)="completeTx()">
+          CONFIRM
+        </button>
+      </form>
+    </ng-container>
+  </own-modal>

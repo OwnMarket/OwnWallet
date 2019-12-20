@@ -1,27 +1,33 @@
-import { Component, OnInit } from "@angular/core";
-import { NodeService } from "../services/node.service";
-import { ValidatorsInfo } from "../models/validators-info.model";
-import { StakeInfo } from "../models/stakes-info.model";
-import { Subscription } from "rxjs";
-import { ActivatedRoute } from "@angular/router";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ColumnMode } from '@swimlane/ngx-datatable';
+import { Subscription } from 'rxjs';
+
+import { NodeService } from '../../services/node.service';
+import { ValidatorsInfo } from '../../models/validators-info.model';
+import { StakeInfo } from '../../models/stakes-info.model';
 
 @Component({
-  selector: "app-validator-info",
-  templateUrl: "./validator-info.component.html",
-  styleUrls: ["./validator-info.component.scss"]
+  selector: 'app-validator-info',
+  templateUrl: './validator-info.component.html',
+  styleUrls: ['./validator-info.component.scss']
 })
 
-export class ValidatorInfoComponent implements OnInit {
-  validatorHash: string = '';
+export class ValidatorInfoComponent implements OnInit, OnDestroy {
+
+  ColumnMode = ColumnMode;
+
+  validatorHash = '';
   validatorsInfo: ValidatorsInfo;
   subscription: Subscription;
   validatorStakes: any;
-  errors;
+  errors: any;
   activeOnly = false;
 
-  constructor(private nodeService: NodeService,
-    private route: ActivatedRoute) {
-  }
+  constructor(
+    private nodeService: NodeService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(params => {
@@ -45,8 +51,7 @@ export class ValidatorInfoComponent implements OnInit {
           this.errors = null;
           this.validatorsInfo = info as ValidatorsInfo;
         });
-    }
-    else {
+    } else {
       this.validatorsInfo = null;
       this.nodeService
         .getValidatorStakes(this.validatorHash)
@@ -58,7 +63,14 @@ export class ValidatorInfoComponent implements OnInit {
           }
           this.errors = null;
           this.validatorStakes = stakes as StakeInfo;
-        })
+        });
     }
   }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
 }

@@ -28,8 +28,7 @@ import { SetAssetControllerComponent } from './actions/set-asset-controller/set-
 import { SetAccountControllerComponent } from './actions/set-account-controller/set-account-controller.component';
 import { SubmitVoteComponent } from './actions/submit-vote/submit-vote.component';
 import { SubmitVoteWeightComponent } from './actions/submit-vote-weight/submit-vote-weight.component';
-import { ValidatorInfoComponent } from './validator-info/validator-info.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CreateAssetComponent } from './actions/create-asset/create-asset.component';
 import { CreateAccountComponent } from './actions/create-account/create-account.component';
 import { EquivocationProofInfoComponent } from './equivocation-proof-info/equivocation-proof-info.component';
@@ -56,7 +55,6 @@ import { LoginComponent } from './login/login.component';
         ImportWalletComponent,
         RecoverPkFromOldDerivationPathComponent,
         BalanceInfoComponent,
-        ValidatorInfoComponent,
         SubmitTransactionComponent,
         EquivocationProofInfoComponent,
         ChxTransferComponent,

@@ -6,6 +6,7 @@ import { AccountInfoComponent } from './account-info/account-info.component';
 import { AssetInfoComponent } from './asset-info/asset-info.component';
 import { TransactionInfoComponent } from './transaction-info/transaction-info.component';
 import { BlockInfoComponent } from './block-info/block-info.component';
+import { ValidatorInfoComponent } from './validator-info/validator-info.component';
 
 const routes: Routes = [
   {
@@ -67,6 +68,16 @@ const routes: Routes = [
         component: BlockInfoComponent,
         data: { state: 'block' }
       },
+      {
+         path: 'validator',
+         component: ValidatorInfoComponent,
+         data: { state: 'validator' }
+      },
+      {
+        path: 'validator/:validatorHash',
+        component: ValidatorInfoComponent,
+        data: { state: 'validator' }
+      }
     ]
   }
 ];

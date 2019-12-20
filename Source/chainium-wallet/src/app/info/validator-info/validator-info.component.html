@@ -1,0 +1,115 @@
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-6">
+        <div class="input-group">
+            <input
+            class="form-control"
+            type="text"
+            placeholder="Search by validator hash"
+            [value]="validatorHash"
+            (input)="validatorHash = $event.target.value"
+            (keydown.enter)="onValidatorInfoButtonClick()"
+            required>
+            <button class="search-button" (click)="onValidatorInfoButtonClick()" title="Click to get detailed address info.">
+                <own-icon icon="search"></own-icon>
+            </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-container *ngIf="validatorsInfo">
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-12">
+
+        <div class="card">
+          <p class="m-0 card-title p-4">
+            <b>Validators</b>
+          </p>
+
+          <ngx-datatable
+            class="wallet-table"
+            [rows]="validatorsInfo.validators"
+            [columnMode]="ColumnMode.flex"
+            [headerHeight]="50"
+            [footerHeight]="0"
+            rowHeight="auto">
+
+            <ngx-datatable-column name="isActive" [flexGrow]="1" [maxWidth]="40">
+              <ng-template let-column="column" ngx-datatable-header-template></ng-template>
+              <ng-template let-value="value" ngx-datatable-cell-template>
+                <img *ngIf="value" src="assets/images/success-icon.svg" />
+                <img *ngIf="!value" src="assets/images/failed-icon.svg" />
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="validatorAddress"  [flexGrow]="8">
+              <ng-template let-column="column" ngx-datatable-header-template>Address</ng-template>
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                  <a [routerLink]="['/info/validator', value]">
+                    {{ value }}
+                  </a>
+                <br>
+                {{ row.networkAddress }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="sharedRewardPercent" [flexGrow]="1">
+              <ng-template let-column="column" ngx-datatable-header-template>Reward %</ng-template>
+              <ng-template let-value="value" ngx-datatable-cell-template>
+                {{ value }}
+              </ng-template>
+            </ngx-datatable-column>
+
+          </ngx-datatable>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="validatorStakes">
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-12">
+
+        <div class="card">
+          <p class="m-0 card-title p-4">
+            <b>Stakes</b>
+          </p>
+
+          <ngx-datatable
+            class="wallet-table"
+            [rows]="validatorStakes.stakes"
+            [columnMode]="ColumnMode.flex"
+            [headerHeight]="50"
+            [footerHeight]="0"
+            rowHeight="auto">
+
+            <ngx-datatable-column name="stakerAddress" [flexGrow]="8">
+              <ng-template let-column="column" ngx-datatable-header-template>Staker Address</ng-template>
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                <strong>
+                  <a [routerLink]="['/info/address', value]">
+                    {{ value }}
+                  </a>
+                </strong>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="amount" [flexGrow]="1">
+              <ng-template let-column="column" ngx-datatable-header-template>Amount</ng-template>
+              <ng-template let-value="value" ngx-datatable-cell-template>
+                {{ value }}
+              </ng-template>
+            </ngx-datatable-column>
+
+          </ngx-datatable>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

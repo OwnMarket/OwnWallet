@@ -12,6 +12,7 @@ import { AccountInfoComponent } from './account-info/account-info.component';
 import { AssetInfoComponent } from './asset-info/asset-info.component';
 import { TransactionInfoComponent } from './transaction-info/transaction-info.component';
 import { BlockInfoComponent } from './block-info/block-info.component';
+import { ValidatorInfoComponent } from './validator-info/validator-info.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { BlockInfoComponent } from './block-info/block-info.component';
     AccountInfoComponent,
     AssetInfoComponent,
     TransactionInfoComponent,
-    BlockInfoComponent
+    BlockInfoComponent,
+    ValidatorInfoComponent
   ],
   imports: [
     CommonModule,

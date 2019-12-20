@@ -186,8 +186,8 @@ h6 {
 }
 
 a {
-	color: var(--color-accent);
-  text-decoration: underline;
+	color: var(--color-text);
+  font-weight: 800;
 }
 
 a:focus,
@@ -551,12 +551,14 @@ input[type=radio]::after {
   padding: 0;
   display: flex;
   list-style: none;
+  overflow: hidden;
   border-bottom: 1px solid var(--color-bg-advanced);
 }
 .tabs ul li {
   color: var(--color-text-info);
   position: relative;
   padding: 10px;
+  font-size: .9rem;
 }
 .tabs ul li svg {
   width: 20px;
@@ -601,6 +603,12 @@ input[type=radio]::after {
   }
   .tabs ul li a {
     font-size: .8rem;
+  }
+}
+
+@media only screen and (max-width: 390px) {
+  .tabs ul li a {
+    display: none;
   }
 }
 

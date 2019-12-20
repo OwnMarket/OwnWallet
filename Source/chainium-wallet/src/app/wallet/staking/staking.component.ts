@@ -85,22 +85,25 @@ export class StakingComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading = true;
     this.setupValidatorColumns();
-  
-  
+
+
   }
 
   fetchData() {
-    this.myStakes = this.nodeService.getChxAddressStakes(this.wallet.address).pipe(map(response => response.stakes));
-    this.validators = this.nodeService.getValidators(false).pipe(map(response => response.validators));
+    this.myStakes = this.nodeService.getChxAddressStakes(this.wallet.address)
+    .pipe(map(response => response.stakes));
+
+    this.validators = this.nodeService.getValidators(false)
+    .pipe(map(response => response.validators));
 
     this.delegated = this.myStakes.pipe(
       mergeMap(stakes => this.validators.pipe(
-        map(validators => {  
+        map(items => {
           this.isLoading = false;
           if (stakes.length > 0) {
-            return validators.map((item: any, i: number) => Object.assign({}, item, stakes[i]));
+            return items.map((item: any, i: number) => Object.assign({}, item, stakes[i]));
           } else {
-            return validators;
+            return items;
           }
         }
     ))));
@@ -118,7 +121,11 @@ export class StakingComponent implements OnInit, OnDestroy {
     this.ownModalService.open('form-modal');
     this.action = action;
     this.validator = row.validatorAddress;
-    this.amount = row.amount;
+    if (action === 'revoke') {
+      this.amount = row.amount;
+    } else {
+      this.amount = 0;
+    }
   }
 
   completeTx() {
@@ -141,21 +148,23 @@ export class StakingComponent implements OnInit, OnDestroy {
     );
 
     const signature = txToSign.sign(
-      environment.networkCode, 
+      environment.networkCode,
       this.wallet.privateKey
     );
 
     this.txSub = this.nodeService.submitTransaction(signature)
     .subscribe(
       result => {
-        this.isSubmited = true;
-        this.fetchData();
-        this.ownModalService.close('form-modal');
-        if (result.errors) {
+        if (!result.errors) {
+          this.isSubmited = true;
+          this.txResult = (result as TxResult);
+          this.ownModalService.close('form-modal');
+          this.ownModalService.open('success-modal');
+        } else  {
           this.submissionErrors = result.errors;
+          this.ownModalService.open('error-modal');
           return;
         }
-        this.txResult = (result as TxResult);
       });
   }
 

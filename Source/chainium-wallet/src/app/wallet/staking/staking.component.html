@@ -14,7 +14,7 @@
         [class.active]="tab==='delegated'"
         (click)="tab = 'delegated'">
         <a>
-            Delegate
+            Available validators
         </a>
       </li>
     </ul>
@@ -67,18 +67,18 @@
               {{ value }}
             </div>
           </ng-template>
-  
+
 
         <ng-template #validatorActions let-row="row" let-value="value">
-          <button 
-            class="action-button-small mr-1" 
+          <button
+            class="action-button-small mr-1"
             (click)="showActionForm(row, 'delegate')">
             <span>+</span>
               Delegate
           </button>
-          <button 
-            class="action-button-small" 
-            [disabled]="!value" 
+          <button
+            class="action-button-small"
+            [disabled]="!value"
             (click)="showActionForm(row, 'revoke')">
             <span>-</span>
               Revoke
@@ -90,20 +90,45 @@
   </div>
 
   <own-modal id="form-modal">
-    <h6>Delegate to validator</h6>
+    <h6>
+      {{ action === 'delegate' ? 'Delegate stake to validator' : 'Revoke stake from validator' }}
+    </h6>
     <p>
       {{ validator }}
     </p>
     <ng-container *ngIf="actionForm">
       <form [formGroup]="actionForm">
         <input class="block" type="number" formControlName="amount" placeholder="Enter amount">
-        <button 
-        type="button" 
-        class="own-effect block mt-3" 
-        [disabled]="!actionForm.valid" 
-        (click)="completeTx()">
-          CONFIRM
+        <button
+          type="button"
+          class="own-effect block mt-3"
+          [disabled]="!actionForm.valid"
+          (click)="completeTx()">
+            CONFIRM
         </button>
       </form>
     </ng-container>
+  </own-modal>
+
+  <own-modal id="error-modal">
+    <div class="text-center">
+      <img src="assets/images/token-fail.png" alt="" width="100%">
+    </div>
+    <h6 class="text-center">Sorry</h6>
+    <p *ngFor="let error of submissionErrors" class="p-4">
+      {{ error }}
+    </p>
+  </own-modal>
+
+  <own-modal id="success-modal">
+    <div class="text-center">
+      <img src="assets/images/token-success.png" alt="" width="100%">
+    </div>
+    <h6 class="text-center">Congrats!</h6>
+    <p class="p-4">
+      Your transaction has been submited.
+    </p>
+    <button class="outline own-effect block" [routerLink]="['/info/tx/' + txResult?.txHash]">
+      VIEW TRANSACTION INFO
+    </button>
   </own-modal>

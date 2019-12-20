@@ -60,7 +60,7 @@
                     </div>
                     <div class="border-right">
                       <own-slider [showDots]="false" #slider>
-                        <own-slide [width]="200" *ngFor="let address of chxAddresses; let i = index">
+                        <own-slide [width]="230" *ngFor="let address of chxAddresses; let i = index">
                           <div class="address-item"
                                 [class.selected]="selectedChxAddress === address"
                                 (click)="onChxAddressChange(address, slider, i)">

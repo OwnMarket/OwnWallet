@@ -24,13 +24,7 @@ declare var ownBlockchainSdk: any;
 })
 export class StakingComponent implements OnInit, OnDestroy {
 
-  @ViewChild('rewardPerc') rewardPerc: TemplateRef<any>;
-  @ViewChild('validatorStatus') validatorStatus: TemplateRef<any>;
-  @ViewChild('validatorActions') validatorActions: TemplateRef<any>;
-
   ColumnMode = ColumnMode;
-  myStakesColumns: any[];
-  validatorsColumns: any[];
 
   wallet: WalletInfo;
   isKeyImported = false;
@@ -84,9 +78,6 @@ export class StakingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
-    this.setupValidatorColumns();
-
-
   }
 
   fetchData() {
@@ -168,63 +159,8 @@ export class StakingComponent implements OnInit, OnDestroy {
       });
   }
 
-  setupValidatorColumns() {
-
-    this.myStakesColumns = [
-      {
-        name: 'Validator address',
-        prop: 'validatorAddress',
-        flexGrow: 4
-      },
-      {
-        name: 'Amount',
-        prop: 'amount',
-        flexGrow: 1
-      },
-      {
-        name: '',
-        prop: 'amount',
-        flexGrow: 2,
-        cellTemplate: this.validatorActions,
-      }
-    ];
-
-    this.validatorsColumns = [
-      {
-        name: 'Validator address',
-        prop: 'validatorAddress',
-        flexGrow: 3
-      },
-      {
-        name: 'Network Address',
-        prop: 'networkAddress',
-        flexGrow: 2
-      },
-      {
-        name: 'Reward %',
-        prop: 'sharedRewardPercent',
-        flexGrow: 1,
-        cellTemplate: this.rewardPerc
-      },
-      {
-        name: 'Amount',
-        prop: 'amount',
-        flexGrow: 1,
-        cellTemplate: this.rewardPerc
-      },
-      {
-        name: 'Status',
-        prop: 'isActive',
-        flexGrow: 1,
-        cellTemplate: this.validatorStatus
-      },
-      {
-        name: '',
-        prop: 'amount',
-        flexGrow: 2,
-        cellTemplate: this.validatorActions
-      }
-    ];
+  toggleExpandRow(table, row) {
+    table.rowDetail.toggleExpandRow(row);
   }
 
   ngOnDestroy() {

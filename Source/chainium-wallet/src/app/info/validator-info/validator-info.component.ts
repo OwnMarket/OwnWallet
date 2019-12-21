@@ -6,11 +6,13 @@ import { Subscription } from 'rxjs';
 import { NodeService } from '../../services/node.service';
 import { ValidatorsInfo } from '../../models/validators-info.model';
 import { StakeInfo } from '../../models/stakes-info.model';
+import { OwnAnimations } from '../../shared';
 
 @Component({
   selector: 'app-validator-info',
   templateUrl: './validator-info.component.html',
-  styleUrls: ['./validator-info.component.scss']
+  styleUrls: ['./validator-info.component.scss'],
+  animations: [ OwnAnimations.contentInOut ]
 })
 
 export class ValidatorInfoComponent implements OnInit, OnDestroy {

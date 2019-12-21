@@ -269,6 +269,10 @@ textarea {
   padding: 1rem 1.5rem;
 }
 
+.wallet-table .row-details {
+  background-color: var(--color-border);
+}
+
 label {
   font-weight: 600;
   position: relative;
@@ -351,14 +355,14 @@ button:disabled:hover {
   border: 2px solid var(--color-accent);
 }
 
-.action-button-small span {
+.action-button-small .action-icon {
   padding-top: 4px;
   font-weight: 600;
   font-size: 1rem;
   color: var(--color-accent);
 }
 
-.action-button-small:hover span {
+.action-button-small:hover .action-icon {
   font-size: 1rem;
   color: var(--color-navbar-bg);
 }
@@ -374,8 +378,14 @@ button:disabled:hover {
   border: 1px solid #dee2e6;
 }
 
-.action-button-small:disabled:hover span {
+.action-button-small:disabled:hover .action-icon {
   color: var(--color-accent);
+}
+
+@media (max-width: 700px) {
+  .action-button-small .action-text {
+    display: none;
+  }
 }
 
 input {
@@ -601,13 +611,13 @@ input[type=radio]::after {
     margin: 0 auto;
     margin-bottom: 10px;
   }
-  .tabs ul li a {
+  .tabs ul li a.info-title {
     font-size: .8rem;
   }
 }
 
 @media only screen and (max-width: 390px) {
-  .tabs ul li a {
+  .tabs ul li a.info-title {
     display: none;
   }
 }

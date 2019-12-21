@@ -19,7 +19,7 @@
 </div>
 
 <ng-container *ngIf="validatorsInfo">
-  <div class="container my-5">
+  <div class="container my-5" @contentInOut>
     <div class="row">
       <div class="col-12">
 
@@ -45,7 +45,9 @@
             </ngx-datatable-column>
 
             <ngx-datatable-column name="validatorAddress"  [flexGrow]="8">
-              <ng-template let-column="column" ngx-datatable-header-template>Address</ng-template>
+              <ng-template let-column="column" ngx-datatable-header-template>
+                Address
+              </ng-template>
               <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
                   <a [routerLink]="['/info/validator', value]">
                     {{ value }}
@@ -71,7 +73,7 @@
 </ng-container>
 
 <ng-container *ngIf="validatorStakes">
-  <div class="container my-5">
+  <div class="container my-5" @contentInOut>
     <div class="row">
       <div class="col-12">
 
@@ -89,7 +91,9 @@
             rowHeight="auto">
 
             <ngx-datatable-column name="stakerAddress" [flexGrow]="8">
-              <ng-template let-column="column" ngx-datatable-header-template>Staker Address</ng-template>
+              <ng-template let-column="column" ngx-datatable-header-template>
+                Staker Address
+              </ng-template>
               <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
                 <strong>
                   <a [routerLink]="['/info/address', value]">

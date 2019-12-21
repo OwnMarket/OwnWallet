@@ -28,12 +28,60 @@
       <ngx-datatable
         class="wallet-table"
         [rows]="myStakes | async"
-        [columns]="myStakesColumns"
         [columnMode]="ColumnMode.flex"
         [headerHeight]="50"
         [footerHeight]="20"
         [loadingIndicator]="isLoading"
         [rowHeight]="'auto'">
+
+        <ngx-datatable-column name="validatorAddress" [flexGrow]="8">
+          <ng-template let-column="column" ngx-datatable-header-template>
+            Staker Address
+          </ng-template>
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            <strong>
+              <a [routerLink]="['/info/validator', value]">
+                {{ value }}
+              </a>
+            </strong>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="amount" [flexGrow]="2">
+          <ng-template let-column="column" ngx-datatable-header-template>
+            Amount
+          </ng-template>
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{ value }}
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="amount" [flexGrow]="4">
+          <ng-template let-column="column" ngx-datatable-header-template>
+          </ng-template>
+          <ng-template #validatorActions let-row="row" let-value="value" ngx-datatable-cell-template>
+            <div class="text-right mr-4">
+              <button
+                class="action-button-small mr-1 block"
+                (click)="showActionForm(row, 'delegate')">
+                <span class="action-icon">+</span>
+                <span class="action-text">
+                  Delegate
+                </span>
+              </button>
+              <button
+                class="action-button-small block mt-2"
+                [disabled]="!value"
+                (click)="showActionForm(row, 'revoke')">
+                <span class="action-icon">-</span>
+                <span class="action-text">
+                  Revoke
+                </span>
+              </button>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
       </ngx-datatable>
 
     </div>
@@ -45,45 +93,125 @@
       <div class="col-12">
 
         <ngx-datatable
+          #vinfotable
           class="wallet-table"
           [rows]="delegated | async"
-          [columns]="validatorsColumns"
           [columnMode]="ColumnMode.flex"
           [headerHeight]="50"
           [footerHeight]="20"
           [loadingIndicator]="isLoading"
           [rowHeight]="'auto'">
-        </ngx-datatable>
 
-        <ng-template #validatorStatus let-row="row" let-value="value">
-          <div class="text-center mobile-hidden">
-            <img *ngIf="value === true" src="assets/images/success-icon.svg" />
-            <img *ngIf="value === false" src="assets/images/failed-icon.svg" />
-          </div>
-        </ng-template>
+          <ngx-datatable-column name="isActive" [flexGrow]="1" [maxWidth]="50">
+            <ng-template let-column="column" ngx-datatable-header-template></ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                <div class="d-none d-sm-block">
+                  <img *ngIf="value" src="assets/images/success-icon.svg" />
+                  <img *ngIf="!value" src="assets/images/failed-icon.svg" />
+                </div>
+            </ng-template>
+          </ngx-datatable-column>
 
-        <ng-template #rewardPerc let-row="row" let-value="value">
-            <div class="text-center mobile-hidden">
-              {{ value }}
+          <ngx-datatable-column name="validatorAddress" [flexGrow]="10">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              Validator Address
+            </ng-template>
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                <a [routerLink]="['/info/validator', value]">
+                  {{ value }}
+                </a>
+                <br>
+                {{ row.networkAddress }}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="sharedRewardPercent" [flexGrow]="2">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              <span class="d-none d-sm-block">Reward %</span>
+            </ng-template>
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              <span class="d-none d-sm-block">{{ value }}</span>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="amount" [flexGrow]="2">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              <span class="d-none d-sm-block">
+                Amount
+              </span>
+            </ng-template>
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              <span class="d-none d-sm-block">{{ value }}</span>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="amount" [flexGrow]="4">
+            <ng-template let-column="column" ngx-datatable-header-template>
+            </ng-template>
+            <ng-template #validatorActions let-row="row" let-value="value" ngx-datatable-cell-template>
+              <div class="text-right mr-4">
+                <button
+                  class="action-button-small block"
+                  (click)="showActionForm(row, 'delegate')">
+                  <span class="action-icon">+</span>
+                  <span class="action-text">
+                    Delegate
+                  </span>
+                </button>
+                <button
+                  class="action-button-small block mt-2"
+                  [disabled]="!value"
+                  (click)="showActionForm(row, 'revoke')">
+                  <span class="action-icon">-</span>
+                  <span class="action-text">
+                    Revoke
+                  </span>
+                </button>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+          [width]="50"
+          [resizeable]="false"
+          [sortable]="false"
+          [draggable]="false"
+          [canAutoResize]="false">
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+            <a
+              [class.datatable-icon-right]="!expanded"
+              [class.datatable-icon-down]="expanded"
+              title="Expand/Collapse Row"
+              (click)="toggleExpandRow(vinfotable, row)"
+              class="desktop-hidden">
+                <span *ngIf="!expanded">
+                  <svg viewBox="0 0 185.344 185.344" width="20">
+                    <path style="fill:#848484;" d="M92.672,144.373c-2.752,0-5.493-1.044-7.593-3.138L3.145,59.301c-4.194-4.199-4.194-10.992,0-15.18
+                      c4.194-4.199,10.987-4.199,15.18,0l74.347,74.341l74.347-74.341c4.194-4.199,10.987-4.199,15.18,0
+                      c4.194,4.194,4.194,10.981,0,15.18l-81.939,81.934C98.166,143.329,95.419,144.373,92.672,144.373z"/>
+                    </svg>
+                </span>
+                <span *ngIf="expanded">
+                  <svg viewBox="0 0 185.344 185.344" width="20">
+                    <path style="fill:#848484;" d="M174.612,144.368c-2.747,0-5.493-1.044-7.593-3.144L92.672,66.872l-74.347,74.352
+                    c-4.194,4.194-10.987,4.194-15.18,0c-4.194-4.194-4.194-10.981,0-15.17l81.934-81.945c4.194-4.194,10.992-4.194,15.18,0
+                    l81.929,81.945c4.194,4.194,4.194,10.976,0,15.17C180.105,143.318,177.364,144.368,174.612,144.368z"/>
+                    </svg>
+                </span>
+            </a>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-row-detail [rowHeight]="50" #myDetailRow>
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+            <div class="row-details py-2 px-5">
+                <b>Amount:</b> {{ row.amount ? row.amount : '0' }}
+                <b> Reward %:</b> {{ row.sharedRewardPercent }}
             </div>
           </ng-template>
+        </ngx-datatable-row-detail>
 
-
-        <ng-template #validatorActions let-row="row" let-value="value">
-          <button
-            class="action-button-small mr-1"
-            (click)="showActionForm(row, 'delegate')">
-            <span>+</span>
-              Delegate
-          </button>
-          <button
-            class="action-button-small"
-            [disabled]="!value"
-            (click)="showActionForm(row, 'revoke')">
-            <span>-</span>
-              Revoke
-          </button>
-        </ng-template>
+        </ngx-datatable>
 
       </div>
     </div>

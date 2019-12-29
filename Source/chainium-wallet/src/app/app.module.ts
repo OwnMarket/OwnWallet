@@ -7,14 +7,11 @@ import { AppRoutingModule } from './/app-routing.module';
 import { ClipboardModule } from 'ngx-clipboard';
 
 import { AppComponent } from './app.component';
-import { ImportWalletComponent } from './import-wallet/import-wallet.component';
 import { RecoverPkFromOldDerivationPathComponent } from './recover-pk-from-old-derivation-path/recover-pk-from-old-derivation-path.component';
-import { BalanceInfoComponent } from './balance-info/balance-info.component';
 import { SubmitTransactionComponent } from './submit-transaction/submit-transaction.component';
 import { ChxTransferComponent } from './actions/chx-transfer/chx-transfer.component';
 import { AssetTransferComponent } from './actions/asset-transfer/asset-transfer.component';
 import { SubmitTransactionInfoComponent } from './submit-transaction-info/submit-transaction-info.component';
-import { UnloadWalletInfoComponent } from './unload-wallet-info/unload-wallet-info.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GlobalErrorHandler } from './services/global.error.handler';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
@@ -31,32 +28,19 @@ import { SubmitVoteWeightComponent } from './actions/submit-vote-weight/submit-v
 import { FormsModule } from '@angular/forms';
 import { CreateAssetComponent } from './actions/create-asset/create-asset.component';
 import { CreateAccountComponent } from './actions/create-account/create-account.component';
-import { EquivocationProofInfoComponent } from './equivocation-proof-info/equivocation-proof-info.component';
-import { MessageSignVerificationComponent } from './msg-sign-verify/msg-sign-verify.component';
-import { NewWalletComponent } from './hdcrypto/new-wallet.component';
-import { RestoreWalletComponent } from './hdcrypto/restore-wallet.component';
-import { UnloadWalletComponent } from './hdcrypto/unload-wallet.component';
-import { PrivateComponent } from './layout/private.component';
-import { CopyPrivateKeyComponent } from './copy-private-key/copy-private-key.component';
 import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
     entryComponents: [
         SubmitTransactionInfoComponent,
-        UnloadWalletInfoComponent,
         ErrorDialogComponent,
-        LoaderComponent,
-        CopyPrivateKeyComponent
+        LoaderComponent
     ],
     declarations: [
-        PrivateComponent,
         AppComponent,
-        ImportWalletComponent,
         RecoverPkFromOldDerivationPathComponent,
-        BalanceInfoComponent,
         SubmitTransactionComponent,
-        EquivocationProofInfoComponent,
         ChxTransferComponent,
         AssetTransferComponent,
         DelegateStakeComponent,
@@ -69,15 +53,9 @@ import { LoginComponent } from './login/login.component';
         SubmitVoteComponent,
         SubmitVoteWeightComponent,
         SubmitTransactionInfoComponent,
-        UnloadWalletInfoComponent,
         ErrorDialogComponent,
         GenerateAccountComponent,
         LoaderComponent,
-        MessageSignVerificationComponent,
-        NewWalletComponent,
-        RestoreWalletComponent,
-        UnloadWalletComponent,
-        CopyPrivateKeyComponent,
         LoginComponent
     ],
     imports: [

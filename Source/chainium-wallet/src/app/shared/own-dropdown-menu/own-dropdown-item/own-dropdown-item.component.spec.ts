@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UnloadWalletInfoComponent } from './unload-wallet-info.component';
+import { OwnDropdownItemComponent } from './own-dropdown-item.component';
 
-describe('UnloadWalletInfoComponent', () => {
-  let component: UnloadWalletInfoComponent;
-  let fixture: ComponentFixture<UnloadWalletInfoComponent>;
+describe('OwnDropdownItemComponent', () => {
+  let component: OwnDropdownItemComponent;
+  let fixture: ComponentFixture<OwnDropdownItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UnloadWalletInfoComponent ]
+      declarations: [ OwnDropdownItemComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UnloadWalletInfoComponent);
+    fixture = TestBed.createComponent(OwnDropdownItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

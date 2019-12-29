@@ -9,6 +9,7 @@ import { CreateComponent } from './create/create.component';
 import { ImportComponent } from './import/import.component';
 import { SendChxComponent } from './actions/send-chx/send-chx.component';
 import { ReceiveChxComponent } from './actions/receive-chx/receive-chx.component';
+import { MessageSignVerificationComponent } from './msg-sign-verify/msg-sign-verify.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,10 @@ const routes: Routes = [
         path: 'staking',
         component: StakingComponent,
         data: { state: 'staking' }
+      },
+      {
+        path: 'sign-verify',
+        component: MessageSignVerificationComponent
       }
     ]
   },

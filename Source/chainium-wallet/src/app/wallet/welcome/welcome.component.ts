@@ -14,6 +14,8 @@ import { mergeMap, reduce } from 'rxjs/operators';
 
 import { OwnAnimations } from '../../shared';
 import { OwnSliderComponent } from 'src/app/shared/own-slider/own-slider/own-slider.component';
+import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
+import { OwnDropdownMenuComponent } from 'src/app/shared/own-dropdown-menu/own-dropdown-menu/own-dropdown-menu.component';
 
 @Component({
   selector: 'app-welcome',
@@ -32,10 +34,11 @@ export class WelcomeComponent implements OnInit {
   showAdvanced = false;
 
   constructor(
+    private router: Router,
     private cryptoService: CryptoService,
     private privateKeyService: PrivatekeyService,
     private walletService: WalletService,
-    private router: Router,
+    private ownModalService: OwnModalService,
     private nodeService: NodeService
   ) {
     this.onRefreshAddressInfoClick();
@@ -153,6 +156,15 @@ export class WelcomeComponent implements OnInit {
 
   getState(outlet: RouterOutlet) {
     return outlet.activatedRouteData.state;
+  }
+
+  showPrivateKey(id: string, menu: OwnDropdownMenuComponent) {
+    this.ownModalService.open(id);
+    menu.isActive = false;
+  }
+
+  hidePrivateKey(id: string) {
+    this.ownModalService.close(id);
   }
 
 }

@@ -1,16 +1,17 @@
+<!--
 <div class="column-container" *ngIf="equivocationProofInfo">
     <mat-toolbar class="toolbar-header">Equivocation proof info</mat-toolbar>
     <mat-divider class="toolbar-bottom-margin"></mat-divider>
     <mat-form-field class="info-item-margin">
-        <input matInput placeholder="equivocation proof hash" 
+        <input matInput placeholder="equivocation proof hash"
             disabled value="{{equivocationProofInfo.equivocationProofHash}}">
     </mat-form-field>
 
     <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="validator address" 
+        <textarea matInput placeholder="validator address"
             disabled value="{{equivocationProofInfo.validatorAddress}}">
         </textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard 
+        <mat-icon matSuffix color="accent" ngxClipboard
             cbContent="{{equivocationProofInfo.validatorAddress}}"
             class="pointer margin-l-20 animate-click">
                 file_copy
@@ -32,10 +33,10 @@
     </mat-form-field>
 
     <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="equivocation value 1" 
+        <textarea matInput placeholder="equivocation value 1"
             disabled value="{{equivocationProofInfo.equivocationValue1}}">
         </textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard 
+        <mat-icon matSuffix color="accent" ngxClipboard
             cbContent="{{equivocationProofInfo.equivocationValue1}}"
             class="pointer margin-l-20 animate-click">
                 file_copy
@@ -43,10 +44,10 @@
     </mat-form-field>
 
     <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="equivocation value 2" 
+        <textarea matInput placeholder="equivocation value 2"
             disabled value="{{equivocationProofInfo.equivocationValue2}}">
         </textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard 
+        <mat-icon matSuffix color="accent" ngxClipboard
             cbContent="{{equivocationProofInfo.equivocationValue2}}"
             class="pointer margin-l-20 animate-click">
                 file_copy
@@ -54,10 +55,10 @@
     </mat-form-field>
 
     <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="signature value 1" 
+        <textarea matInput placeholder="signature value 1"
             disabled value="{{equivocationProofInfo.signature1}}">
         </textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard 
+        <mat-icon matSuffix color="accent" ngxClipboard
             cbContent="{{equivocationProofInfo.signature1}}"
             class="pointer margin-l-20 animate-click">
                 file_copy
@@ -65,10 +66,10 @@
     </mat-form-field>
 
     <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="signature value 2" 
+        <textarea matInput placeholder="signature value 2"
             disabled value="{{equivocationProofInfo.signature2}}">
         </textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard 
+        <mat-icon matSuffix color="accent" ngxClipboard
             cbContent="{{equivocationProofInfo.signature2}}"
             class="pointer margin-l-20 animate-click">
                 file_copy
@@ -84,15 +85,15 @@
             value="{{equivocationProofInfo.includedInBlockNumber}}"></textarea>
     </mat-form-field>
 
-    <ng-container class="info-item-margin" 
+    <ng-container class="info-item-margin"
         *ngIf="equivocationProofInfo.depositDistribution.length > 0">
-        <ng-container 
+        <ng-container
             *ngFor="let depositDistributionInfo of equivocationProofInfo.depositDistribution; let i=index">
             <mat-form-field class="info-item-margin">
-                    <textarea matInput placeholder="validator address {{i+1}}" disabled 
+                    <textarea matInput placeholder="validator address {{i+1}}" disabled
                         value="{{depositDistributionInfo.validatorAddress}}">
                     </textarea>
-                    <mat-icon matSuffix color="accent" ngxClipboard 
+                    <mat-icon matSuffix color="accent" ngxClipboard
                         cbContent="{{depositDistributionInfo.validatorAddress}}"
                         class="pointer margin-l-20 animate-click">
                             file_copy
@@ -112,3 +113,4 @@
         <mat-list-item *ngFor="let error of errors">{{error}}</mat-list-item>
     </mat-list>
 </div>
+-->

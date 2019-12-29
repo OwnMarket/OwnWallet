@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
 import { OwnModalService } from '../shared/own-modal/services/own-modal.service';
 
-import { UnloadWalletInfoComponent } from '../unload-wallet-info/unload-wallet-info.component';
 import { CryptoService } from 'src/app/services/crypto.service';
 import { WalletService } from 'src/app/services/wallet.service';
 
@@ -73,6 +72,10 @@ export class LoginComponent implements OnInit {
 
     openModal(id: string) {
       this.ownModalService.open(id);
+    }
+
+    closeModal(id: string) {
+      this.ownModalService.close(id);
     }
 
     onUnloadWallet(id: string) {

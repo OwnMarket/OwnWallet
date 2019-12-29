@@ -18,11 +18,11 @@
                 Invalid password!
               </div>
               <div class="row mt-5">
-                  <div class="col-12 col-md-5 mb-2 mb-md-0">
-                    <button class="own-effect block" (click)="onSubmitPassword()">LOGIN</button>
-                  </div>
-                  <div class="col-12 col-md-7">
+                  <div class="col-12 col-sm-6">
                     <button class="own-effect outline flat block" (click)="openModal('unload-modal')">UNLOAD WALLET</button>
+                  </div>
+                  <div class="col-12 col-sm-6 mb-2 mb-md-0">
+                    <button class="own-effect block" (click)="onSubmitPassword()">LOGIN</button>
                   </div>
               </div>
             </div>
@@ -34,8 +34,17 @@
 </div>
 
 <own-modal id="unload-modal">
-  <h6>Are you sure?</h6>
-  <p>Please confirm that you want to unload your wallet.</p>
+  <h6>Unload Wallet</h6>
+  <p>
+    Are you sure you want to unload your wallet? Unloading your wallet will remove the wallet context as if no wallet ever has been generated.
+  </p>
+  <P>
+    However, once your wallet has been unloaded, you can use the 'Create Wallet' or 'Restore Wallet' options again.
+  </P>
+  <p>
+    Do you want to continue unloading your wallet?
+  </p>
   <button class="own-effect block" (click)="onUnloadWallet('unload-modal')">CONFIRM</button>
+  <button class="own-effect outline flat block mt-2" (click)="closeModal('unload-modal')">CANCEL</button>
 </own-modal>
 

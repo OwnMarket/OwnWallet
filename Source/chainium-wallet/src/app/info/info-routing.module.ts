@@ -7,6 +7,7 @@ import { AssetInfoComponent } from './asset-info/asset-info.component';
 import { TransactionInfoComponent } from './transaction-info/transaction-info.component';
 import { BlockInfoComponent } from './block-info/block-info.component';
 import { ValidatorInfoComponent } from './validator-info/validator-info.component';
+import { EquivocationProofInfoComponent } from './equivocation-proof-info/equivocation-proof-info.component';
 
 const routes: Routes = [
   {
@@ -77,6 +78,10 @@ const routes: Routes = [
         path: 'validator/:validatorHash',
         component: ValidatorInfoComponent,
         data: { state: 'validator' }
+      },
+      {
+        path: 'equivocation/:equivocationProofHash',
+        component: EquivocationProofInfoComponent
       }
     ]
   }

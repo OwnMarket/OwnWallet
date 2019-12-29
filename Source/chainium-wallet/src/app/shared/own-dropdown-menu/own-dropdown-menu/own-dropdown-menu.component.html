@@ -1,0 +1,20 @@
+<div
+  [id]="menuId"
+  class="dropdown-wrapper"
+  tabindex="-1"
+  role="menu"
+  [attr.aria-label]="ariaLabel || null"
+  [attr.aria-labelledby]="ariaLabelledby || null"
+  [attr.aria-describedby]="ariaDescribedby || null">
+    <button class="dropdown-trigger" (click)="isActive=!isActive">
+    <svg viewBox="0 0 515.555 515.555" width="15" fill="#848484" >
+      <path d="m303.347 18.875c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138c25.166-25.167 65.97-25.167 91.138 0"/>
+      <path d="m303.347 212.209c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138c25.166-25.167 65.97-25.167 91.138 0"/>
+      <path d="m303.347 405.541c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138c25.166-25.167 65.97-25.167 91.138 0"/>
+    </svg>
+    </button>
+    <div class="dropdown-items" [class.active]="isActive">
+      <ng-content>
+      </ng-content>
+    </div>
+  </div>

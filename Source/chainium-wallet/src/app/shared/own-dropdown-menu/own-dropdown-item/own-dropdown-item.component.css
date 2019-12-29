@@ -1,0 +1,19 @@
+.dropdown-item {
+  display: block;
+  width: 100%;
+  clear: both;
+  font-weight: 400;
+  color: #3a3b45;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  list-style: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+}
+
+.dropdown-item:hover {
+  background-color: #eaeaea;
+  cursor: pointer;
+}

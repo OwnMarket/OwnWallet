@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import {FormControl, Validators} from '@angular/forms';
 
-import { PrivatekeyService } from "../services/privatekey.service";
-import { CryptoService } from "../services/crypto.service";
+import { PrivatekeyService } from "../../services/privatekey.service";
+import { CryptoService } from "../../services/crypto.service";
 
 @Component({
     selector: "app-msg-sign-verify",
@@ -32,7 +32,7 @@ export class MessageSignVerificationComponent implements OnInit {
 
         if (!this.message.valid || !this.isKeyImported)
             return;
-        
+
         this.cryptoService.signMessage(this.privateKeyService.getWalletInfo().privateKey, this.message.value)
             .subscribe((signature: string) => {
                 this.signature = signature;
@@ -45,7 +45,7 @@ export class MessageSignVerificationComponent implements OnInit {
 
         if (!this.verificationSignature.valid || !this.message.valid)
             return;
-    
+
         this.cryptoService.verifySignature(this.verificationSignature.value, this.message.value)
             .subscribe((res: any) => this.signerAddress = res);
     }

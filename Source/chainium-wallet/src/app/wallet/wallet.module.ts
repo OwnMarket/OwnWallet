@@ -14,6 +14,7 @@ import { SendChxComponent } from './actions/send-chx/send-chx.component';
 import { ReceiveChxComponent } from './actions/receive-chx/receive-chx.component';
 import { ValidatorManagmentComponent } from './validator-managment/validator-managment.component';
 import { StakingComponent } from './staking/staking.component';
+import { MessageSignVerificationComponent } from './msg-sign-verify/msg-sign-verify.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { StakingComponent } from './staking/staking.component';
     SendChxComponent,
     ReceiveChxComponent,
     ValidatorManagmentComponent,
-    StakingComponent
+    StakingComponent,
+    MessageSignVerificationComponent
   ],
   imports: [
     CommonModule,

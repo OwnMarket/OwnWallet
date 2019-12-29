@@ -13,7 +13,7 @@ import { AssetInfoComponent } from './asset-info/asset-info.component';
 import { TransactionInfoComponent } from './transaction-info/transaction-info.component';
 import { BlockInfoComponent } from './block-info/block-info.component';
 import { ValidatorInfoComponent } from './validator-info/validator-info.component';
-
+import { EquivocationProofInfoComponent } from './equivocation-proof-info/equivocation-proof-info.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,8 @@ import { ValidatorInfoComponent } from './validator-info/validator-info.componen
     AssetInfoComponent,
     TransactionInfoComponent,
     BlockInfoComponent,
-    ValidatorInfoComponent
+    ValidatorInfoComponent,
+    EquivocationProofInfoComponent
   ],
   imports: [
     CommonModule,

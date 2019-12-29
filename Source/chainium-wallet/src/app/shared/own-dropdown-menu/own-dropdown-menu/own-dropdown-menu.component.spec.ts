@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BalanceInfoComponent } from './balance-info.component';
+import { OwnDropdownMenuComponent } from './own-dropdown-menu.component';
 
-describe('BalanceInfoComponent', () => {
-  let component: BalanceInfoComponent;
-  let fixture: ComponentFixture<BalanceInfoComponent>;
+describe('OwnDropdownMenuComponent', () => {
+  let component: OwnDropdownMenuComponent;
+  let fixture: ComponentFixture<OwnDropdownMenuComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BalanceInfoComponent ]
+      declarations: [ OwnDropdownMenuComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BalanceInfoComponent);
+    fixture = TestBed.createComponent(OwnDropdownMenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

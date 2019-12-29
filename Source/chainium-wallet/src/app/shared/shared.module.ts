@@ -7,6 +7,7 @@ import { OwnCardModule } from './own-card/own-card.module';
 import { OwnIconModule } from './own-icon/own-icon.module';
 import { OwnSliderModule } from './own-slider/own-slider.module';
 import { OwnModalModule } from './own-modal/own-modal.module';
+import { OwnDropdownMenuModule } from './own-dropdown-menu/own-dropdown-menu.module';
 
 import { CamelToSpacePipe } from './pipes/camel-to-space.pipe';
 
@@ -18,7 +19,8 @@ import { CamelToSpacePipe } from './pipes/camel-to-space.pipe';
     OwnCardModule,
     OwnIconModule,
     OwnSliderModule,
-    OwnModalModule
+    OwnModalModule,
+    OwnDropdownMenuModule
   ],
   exports: [
     ReactiveFormsModule,
@@ -27,7 +29,8 @@ import { CamelToSpacePipe } from './pipes/camel-to-space.pipe';
     OwnIconModule,
     CamelToSpacePipe,
     OwnSliderModule,
-    OwnModalModule
+    OwnModalModule,
+    OwnDropdownMenuModule
   ],
   declarations: [
     CamelToSpacePipe

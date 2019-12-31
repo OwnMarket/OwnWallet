@@ -39,8 +39,29 @@
             <ngx-datatable-column name="isActive" [flexGrow]="1" [maxWidth]="40">
               <ng-template let-column="column" ngx-datatable-header-template></ng-template>
               <ng-template let-value="value" ngx-datatable-cell-template>
-                <img *ngIf="value" src="assets/images/success-icon.svg" />
-                <img *ngIf="!value" src="assets/images/failed-icon.svg" />
+              <ng-container *ngIf="value">
+                <svg viewBox="0 0 507.2 507.2" width="25">
+                  <circle style="fill:#32BA7C;" cx="253.6" cy="253.6" r="253.6"/>
+                  <path style="fill:#0AA06E;" d="M188.8,368l130.4,130.4c108-28.8,188-127.2,188-244.8c0-2.4,0-4.8,0-7.2L404.8,152L188.8,368z"/>
+                  <path style="fill:#FFFFFF;" d="M260,310.4c11.2,11.2,11.2,30.4,0,41.6l-23.2,23.2c-11.2,11.2-30.4,11.2-41.6,0L93.6,272.8
+                      c-11.2-11.2-11.2-30.4,0-41.6l23.2-23.2c11.2-11.2,30.4-11.2,41.6,0L260,310.4z"/>
+                  <path style="fill:#FFFFFF;" d="M348.8,133.6c11.2-11.2,30.4-11.2,41.6,0l23.2,23.2c11.2,11.2,11.2,30.4,0,41.6l-176,175.2
+                      c-11.2,11.2-30.4,11.2-41.6,0l-23.2-23.2c-11.2-11.2-11.2-30.4,0-41.6L348.8,133.6z"/>
+                </svg>
+              </ng-container>
+                <ng-container *ngIf="!value">
+                  <svg viewBox="0 0 512 512" width="25">
+                    <circle style="fill:#E21B1B;" cx="256" cy="256" r="256"/>
+                    <path style="fill:#C40606;" d="M510.28,285.304L367.912,142.936L150.248,368.608l140.928,140.928
+                      C406.352,493.696,497.056,401.288,510.28,285.304z"/>
+                    <path style="fill:#FFFFFF;" d="M354.376,371.536c-5.12,0-10.232-1.952-14.144-5.856L146.408,171.848
+                        c-7.816-7.816-7.816-20.472,0-28.28s20.472-7.816,28.28,0L368.52,337.4c7.816,7.816,7.816,20.472,0,28.28
+                        C364.608,369.584,359.496,371.536,354.376,371.536z"/>
+                    <path style="fill:#FFFFFF;" d="M160.544,371.536c-5.12,0-10.232-1.952-14.144-5.856c-7.816-7.816-7.816-20.472,0-28.28
+                        l193.832-193.832c7.816-7.816,20.472-7.816,28.28,0s7.816,20.472,0,28.28L174.688,365.68
+                        C170.784,369.584,165.664,371.536,160.544,371.536z"/>
+                  </svg>
+                </ng-container>
               </ng-template>
             </ngx-datatable-column>
 

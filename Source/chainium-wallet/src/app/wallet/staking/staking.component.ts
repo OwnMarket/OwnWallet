@@ -163,6 +163,10 @@ export class StakingComponent implements OnInit, OnDestroy {
     table.rowDetail.toggleExpandRow(row);
   }
 
+  closeModal(id: string) {
+    this.ownModalService.close(id);
+  }
+
   ngOnDestroy() {
     if (this.addressSub) { this.addressSub.unsubscribe(); }
     if (this.txSub) { this.txSub.unsubscribe(); }

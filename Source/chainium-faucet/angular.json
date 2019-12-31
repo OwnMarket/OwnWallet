@@ -23,8 +23,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "src/assets/themes/chainium-theme.scss"
+              "src/styles.css"
             ],
             "scripts": []
           },

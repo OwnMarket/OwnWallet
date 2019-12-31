@@ -1,10 +1,106 @@
 .toolbar-header
 {
-    margin-top:68px; 
+    margin-top:68px;
     background-color: transparent;
 }
 
 .toolbar-bottom-margin
 {
     margin-bottom: 24px;
+}
+
+.loader-item {
+  display: inline-block;
+  position: relative;
+  margin: 0 5px;
+  vertical-align: middle;
+}
+
+.error-info {
+  color: #E21B1B;
+}
+
+.loader-item .icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 60px;
+  animation-name: loader-fill-icon;
+  animation-duration: 1.2s;
+  animation-iteration-count: 1;
+}
+
+.outer-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.loader-item.complete .outer-circle {
+  background-color: #D2E7D2;
+}
+
+.loader-item.fail .outer-circle {
+  background-color: rgb(231, 210, 210);
+}
+
+.loader-item .inner-circle {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  top: 8px;
+  left: 8px;
+}
+
+.loader-item.complete .inner-circle {
+  background-color: #32BA7C;
+  animation-name: loader-fill-success;
+  animation-duration: 0.75s;
+  animation-iteration-count: 1;
+}
+
+.loader-item.fail .inner-circle {
+  background-color: #E21B1B;
+  animation-name: loader-fill-fail;
+  animation-duration: 0.75s;
+  animation-iteration-count: 1;
+}
+
+@keyframes loader-fill-success {
+  0%   {
+    background-color: transparent;
+    transform: scale(0);
+  }
+
+  100% {
+    background-color: #32BA7C;
+    transform: scale(1);
+  }
+}
+
+@keyframes loader-fill-fail {
+  0%   {
+    background-color: transparent;
+    transform: scale(0);
+  }
+
+  100% {
+    background-color: #E21B1B;
+    transform: scale(1);
+  }
+}
+
+
+@keyframes loader-fill-icon {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

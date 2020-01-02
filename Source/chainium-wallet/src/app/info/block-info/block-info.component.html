@@ -114,7 +114,7 @@
                 <b>Merkle Roots</b>
               </own-card-title>
               <own-card-body>
-                <li class="own-list-item">
+                <li class="own-list-item" *ngIf="blockInfo.txSetRoot">
                     <div class="row justify-content-between align-items-center">
                       <div class="col-12 col-md-4">
                         <b>Transactions root</b>
@@ -127,7 +127,7 @@
                       </div>
                     </div>
                 </li>
-                <li class="own-list-item">
+                <li class="own-list-item" *ngIf="blockInfo.txResultSetRoot">
                   <div class="row justify-content-between align-items-center">
                     <div class="col-12 col-md-4">
                       <b>Transactions results root</b>
@@ -140,7 +140,7 @@
                     </div>
                   </div>
                </li>
-               <li class="own-list-item">
+               <li class="own-list-item" *ngIf="blockInfo.equivocationProofsRoot">
                 <div class="row justify-content-between align-items-center">
                   <div class="col-12 col-md-4">
                     <b>Equivocation proofs root</b>
@@ -153,20 +153,20 @@
                   </div>
                 </div>
              </li>
-             <li class="own-list-item">
+             <li class="own-list-item" *ngIf="blockInfo.equivocationProofResultsRoot">
               <div class="row justify-content-between align-items-center">
                 <div class="col-12 col-md-4">
                   <b>Equivocation proofs results root</b>
                 </div>
                 <div class="col-12 col-md-8 text-wrap text-right">
-                  {{ blockInfo.equivocationProofResultsRoot || '' }}
+                  {{ blockInfo.equivocationProofResultsRoot || '-' }}
                   <button class="button-transparent" ngxClipboard cbContent="{{ blockInfo.equivocationProofResultsRoot || '' }}">
                     <own-icon icon="copy" color="#eb6723"></own-icon>
                   </button>
                 </div>
               </div>
              </li>
-             <li class="own-list-item">
+             <li class="own-list-item" *ngIf="blockInfo.stateRoot">
               <div class="row justify-content-between align-items-center">
                 <div class="col-12 col-md-4">
                   <b>State root</b>
@@ -179,7 +179,7 @@
                 </div>
               </div>
              </li>
-             <li class="own-list-item">
+             <li class="own-list-item" *ngIf="blockInfo.stakingRewardsRoot">
               <div class="row justify-content-between align-items-center">
                 <div class="col-12 col-md-4">
                   <b>Staking rewards set root</b>
@@ -192,7 +192,7 @@
                 </div>
               </div>
              </li>
-             <li class="own-list-item">
+             <li class="own-list-item" *ngIf="blockInfo.configurationRoot">
               <div class="row justify-content-between align-items-center">
                 <div class="col-12 col-md-4">
                   <b>Configuration root</b>
@@ -232,10 +232,10 @@
                         </div>
                         <li class="own-list-item" *ngFor="let signature of blockInfo.signatures; let i=index">
                             <div class="row justify-content-between align-items-center">
-                              <div class="col-12 col-md-2">
+                              <div class="col-12">
                                 <b>Signature {{ i + 1 }}</b>
                               </div>
-                              <div class="col-12 col-md-10 text-wrap text-right">
+                              <div class="col-12 text-wrap">
                                 {{ signature }}
                               </div>
                             </div>
@@ -257,7 +257,7 @@
                     </own-card-title>
                     <own-card-body>
                       <li class="own-list-item" *ngFor="let transaction of blockInfo.txSet">
-                        <a routerLink="/tx/{{transaction}}"
+                        <a routerLink="/info/tx/{{transaction}}"
                         title="Click to get detailed transaction info.">
                             {{ transaction }}
                         </a>
@@ -279,7 +279,7 @@
                       </own-card-title>
                       <own-card-body>
                         <li class="own-list-item" *ngFor="let equivocationProof of blockInfo.equivocationProofs">
-                          <a routerLink="/equivocation/{{equivocationProof}}"
+                          <a routerLink="/info/equivocation/{{equivocationProof}}"
                             title="Click to get detailed equivocation proof info.">
                               {{ equivocationProof }}
                           </a>
@@ -314,7 +314,10 @@
                         <ng-container *ngIf="reward.amount > 0">
                           <div class="row justify-content-between align-items-center">
                             <div class="col-5 text-truncate">
-                              {{ reward.stakerAddress }}
+                              <a routerLink="/info/address/{{reward.stakerAddress}}"
+                              title="Click to get detailed transaction info.">
+                                {{ reward.stakerAddress }}
+                              </a>
                             </div>
                             <div class="col-4 text-right">
                               {{ reward.amount }}

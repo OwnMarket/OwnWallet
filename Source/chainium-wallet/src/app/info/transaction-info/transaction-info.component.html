@@ -60,7 +60,7 @@
                       {{ txInfo.txHash }}
                     </div>
                     <div class="col-12 error-info" *ngIf="txInfo.status==='Failure'">
-                      {{ txInfo.errorCode }}
+                      {{ txInfo.errorCode | camelToSpace }}
                     </div>
                 </div>
                 <div class="col-12 col-sm-3 text-left text-sm-center border-left">

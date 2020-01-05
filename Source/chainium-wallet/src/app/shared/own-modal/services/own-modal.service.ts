@@ -20,6 +20,11 @@ export class OwnModalService {
       modal.open();
   }
 
+  errors(errors: string[]) {
+    const modal = this.modals.find(x => x.id === 'error-dialog');
+    modal.errors = errors;
+  }
+
   close(id: string) {
       const modal = this.modals.find(x => x.id === id);
       modal.close();

@@ -1,4 +1,5 @@
 /** NEW STYLES */
+@import './assets/images/images.css';
 
 /* You can add global styles to this file, and also import other style files */
 :root {
@@ -83,6 +84,7 @@ button.button-transparent {
 button.button-transparent:hover, button.link:hover {
   color: var(--color-brand);
   text-shadow: none;
+  box-shadow: none;
 }
 
 button.link {
@@ -287,7 +289,6 @@ button {
   overflow: hidden;
   border-radius: 2rem;
   padding: 10px 25px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.2);
   transition: all .5s ease-in-out;
 }
 
@@ -311,6 +312,7 @@ button.own-effect:hover::before {
 
 button:hover {
   text-shadow: 0 0 2px rgba(0,0,0,.5);
+  box-shadow: 0 2px 4px rgba(0,0,0,.2);
 }
 
 button.outline {

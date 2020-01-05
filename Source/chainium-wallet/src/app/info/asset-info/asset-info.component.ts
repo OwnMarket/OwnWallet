@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { AssetInfo } from 'src/app/models/asset-info.model';
 import { NodeService } from 'src/app/services/node.service';
 import { OwnAnimations } from '../../shared';
+import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
 
 @Component({
   selector: 'app-asset-info',
@@ -13,13 +14,16 @@ import { OwnAnimations } from '../../shared';
 })
 
 export class AssetInfoComponent implements OnInit {
+
   assetHash = '';
   assetInfo: AssetInfo;
   subscription: Subscription;
-  errors: any;
-  constructor(private nodeService: NodeService,
-    private route: ActivatedRoute) {
-  }
+
+  constructor(
+    private nodeService: NodeService,
+    private route: ActivatedRoute,
+    private ownModalService: OwnModalService
+    ) {}
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(params => {
@@ -36,10 +40,10 @@ export class AssetInfoComponent implements OnInit {
     this.nodeService.getAssetInfo(this.assetHash).subscribe(info => {
       if (!info || info.errors) {
         this.assetInfo = null;
-        this.errors = info.errors;
+        this.ownModalService.errors(info.errors);
+        this.ownModalService.open('error-dialog');
         return;
       }
-      this.errors = null;
       this.assetInfo = info as AssetInfo;
     });
   }

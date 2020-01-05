@@ -7,6 +7,7 @@ import { NodeService } from '../../services/node.service';
 import { ValidatorsInfo } from '../../models/validators-info.model';
 import { StakeInfo } from '../../models/stakes-info.model';
 import { OwnAnimations } from '../../shared';
+import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
 
 @Component({
   selector: 'app-validator-info',
@@ -23,12 +24,12 @@ export class ValidatorInfoComponent implements OnInit, OnDestroy {
   validatorsInfo: ValidatorsInfo;
   subscription: Subscription;
   validatorStakes: any;
-  errors: any;
   activeOnly = false;
 
   constructor(
     private nodeService: NodeService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private ownModalService: OwnModalService
   ) {}
 
   ngOnInit() {
@@ -47,10 +48,10 @@ export class ValidatorInfoComponent implements OnInit, OnDestroy {
         .subscribe(info => {
           if (!info || info.errors) {
             this.validatorsInfo = null;
-            this.errors = info.errors;
+            this.ownModalService.errors(info.errors);
+            this.ownModalService.open('error-dialog');
             return;
           }
-          this.errors = null;
           this.validatorsInfo = info as ValidatorsInfo;
         });
     } else {
@@ -60,10 +61,10 @@ export class ValidatorInfoComponent implements OnInit, OnDestroy {
         .subscribe(stakes => {
           if (!stakes || stakes.errors) {
             this.validatorStakes = null;
-            this.errors = stakes.errors;
+            this.ownModalService.errors(stakes.errors);
+            this.ownModalService.open('error-dialog');
             return;
           }
-          this.errors = null;
           this.validatorStakes = stakes as StakeInfo;
         });
     }

@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy,  ViewEncapsulation, ElementRef, Input} from '@angular/core';
 import { OwnModalService } from '../services/own-modal.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'own-modal',
@@ -11,7 +12,9 @@ export class OwnModalComponent implements OnInit, OnDestroy {
 
   @Input() id: string;
   @Input() width = 350;
-  isOpen = false;
+
+  isOpen: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  errors: string[];
 
   constructor(
     private ownModalService: OwnModalService
@@ -25,16 +28,16 @@ export class OwnModalComponent implements OnInit, OnDestroy {
     this.ownModalService.add(this);
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.ownModalService.remove(this.id);
   }
 
-  open(): void {
-    this.isOpen = true;
+  open() {
+    this.isOpen.next(true);
   }
 
-  close(): void {
-    this.isOpen = false;
+  close() {
+    this.isOpen.next(false);
   }
 
   onClickBg(event: any) {

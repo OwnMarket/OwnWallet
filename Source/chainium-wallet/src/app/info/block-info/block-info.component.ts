@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { BlockInfo } from 'src/app/models/block-info.model';
 import { NodeService } from 'src/app/services/node.service';
 import { ColumnMode } from '@swimlane/ngx-datatable';
+import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
 
 @Component({
   selector: 'app-block-info',
@@ -20,14 +21,14 @@ export class BlockInfoComponent implements OnInit, OnDestroy {
   blockNumber = 0;
   blockInfo: BlockInfo;
   subscription: Subscription;
-  errors: string[];
   showStakingRewards: boolean;
   validatorColumns: any[];
   ColumnMode = ColumnMode;
 
   constructor(
     private nodeService: NodeService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private ownModalService: OwnModalService
   ) { }
 
   ngOnInit() {
@@ -61,7 +62,8 @@ export class BlockInfoComponent implements OnInit, OnDestroy {
     this.nodeService.getBlockInfo(this.blockNumber).subscribe(info => {
       if (!info || info.errors) {
         this.blockInfo = null;
-        this.errors = info.errors;
+        this.ownModalService.errors(info.errors);
+        this.ownModalService.open('error-dialog');
         return;
       }
 
@@ -74,7 +76,6 @@ export class BlockInfoComponent implements OnInit, OnDestroy {
         info.timestamp = `(${info.timestamp})`;
       }
 
-      this.errors = null;
       this.blockInfo = info as BlockInfo;
       this.showStakingRewards =
         this.blockInfo.stakingRewards

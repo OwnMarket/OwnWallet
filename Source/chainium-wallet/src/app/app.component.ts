@@ -1,10 +1,10 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
+import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { LoaderMessage } from './models/loader-message.enum';
 import { GlobalErrorHandler } from './services/global.error.handler';
-import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { WalletHttpInterceptor } from './services/wallet-http-interceptor';
 import { LoaderComponent } from './loader/loader.component';
 
@@ -14,7 +14,7 @@ const LoaderDlg = 'LoaderDlg';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit {
 
     private loaderef: MatDialogRef<LoaderComponent>;
     private prevMessage: LoaderMessage;
@@ -27,28 +27,24 @@ export class AppComponent implements OnDestroy {
     constructor(
         private errorHandler: GlobalErrorHandler,
         private interceptor: WalletHttpInterceptor,
-        public dialog: MatDialog) {
+        public dialog: MatDialog,
+        private ownModalService: OwnModalService
+        ) {}
 
-        this.errorOccuredSubscription = this.errorHandler
-            .getMessage()
-            .subscribe(error => this.loadErrorDialog(error));
+    ngOnInit() {
+      this.errorOccuredSubscription = this.errorHandler
+      .getMessage()
+      .subscribe(error => this.loadErrorDialog(error));
 
-        this.openLoadingDialogSubscription = this.interceptor
-            .getMessage()
-            .subscribe(msg => this.progressBarAction(msg));
-    }
-    ngOnDestroy() {
-        // unsubscribe to ensure no memory leaks
-        this.errorOccuredSubscription.unsubscribe();
-        this.openLoadingDialogSubscription.unsubscribe();
+    this.openLoadingDialogSubscription = this.interceptor
+        .getMessage()
+        .subscribe(msg => this.progressBarAction(msg));
     }
 
     private loadErrorDialog(error: any) {
-        this.dialog.open(ErrorDialogComponent, {
-            width: 'auto',
-            height: 'auto',
-            data: error
-        });
+        const errors = [error];
+        this.ownModalService.errors(errors);
+        this.ownModalService.open('error-dialog');
     }
 
     private newLoaderDialog() {
@@ -57,7 +53,7 @@ export class AppComponent implements OnDestroy {
             this.loaderef = this.dialog.open(LoaderComponent, {
                 disableClose: true,
                 id: LoaderDlg
-            });     
+            });
         }
     }
 
@@ -66,7 +62,7 @@ export class AppComponent implements OnDestroy {
             return;
         }
 
-        if (message === LoaderMessage.Start) {                       
+        if (message === LoaderMessage.Start) {
             setTimeout(() => this.newLoaderDialog());
         }
 

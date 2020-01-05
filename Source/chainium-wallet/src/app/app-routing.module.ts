@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LoginComponent } from './login/login.component';
+// Guards
 import { AccessGuard } from './_guards/access.guard';
+
+// App level components
+import { LoginComponent } from './login/login.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 // Info section
 import { InfoPageComponent } from './info/info-page/info-page.component';
@@ -149,6 +153,11 @@ export const ROUTERCONFIGS: Routes = [
       path: '',
       pathMatch: 'full',
       redirectTo: '/wallet'
+    },
+    {
+      path: '**',
+      pathMatch: 'full',
+      component: PageNotFoundComponent
     }
 ];
 

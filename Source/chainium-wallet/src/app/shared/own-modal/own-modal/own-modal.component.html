@@ -1,6 +1,6 @@
 <div
 class="own-modal"
-[class.open]="isOpen"
+[class.open]="isOpen | async"
 (click)="onClickBg($event)">
   <div class="own-modal-body" [ngStyle]="{ 'width': width + 'px' }">
       <button class="close button-transparent">
@@ -9,5 +9,17 @@ class="own-modal"
           </svg>
       </button>
       <ng-content></ng-content>
+      <ng-container *ngIf="errors">
+        <div class="text-center">
+          <div class="token-fail"></div>
+        </div>
+        <h6 class="text-center">Error!</h6>
+        <p class="px-4">
+          <li *ngFor="let error of errors">{{error}}</li>
+        </p>
+        <button class="outline own-effect block" (click)="close()">
+          CLOSE
+        </button>
+      </ng-container>
   </div>
 </div>

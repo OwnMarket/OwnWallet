@@ -18,7 +18,6 @@ import { SubmitTransactionComponent } from './submit-transaction/submit-transact
 import { ChxTransferComponent } from './actions/chx-transfer/chx-transfer.component';
 import { AssetTransferComponent } from './actions/asset-transfer/asset-transfer.component';
 import { SubmitTransactionInfoComponent } from './submit-transaction-info/submit-transaction-info.component';
-import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { GenerateAccountComponent } from './generate-account/generate-account.component';
 import { LoaderComponent } from './loader/loader.component';
 import { DelegateStakeComponent } from './actions/delegate-stake/delegate-stake.component';
@@ -31,7 +30,9 @@ import { SubmitVoteWeightComponent } from './actions/submit-vote-weight/submit-v
 import { CreateAssetComponent } from './actions/create-asset/create-asset.component';
 import { CreateAccountComponent } from './actions/create-account/create-account.component';
 
+// App level components
 import { LoginComponent } from './login/login.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 // Info section
 import { InfoPageComponent } from './info/info-page/info-page.component';
@@ -56,7 +57,6 @@ import { MessageSignVerificationComponent } from './wallet/msg-sign-verify/msg-s
 @NgModule({
     entryComponents: [
         SubmitTransactionInfoComponent,
-        ErrorDialogComponent,
         LoaderComponent
     ],
     declarations: [
@@ -75,7 +75,6 @@ import { MessageSignVerificationComponent } from './wallet/msg-sign-verify/msg-s
         SubmitVoteComponent,
         SubmitVoteWeightComponent,
         SubmitTransactionInfoComponent,
-        ErrorDialogComponent,
         GenerateAccountComponent,
         LoaderComponent,
         LoginComponent,
@@ -96,7 +95,8 @@ import { MessageSignVerificationComponent } from './wallet/msg-sign-verify/msg-s
         ReceiveChxComponent,
         ValidatorManagmentComponent,
         StakingComponent,
-        MessageSignVerificationComponent
+        MessageSignVerificationComponent,
+        PageNotFoundComponent
     ],
     imports: [
         BrowserModule,

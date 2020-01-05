@@ -1,3 +1,4 @@
+import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -21,14 +22,16 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
   transactionHash = '';
   txInfo: TransactionInfo;
   subscription: Subscription;
-  errors: string[];
   totalFee = 0;
   showErrorCode = false;
   ready = false;
 
-  constructor(private nodeService: NodeService,
+  constructor(
+    private nodeService: NodeService,
     private route: ActivatedRoute,
-    private cryptoService: CryptoService) { }
+    private cryptoService: CryptoService,
+    private ownModalService: OwnModalService
+    ) { }
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(params => {
@@ -50,11 +53,11 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
       .getTransactionInfo(this.transactionHash)
       .subscribe(info => {
         if (!info || info.errors) {
-          this.errors = info.errors;
           this.txInfo = null;
+          this.ownModalService.errors(info.errors);
+          this.ownModalService.open('error-dialog');
           return;
         }
-        this.errors = null;
         this.txInfo = info as TransactionInfo;
         this.totalFee = (this.txInfo.actions) ? (this.txInfo.actionFee * this.txInfo.actions.length) : 0;
         this.showErrorCode = this.txInfo.errorCode &&

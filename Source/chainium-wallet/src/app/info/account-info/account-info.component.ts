@@ -5,6 +5,7 @@ import { AccountInfo } from 'src/app/models/account-info.model';
 import { NodeService } from 'src/app/services/node.service';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { OwnAnimations } from '../../shared';
+import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
 
 @Component({
   selector: 'app-account-info',
@@ -17,7 +18,6 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
   accountInfo: AccountInfo;
   accountHash: string;
   displayedColumns: string[];
-  errors: string[];
   routeSubscription: Subscription;
 
   ColumnMode = ColumnMode;
@@ -35,7 +35,11 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     }
   ];
 
-  constructor(private nodeService: NodeService, private route: ActivatedRoute) {
+  constructor(
+    private nodeService: NodeService,
+    private route: ActivatedRoute,
+    private ownModalService: OwnModalService
+    ) {
     this.accountHash = '';
     this.displayedColumns = ['assetcode', 'balance'];
   }
@@ -61,11 +65,11 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
       (
         info => {
           if (!info || info.errors) {
-            this.errors = info.errors;
+            this.ownModalService.errors(info.errors);
+            this.ownModalService.open('error-dialog');
             this.accountInfo = null;
             return;
           }
-          this.errors = null;
           this.accountInfo = info as AccountInfo;
         }
       );

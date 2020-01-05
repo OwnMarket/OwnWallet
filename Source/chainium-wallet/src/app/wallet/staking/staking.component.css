@@ -1,5 +1,3 @@
-@import '../actions/send-chx/send-chx.component.css';
-
 @media screen and (max-width: 800px) {
   .desktop-hidden {
     display: initial;

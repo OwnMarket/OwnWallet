@@ -7,6 +7,7 @@ import { NodeService } from 'src/app/services/node.service';
 import { StakesInfo, StakeInfo } from 'src/app/models/stakes-info.model';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { OwnAnimations } from '../../shared';
+import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
 
 @Component({
   selector: 'app-address-info',
@@ -17,7 +18,6 @@ import { OwnAnimations } from '../../shared';
 export class AddressInfoComponent implements OnInit, OnDestroy {
 
   blockchainAddress = '';
-  errors: string[];
   accountsInfo: ChxAccountsInfo;
   addressInfo: ChxAddressInfo;
   assetsInfo: any;
@@ -40,8 +40,11 @@ export class AddressInfoComponent implements OnInit, OnDestroy {
     }
   ];
 
-  constructor(private nodeService: NodeService,
-    private route: ActivatedRoute) { }
+  constructor(
+    private nodeService: NodeService,
+    private route: ActivatedRoute,
+    private ownModalService: OwnModalService
+    ) { }
 
   ngOnInit() {
     this.routeSubscription = this.route.params.subscribe(params => {
@@ -66,6 +69,8 @@ export class AddressInfoComponent implements OnInit, OnDestroy {
         if (!addr || addr.errors) {
           this.blockchainAddress = null;
           this.addressInfo = null;
+          this.ownModalService.errors(addr.errors);
+          this.ownModalService.open('error-dialog');
           return;
         }
         this.addressInfo = addr as ChxAddressInfo;
@@ -74,6 +79,8 @@ export class AddressInfoComponent implements OnInit, OnDestroy {
           .subscribe(assets => {
             if (!assets || assets.errors) {
               this.assetsInfo = null;
+              this.ownModalService.errors(assets.errors);
+              this.ownModalService.open('error-dialog');
               this.ready = true;
               return;
             }
@@ -90,12 +97,12 @@ export class AddressInfoComponent implements OnInit, OnDestroy {
 
     this.nodeService.getChxAddressAccounts(this.blockchainAddress).subscribe(info => {
       if (!info || info.errors) {
-        this.errors = info.errors;
         this.accountsInfo = null;
+        this.ownModalService.errors(info.errors);
+        this.ownModalService.open('error-dialog');
         return;
       }
 
-      this.errors = null;
       this.accountsInfo = new ChxAccountsInfo();
       this.accountsInfo.accounts = info.accounts;
     });

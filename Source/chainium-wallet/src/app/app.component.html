@@ -1,4 +1,6 @@
 <own-navbar></own-navbar>
 <router-outlet></router-outlet>
-
 <own-modal id="error-dialog"></own-modal>
+<div class="loader-bg" *ngIf="isLoading | async">
+  <div class="loader"></div>
+</div>

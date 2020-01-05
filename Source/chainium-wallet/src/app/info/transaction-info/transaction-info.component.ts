@@ -2,9 +2,9 @@ import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.ser
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { TransactionInfo } from 'src/app/models/transaction-info.model';
-import { NodeService } from 'src/app/services/node.service';
-import { CryptoService } from 'src/app/services/crypto.service';
+import { TransactionInfo } from 'src/app/shared/models/transaction-info.model';
+import { NodeService } from 'src/app/shared/services/node.service';
+import { CryptoService } from 'src/app/shared/services/crypto.service';
 import { OwnAnimations } from '../../shared';
 
 @Component({

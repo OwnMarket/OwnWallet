@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { PrivatekeyService } from 'src/app/services/privatekey.service';
-import { CryptoService } from 'src/app/services/crypto.service';
-import { WalletService } from 'src/app/services/wallet.service';
-import { FileService } from 'src/app/services/file.service';
+import { PrivatekeyService } from 'src/app/shared/services/privatekey.service';
+import { CryptoService } from 'src/app/shared/services/crypto.service';
+import { WalletService } from 'src/app/shared/services/wallet.service';
+import { FileService } from 'src/app/shared/services/file.service';
 
-import { validatePasswordMatch } from 'src/app/helpers/must-match.validator';
+import { validatePasswordMatch } from 'src/app/shared/helpers/must-match.validator';
 import { OwnAnimations } from '../../shared';
 
 @Component({

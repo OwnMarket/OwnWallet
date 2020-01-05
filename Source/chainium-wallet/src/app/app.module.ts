@@ -1,11 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { WalletHttpInterceptor } from './services/wallet-http-interceptor';
-import { GlobalErrorHandler } from './services/global.error.handler';
-import { GoogleMaterialModule } from './/google-material.module';
+import { WalletHttpInterceptor } from './shared/services/wallet-http-interceptor';
+import { GlobalErrorHandler } from './shared/services/global.error.handler';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SharedModule } from './shared/shared.module';
@@ -13,22 +11,7 @@ import { QrCodeModule } from 'ng-qrcode';
 import { AppRoutingModule } from './/app-routing.module';
 
 import { AppComponent } from './app.component';
-import { RecoverPkFromOldDerivationPathComponent } from './recover-pk-from-old-derivation-path/recover-pk-from-old-derivation-path.component';
-import { SubmitTransactionComponent } from './submit-transaction/submit-transaction.component';
-import { ChxTransferComponent } from './actions/chx-transfer/chx-transfer.component';
-import { AssetTransferComponent } from './actions/asset-transfer/asset-transfer.component';
-import { SubmitTransactionInfoComponent } from './submit-transaction-info/submit-transaction-info.component';
-import { GenerateAccountComponent } from './generate-account/generate-account.component';
-import { LoaderComponent } from './loader/loader.component';
-import { DelegateStakeComponent } from './actions/delegate-stake/delegate-stake.component';
-import { CreateAssetEmissionComponent } from './actions/create-asset-emission/create-asset-emission.component';
-import { SetAssetCodeComponent } from './actions/set-asset-code/set-asset-code.component';
-import { SetAssetControllerComponent } from './actions/set-asset-controller/set-asset-controller.component';
-import { SetAccountControllerComponent } from './actions/set-account-controller/set-account-controller.component';
-import { SubmitVoteComponent } from './actions/submit-vote/submit-vote.component';
-import { SubmitVoteWeightComponent } from './actions/submit-vote-weight/submit-vote-weight.component';
-import { CreateAssetComponent } from './actions/create-asset/create-asset.component';
-import { CreateAccountComponent } from './actions/create-account/create-account.component';
+import { LoaderService } from './shared/services/loader.service';
 
 // App level components
 import { LoginComponent } from './login/login.component';
@@ -55,28 +38,8 @@ import { StakingComponent } from './wallet/staking/staking.component';
 import { MessageSignVerificationComponent } from './wallet/msg-sign-verify/msg-sign-verify.component';
 
 @NgModule({
-    entryComponents: [
-        SubmitTransactionInfoComponent,
-        LoaderComponent
-    ],
     declarations: [
         AppComponent,
-        RecoverPkFromOldDerivationPathComponent,
-        SubmitTransactionComponent,
-        ChxTransferComponent,
-        AssetTransferComponent,
-        DelegateStakeComponent,
-        CreateAssetEmissionComponent,
-        CreateAssetComponent,
-        SetAssetCodeComponent,
-        SetAssetControllerComponent,
-        CreateAccountComponent,
-        SetAccountControllerComponent,
-        SubmitVoteComponent,
-        SubmitVoteWeightComponent,
-        SubmitTransactionInfoComponent,
-        GenerateAccountComponent,
-        LoaderComponent,
         LoginComponent,
         // info section
         InfoPageComponent,
@@ -102,16 +65,14 @@ import { MessageSignVerificationComponent } from './wallet/msg-sign-verify/msg-s
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        FormsModule,
-        ReactiveFormsModule,
         SharedModule,
-        GoogleMaterialModule,
         ClipboardModule,
         NgxDatatableModule,
         QrCodeModule,
-        AppRoutingModule,
+        AppRoutingModule
     ],
     providers: [
+        LoaderService,
         {
             provide: ErrorHandler,
             useClass: GlobalErrorHandler

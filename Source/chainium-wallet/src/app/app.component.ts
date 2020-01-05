@@ -1,12 +1,11 @@
+import { LoaderService } from './shared/services/loader.service';
 import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { Observable } from 'rxjs';
 
-import { LoaderMessage } from './models/loader-message.enum';
-import { GlobalErrorHandler } from './services/global.error.handler';
-import { WalletHttpInterceptor } from './services/wallet-http-interceptor';
-import { LoaderComponent } from './loader/loader.component';
+import { LoaderMessage } from './shared/models/loader-message.enum';
+import { GlobalErrorHandler } from './shared/services/global.error.handler';
+import { WalletHttpInterceptor } from './shared/services/wallet-http-interceptor';
 
 const LoaderDlg = 'LoaderDlg';
 @Component({
@@ -16,27 +15,23 @@ const LoaderDlg = 'LoaderDlg';
 })
 export class AppComponent implements OnInit {
 
-    private loaderef: MatDialogRef<LoaderComponent>;
+    isLoading: Observable<boolean> = this.loaderService.isLoading;
     private prevMessage: LoaderMessage;
-
-    title = 'app';
-
-    errorOccuredSubscription: Subscription;
-    openLoadingDialogSubscription: Subscription;
 
     constructor(
         private errorHandler: GlobalErrorHandler,
         private interceptor: WalletHttpInterceptor,
-        public dialog: MatDialog,
-        private ownModalService: OwnModalService
+        private ownModalService: OwnModalService,
+        private loaderService: LoaderService
         ) {}
 
     ngOnInit() {
-      this.errorOccuredSubscription = this.errorHandler
+
+     this.errorHandler
       .getMessage()
       .subscribe(error => this.loadErrorDialog(error));
 
-    this.openLoadingDialogSubscription = this.interceptor
+    this.interceptor
         .getMessage()
         .subscribe(msg => this.progressBarAction(msg));
     }
@@ -47,27 +42,17 @@ export class AppComponent implements OnInit {
         this.ownModalService.open('error-dialog');
     }
 
-    private newLoaderDialog() {
-        this.loaderef = this.dialog.getDialogById(LoaderDlg);
-        if (!this.loaderef) {
-            this.loaderef = this.dialog.open(LoaderComponent, {
-                disableClose: true,
-                id: LoaderDlg
-            });
-        }
-    }
-
     private progressBarAction(message: LoaderMessage) {
         if (this.prevMessage === message) {
             return;
         }
 
         if (message === LoaderMessage.Start) {
-            setTimeout(() => this.newLoaderDialog());
+            setTimeout(() => this.loaderService.show());
         }
 
-        if (this.loaderef && message === LoaderMessage.End) {
-            setTimeout(() => this.loaderef.close());
+        if (message === LoaderMessage.End) {
+            setTimeout(() => this.loaderService.hide(), 500);
         }
 
         this.prevMessage = message;

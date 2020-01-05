@@ -3,7 +3,7 @@ import { Subject, Observable } from 'rxjs';
 import { WalletInfo } from '../models/wallet-info.model';
 import { WalletContext } from '../models/wallet-context.model';
 import * as _ from 'lodash';
-import { CryptoService } from '../services/crypto.service';
+import { CryptoService } from './crypto.service';
 import { PrivatekeyService } from './privatekey.service';
 
 @Injectable({

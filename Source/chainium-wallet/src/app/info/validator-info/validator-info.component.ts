@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { Subscription } from 'rxjs';
 
-import { NodeService } from '../../services/node.service';
-import { ValidatorsInfo } from '../../models/validators-info.model';
-import { StakeInfo } from '../../models/stakes-info.model';
+import { NodeService } from '../../shared/services/node.service';
+import { ValidatorsInfo } from '../../shared/models/validators-info.model';
+import { StakeInfo } from '../../shared/models/stakes-info.model';
 import { OwnAnimations } from '../../shared';
 import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
 

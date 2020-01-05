@@ -1,6 +1,6 @@
-import { WalletInfo } from './../../../models/wallet-info.model';
+import { WalletInfo } from '../../../shared/models/wallet-info.model';
 import { Component, OnInit } from '@angular/core';
-import { PrivatekeyService } from 'src/app/services/privatekey.service';
+import { PrivatekeyService } from 'src/app/shared/services/privatekey.service';
 
 @Component({
   selector: 'app-receive-chx',

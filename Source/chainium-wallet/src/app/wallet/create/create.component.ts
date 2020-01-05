@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { CryptoService } from 'src/app/services/crypto.service';
-import { WalletService } from 'src/app/services/wallet.service';
-import { FileService } from 'src/app/services/file.service';
-import { validatePasswordMatch } from 'src/app/helpers/must-match.validator';
+import { CryptoService } from 'src/app/shared/services/crypto.service';
+import { WalletService } from 'src/app/shared/services/wallet.service';
+import { FileService } from 'src/app/shared/services/file.service';
+import { validatePasswordMatch } from 'src/app/shared/helpers/must-match.validator';
 
 
 @Component({

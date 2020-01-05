@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AssetInfo } from 'src/app/models/asset-info.model';
-import { NodeService } from 'src/app/services/node.service';
+import { AssetInfo } from 'src/app/shared/models/asset-info.model';
+import { NodeService } from 'src/app/shared/services/node.service';
 import { OwnAnimations } from '../../shared';
 import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
 

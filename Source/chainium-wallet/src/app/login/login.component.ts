@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
 import { OwnModalService } from '../shared/own-modal/services/own-modal.service';
 
-import { CryptoService } from 'src/app/services/crypto.service';
-import { WalletService } from 'src/app/services/wallet.service';
+import { CryptoService } from 'src/app/shared/services/crypto.service';
+import { WalletService } from 'src/app/shared/services/wallet.service';
 
 @Component({
     selector: 'app-login',

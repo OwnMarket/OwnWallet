@@ -1,12 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { NodeService } from 'src/app/services/node.service';
-import { PrivatekeyService } from 'src/app/services/privatekey.service';
+import { NodeService } from 'src/app/shared/services/node.service';
+import { PrivatekeyService } from 'src/app/shared/services/privatekey.service';
 
-import { TxResult } from './../../../models/submit-transactions.model';
+import { TxResult } from '../../../shared/models/submit-transactions.model';
 import { Subscription } from 'rxjs';
-import { WalletInfo } from 'src/app/models/wallet-info.model';
+import { WalletInfo } from 'src/app/shared/models/wallet-info.model';
 import { environment } from 'src/environments/environment';
 
 declare var ownBlockchainSdk: any;

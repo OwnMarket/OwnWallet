@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import {FormControl, Validators} from '@angular/forms';
 
-import { PrivatekeyService } from "../../services/privatekey.service";
-import { CryptoService } from "../../services/crypto.service";
+import { PrivatekeyService } from "../../shared/services/privatekey.service";
+import { CryptoService } from "../../shared/services/crypto.service";
 
 @Component({
     selector: "app-msg-sign-verify",

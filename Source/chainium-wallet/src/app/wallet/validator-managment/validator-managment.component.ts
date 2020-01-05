@@ -1,11 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { NodeService } from 'src/app/services/node.service';
-import { PrivatekeyService } from 'src/app/services/privatekey.service';
+import { NodeService } from 'src/app/shared/services/node.service';
+import { PrivatekeyService } from 'src/app/shared/services/privatekey.service';
 
-import { WalletInfo } from './../../models/wallet-info.model';
-import { TxResult } from 'src/app/models/submit-transactions.model';
+import { WalletInfo } from '../../shared/models/wallet-info.model';
+import { TxResult } from 'src/app/shared/models/submit-transactions.model';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { OwnAnimations } from '../../shared';

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 
-import { ChxAddressInfo } from 'src/app/models/chx-address-info.model';
-import { WalletInfo } from 'src/app/models/wallet-info.model';
+import { ChxAddressInfo } from 'src/app/shared/models/chx-address-info.model';
+import { WalletInfo } from 'src/app/shared/models/wallet-info.model';
 
-import { CryptoService } from 'src/app/services/crypto.service';
-import { PrivatekeyService } from 'src/app/services/privatekey.service';
-import { WalletService } from 'src/app/services/wallet.service';
-import { NodeService } from 'src/app/services/node.service';
+import { CryptoService } from 'src/app/shared/services/crypto.service';
+import { PrivatekeyService } from 'src/app/shared/services/privatekey.service';
+import { WalletService } from 'src/app/shared/services/wallet.service';
+import { NodeService } from 'src/app/shared/services/node.service';
 
 import { from, Observable } from 'rxjs';
 import { mergeMap, reduce } from 'rxjs/operators';

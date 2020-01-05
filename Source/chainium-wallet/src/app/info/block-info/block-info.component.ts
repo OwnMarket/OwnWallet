@@ -2,8 +2,8 @@ import { Component, OnInit, ViewEncapsulation, OnDestroy, ViewChild, TemplateRef
 import { OwnAnimations } from '../../shared';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { BlockInfo } from 'src/app/models/block-info.model';
-import { NodeService } from 'src/app/services/node.service';
+import { BlockInfo } from 'src/app/shared/models/block-info.model';
+import { NodeService } from 'src/app/shared/services/node.service';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
 

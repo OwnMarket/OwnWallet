@@ -5,14 +5,14 @@ import { mergeMap, map } from 'rxjs/operators';
 
 import { ColumnMode } from '@swimlane/ngx-datatable';
 
-import { PrivatekeyService } from './../../services/privatekey.service';
+import { PrivatekeyService } from '../../shared/services/privatekey.service';
 import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
-import { NodeService } from './../../services/node.service';
+import { NodeService } from '../../shared/services/node.service';
 
-import { WalletInfo } from 'src/app/models/wallet-info.model';
+import { WalletInfo } from 'src/app/shared/models/wallet-info.model';
 import { OwnAnimations } from '../../shared';
 import { environment } from 'src/environments/environment';
-import { TxResult } from 'src/app/models/submit-transactions.model';
+import { TxResult } from 'src/app/shared/models/submit-transactions.model';
 
 declare var ownBlockchainSdk: any;
 

@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ChxAccountsInfo } from 'src/app/models/address-info.model';
-import { ChxAddressInfo } from 'src/app/models/chx-address-info.model';
-import { NodeService } from 'src/app/services/node.service';
-import { StakesInfo, StakeInfo } from 'src/app/models/stakes-info.model';
+import { ChxAccountsInfo } from 'src/app/shared/models/address-info.model';
+import { ChxAddressInfo } from 'src/app/shared/models/chx-address-info.model';
+import { NodeService } from 'src/app/shared/services/node.service';
+import { StakesInfo, StakeInfo } from 'src/app/shared/models/stakes-info.model';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { OwnAnimations } from '../../shared';
 import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';

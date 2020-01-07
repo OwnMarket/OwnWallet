@@ -119,6 +119,10 @@ button.link {
   text-align: right;
 }
 
+.monospace-font {
+  font-family: monospace;
+}
+
 .progress {
   display: flex;
   height: 1rem;

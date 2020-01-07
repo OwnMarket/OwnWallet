@@ -39,12 +39,18 @@
     Are you sure you want to unload your wallet? Unloading your wallet will remove the wallet context as if no wallet ever has been generated.
   </p>
   <P>
-    However, once your wallet has been unloaded, you can use the 'Create Wallet' or 'Restore Wallet' options again.
+    However, once your wallet has been unloaded, you can use the 'Create Wallet' or 'Import Wallet' options again.
   </P>
   <p>
     Do you want to continue unloading your wallet?
   </p>
-  <button class="own-effect block" (click)="onUnloadWallet('unload-modal')">CONFIRM</button>
-  <button class="own-effect outline flat block mt-2" (click)="closeModal('unload-modal')">CANCEL</button>
+  <div class="row">
+    <div class="col">
+      <button class="own-effect outline flat block mt-2" (click)="closeModal('unload-modal')">CANCEL</button>
+    </div>
+    <div class="col">
+      <button class="own-effect block" (click)="onUnloadWallet('unload-modal')">CONFIRM</button>
+    </div>
+  </div>
 </own-modal>
 

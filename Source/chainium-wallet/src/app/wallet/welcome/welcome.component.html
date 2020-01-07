@@ -196,6 +196,7 @@
               Validator Management
             </button>
           </div>
+          <!--
           <div class="col-12 col-md-3">
             <button class="quick-action-button block">
               <span>
@@ -204,6 +205,7 @@
               Multi-action Transaction
             </button>
           </div>
+          -->
           <div class="col-12 col-md-3">
             <button class="quick-action-button block">
               <span>
@@ -212,14 +214,6 @@
               Message Signing
             </button>
           </div>
-          <div class="col-12 col-md-3">
-              <button class="quick-action-button block" routerLink="import" routerLinkActive="selected">
-                <span>
-                  <own-icon icon="key" size="20" color="#39a2ae"></own-icon>
-                </span>
-                Import Private Key
-              </button>
-            </div>
         </div>
       </div>
 
@@ -243,16 +237,22 @@
             </div>
           </div>
         </div>
-        <button class="own-effect outline flat block mt-2" (click)="hidePrivateKey('show-private-key')">
-          CLOSE
-        </button>
-        <button
-        class="own-effect flat block mt-2"
-        ngxClipboard
-        cbContent="{{ selectedWallet.privateKey }}"
-        (click)="hidePrivateKey('show-private-key')">
-          COPY
-        </button>
+        <div class="row">
+          <div class="col">
+            <button class="own-effect outline flat block mt-2" (click)="hidePrivateKey('show-private-key')">
+              CLOSE
+            </button>
+          </div>
+          <div class="col">
+            <button
+            class="own-effect flat block mt-2"
+            ngxClipboard
+            cbContent="{{ selectedWallet.privateKey }}"
+            (click)="hidePrivateKey('show-private-key')">
+              COPY
+            </button>
+          </div>
+        </div>
       </own-modal>
 
 </div>

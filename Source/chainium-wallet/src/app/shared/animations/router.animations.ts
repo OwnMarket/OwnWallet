@@ -34,7 +34,7 @@ export const flyDown = trigger('flyDown', [
 
       query(':enter', [
         style({ transform: 'translateY(100%)', opacity: 1 }),
-        animate('0.5s')
+        animate('0.5s', style({}))
       ], { optional: true }),
 
       query(':leave', [

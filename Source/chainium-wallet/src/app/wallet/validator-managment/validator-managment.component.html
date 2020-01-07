@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-12">
                       {{ wallet.address }}
-                      <button class="button-transparent" title="Copy Address" ngxClipboard cbContent=" {{ wallet.address }}">
+                      <button class="button-transparent" title="Copy Address" ngxClipboard cbContent="{{ wallet.address }}">
                         <own-icon icon="copy" color="#eb6723"></own-icon>
                       </button>
                     </div>
@@ -122,12 +122,12 @@
     <div class="col-12 col-md-8">
       <div class="row full-height align-items-center">
           <div class="col-12 col-md-6">
-            <img class="img-responsive" src="/assets/images/token-success.png" alt="token success">
+            <div class="token-success"></div>
           </div>
           <div class="col-12 col-md-6">
             <h4>Success!</h4>
             <p class="info">
-              Your transaction has been succesfull.
+              Your transaction has been submitted.
             </p>
             <p>
               <b>Transaction: {{ txResult.txHash }}</b>
@@ -151,7 +151,7 @@
     <div class="col-12 col-md-8">
       <div class="row full-height align-items-center">
           <div class="col-12 col-md-6">
-            <img class="img-responsive" src="/assets/images/token-fail.png" alt="token success">
+            <div class="token-fail"></div>
           </div>
           <div class="col-12 col-md-6">
             <h4>Sorry, your transaction was rejected.</h4>

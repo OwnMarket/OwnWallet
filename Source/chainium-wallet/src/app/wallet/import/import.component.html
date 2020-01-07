@@ -18,48 +18,12 @@
         <own-card-body>
 
           <ul class="card-tabs">
-            <li [class.selected]="method==='key'" (click)="method='key'">Private Key</li>
             <li [class.selected]="method==='phrase'" (click)="method='phrase'">Recovery phrase</li>
             <li [class.selected]="method==='keystore'" (click)="method='keystore'">Keystore</li>
+            <li [class.selected]="method==='key'" (click)="method='key'">Private Key</li>
           </ul>
 
           <div class="tab-content">
-
-              <div class="row p-5 align-items-center" *ngIf="method==='key'">
-                  <div class="col-12 col-md-6 border-right" @contentInOut>
-                    <h6>
-                      <own-icon icon="danger" color="#d3240c" size="25"></own-icon>
-                      &nbsp; Warnings
-                    </h6>
-                    <p>
-                        Wallets restored with private keys are not recoverable if the private key is lost. Your private key will be unloaded from the wallet upon closing the application or clicking the "Unload Private Key" button.
-                    </p>
-                    <p>
-                        This is not a recommended way to access your wallet. Due to the sensitivity of the information involved, this option should only be used in offline settings by experienced users.
-                    </p>
-                  </div>
-                  <div class="col-12 col-md-6 mt-5 mt-md-0">
-
-                      <label>Enter private key</label>
-                      <input class="block" [type]="hideWithPrivateKey ? 'password' : 'text'" [value]="privateKey" (input)="privateKey = $event.target.value" required/>
-
-                      <div class="row justify-content-between mt-4">
-                          <div class="col-12 col-sm-6">
-                            <button class="block own-effect" (click)="onRestoreWithPrivateKey()">
-                              IMPORT
-                            </button>
-                          </div>
-
-                        <div class="col-12 col-sm-6 mt-5 mt-sm-0 text-right">
-                          <button class="button-transparent" (click)="hideWithPrivateKey = !hideWithPrivateKey">
-                            <own-icon *ngIf="hideWithPrivateKey" icon="eye" size="25"></own-icon>
-                            <own-icon *ngIf="!hideWithPrivateKey" icon="eye-crossed" size="25"></own-icon>
-                          </button>
-                        </div>
-                      </div>
-
-                  </div>
-              </div>
 
             <div class="row p-5" *ngIf="method==='phrase'">
               <div class="col-12 col-md-6 border-right" @contentInOut>
@@ -158,6 +122,43 @@
                 </div>
               </div>
             </div>
+
+
+            <div class="row p-5 align-items-center" *ngIf="method==='key'">
+              <div class="col-12 col-md-6 border-right" @contentInOut>
+                <h6>
+                  <own-icon icon="danger" color="#d3240c" size="25"></own-icon>
+                  &nbsp; Warnings
+                </h6>
+                <p>
+                    Wallets restored with private keys are not recoverable if the private key is lost. Your private key will be unloaded from the wallet upon closing the application or clicking the "Unload Private Key" button.
+                </p>
+                <p>
+                    This is not a recommended way to access your wallet. Due to the sensitivity of the information involved, this option should only be used in offline settings by experienced users.
+                </p>
+              </div>
+              <div class="col-12 col-md-6 mt-5 mt-md-0">
+
+                  <label>Enter private key</label>
+                  <input class="block" [type]="hideWithPrivateKey ? 'password' : 'text'" [value]="privateKey" (input)="privateKey = $event.target.value" required/>
+
+                  <div class="row justify-content-between mt-4">
+                      <div class="col-12 col-sm-6">
+                        <button class="block own-effect" (click)="onRestoreWithPrivateKey()">
+                          IMPORT
+                        </button>
+                      </div>
+
+                    <div class="col-12 col-sm-6 mt-5 mt-sm-0 text-right">
+                      <button class="button-transparent" (click)="hideWithPrivateKey = !hideWithPrivateKey">
+                        <own-icon *ngIf="hideWithPrivateKey" icon="eye" size="25"></own-icon>
+                        <own-icon *ngIf="!hideWithPrivateKey" icon="eye-crossed" size="25"></own-icon>
+                      </button>
+                    </div>
+                  </div>
+
+              </div>
+          </div>
 
           </div>
 

@@ -14,7 +14,7 @@
         [class.active]="tab==='delegated'"
         (click)="tab = 'delegated'">
         <a>
-            Available validators
+            Available Validators
         </a>
       </li>
     </ul>
@@ -245,19 +245,25 @@
     <ng-container *ngIf="actionForm">
       <form [formGroup]="actionForm">
         <input class="block" type="number" formControlName="amount" placeholder="Enter amount">
-        <button
-          type="button"
-          class="own-effect block mt-3"
-          [disabled]="!actionForm.valid"
-          (click)="completeTx()">
-            CONFIRM
-        </button>
-        <button
-        type="button"
-        class="own-effect outline flat block mt-2"
-        (click)="closeModal('form-modal')">
-        CANCEL
-      </button>
+        <div class="row">
+          <div class="col">
+            <button
+            type="button"
+            class="own-effect outline flat block mt-2"
+            (click)="closeModal('form-modal')">
+            CANCEL
+          </button>
+          </div>
+          <div class="col">
+            <button
+            type="button"
+            class="own-effect block mt-3"
+            [disabled]="!actionForm.valid"
+            (click)="completeTx()">
+              CONFIRM
+          </button>
+          </div>
+        </div>
       </form>
     </ng-container>
   </own-modal>

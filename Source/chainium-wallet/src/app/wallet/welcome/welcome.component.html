@@ -18,7 +18,7 @@
                 <span class="plus-icon">
                   <own-icon icon="plus" color="#39a2ae"></own-icon>
                 </span>
-                <span class="ml-5">Create a Wallet</span>
+                <span class="ml-5">Create a wallet</span>
               </button>
             </div>
             <div class="col-12 col-md-6 mt-4 mt-md-0">
@@ -103,7 +103,7 @@
 
                       <h6 class="mx-4 mb-2">
                           <div class="row justify-content-end align-items-center">
-                            <button class="action-button-small" (click)="onAddChxAddressClick()">
+                            <button class="action-button-small" (click)="onAddChxAddressClick()" *ngIf="!showImportedPk">
                               <span>+</span>
                               Add Address
                             </button>

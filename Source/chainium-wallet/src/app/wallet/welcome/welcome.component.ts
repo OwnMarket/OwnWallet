@@ -109,20 +109,6 @@ export class WelcomeComponent implements OnInit {
       }
   }
 
-  /*
-  openPrivateKeyDialog() {
-      this.dialog.open(CopyPrivateKeyComponent, {
-          width: '50%', data: this.selectedWallet
-      });
-  } */
-
-  private populateAddresses(): Observable<ChxAddressInfo[]> {
-    return from(this.chxAddresses).pipe(
-      mergeMap(address => this.nodeService.getAddressInfo(address)),
-      reduce((x, y) => x.concat(y), [])
-    );
-  }
-
   private setAddress(addr: any): void {
       this.nodeService
       .getAddressInfo(this.privateKeyService.getWalletInfo().address)

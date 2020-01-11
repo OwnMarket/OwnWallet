@@ -69,19 +69,25 @@
                     </div>
                   </div>
 
-                  <div class="row justify-content-between">
-                    <div class="col-12 col-sm-6">
+                  <div class="row justify-content-between align-items-center h-100">
+                    <div class="col-12 col-sm-5">
                         <button class="block own-effect" (click)="onRestoreWithMnemonic()">
                           RESTORE
                         </button>
                     </div>
-
-                    <div class="col-12 col-sm-6 mt-5 mt-sm-0 text-right">
-                        <input type="checkbox" formControlName="saveKeystore"> Save keystore file
+                    <div class="col-12 col-sm-7 mt-5 mt-sm-0 text-right">
+                      <div class="row justify-content-between">
+                        <div class="col-8">
+                        <input type="checkbox" formControlName="saveKeystore" id="save-keystor-file-checkbox">
+                        <label class="m-0" for="save-keystor-file-checkbox">Save keystore file</label>
+                      </div>
+                      <div class="col-4">
                         <button class="button-transparent" (click)="hideWithMnemonic = !hideWithMnemonic">
                           <own-icon *ngIf="hideWithMnemonic" icon="eye" size="25"></own-icon>
                           <own-icon *ngIf="!hideWithMnemonic" icon="eye-crossed" size="25"></own-icon>
                         </button>
+                      </div>
+                    </div>
                     </div>
                   </div>
                 </form>

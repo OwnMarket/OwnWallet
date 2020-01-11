@@ -9,6 +9,8 @@ import { TxResult } from 'src/app/shared/models/submit-transactions.model';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { OwnAnimations } from '../../shared';
+import { ValidatorInfo, ValidatorsInfo } from 'src/app/shared/models/validators-info.model';
+import { map, mergeMap } from 'rxjs/operators';
 
 declare var ownBlockchainSdk: any;
 
@@ -22,6 +24,7 @@ export class ValidatorManagmentComponent implements OnDestroy {
 
   configForm: FormGroup;
   submissionErrors: string[];
+  validator: ValidatorInfo;
 
   txResult: TxResult;
   wallet: WalletInfo;
@@ -46,13 +49,34 @@ export class ValidatorManagmentComponent implements OnDestroy {
     if (!this.isKeyImported) { return; }
 
     this.wallet = this.privateKeyService.getWalletInfo();
-
     this.addressSub = this.nodeService.getAddressInfo(this.wallet.address)
-      .subscribe(balInfo => {
+    .pipe(
+      map(balInfo => {
         this.nonce = balInfo.nonce + 1;
         this.fee = this.nodeService.getMinFee();
+        return balInfo;
+      }),
+      mergeMap(
+         info => this.nodeService.getValidators(false)
+         .pipe(
+           map(
+             (items: ValidatorsInfo) => items.validators.filter(
+               (validator: ValidatorInfo) => validator.validatorAddress === this.wallet.address)[0]
+            )
+         )
+      )
+    )
+    .subscribe(
+      response => {
+      if (response) {
+        this.validator = response;
         this.setupForm();
-      });
+        this.configForm.patchValue(this.validator);
+      } else {
+        this.setupForm();
+      }
+    });
+
    }
 
   setupForm() {

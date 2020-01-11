@@ -1,13 +1,11 @@
-/** NEW STYLES */
 @import './assets/images/images.css';
 
-/* You can add global styles to this file, and also import other style files */
 :root {
   --color-bg: #f4f4f4;
   --color-brand: #eb6723;
   --color-danger: #d3240c;
   --color-accent:#39a2ae;
-  --color-text: #333447;
+  --color-text: #414549;
   --color-text-info: #848484;
   --color-navbar-bg: #ffffff;
   --color-link: #0073dd;
@@ -275,6 +273,10 @@ textarea {
   padding: 1rem 1.5rem;
 }
 
+.wallet-table .datatable-body-cell {
+  overflow: hidden;
+}
+
 .wallet-table .row-details {
   background-color: var(--color-border);
 }
@@ -424,11 +426,11 @@ input[type=radio] {
 input[type=radio]:checked + span {
   visibility: visible;
   position: absolute;
-  left: 5px;
-  top: 8px;
+  left: 4px;
+  top: 7px;
   display: block;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   background: var(--color-brand);
   border-radius: 50%;
 }
@@ -445,6 +447,63 @@ input[type=radio]::after {
   width: 20px;
   border: 2px solid var(--color-brand);
   border-radius: 50%;
+}
+
+input[type=checkbox] { display: none; }
+
+input[type=checkbox] + label {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 20px;
+  font: 14px/20px 'Open Sans', Arial, sans-serif;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+input[type=checkbox] + label:last-child { margin-bottom: 0; }
+
+input[type=checkbox] + label::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-text-info);
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: .7;
+  -webkit-transition: all .12s, border-color .08s;
+  transition: all .12s, border-color .08s;
+}
+
+input[type=checkbox]:checked + label::before {
+  width: 10px;
+  top: -5px;
+  left: 5px;
+  border-radius: 0;
+  opacity: 1;
+  border-right-color: var(--color-brand);
+  border-bottom-color: var(--color-brand);
+  border-top-color: transparent;
+  border-left-color: transparent;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.spin {
+    animation: rotate .5s infinite linear;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(180deg);
+    }
 }
 
 .own-upload {

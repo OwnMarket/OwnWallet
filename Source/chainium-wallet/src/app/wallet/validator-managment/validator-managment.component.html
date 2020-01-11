@@ -38,9 +38,6 @@
                     </div>
                     <div class="col-12">
                       {{ wallet.address }}
-                      <button class="button-transparent" title="Copy Address" ngxClipboard cbContent="{{ wallet.address }}">
-                        <own-icon icon="copy" color="#eb6723"></own-icon>
-                      </button>
                     </div>
                   </div>
                   <div class="row mt-4">
@@ -58,16 +55,22 @@
                     </div>
                     <div class="col-12 col-md-6 mt-4 mt-md-0">
                       <label class="block">Enabled</label>
-                      <label>
-                      <input type="radio" formControlName="isEnabled" value="true">
-                      YES
-                      <span></span>
-                    </label>
-                    <label>
-                      <input type="radio" formControlName="isEnabled" value="false">
-                      NO
-                      <span></span>
-                    </label>
+                      <div class="row mt-2">
+                        <div class="col">
+                          <label>
+                            <input type="radio" formControlName="isEnabled" [value]="true">
+                            YES
+                            <span></span>
+                        </label>
+                      </div>
+                      <div class="col">
+                        <label>
+                          <input type="radio" formControlName="isEnabled" [value]="false">
+                          NO
+                          <span></span>
+                        </label>
+                      </div>
+                    </div>
                     </div>
                   </div>
                   <div class="row justify-content-center mt-5">
@@ -106,7 +109,7 @@
           </div>
           <div class="row justify-content-center">
             <div class="col-12 col-md-6 mt-5">
-              <button class="block own-effect" (click)="removeValidator()">
+              <button class="block own-effect" (click)="removeValidator()" [disabled]="!validator">
                 REMOVE VALIDATOR
               </button>
             </div>

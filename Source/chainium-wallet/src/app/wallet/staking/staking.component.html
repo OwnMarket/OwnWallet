@@ -245,11 +245,11 @@
     <ng-container *ngIf="actionForm">
       <form [formGroup]="actionForm">
         <input class="block" type="number" formControlName="amount" placeholder="Enter amount">
-        <div class="row">
+        <div class="row mt-4">
           <div class="col">
             <button
             type="button"
-            class="own-effect outline flat block mt-2"
+            class="own-effect outline flat block"
             (click)="closeModal('form-modal')">
             CANCEL
           </button>
@@ -257,7 +257,7 @@
           <div class="col">
             <button
             type="button"
-            class="own-effect block mt-3"
+            class="own-effect block"
             [disabled]="!actionForm.valid"
             (click)="completeTx()">
               CONFIRM

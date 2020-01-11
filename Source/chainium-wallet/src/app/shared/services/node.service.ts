@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 
 import { AccountInfo } from '../models/account-info.model';
 import { TxEnvelope } from '../models/submit-transactions.model';
+import { ValidatorInfo } from '../models/validators-info.model';
 
 const TXENDPOINT = 'tx';
 

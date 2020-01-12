@@ -145,7 +145,8 @@ export const ROUTERCONFIGS: Routes = [
         },
         {
           path: 'sign-verify',
-          component: MessageSignVerificationComponent
+          component: MessageSignVerificationComponent,
+          data: { state: 'sign-verify' }
         }
       ]
     },

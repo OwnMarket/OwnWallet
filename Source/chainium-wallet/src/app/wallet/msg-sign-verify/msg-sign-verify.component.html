@@ -1,43 +1,161 @@
-<!--
-<div class="column-container">
+<div class="container">
+  <nav class="tabs mt-2 mt-md-5">
+    <ul>
+      <li
+      class="tab text-center text-md-left cursor-pointer"
+      [class.active]="tab === 'signing'"
+      (click)="tab = 'signing'">
+            <a>
+              Signing
+            </a>
+      </li>
+      <li
+      class="tab text-center text-md-left cursor-pointer ml-2"
+      [class.active]="tab === 'verification'"
+      (click)="tab = 'verification'">
+        <a>
+          Signature Verification
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
 
-    <mat-form-field class="full-width">
-        <textarea matInput placeholder="message" [formControl]="message" required></textarea>
-        <mat-error *ngIf="message.invalid">This field is required.</mat-error>
-    </mat-form-field>
+<div class="container my-5">
 
-    <mat-toolbar class="toolbar-header full-width">Signing</mat-toolbar>
+  <div class="row justify-content-center" *ngIf="tab === 'signing'">
+    <div class="col-12 col-md-8" @contentInOut>
+      <own-card>
+        <own-card-title>
+          <b>Signing</b>
+        </own-card-title>
+        <own-card-body [padding]="true">
 
-    <div class="margin-t-20">
-        <button (click)="onSignMessageButtonClick()" mat-raised-button color="accent" [disabled]="!isKeyImported" >SIGN MESSAGE</button>
-        <br>
-        <mat-hint *ngIf="!isKeyImported">Wallet has not been imported, please use import wallet feature from the menu in order to enable Sign Message.</mat-hint>
-        <mat-form-field class="full-width margin-t-20" *ngIf="signature">
-            <input matInput placeholder="signature" disabled value="{{signature}}" />
-            <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{signature}}"
-                class="pointer margin-l-20 animate-click">file_copy</mat-icon>
-        </mat-form-field>
+              <form [formGroup]="signingForm" (ngSubmit)="onSignMessage(signingForm)">
+
+                <textarea
+                  placeholder="Message"
+                  name="message"
+                  class="monospace-font block"
+                  rows="5"
+                  formControlName="message"
+                  required>
+                </textarea>
+
+                <button
+                  class="block own-effect mt-4"
+                  type="submit"
+                  [disabled]="!isKeyImported || !signingForm.valid">
+                    SIGN MESSAGE
+                </button>
+
+              </form>
+
+        </own-card-body>
+      </own-card>
     </div>
+  </div>
+  <div class="row justify-content-center"  *ngIf="tab === 'verification'">
+    <div class="col-12 col-md-8" @contentInOut>
+      <own-card>
+        <own-card-title>
+          <b>Verification</b>
+        </own-card-title>
+        <own-card-body [padding]="true">
 
-    <div class="margin-t-20">
-        <mat-toolbar class="toolbar-header full-width">Verification</mat-toolbar>
+          <form [formGroup]="verificationForm" (ngSubmit)="onVerifySignature(verificationForm)">
+
+            <div class="row">
+              <div class="col-12 col-md-6">
+                  <textarea
+                    placeholder="Message"
+                    name="message"
+                    class="monospace-font block"
+                    rows="5"
+                    formControlName="verMessage"
+                    required>
+                </textarea>
+              </div>
+              <div class="col-12 col-md-6">
+                <textarea
+                  placeholder="Signature"
+                  name="signature"
+                  class="monospace-font block"
+                  rows="5"
+                  formControlName="signature"
+                  required>
+              </textarea>
+              </div>
+            </div>
+
+          <button
+            class="block own-effect mt-4"
+            type="submit"
+            [disabled]="!isKeyImported || !verificationForm.valid">
+              VERIFY SIGNATURE
+          </button>
+
+        </form>
+
+        </own-card-body>
+      </own-card>
     </div>
-    <div class="margin-t-20">
-        <mat-form-field class="full-width">
-            <input matInput placeholder="signature" [formControl]="verificationSignature" required />
-                <mat-error *ngIf="verificationSignature.invalid">This field is required.</mat-error>
-        </mat-form-field>
-
-        <button (click)="onVerifySignature()" mat-raised-button color="accent">VERIFY SIGNATURE</button>
-
-
-        <mat-form-field class="full-width margin-t-20" *ngIf="signerAddress">
-            <input matInput placeholder="signer address" disabled value="{{signerAddress}}" />
-            <mat-icon matSuffix color="accent" ngxClipboard cbContent="{{signerAddress}}"
-                class="pointer margin-l-20 animate-click">file_copy</mat-icon>
-        </mat-form-field>
-
-    </div>
+  </div>
 
 </div>
--->
+
+<own-modal id="signature-modal">
+  <div class="text-center mb-4">
+    <own-icon icon="signature" size="150" color="#39a2ae"></own-icon>
+  </div>
+  <h6 class="text-center">Signature</h6>
+  <p class="p-4 signature">
+    {{ signature }}
+  </p>
+  <div class="row">
+    <div class="col-6">
+      <button
+        class="outline own-effect block"
+        (click)="closePopup('signature-modal')">
+        CLOSE
+      </button>
+    </div>
+    <div class="col-6">
+      <button
+        class="own-effect block"
+        ngxClipboard cbContent="{{ signature }}"
+        (click)="closePopup('signature-modal')">
+        COPY
+      </button>
+    </div>
+  </div>
+</own-modal>
+
+<own-modal id="verification-modal">
+  <div class="text-center">
+    <div class="token-success"></div>
+  </div>
+  <h6 class="text-center">Congrats!</h6>
+  <p class="p-4 signature">
+    <b>Signer address</b>
+    <br>
+    {{ signerAddress }}
+  </p>
+  <div class="row">
+    <div class="col-6">
+      <button
+        class="outline own-effect block"
+        (click)="closePopup('verification-modal')">
+        CLOSE
+      </button>
+    </div>
+    <div class="col-6">
+      <button
+        class="own-effect block"
+        ngxClipboard cbContent="{{ signerAddress }}"
+        (click)="closePopup('verification-modal')">
+        COPY
+      </button>
+    </div>
+  </div>
+</own-modal>

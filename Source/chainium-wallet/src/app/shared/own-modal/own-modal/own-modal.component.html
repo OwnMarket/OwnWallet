@@ -1,7 +1,7 @@
 <div
-class="own-modal"
-[class.open]="isOpen | async"
-(click)="onClickBg($event)">
+  class="own-modal"
+  [class.open]="isOpen | async"
+  (click)="onClickBg($event)">
   <div class="own-modal-body" [ngStyle]="{ 'width': width + 'px' }">
       <button class="close button-transparent">
           <svg viewBox="0 0 40 40" width="10px" (click)="close()">

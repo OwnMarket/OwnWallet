@@ -1,3 +1,13 @@
+<ng-container *ngIf="!equivocationProofInfo">
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12">
+        <h5>Equivocation proof info</h5>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
 <!--
 <div class="column-container" *ngIf="equivocationProofInfo">
     <mat-toolbar class="toolbar-header">Equivocation proof info</mat-toolbar>
@@ -106,11 +116,5 @@
         </ng-container>
     </ng-container>
 </div>
-<div class="column-container" *ngIf="errors">
-    <mat-toolbar class="toolbar-header">Errors</mat-toolbar>
-    <mat-divider class="toolbar-bottom-margin"></mat-divider>
-    <mat-list>
-        <mat-list-item *ngFor="let error of errors">{{error}}</mat-list-item>
-    </mat-list>
-</div>
+
 -->

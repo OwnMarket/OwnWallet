@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy,  ViewEncapsulation, ElementRef, Input} from '@angular/core';
+import { Component, OnInit, OnDestroy,  ViewEncapsulation, Input } from '@angular/core';
 import { OwnModalService } from '../services/own-modal.service';
 import { BehaviorSubject } from 'rxjs';
 

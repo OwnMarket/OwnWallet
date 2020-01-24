@@ -1,7 +1,7 @@
 <div class="container my-5" *ngIf="!addressInfo && !selectedWallet">
   <own-card>
     <own-card-body [padding]="true">
-      <div class="row align-items-center">
+      <div class="row align-items-center py-0 py-md-5">
         <div class="col-12 col-sm-4">
           <div class="welcome-token"></div>
         </div>
@@ -179,9 +179,13 @@
           </div>
 
           <div class="col-12 col-md-3 text-right mt-4 mt-md-0">
-            <button class="advanced-dropdown-button" (click)="showAdvanced = !showAdvanced">
-              <b class="mr-2">Advanced actions</b>
+            <button class="advanced-dropdown-button row" (click)="showAdvanced = !showAdvanced">
+              <div class="col-10">
+                <b class="mr-2">Advanced actions</b>
+              </div>
+              <span class="col-2 drop-menu" [class.open]="showAdvanced">
                 <own-icon icon="arrow-down"></own-icon>
+              </span>
             </button>
           </div>
 

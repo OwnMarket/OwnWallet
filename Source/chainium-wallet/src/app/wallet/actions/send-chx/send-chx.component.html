@@ -23,9 +23,13 @@
                 </div>
                 <div class="row">
                   <div class="col-12 col-md-6">
-                      <button class="button-transparent my-3" (click)="displayActions = !displayActions">
-                        <own-icon icon="arrow-down"></own-icon>
-                        Advanced Options
+                      <button class="button-transparent my-3 row" (click)="displayActions = !displayActions">
+                        <span class="col-2 drop-menu" [class.open]="displayActions">
+                          <own-icon icon="arrow-down"></own-icon>
+                        </span>
+                        <span class="col-10">
+                          Advanced Options
+                        </span>
                       </button>
                       <div class="row" *ngIf="displayActions">
                         <div class="col-12 col-md-6">

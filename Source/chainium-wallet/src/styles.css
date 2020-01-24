@@ -701,6 +701,19 @@ input[type=checkbox]:checked + label::before {
   box-shadow: 30px 0 0 white;
 }
 
+.drop-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(0);
+  transition: all .3s ease-out;
+}
+
+.drop-menu.open {
+  transform-origin : center center;
+  transform: rotate(180deg);
+}
+
 @keyframes rotate {
   0% {
     transform: rotate(0deg) scale(0.8);

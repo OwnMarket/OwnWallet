@@ -106,7 +106,7 @@
               <b>Expiration time</b>
             </div>
             <div class="col border-right text-right">
-              {{ txInfo.expirationTime ? (txInfo.expirationTime | date: 'yyyy-MM-dd, HH:mm:ss') : '-' }}
+              {{ txInfo.expirationTime ? txInfo.expirationTime : '-' }}
             </div>
           </div>
         </div>

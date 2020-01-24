@@ -7,3 +7,24 @@
 <div class="loader-bg" *ngIf="isLoading | async">
   <div class="loader"></div>
 </div>
+
+<own-modal id="unload-modal">
+  <h6>Unload Wallet</h6>
+  <p>
+    Are you sure you want to unload your wallet? Unloading your wallet will remove the wallet context as if no wallet ever has been generated.
+  </p>
+  <P>
+    However, once your wallet has been unloaded, you can use the 'Create Wallet' or 'Import Wallet' options again.
+  </P>
+  <p>
+    Do you want to continue unloading your wallet?
+  </p>
+  <div class="row mt-4">
+    <div class="col">
+      <button class="own-effect outline flat block" (click)="closeModal('unload-modal')">CANCEL</button>
+    </div>
+    <div class="col">
+      <button class="own-effect block" (click)="onUnloadWallet('unload-modal')">CONFIRM</button>
+    </div>
+  </div>
+</own-modal>

@@ -111,9 +111,12 @@
                                 <own-icon icon="refresh"></own-icon>
                             </button>
                             <own-dropdown-menu #menu>
-                              <own-dropdown-item (click)="showPrivateKey('show-private-key', menu)">
+                              <own-dropdown-item (click)="openModal('show-private-key', menu)">
                                   Show Private Key
                               </own-dropdown-item>
+                              <own-dropdown-item (click)="openModal('unload-modal', menu)">
+                                Unload Wallet
+                            </own-dropdown-item>
                             </own-dropdown-menu>
                           </div>
                         </h6>

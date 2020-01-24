@@ -292,10 +292,13 @@ label + label {
 
 button {
   position: relative;
-  overflow: hidden;
   border-radius: 2rem;
   padding: 10px 25px;
   transition: all .5s ease-in-out;
+}
+
+.own-effect {
+  overflow: hidden;
 }
 
 .own-effect::before {

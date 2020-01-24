@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { LoaderMessage } from './shared/models/loader-message.enum';
 import { GlobalErrorHandler } from './shared/services/global.error.handler';
 import { WalletHttpInterceptor } from './shared/services/wallet-http-interceptor';
+import { WalletService } from './shared/services/wallet.service';
+import { Router } from '@angular/router';
 
 const LoaderDlg = 'LoaderDlg';
 @Component({
@@ -19,9 +21,11 @@ export class AppComponent implements OnInit {
     private prevMessage: LoaderMessage;
 
     constructor(
+        private router: Router,
         private errorHandler: GlobalErrorHandler,
         private interceptor: WalletHttpInterceptor,
         private ownModalService: OwnModalService,
+        private walletService: WalletService,
         private loaderService: LoaderService
         ) {}
 
@@ -34,6 +38,17 @@ export class AppComponent implements OnInit {
     this.interceptor
         .getMessage()
         .subscribe(msg => this.progressBarAction(msg));
+    }
+
+    closeModal(id: string) {
+        this.ownModalService.close(id);
+      }
+  
+    onUnloadWallet(id: string) {
+        this.walletService.unloadWallet();
+        this.ownModalService.close(id);
+        this.router.navigate(['/wallet']);
+        location.reload();
     }
 
     private loadErrorDialog(error: any) {

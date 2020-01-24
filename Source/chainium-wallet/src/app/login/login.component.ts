@@ -73,14 +73,5 @@ export class LoginComponent implements OnInit {
     openModal(id: string) {
       this.ownModalService.open(id);
     }
-
-    closeModal(id: string) {
-      this.ownModalService.close(id);
-    }
-
-    onUnloadWallet(id: string) {
-      this.walletService.unloadWallet();
-      this.ownModalService.close(id);
-      this.router.navigate(['/wallet']);
-    }
+    
 }

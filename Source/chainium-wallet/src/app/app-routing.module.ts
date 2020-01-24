@@ -148,7 +148,8 @@ export const ROUTERCONFIGS: Routes = [
           component: MessageSignVerificationComponent,
           data: { state: 'sign-verify' }
         }
-      ]
+      ],
+        runGuardsAndResolvers: 'always'
     },
     {
       path: '',
@@ -163,7 +164,10 @@ export const ROUTERCONFIGS: Routes = [
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(ROUTERCONFIGS) ],
+  imports: [ RouterModule.forRoot(
+    ROUTERCONFIGS, {
+    onSameUrlNavigation: 'reload'
+  })],
   exports: [ RouterModule ]
 })
 export class AppRoutingModule { }

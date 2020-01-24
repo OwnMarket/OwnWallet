@@ -66,7 +66,7 @@
           <form [formGroup]="verificationForm" (ngSubmit)="onVerifySignature(verificationForm)">
 
             <div class="row">
-              <div class="col-12">
+              <div class="col-12 col-md-6 border-right">
                   <textarea
                     placeholder="Message"
                     name="message"
@@ -76,7 +76,7 @@
                     required>
                 </textarea>
               </div>
-              <div class="col-12">
+              <div class="col-12 col-md-6">
                 <textarea
                   placeholder="Signature"
                   name="signature"

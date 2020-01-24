@@ -144,7 +144,7 @@ export class WelcomeComponent implements OnInit {
     return outlet.activatedRouteData.state;
   }
 
-  showPrivateKey(id: string, menu: OwnDropdownMenuComponent) {
+  openModal(id: string, menu: OwnDropdownMenuComponent) {
     this.ownModalService.open(id);
     menu.isActive = false;
   }

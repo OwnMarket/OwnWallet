@@ -211,42 +211,6 @@
     </div>
   </div>
 
-      <ng-container class="info-item-margin" *ngIf="blockInfo.signatures.length > 0">
-          <div class="container mt-5">
-              <div class="row">
-                  <div class="col">
-                    <own-card [collapsable]="true">
-                      <own-card-title>
-                        <b>Signatures</b>
-                      </own-card-title>
-                      <own-card-body>
-                        <div class="own-list-header">
-                          <div class="row justify-content-between">
-                            <div class="col-2">
-                              consensus round
-                            </div>
-                            <div class="col-4 text-right">
-                              {{ blockInfo.consensusRound }}
-                            </div>
-                          </div>
-                        </div>
-                        <li class="own-list-item" *ngFor="let signature of blockInfo.signatures; let i=index">
-                            <div class="row justify-content-between align-items-center">
-                              <div class="col-12">
-                                <b>Signature {{ i + 1 }}</b>
-                              </div>
-                              <div class="col-12 text-wrap">
-                                {{ signature }}
-                              </div>
-                            </div>
-                        </li>
-                      </own-card-body>
-                  </own-card>
-              </div>
-            </div>
-          </div>
-      </ng-container>
-
       <ng-container *ngIf="blockInfo.txSet.length > 0">
           <div class="container mt-3">
             <div class="row">
@@ -331,6 +295,43 @@
             </div>
           </div>
     </ng-container>
+
+
+    <ng-container class="info-item-margin" *ngIf="blockInfo.signatures.length > 0">
+      <div class="container mt-3">
+          <div class="row">
+              <div class="col">
+                <own-card [collapsable]="true">
+                  <own-card-title>
+                    <b>Signatures</b>
+                  </own-card-title>
+                  <own-card-body>
+                    <div class="own-list-header">
+                      <div class="row justify-content-between">
+                        <div class="col-2">
+                          consensus round
+                        </div>
+                        <div class="col-4 text-right">
+                          {{ blockInfo.consensusRound }}
+                        </div>
+                      </div>
+                    </div>
+                    <li class="own-list-item" *ngFor="let signature of blockInfo.signatures; let i=index">
+                        <div class="row justify-content-between align-items-center">
+                          <div class="col-12">
+                            <b>Signature {{ i + 1 }}</b>
+                          </div>
+                          <div class="col-12 text-wrap">
+                            {{ signature }}
+                          </div>
+                        </div>
+                    </li>
+                  </own-card-body>
+              </own-card>
+          </div>
+        </div>
+      </div>
+  </ng-container>
 
     <ng-container *ngIf="blockInfo.configuration">
         <div class="container mt-5">
@@ -429,7 +430,6 @@
               </div>
             </div>
           </div>
-
     </ng-container>
 
     <div class="container mt-5"></div>
@@ -450,3 +450,5 @@
       </div>
     </div>
   </ng-template>
+
+  

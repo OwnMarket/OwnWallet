@@ -67,8 +67,4 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
       });
   }
 
-  getActionData(actionData: string): any {
-    return JSON.parse(actionData);
-  }
-
 }

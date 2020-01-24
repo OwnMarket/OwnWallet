@@ -132,6 +132,7 @@ export class ValidatorManagmentComponent implements OnDestroy {
           return;
         }
         this.txResult = (result as TxResult);
+        setTimeout(() => this.reset(), 5000);
     });
   }
 
@@ -139,6 +140,11 @@ export class ValidatorManagmentComponent implements OnDestroy {
     this.isSubmited = false;
     this.submissionErrors = null;
     this.setupForm();
+  }
+
+  selectTab(tab: string) {
+    this.tab = tab;
+    this.reset();
   }
 
   ngOnDestroy() {

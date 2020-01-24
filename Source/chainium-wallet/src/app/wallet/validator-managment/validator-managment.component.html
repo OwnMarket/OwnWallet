@@ -4,7 +4,7 @@
       <li
       class="tab text-center text-md-left cursor-pointer"
       [class.active]="tab === 'config'"
-      (click)="tab = 'config'">
+      (click)="selectTab('config')">
             <a>
               Configure Validator
             </a>
@@ -12,7 +12,7 @@
       <li
       class="tab text-center text-md-left cursor-pointer ml-2"
       [class.active]="tab === 'remove'"
-      (click)="tab = 'remove'">
+      (click)="selectTab('remove')">
         <a>
           Remove Validator
         </a>
@@ -123,24 +123,40 @@
 <div class="container mb-5" *ngIf="isSubmited && txResult && !submissionErrors">
   <div class="row justify-content-center">
     <div class="col-12 col-md-8">
-      <div class="row full-height align-items-center">
-          <div class="col-12 col-md-6">
+      <div class="row full-height align-items-center justify-content-center">
+          <div class="col-12 col-md-4">
             <div class="token-success"></div>
           </div>
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-7">
             <h4>Success!</h4>
             <p class="info">
               Your transaction has been submitted.
             </p>
             <p>
-              <b>Transaction: {{ txResult.txHash }}</b>
+              <b>
+                <div class="row">
+                  <div class="col-12">
+                    Transaction:
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="col-12">
+                        {{ txResult.txHash }} 
+                        <button class="button-transparent" title="Copy Transaction" ngxClipboard cbContent="{{ txResult.txHash }}">
+                          <own-icon icon="copy" color="#eb6723"></own-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </b>
             </p>
             <p class="text-center mt-5">
               <button class="outline own-effect" [routerLink]="['/info/tx/' + txResult.txHash]">
                 VIEW TRANSACTION INFO
               </button>
-              <button class="button-transparent" title="Copy Transaction" ngxClipboard cbContent="{{ txResult.txHash }}">
-                  <own-icon icon="copy" color="#eb6723"></own-icon>
+              <button class="own-effect" (click)="reset()">
+                CLOSE
               </button>
             </p>
       </div>

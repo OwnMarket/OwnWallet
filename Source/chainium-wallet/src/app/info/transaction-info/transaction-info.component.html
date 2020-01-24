@@ -142,73 +142,35 @@
                   <own-card-title><b>Actions</b></own-card-title>
                   <own-card-body>
 
-            <div class="card-body mt-4">
+            <div class="card-body mt-4 px-0 px-md-5">
 
               <div id="actions-lit" class="row">
                 <div class="col-12 head">
                   <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
-                      <b>Type</b>
-                    </div>
                     <div class="col-2">
                       <b>Number</b>
                     </div>
+                    <div class="col-10">
+                      <b>Type</b>
+                    </div>
                   </div>
                 </div>
-
+                
                 <div class="col-12">
-                  <div
-                    class="row detail-info mt-3"
-                    *ngFor="let action of txInfo.actions; let i = index"
-                    [attr.data-custom_index]="i">
+                  <div class="row detail-info mt-3" *ngFor="let action of txInfo.actions; let i = index">
                     <div class="col-2">
-                      <div class="float-left">
-                        <svg
-                          class="cursor-pointer"
-                          (click)="expandActionData(action, i)"
-                          width="10px"
-                          viewBox="0 0 444.819 444.819">
-                          <path *ngIf="expandedTransactionActions && expandedTransactionActions.custom_index === i"
-                            d="M433.968,278.657L248.387,92.79c-7.419-7.044-16.08-10.566-25.977-10.566c-10.088,0-18.652,3.521-25.697,10.566 L10.848,278.657C3.615,285.887,0,294.549,0,304.637c0,10.28,3.619,18.843,10.848,25.693l21.411,21.413 c6.854,7.23,15.42,10.852,25.697,10.852c10.278,0,18.842-3.621,25.697-10.852L222.41,213.271L361.168,351.74 c6.848,7.228,15.413,10.852,25.7,10.852c10.082,0,18.747-3.624,25.975-10.852l21.409-21.412 c7.043-7.043,10.567-15.608,10.567-25.693C444.819,294.545,441.205,285.884,433.968,278.657z"
-                          />
-                          <path *ngIf="!(expandedTransactionActions && expandedTransactionActions.custom_index === i)"
-                            d="M352.025,196.712L165.884,10.848C159.029,3.615,150.469,0,140.187,0c-10.282,0-18.842,3.619-25.697,10.848L92.792,32.264 c-7.044,7.043-10.566,15.604-10.566,25.692c0,9.897,3.521,18.56,10.566,25.981l138.753,138.473L92.786,361.168 c-7.042,7.043-10.564,15.604-10.564,25.693c0,9.896,3.521,18.562,10.564,25.98l21.7,21.413 c7.043,7.043,15.612,10.564,25.697,10.564c10.089,0,18.656-3.521,25.697-10.564l186.145-185.864 c7.046-7.423,10.571-16.084,10.571-25.981C362.597,212.321,359.071,203.755,352.025,196.712z"
-                          />
-                      </svg>
-                      </div>
+                      {{ i + 1 }}
                     </div>
-
-                    <div class="col-8">
-                      <p class="info-value" (click)="expandActionData(action, i)">{{ action.actionType | camelToSpace }}</p>
+                    <div class="col-10">
+                      {{ action.actionType }}
                     </div>
-
-                    <div class="col-2">
-                      <p class="info-value">{{ i + 1 }}</p>
-                    </div>
-
-                    <div
-                      class="col-12"
-                      *ngIf="expandedTransactionActions && expandedTransactionActions.custom_index === i"
-                    >
-                      <div *ngFor="let item of expandedTransactionActions | keyvalue">
-                        <div
-                          class="row details-row-item"
-                          *ngIf="!(item.key === 'custom_index' || item.key === 'isEmpty')"
-                        >
-                          <div class="col-12 col-md-4">
-                            <b class="info-value">{{ item.key | camelToSpace }}</b>
-                          </div>
-                          <div class="col-12 col-md-8">
-                            <p>{{ item.value }}</p>
-                          </div>
+                    <div class="col-12 my-3">
+                      <div class="row details-row-item" *ngFor="let item of action.actionData | keyvalue">
+                        <div class="col-12 col-md-2">
+                          <b>{{ item.key | camelToSpace }}</b>
                         </div>
-                      </div>
-                      <div *ngIf="action.actionData === {}">
-                        <div class="row details-row-item">
-                          <div class="col-8">
-                            <p class="info-value">No action data</p>
-                          </div>
+                        <div class="col-12 col-md-10">
+                          {{ item.value }}
                         </div>
                       </div>
                     </div>

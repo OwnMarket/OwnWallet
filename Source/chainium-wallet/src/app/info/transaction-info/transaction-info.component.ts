@@ -67,34 +67,8 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
       });
   }
 
-  deriveHash(address: string, nonce: number, txActionNumber: number) {
-    return this.cryptoService.deriveHash(address, nonce, txActionNumber);
-  }
-
-  expandActions(val: boolean) {
-    this.actionsExpanded = !this.actionsExpanded;
-  }
-
-  expandActionData(action: any, index: number) {
-    this.expandedTransactionActions = {};
-    if (action && action.actionData) {
-      if (action.actionType === 'CreateAsset' || action.actionType === 'CreateAccount') {
-        this.expandedTransactionActions.isEmpty = false;
-        const hash = this.deriveHash(this.txInfo.senderAddress, this.txInfo.nonce, index + 1);
-        const label = action.actionType === 'CreateAsset' ? 'assetHash' : 'accountHash';
-        this.expandedTransactionActions = JSON.parse(`{"${label}": "${hash}"}`);
-      } else {
-        this.expandedTransactionActions = action.actionData;
-      }
-      if (this.selectedActions !== action) {
-        this.expandedTransactionActions.custom_index = index;
-        this.expandedTransactionActions.isEmpty = Object.keys(this.expandedTransactionActions).length === 1;
-        this.selectedActions = action;
-      } else {
-        this.selectedActions = {};
-      }
-    }
-
+  getActionData(actionData: string): any {
+    return JSON.parse(actionData);
   }
 
 }

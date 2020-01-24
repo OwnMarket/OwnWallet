@@ -54,6 +54,10 @@
   left: 8px;
 }
 
+.detail-info {
+  border-bottom: 1px solid var(--color-border);
+}
+
 .loader-item.complete .inner-circle {
   background-color: #32BA7C;
   animation-name: loader-fill-success;

@@ -1,4 +1,4 @@
-<ng-container *ngIf="!equivocationProofInfo">
+<ng-container *ngIf="equivocationProofInfo">
   <div class="container mt-5">
     <div class="row">
       <div class="col-12">
@@ -6,115 +6,134 @@
       </div>
     </div>
   </div>
+  <div class="container">
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <own-card>
+                <own-card-body [padding]="true">
+                    <div class="row">
+                        
+                        <div class="col-12 col-md-8">
+                            <b>Equivocation proof hash</b>
+                            <br>
+                            {{ equivocationProofInfo.equivocationProofHash }}
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <b>Block number</b>
+                            <br>
+                            {{ equivocationProofInfo.blockNumber }}
+                        </div>
+                    </div>
+                </own-card-body>
+            </own-card>
+        </div>
+        <div class="col-12 col-md-4 mt-4 mt-md-0">
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <b>Detected in:</b>
+                </div>
+                <div class="col-6"><b>Block number</b></div>
+                <div class="col-6 text-right">{{ equivocationProofInfo.includedInBlockNumber }}</div>
+                <div class="col-6"><b>Consensus round</b></div>
+                <div class="col-6 text-right">{{ equivocationProofInfo.consensusRound }}</div>
+                <div class="col-6"><b>Consensus step</b></div>
+                <div class="col-6 text-right">{{ equivocationProofInfo.consensusStep }}</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="container my-5">
+      <div class="row pl-0 pl-md-5">
+          <div class="col-12 col-md-6">
+              <div class="row">
+                  <div class="col-6"><b>Value 1</b></div>
+                  <div class="col-6 border-right text-right">{{ equivocationProofInfo.equivocationValue1 }}</div>
+              </div>
+              <div class="row">
+                <div class="col-6"><b>Value 2</b></div>
+                <div class="col-6 border-right text-right">{{ equivocationProofInfo.equivocationValue2 }}</div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="row">
+                <div class="col-6"><b>Signature 1</b></div>
+                <div class="col-6 text-right">{{ equivocationProofInfo.signature1 }}</div>
+            </div>
+            <div class="row">
+              <div class="col-6"><b>Signature 2</b></div>
+              <div class="col-6 text-right">{{ equivocationProofInfo.signature2 }}</div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="container mb-5">
+      <div class="row">
+          <div class="col-12">
+            <own-card [transparent]="true">
+                <own-card-title>
+                  <b>Taken Deposit</b>
+                </own-card-title>
+                <own-card-body>
+                    <div class="row px-0 px-md-3 mt-4">
+                        <div class="col-12 col-md-6">
+                            <div class="col-12">
+                                <b>Address</b>
+                            </div>
+                            <div class="col-12">
+                                {{ equivocationProofInfo.validatorAddress }}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="col-12 text-right">
+                                <b>Amount</b>
+                            </div>
+                            <div class="col-12 text-right">
+                                {{ equivocationProofInfo.depositTaken }}
+                            </div>
+                        </div>
+                    </div>
+                </own-card-body>
+            </own-card>
+          </div>
+      </div>
+  </div>
+
+  <ng-container class="info-item-margin" *ngIf="equivocationProofInfo.depositDistribution.length > 0">
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col">
+              <own-card [collapsable]="true">
+                <own-card-title>
+                  <b>Given Deposits</b>
+                </own-card-title>
+                <own-card-body>
+                  <div class="own-list-header">
+                    <div class="row justify-content-between">
+                      <div class="col-8">
+                        Address
+                      </div>
+                      <div class="col-4 text-right">
+                        Amount
+                      </div>
+                    </div>
+                  </div>
+                  <li class="own-list-item" *ngFor="let depositDistributionInfo of equivocationProofInfo.depositDistribution; let i=index">
+                      <div class="row justify-content-between align-items-center">
+                        <div class="col-8">
+                            {{ depositDistributionInfo.validatorAddress }}
+                        </div>
+                        <div class="col-4 text-right">
+                            {{ depositDistributionInfo.amount }}
+                        </div>
+                      </div>
+                  </li>
+                </own-card-body>
+            </own-card>
+        </div>
+      </div>
+    </div>
 </ng-container>
 
-<!--
-<div class="column-container" *ngIf="equivocationProofInfo">
-    <mat-toolbar class="toolbar-header">Equivocation proof info</mat-toolbar>
-    <mat-divider class="toolbar-bottom-margin"></mat-divider>
-    <mat-form-field class="info-item-margin">
-        <input matInput placeholder="equivocation proof hash"
-            disabled value="{{equivocationProofInfo.equivocationProofHash}}">
-    </mat-form-field>
-
-    <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="validator address"
-            disabled value="{{equivocationProofInfo.validatorAddress}}">
-        </textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard
-            cbContent="{{equivocationProofInfo.validatorAddress}}"
-            class="pointer margin-l-20 animate-click">
-                file_copy
-        </mat-icon>
-    </mat-form-field>
-
-    <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="block number" disabled
-            value="{{equivocationProofInfo.blockNumber}}"></textarea>
-    </mat-form-field>
-    <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="consensus round" disabled
-            value="{{equivocationProofInfo.consensusRound}}"></textarea>
-    </mat-form-field>
-
-    <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="consensus step" disabled
-            value="{{equivocationProofInfo.consensusStep}}"></textarea>
-    </mat-form-field>
-
-    <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="equivocation value 1"
-            disabled value="{{equivocationProofInfo.equivocationValue1}}">
-        </textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard
-            cbContent="{{equivocationProofInfo.equivocationValue1}}"
-            class="pointer margin-l-20 animate-click">
-                file_copy
-        </mat-icon>
-    </mat-form-field>
-
-    <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="equivocation value 2"
-            disabled value="{{equivocationProofInfo.equivocationValue2}}">
-        </textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard
-            cbContent="{{equivocationProofInfo.equivocationValue2}}"
-            class="pointer margin-l-20 animate-click">
-                file_copy
-        </mat-icon>
-    </mat-form-field>
-
-    <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="signature value 1"
-            disabled value="{{equivocationProofInfo.signature1}}">
-        </textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard
-            cbContent="{{equivocationProofInfo.signature1}}"
-            class="pointer margin-l-20 animate-click">
-                file_copy
-        </mat-icon>
-    </mat-form-field>
-
-    <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="signature value 2"
-            disabled value="{{equivocationProofInfo.signature2}}">
-        </textarea>
-        <mat-icon matSuffix color="accent" ngxClipboard
-            cbContent="{{equivocationProofInfo.signature2}}"
-            class="pointer margin-l-20 animate-click">
-                file_copy
-        </mat-icon>
-    </mat-form-field>
-
-    <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="deposit taken" disabled
-            value="{{equivocationProofInfo.depositTaken}}"></textarea>
-    </mat-form-field>
-    <mat-form-field class="info-item-margin">
-        <textarea matInput placeholder="included in block number" disabled
-            value="{{equivocationProofInfo.includedInBlockNumber}}"></textarea>
-    </mat-form-field>
-
-    <ng-container class="info-item-margin"
-        *ngIf="equivocationProofInfo.depositDistribution.length > 0">
-        <ng-container
-            *ngFor="let depositDistributionInfo of equivocationProofInfo.depositDistribution; let i=index">
-            <mat-form-field class="info-item-margin">
-                    <textarea matInput placeholder="validator address {{i+1}}" disabled
-                        value="{{depositDistributionInfo.validatorAddress}}">
-                    </textarea>
-                    <mat-icon matSuffix color="accent" ngxClipboard
-                        cbContent="{{depositDistributionInfo.validatorAddress}}"
-                        class="pointer margin-l-20 animate-click">
-                            file_copy
-                    </mat-icon>
-            </mat-form-field>
-            <mat-form-field class="info-item-margin">
-                <textarea matInput placeholder="amount {{i+1}}" disabled
-                    value="{{depositDistributionInfo.amount}}"></textarea>
-            </mat-form-field>
-        </ng-container>
-    </ng-container>
-</div>
-
--->
+</ng-container>

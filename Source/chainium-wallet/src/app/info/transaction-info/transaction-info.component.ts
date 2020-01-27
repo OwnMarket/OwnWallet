@@ -67,4 +67,10 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
       });
   }
 
+  showTime(time: string): string {
+    if (time) {
+      return new Date(time).toISOString() + '<br>(' + time + ')';
+    }
+  }
+
 }

@@ -232,31 +232,40 @@
               <b>CHX Address</b>
             </div>
             <div class="col-12">
-              {{ selectedWallet.address }}
+            <div class="row">
+              <div class="col-10">
+                {{ selectedWallet.address }}
+              </div>
+              <div class="col-2">
+                <button class="button-transparent" title="Copy Address" ngxClipboard cbContent="{{ selectedWallet.address }}">
+                    <own-icon icon="copy" color="#eb6723"></own-icon>
+                </button>
+              </div>
             </div>
+          </div>
           </div>
           <div class="row">
             <div class="col-12">
               <b>Private Key</b>
             </div>
             <div class="col-12">
-              {{ selectedWallet.privateKey }}
+            <div class="row">
+              <div class="col-10">
+                {{ selectedWallet.privateKey }}
+              </div>
+              <div class="col-2">
+                <button class="button-transparent" title="Copy Private Key" ngxClipboard cbContent="{{ selectedWallet.privateKey }}">
+                  <own-icon icon="copy" color="#eb6723"></own-icon>
+              </button>
+              </div>
             </div>
+          </div>
           </div>
         </div>
         <div class="row">
           <div class="col">
             <button class="own-effect outline flat block mt-2" (click)="hidePrivateKey('show-private-key')">
               CLOSE
-            </button>
-          </div>
-          <div class="col">
-            <button
-            class="own-effect flat block mt-2"
-            ngxClipboard
-            cbContent="{{ selectedWallet.privateKey }}"
-            (click)="hidePrivateKey('show-private-key')">
-              COPY
             </button>
           </div>
         </div>

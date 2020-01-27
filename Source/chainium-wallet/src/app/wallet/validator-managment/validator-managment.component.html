@@ -57,18 +57,18 @@
                       <label class="block">Enabled</label>
                       <div class="row mt-2">
                         <div class="col">
-                          <label>
-                            <input type="radio" formControlName="isEnabled" [value]="true">
-                            YES
-                            <span></span>
-                        </label>
-                      </div>
-                      <div class="col">
-                        <label>
-                          <input type="radio" formControlName="isEnabled" [value]="false">
-                          NO
-                          <span></span>
-                        </label>
+                          <div class="row">
+                            <div class="col">
+                              NO
+                            </div>
+                            <div class="col">
+                              <input class="own-switch" type="checkbox" id="is-enabled" formControlName="isEnabled">
+                              <label class="own-switch-label" for="is-enabled"></label>
+                            </div>
+                            <div class="col">
+                              YES
+                            </div>
+                          </div>
                       </div>
                     </div>
                     </div>
@@ -141,7 +141,7 @@
                   <div class="col-12">
                     <div class="row">
                       <div class="col-12">
-                        {{ txResult.txHash }} 
+                        {{ txResult.txHash }}
                         <button class="button-transparent" title="Copy Transaction" ngxClipboard cbContent="{{ txResult.txHash }}">
                           <own-icon icon="copy" color="#eb6723"></own-icon>
                         </button>

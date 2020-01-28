@@ -146,10 +146,10 @@
               <div id="actions-lit" class="row">
                 <div class="col-12 head">
                   <div class="row">
-                    <div class="col-2">
+                    <div class="col-3">
                       <b>Number</b>
                     </div>
-                    <div class="col-10">
+                    <div class="col-9">
                       <b>Type</b>
                     </div>
                   </div>
@@ -157,36 +157,33 @@
                 
                 <div class="col-12">
                   <div class="row detail-info mt-3" *ngFor="let action of txInfo.actions; let i = index">
-                    <div class="col-2">
-                      {{ i + 1 }}
+                    <div class="col-12">
+                      <b>{{ i + 1 }}. {{ action.actionType | camelToSpace }}</b>
                     </div>
-                    <div class="col-10">
-                      {{ action.actionType }}
-                    </div>
-                    <div class="col-12 mt-3">
+                    <div class="col-12">
                       <div class="row details-row-item" *ngIf="action.actionType === 'CreateAsset'">
-                        <div class="col-12 col-md-2">
-                          <b>Asset</b>
+                        <div class="col-12 col-md-3">
+                          <span class="ml-3">Asset</span>
                         </div>
-                        <div class="col-12 col-md-10">
+                        <div class="col-12 col-md-9">
                           {{ deriveHash(txInfo.senderAddress, txInfo.nonce, actionIndex + 1) }}
                         </div>
                       </div>
                       <div class="row details-row-item" *ngIf="action.actionType === 'CreateAccount'">
-                        <div class="col-12 col-md-2">
-                          <b>Account</b>
+                        <div class="col-12 col-md-3">
+                          <span class="ml-3">Account</span>
                         </div>
-                        <div class="col-12 col-md-10">
+                        <div class="col-12 col-md-9">
                           {{ deriveHash(txInfo.senderAddress, txInfo.nonce, actionIndex + 1) }}
                         </div>
                       </div>
                     </div>
-                    <div class="col-12 my-3">
+                    <div class="col-12 mb-4">
                       <div class="row details-row-item" *ngFor="let item of action.actionData | keyvalue">
-                        <div class="col-12 col-md-2">
-                          <b>{{ item.key | camelToSpace }}</b>
+                        <div class="col-12 col-md-3">
+                          <span class="ml-3">{{ item.key | camelToSpace | titlecase }}</span>
                         </div>
-                        <div class="col-12 col-md-10">
+                        <div class="col-12 col-md-9">
                           {{ item.value }}
                         </div>
                       </div>

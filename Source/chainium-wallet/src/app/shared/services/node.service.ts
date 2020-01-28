@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵrestoreView } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -71,6 +71,11 @@ export class NodeService {
   public getChxAddressStakes(chxAddress: string): Observable<any> {
     const stakesInfoUrl = `${this.baseServiceUrl}/address/${chxAddress}/stakes`;
     return this.http.get<any>(stakesInfoUrl);
+  }
+
+  public getValidatorInfo(validatorHash: string): Observable<any> {
+    const validatorInfoUrl = `${this.baseServiceUrl}/validator/${validatorHash}`;
+    return this.http.get<any>(validatorInfoUrl);
   }
 
   public getValidators(activeOnly: boolean): Observable<any> {

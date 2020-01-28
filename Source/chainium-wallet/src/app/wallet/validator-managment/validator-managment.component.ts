@@ -57,18 +57,14 @@ export class ValidatorManagmentComponent implements OnDestroy {
         return balInfo;
       }),
       mergeMap(
-         info => this.nodeService.getValidators(false)
+         info => this.nodeService.getValidatorInfo(this.wallet.address)
          .pipe(
            map(
-             (items: ValidatorsInfo) => items.validators.filter(
-               (validator: ValidatorInfo) => validator.validatorAddress === this.wallet.address)[0]
-            )
-         )
-      )
-    )
+             (item: any) => item
+         ))))
     .subscribe(
-      response => {
-      if (response) {
+      (response: any) => {
+      if (response && response.errors.length < 1) {
         this.validator = response;
         this.setupForm();
         this.configForm.patchValue(this.validator);

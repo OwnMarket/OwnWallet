@@ -29,7 +29,7 @@ export class AddressInfoComponent implements OnInit, OnDestroy {
 
   stakeColumns = [
     {
-      name: 'Validator address',
+      name: 'Validator Address',
       prop: 'validatorAddress',
       flexGrow: 5
     },

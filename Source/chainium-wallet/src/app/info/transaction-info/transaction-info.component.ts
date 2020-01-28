@@ -73,4 +73,8 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
     }
   }
 
+  deriveHash(address: string, nonce: number, txActionNumber: number) {
+    return this.cryptoService.deriveHash(address, nonce, txActionNumber);
+  }
+
 }

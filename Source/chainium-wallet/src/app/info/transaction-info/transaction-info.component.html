@@ -163,6 +163,24 @@
                     <div class="col-10">
                       {{ action.actionType }}
                     </div>
+                    <div class="col-12 mt-3">
+                      <div class="row details-row-item" *ngIf="action.actionType === 'CreateAsset'">
+                        <div class="col-12 col-md-2">
+                          <b>Asset</b>
+                        </div>
+                        <div class="col-12 col-md-10">
+                          {{ deriveHash(txInfo.senderAddress, txInfo.nonce, actionIndex + 1) }}
+                        </div>
+                      </div>
+                      <div class="row details-row-item" *ngIf="action.actionType === 'CreateAccount'">
+                        <div class="col-12 col-md-2">
+                          <b>Account</b>
+                        </div>
+                        <div class="col-12 col-md-10">
+                          {{ deriveHash(txInfo.senderAddress, txInfo.nonce, actionIndex + 1) }}
+                        </div>
+                      </div>
+                    </div>
                     <div class="col-12 my-3">
                       <div class="row details-row-item" *ngFor="let item of action.actionData | keyvalue">
                         <div class="col-12 col-md-2">

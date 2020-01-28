@@ -144,16 +144,6 @@
             <div class="card-body mt-4 px-0 px-md-5">
 
               <div id="actions-lit" class="row">
-                <div class="col-12 head">
-                  <div class="row">
-                    <div class="col-3">
-                      <b>Number</b>
-                    </div>
-                    <div class="col-9">
-                      <b>Type</b>
-                    </div>
-                  </div>
-                </div>
                 
                 <div class="col-12">
                   <div class="row detail-info mt-3" *ngFor="let action of txInfo.actions; let i = index">
@@ -166,7 +156,7 @@
                           <span class="ml-3">Asset</span>
                         </div>
                         <div class="col-12 col-md-9">
-                          {{ deriveHash(txInfo.senderAddress, txInfo.nonce, actionIndex + 1) }}
+                          {{ deriveHash(txInfo.senderAddress, txInfo.nonce, i + 1) }}
                         </div>
                       </div>
                       <div class="row details-row-item" *ngIf="action.actionType === 'CreateAccount'">
@@ -174,7 +164,7 @@
                           <span class="ml-3">Account</span>
                         </div>
                         <div class="col-12 col-md-9">
-                          {{ deriveHash(txInfo.senderAddress, txInfo.nonce, actionIndex + 1) }}
+                          {{ deriveHash(txInfo.senderAddress, txInfo.nonce, i + 1) }}
                         </div>
                       </div>
                     </div>

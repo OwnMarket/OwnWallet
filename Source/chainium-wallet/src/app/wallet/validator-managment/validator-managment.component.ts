@@ -64,7 +64,7 @@ export class ValidatorManagmentComponent implements OnDestroy {
          ))))
     .subscribe(
       (response: any) => {
-      if (response && response.errors.length < 1) {
+      if (response && !response.errors) {
         this.validator = response;
         this.setupForm();
         this.configForm.patchValue(this.validator);

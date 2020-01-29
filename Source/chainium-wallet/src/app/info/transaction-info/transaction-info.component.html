@@ -147,33 +147,33 @@
                 
                 <div class="col-12">
                   <div class="row detail-info mt-3" *ngFor="let action of txInfo.actions; let i = index">
-                    <div class="col-12">
+                    <div class="col-12 mb-4">
                       <b>{{ i + 1 }}. {{ action.actionType | camelToSpace }}</b>
                     </div>
                     <div class="col-12">
-                      <div class="row details-row-item" *ngIf="action.actionType === 'CreateAsset'">
+                      <div class="row details-row-item mb-3 mb-md-0" *ngIf="action.actionType === 'CreateAsset'">
                         <div class="col-12 col-md-3">
                           <span class="ml-3">Asset</span>
                         </div>
-                        <div class="col-12 col-md-9">
+                        <div class="col-12 col-md-9 ml-5 ml-md-0">
                           {{ deriveHash(txInfo.senderAddress, txInfo.nonce, i + 1) }}
                         </div>
                       </div>
-                      <div class="row details-row-item" *ngIf="action.actionType === 'CreateAccount'">
+                      <div class="row details-row-item mb-3 mb-md-0" *ngIf="action.actionType === 'CreateAccount'">
                         <div class="col-12 col-md-3">
                           <span class="ml-3">Account</span>
                         </div>
-                        <div class="col-12 col-md-9">
+                        <div class="col-12 col-md-9 ml-5 ml-md-0">
                           {{ deriveHash(txInfo.senderAddress, txInfo.nonce, i + 1) }}
                         </div>
                       </div>
                     </div>
                     <div class="col-12 mb-4">
-                      <div class="row details-row-item" *ngFor="let item of action.actionData | keyvalue">
+                      <div class="row details-row-item mb-3 mb-md-0" *ngFor="let item of action.actionData | keyvalue">
                         <div class="col-12 col-md-3">
                           <span class="ml-3">{{ item.key | camelToSpace | titlecase }}</span>
                         </div>
-                        <div class="col-12 col-md-9">
+                        <div class="col-12 col-md-9 ml-5 ml-md-0">
                           {{ item.value }}
                         </div>
                       </div>

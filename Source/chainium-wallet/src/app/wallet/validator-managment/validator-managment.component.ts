@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import { OwnAnimations } from '../../shared';
 import { ValidatorInfo, ValidatorsInfo } from 'src/app/shared/models/validators-info.model';
 import { map, mergeMap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 declare var ownBlockchainSdk: any;
 
@@ -40,6 +41,7 @@ export class ValidatorManagmentComponent implements OnDestroy {
   tab = 'config';
 
   constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
     private nodeService: NodeService,
     private privateKeyService: PrivatekeyService
@@ -128,7 +130,7 @@ export class ValidatorManagmentComponent implements OnDestroy {
           return;
         }
         this.txResult = (result as TxResult);
-        setTimeout(() => this.reset(), 5000);
+        setTimeout(() => this.router.navigate(['/']), 5000);
     });
   }
 

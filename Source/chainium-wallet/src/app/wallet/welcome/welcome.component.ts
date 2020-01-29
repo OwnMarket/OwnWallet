@@ -48,6 +48,7 @@ export class WelcomeComponent implements OnInit {
 
   ngOnInit() {
     this.walletService.generateWalletFromContext();
+    this.showAdvanced = false;
   }
 
   onRefreshAddressInfoClick() {
@@ -97,6 +98,7 @@ export class WelcomeComponent implements OnInit {
       this.selectedChxAddress = address;
       this.setActiveWallet(this.selectedChxAddress);
       this.router.navigate(['/wallet']);
+      this.showAdvanced = false;
   }
 
   onRemovePrivateAddress() {
@@ -104,7 +106,7 @@ export class WelcomeComponent implements OnInit {
           if (this.chxAddresses.indexOf(this.selectedChxAddress) === -1) {
               this.selectedChxAddress = this.chxAddresses[0];
               this.setActiveWallet(this.selectedChxAddress);
-              this.router.navigate(['/home']);
+              this.router.navigate(['/wallet']);
           }
       }
   }

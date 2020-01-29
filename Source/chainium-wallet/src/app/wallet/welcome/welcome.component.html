@@ -122,27 +122,38 @@
                         </h6>
 
                         <div class="row mt-4">
-                          <div class="col-12 address-hash text-center">
+                          <div class="col-9 col-md-10 address-hash text-center elipsis">
                             {{ addressInfo.blockchainAddress }}
+                          </div>
+                          <div class="col-3 col-md-2">
                             <button class="button-transparent" title="Copy Address" ngxClipboard cbContent="{{ addressInfo.blockchainAddress }}">
-                                <own-icon icon="copy" color="#eb6723"></own-icon>
-                            </button>
+                              <own-icon icon="copy" color="#eb6723"></own-icon>
+                          </button>
                           </div>
                         </div>
 
-                        <div class="row mt-5 ml-0 ml-md-5">
-                          <div class="col-6 col-md-3">Delegated</div>
-                          <div class="col-6 col-md-3"><b>{{ addressInfo.balance.staked }}</b></div>
-                          <div class="col-6 col-md-3">Nonce</div>
-                          <div class="col-6 col-md-3"><b>{{ addressInfo.nonce }}</b></div>
-                        </div>
-
-                        <div class="row ml-0 ml-md-5">
-                            <div class="col-6 col-md-3">Available</div>
-                            <div class="col-6 col-md-3"><b>{{ addressInfo.balance.available }}</b></div>
-                            <div class="col-6 col-md-3">Deposit</div>
-                            <div class="col-6 col-md-3"><b>{{ addressInfo.balance.deposit }}</b></div>
+                        <div class="row mt-5 ml-0 ml-md-5 mr-2 justify-content-center">
+                          <div class="col-12 col-md-6">
+                            <div class="row mb-2 mb-sm-2">
+                              <div class="col-6">Delegated</div>
+                              <div class="col-6 text-right"><b>{{ addressInfo.balance.staked }}</b></div>
+                            </div>
+                            <div class="row mb-2 mb-sm-0">
+                              <div class="col-6">Available</div>
+                              <div class="col-6 text-right"><b>{{ addressInfo.balance.available }}</b></div>
+                            </div>
                           </div>
+                          <div class="col-12 col-md-6">
+                            <div class="row mb-2 mb-sm-0">
+                              <div class="col-6">Nonce</div>
+                              <div class="col-6 text-right"><b>{{ addressInfo.nonce }}</b></div>
+                            </div>
+                            <div class="row mb-2 mb-sm-0">
+                              <div class="col-6">Deposit</div>
+                              <div class="col-6 text-right"><b>{{ addressInfo.balance.deposit }}</b></div>
+                            </div>
+                          </div>
+                        </div>
 
                   </div>
                 </div>
@@ -196,7 +207,7 @@
 
         <div class="row advanced-actions mt-3 px-0 px-md-5" *ngIf="showAdvanced" @flyUp>
           <div class="col-12 col-md-3">
-            <button class="quick-action-button block" routerLink="validator-managment" routerLinkActive="selected">
+            <button class="quick-action-button block" (click)="showAdvanced = !showAdvanced" routerLink="validator-managment" routerLinkActive="selected">
               <span>
                 <own-icon icon="validator" size="15" color="#39a2ae"></own-icon>
               </span>
@@ -214,7 +225,7 @@
           </div>
           -->
           <div class="col-12 col-md-3">
-            <button class="quick-action-button block" routerLink="sign-verify" routerLinkActive="selected">
+            <button class="quick-action-button block" (click)="showAdvanced = !showAdvanced" routerLink="sign-verify" routerLinkActive="selected">
               <span>
                 <own-icon icon="signature" size="15" color="#39a2ae"></own-icon>
               </span>
@@ -227,36 +238,32 @@
       <own-modal id="show-private-key" [width]="450">
         <h6>Show Private Key</h6>
         <div class="mb-4">
-          <div class="row mb-3">
-            <div class="col-12">
+          <div class="row mb-3 justify-content-between">
+            <div class="col-6">
               <b>CHX Address</b>
             </div>
-            <div class="col-12">
-            <div class="row">
-              <div class="col-10">
-                {{ selectedWallet.address }}
-              </div>
-              <div class="col-2">
-                <button class="button-transparent" title="Copy Address" ngxClipboard cbContent="{{ selectedWallet.address }}">
-                    <own-icon icon="copy" color="#eb6723"></own-icon>
-                </button>
-              </div>
+            <div class="col-3 col-md-2">
+              <button class="button-transparent" title="Copy Address" ngxClipboard cbContent="{{ selectedWallet.address }}">
+                <own-icon icon="copy" color="#eb6723"></own-icon>
+            </button>
             </div>
+            <div class="col-12 mt-2 elipsis">
+                {{ selectedWallet.address }}
           </div>
           </div>
-          <div class="row">
-            <div class="col-12">
+          <div class="row justify-content-between">
+            <div class="col-6">
               <b>Private Key</b>
             </div>
-            <div class="col-12">
+            <div class="col-3 col-md-2">
+              <button class="button-transparent" title="Copy Private Key" ngxClipboard cbContent="{{ selectedWallet.privateKey }}">
+                <own-icon icon="copy" color="#eb6723"></own-icon>
+            </button>
+            </div>
+            <div class="col-12 mt-2">
             <div class="row">
-              <div class="col-10">
+              <div class="col-12 elipsis">
                 {{ selectedWallet.privateKey }}
-              </div>
-              <div class="col-2">
-                <button class="button-transparent" title="Copy Private Key" ngxClipboard cbContent="{{ selectedWallet.privateKey }}">
-                  <own-icon icon="copy" color="#eb6723"></own-icon>
-              </button>
               </div>
             </div>
           </div>

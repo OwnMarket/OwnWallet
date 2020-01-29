@@ -59,7 +59,7 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
           return;
         }
         this.txInfo = info as TransactionInfo;
-        this.totalFee = (this.txInfo.actions) ? +(this.txInfo.actionFee * this.txInfo.actions.length).toFixed(1) : 0;
+        this.totalFee = (this.txInfo.actions) ? +(this.txInfo.actionFee * this.txInfo.actions.length).toPrecision(7) : 0;
         this.showErrorCode = this.txInfo.errorCode &&
           ((isNaN(Number(this.txInfo.errorCode)) && this.txInfo.errorCode.length > 0) ||
             (!isNaN(Number(this.txInfo.errorCode)) && Number(this.txInfo.errorCode) > 0));

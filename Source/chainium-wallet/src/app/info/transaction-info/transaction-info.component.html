@@ -68,7 +68,9 @@
                     <b>Block number</b>
                   </div>
                   <div class="col-12 mt-2">
-                    {{ txInfo.includedInBlockNumber }}
+                    <a routerLink="/info/block/{{txInfo.includedInBlockNumber}}">
+                      {{ txInfo.includedInBlockNumber }}
+                    </a>
                   </div>
               </div>
             </div>
@@ -82,7 +84,9 @@
                 <b>From</b>
               </div>
               <div class="col-12 text-truncate">
-                {{txInfo.senderAddress}}
+                <a routerLink="/info/address/{{txInfo.senderAddress}}">
+                  {{txInfo.senderAddress}}
+                </a>
               </div>
             </div>
           </div>
@@ -135,7 +139,7 @@
         <div class="col">
 
           <!-- ACTIONS INFORMATION -->
-          <div class="col-12 mt-3 mb-5">
+          <div class="col-12 mb-5">
 
                 <own-card [transparent]="true">
                   <own-card-title><b>Actions</b></own-card-title>
@@ -192,8 +196,11 @@
                           <a class="link" *ngIf="item.key === 'validatorAddress'" routerLink="/info/validator/{{item.value}}">
                             {{ item.value }}
                           </a>
+                          <span *ngIf="item.key === 'networkAddress'">
+                            <b>{{ item.value }}</b>
+                          </span>
                           <span *ngIf="!(item.key.includes('Hash') || item.key.includes('Address'))">
-                            {{ item.value }}
+                            <b>{{ item.value }}</b>
                           </span>
                         </div>
                       </div>

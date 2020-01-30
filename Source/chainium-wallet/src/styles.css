@@ -4,7 +4,7 @@
   --color-bg: #f4f4f4;
   --color-brand: #eb6723;
   --color-danger: #d3240c;
-  --color-accent:#39a2ae;
+  --color-accent:#3aabb9;
   --color-text: #414549;
   --color-text-info: #848484;
   --color-navbar-bg: #ffffff;
@@ -196,8 +196,7 @@ h6 {
 }
 
 a {
-	color: var(--color-text);
-  font-weight: 800;
+	color: var(--color-accent);
 }
 
 a:focus,

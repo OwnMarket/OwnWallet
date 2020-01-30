@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
@@ -67,7 +67,7 @@ export class StakingComponent implements OnInit, OnDestroy {
       this.fee = this.nodeService.getMinFee();
 
       this.actionForm = this.formBuilder.group({
-        'amount': ['', Validators.required]
+        'amount': ['', [Validators.required, Validators.min(0)]]
       });
 
     });
@@ -108,7 +108,7 @@ export class StakingComponent implements OnInit, OnDestroy {
     this.actionForm.get('amount').patchValue(value);
   }
 
-  showActionForm(row, action) {
+  showActionForm(row: any, action: string) {
     this.ownModalService.open('form-modal');
     this.action = action;
     this.validator = row.validatorAddress;
@@ -127,7 +127,11 @@ export class StakingComponent implements OnInit, OnDestroy {
       this.fee
     );
 
-    let value = this.amount;
+    let value: number;
+
+    if (this.action === 'delegate') {
+      value = Math.abs(this.amount);
+    }
 
     if (this.action === 'revoke') {
       value = -Math.abs(this.amount);

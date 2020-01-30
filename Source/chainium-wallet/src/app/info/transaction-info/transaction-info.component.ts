@@ -22,7 +22,6 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
   transactionHash = '';
   txInfo: TransactionInfo;
   subscription: Subscription;
-  totalFee = 0;
   showErrorCode = false;
   ready = false;
 
@@ -59,12 +58,16 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
           return;
         }
         this.txInfo = info as TransactionInfo;
-        this.totalFee = (this.txInfo.actions) ? +(this.txInfo.actionFee * this.txInfo.actions.length).toPrecision(7) : 0;
         this.showErrorCode = this.txInfo.errorCode &&
           ((isNaN(Number(this.txInfo.errorCode)) && this.txInfo.errorCode.length > 0) ||
             (!isNaN(Number(this.txInfo.errorCode)) && Number(this.txInfo.errorCode) > 0));
         this.ready = true;
       });
+  }
+
+  get totalFee(): any {
+    const totalFee = +(this.txInfo.actionFee * this.txInfo.actions.length).toFixed(7);
+    return totalFee.toString();
   }
 
   showTime(time: string): string {

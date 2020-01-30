@@ -67,7 +67,7 @@ export class StakingComponent implements OnInit, OnDestroy {
       this.fee = this.nodeService.getMinFee();
 
       this.actionForm = this.formBuilder.group({
-        'amount': ['', [Validators.required, Validators.min(0)]]
+        'amount': [0, [Validators.required, Validators.min(0)]]
       });
 
     });

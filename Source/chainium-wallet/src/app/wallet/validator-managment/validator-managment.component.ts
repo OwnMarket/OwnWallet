@@ -51,6 +51,19 @@ export class ValidatorManagmentComponent implements OnDestroy {
     if (!this.isKeyImported) { return; }
 
     this.wallet = this.privateKeyService.getWalletInfo();
+    this.load();
+
+   }
+
+  setupForm() {
+    this.configForm = this.formBuilder.group({
+      networkAddress: ['', Validators.required],
+      sharedRewardPercent: [0, Validators.required],
+      isEnabled: [false, Validators.required]
+    });
+  }
+
+  load() {
     this.addressSub = this.nodeService.getAddressInfo(this.wallet.address)
     .pipe(
       map(balInfo => {
@@ -73,15 +86,6 @@ export class ValidatorManagmentComponent implements OnDestroy {
       } else {
         this.setupForm();
       }
-    });
-
-   }
-
-  setupForm() {
-    this.configForm = this.formBuilder.group({
-      networkAddress: ['', Validators.required],
-      sharedRewardPercent: [0, Validators.required],
-      isEnabled: [false, Validators.required]
     });
   }
 
@@ -143,6 +147,9 @@ export class ValidatorManagmentComponent implements OnDestroy {
   selectTab(tab: string) {
     this.tab = tab;
     this.reset();
+    if (tab === 'config') {
+      this.load();
+    }
   }
 
   ngOnDestroy() {

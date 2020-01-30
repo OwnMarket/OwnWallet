@@ -166,7 +166,7 @@
                           <span class="ml-3">Account</span>
                         </div>
                         <div class="col-12 col-md-9 ml-3 ml-md-0">
-                          <a class="link" routerLink="/info/asset/{{ deriveHash(txInfo.senderAddress, txInfo.nonce, i + 1) }}">
+                          <a class="link" routerLink="/info/account/{{ deriveHash(txInfo.senderAddress, txInfo.nonce, i + 1) }}">
                             {{ deriveHash(txInfo.senderAddress, txInfo.nonce, i + 1) }}
                           </a>
                         </div>
@@ -175,22 +175,26 @@
                     <div class="col-12 mb-4">
                       <div class="row details-row-item mb-3 mb-md-0" *ngFor="let item of action.actionData | keyvalue">
                         <div class="col-12 col-md-3">
-                          <span class="ml-3">{{ item.key | camelToSpace | titlecase }}</span>
+                          <span class="ml-3">
+                            {{ item.key | camelToSpace | titlecase }}
+                          </span>
                         </div>
                         <div class="col-12 col-md-9 ml-3 ml-md-0 elipsis">
                           <a class="link" *ngIf="item.key === 'accountHash' || item.key === 'emissionAccountHash'" routerLink="/info/account/{{item.value}}">
-                            {{item.value}}
+                            {{ item.value }}
                           </a>
                           <a class="link" *ngIf="item.key === 'assetHash'" routerLink="/info/asset/{{item.value}}">
-                            {{item.value}}
+                            {{ item.value }}
                           </a>
                           <a class="link" *ngIf="item.key === 'providerAddress' || item.key === 'recipientAddress'" routerLink="/info/address/{{item.value}}">
-                            {{item.value}}
+                            {{ item.value }}
                           </a>
                           <a class="link" *ngIf="item.key === 'validatorAddress'" routerLink="/info/validator/{{item.value}}">
-                            {{item.value}}
+                            {{ item.value }}
                           </a>
-                          <span *ngIf="!(item.key.includes('Hash') || item.key.includes('Address'))">{{ item.value }}</span>
+                          <span *ngIf="!(item.key.includes('Hash') || item.key.includes('Address'))">
+                            {{ item.value }}
+                          </span>
                         </div>
                       </div>
                     </div>

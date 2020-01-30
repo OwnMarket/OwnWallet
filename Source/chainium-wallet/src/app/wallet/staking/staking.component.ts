@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { mergeMap, map } from 'rxjs/operators';
+import { mergeMap, map, filter } from 'rxjs/operators';
 
 import { ColumnMode } from '@swimlane/ngx-datatable';
 
@@ -81,6 +81,7 @@ export class StakingComponent implements OnInit, OnDestroy {
   }
 
   fetchData() {
+
     this.myStakes = this.nodeService.getChxAddressStakes(this.wallet.address)
     .pipe(map(response => response.stakes));
 
@@ -92,12 +93,16 @@ export class StakingComponent implements OnInit, OnDestroy {
         map(items => {
           this.isLoading = false;
           if (stakes.length > 0) {
-            return items.map((item: any, i: number) => Object.assign({}, item, stakes[i]));
+           return items.map((item) => {
+             let staked = stakes.filter(stake => stake.validatorAddress === item.validatorAddress)[0];
+             return staked ? { ...item, amount: staked.amount } : item;    
+           });
           } else {
             return items;
           }
         }
     ))));
+   
   }
 
   get amount() {

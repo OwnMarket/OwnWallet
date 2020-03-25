@@ -15,3 +15,10 @@
   }
 }
 
+.validator-disabled {
+  text-decoration: line-through;
+}
+
+.validator-hint {
+  color: var(--color-brand);
+}

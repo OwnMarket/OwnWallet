@@ -201,9 +201,12 @@
               Validator Address
             </ng-template>
             <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                <a [routerLink]="['/info/validator', value]">
+                <a [routerLink]="['/info/validator', value]"
+                  [ngClass]="{ 'validator-disabled': row.isBlacklisted === true || row.isEnabled !== true }">
                   {{ value }}
                 </a>
+                <span class="validator-hint" [hidden]="!row.isBlacklisted">&nbsp;(blacklisted)</span>
+                <span class="validator-hint" [hidden]="row.isEnabled">&nbsp;(disabled)</span>
                 <br>
                 {{ row.networkAddress }}
             </ng-template>

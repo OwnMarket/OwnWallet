@@ -38,47 +38,69 @@
 
             <ngx-datatable-column name="isActive" [flexGrow]="1" [maxWidth]="40">
               <ng-template let-column="column" ngx-datatable-header-template></ng-template>
-              <ng-template let-value="value" ngx-datatable-cell-template>
-              <ng-container *ngIf="value">
-                <svg width="24" viewBox="0 0 24 24">
-                  <ellipse fill="#1ec163" cx="10" cy="10" rx="10" ry="10" />
-                  <g transform="translate(5.088 6.933)">
-                    <line
-                      fill="none"
-                      stroke="#fff"
-                      stroke-linecap="round"
-                      stroke-width="3px"
-                      x2="3.438"
-                      y2="3.684"
-                      transform="translate(0 3.438)"
-                    />
-                    <line
-                      fill="none"
-                      stroke="#fff"
-                      stroke-linecap="round"
-                      stroke-width="3px"
-                      x1="6.385"
-                      y2="7.122"
-                      transform="translate(3.438)"
-                    />
-                  </g>
-                </svg>
-              </ng-container>
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                <ng-container *ngIf="value">
+                  <span title="Active">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                      <ellipse fill="#1ec163" cx="10" cy="10" rx="10" ry="10" />
+                      <g transform="translate(5.088 6.933)">
+                        <line
+                          fill="none"
+                          stroke="#fff"
+                          stroke-linecap="round"
+                          stroke-width="3px"
+                          x2="3.438"
+                          y2="3.684"
+                          transform="translate(0 3.438)"
+                        />
+                        <line
+                          fill="none"
+                          stroke="#fff"
+                          stroke-linecap="round"
+                          stroke-width="3px"
+                          x1="6.385"
+                          y2="7.122"
+                          transform="translate(3.438)"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                </ng-container>
                 <ng-container *ngIf="!value">
-                  <svg width="24" height="24" viewBox="0 0 24 24">
-                    <rect fill="transparent" width="24" height="24"/>
-                    <g transform="translate(2 1.97)">
-                      <g transform="translate(0 0)">
-                        <ellipse fill="#f8333b" cx="10" cy="10" rx="10" ry="10"/>
-                        <g transform="translate(6.271 5.926)">
-                          <g transform="translate(0 0)">
-                            <line fill="none" stroke="#fff" stroke-linecap="round" stroke-width="3px" x1="7.455" y2="8.316"/>
-                            <line fill="none" stroke="#fff" stroke-linecap="round" stroke-width="3px" x2="7.455" y2="8.316"/>
+                  <span title="Not active">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                      <rect fill="transparent" width="24" height="24"/>
+                      <g transform="translate(2 1.97)">
+                        <g transform="translate(0 0)">
+                          <ellipse fill="#f8333b" cx="10" cy="10" rx="10" ry="10"/>
+                          <g transform="translate(6.271 5.926)">
+                            <g transform="translate(0 0)">
+                              <line fill="none" stroke="#fff" stroke-linecap="round" stroke-width="3px" x1="7.455" y2="8.316"/>
+                              <line fill="none" stroke="#fff" stroke-linecap="round" stroke-width="3px" x2="7.455" y2="8.316"/>
+                            </g>
                           </g>
                         </g>
                       </g>
-                    </g>
-                </svg>                
+                    </svg>
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="row.isDepositLocked || row.isBlacklisted">
+                  <br>
+                  <span title="Deposit locked">
+                    <svg width="16" height="16" viewBox="0 0 489.4 489.4" style="margin-left: 2px;">
+                      <g>
+                        <g>
+                          <g>
+                            <path d="M99,147v51.1h-3.4c-21.4,0-38.8,17.4-38.8,38.8v213.7c0,21.4,17.4,38.8,38.8,38.8h298.2c21.4,0,38.8-17.4,38.8-38.8V236.8    c0-21.4-17.4-38.8-38.8-38.8h-1v-51.1C392.8,65.9,326.9,0,245.9,0C164.9,0.1,99,66,99,147z M267.7,353.2c-3,2.2-3.8,4.3-3.8,7.8    c0.1,15.7,0.1,31.3,0.1,47l0,0c0.3,6.5-3,12.9-8.8,15.8c-13.7,7-27.4-2.8-27.4-15.8v-0.1c0-15.7,0-31.4,0.1-47.1    c0-3.2-0.7-5.3-3.5-7.4c-14.2-10.5-18.9-28.4-11.8-44.1c6.9-15.3,23.8-24.3,39.7-21.1c17.7,3.6,30,17.8,30.2,35.5    C282.5,336,277.6,346,267.7,353.2z M163.3,147c0-45.6,37.1-82.6,82.6-82.6c45.6,0,82.6,37.1,82.6,82.6v51.1H163.3V147z"
+                              data-original="#000000"
+                              class="active-path"
+                              data-old_color="#000000"
+                              fill="#AAAAAA"/>
+                          </g>
+                        </g>
+                      </g>
+                    </svg>
+                  </span>
                 </ng-container>
               </ng-template>
             </ngx-datatable-column>

@@ -19,12 +19,14 @@ npm run build -- --prod
 gulp inline
 
 echo "--- Creating package..."
-cd "dist"
+cd dist
 rm -rf wallet
 mkdir wallet
 cp single-file-wallet/index.html wallet
 cp chainium-wallet/favicon.ico wallet
-tar czf "$OUTPUT_DIR/Own.Wallet.App.tar.gz" wallet
+cd wallet
+tar czf "$OUTPUT_DIR/Own.Wallet.App.tar.gz" *
+cd ..
 rm -rf wallet
 
 popd # Go back to caller directory

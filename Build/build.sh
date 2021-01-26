@@ -16,7 +16,7 @@ echo "--- Building project..."
 cd "../Source/chainium-wallet"
 npm ci
 npm run build -- --prod
-gulp inline
+npm run gulp
 
 echo "--- Creating package..."
 cd dist

@@ -1,0 +1,161 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-12 col-md-8">
+      <own-card>
+        <own-card-title>Swap CHX</own-card-title>
+        <own-card-body [padding]="true">
+          <div class="row" *ngIf="!risksAccepted">
+            <div class="col">
+              <p>
+                This process allows you to swap CHX tokens from the
+                <strong>Own Blockchain</strong> to other blockchains and vice
+                versa.
+              </p>
+              <p>
+                Before you proceed, please make sure that you are familiar with
+                the concept of token swaps and risks associated with it.
+              </p>
+              <p class="mt-4">The pre-requisites for token swap are:</p>
+              <ul>
+                <li>
+                  You have already created a CHX wallet with a holding of at
+                  least X CHX token
+                </li>
+                <li>
+                  You have a wallet on the supported source/target blockchain
+                  with sufficient holding
+                </li>
+                <li>You are in control of the private keys of both wallets</li>
+                <li>You have a MetaMask wallet account</li>
+              </ul>
+              <form [formGroup]="acceptSwapForm">
+                <div class="row mt-4">
+                  <div class="col mt-4">
+                    <input
+                      type="checkbox"
+                      formControlName="aware"
+                      id="aware-of-risks"
+                    />
+                    <label class="m-0" for="aware-of-risks"
+                      >I'am fully aware of the risks of a token swap and the
+                      fact that incorrect use may result in a total or partial
+                      loss of my tokens.</label
+                    >
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col">
+                    <input
+                      type="checkbox"
+                      formControlName="confirm"
+                      id="confirm"
+                    />
+                    <label class="m-0" for="confirm">
+                      I hereby confirm that the Wallets used for the Token Swap
+                      are under my control and possession and that I have the
+                      requirements for a Token Swap described above
+                    </label>
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col">
+                    <input type="checkbox" formControlName="agree" id="agree" />
+                    <label class="m-0" for="agree">
+                      I agree that Own accepts no liability whatsoever for any
+                      incorrect or improper use of the Token Swap functionality
+                    </label>
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col mt-4">
+                    <button
+                      [disabled]="acceptSwapForm.invalid"
+                      class="block own-effect"
+                      (click)="acceptRisks()"
+                    >
+                      ACCEPT AND CONTINUE
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="row" *ngIf="risksAccepted">
+            <div class="col">
+              <form [formGroup]="swapForm">
+                <div class="row">
+                  <div class="col">
+                    <div class="row justify-content-between">
+                      <label for="from" class="col">From</label>
+                      <div class="col-4 text-center text-info">
+                        Balance: 232323 CHX
+                      </div>
+                    </div>
+                    <div class="mega-input text-lg">
+                      <input
+                        class="block no-borders"
+                        type="number"
+                        formControlName="fromAmount"
+                      />
+                      <div class="border-right my-2"></div>
+                      <select
+                        class="no-borders col-4 text-center"
+                        formControlName="fromCurrency"
+                      >
+                        <option value="chx">CHX</option>
+                        <option value="eth">wCHX</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col">
+                    <div class="row justify-content-between">
+                      <label for="from" class="col">To</label>
+                      <div class="col-4 text-center position-relative">
+                        <span class="swap-button" (click)="swapBlockchains()">
+                          <own-icon
+                            icon="swap"
+                            size="15"
+                            color="#ffffff"
+                          ></own-icon>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="mega-input text-lg">
+                      <input
+                        class="block no-borders"
+                        type="number"
+                        formControlName="toAmount"
+                      />
+                      <div class="border-right my-2"></div>
+                      <select
+                        class="no-borders col-4"
+                        formControlName="toCurrency"
+                      >
+                        <option value="eth">wCHX</option>
+                        <option value="chx">CHX</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col mt-4">
+                    <button
+                      [disabled]="acceptSwapForm.invalid"
+                      class="block own-effect"
+                      (click)="acceptRisks()"
+                    >
+                      CONNECT TO METAMASK
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </own-card-body>
+      </own-card>
+    </div>
+  </div>
+</div>

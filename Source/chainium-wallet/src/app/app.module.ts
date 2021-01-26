@@ -36,6 +36,7 @@ import { ReceiveChxComponent } from './wallet/actions/receive-chx/receive-chx.co
 import { ValidatorManagmentComponent } from './wallet/validator-managment/validator-managment.component';
 import { StakingComponent } from './wallet/staking/staking.component';
 import { MessageSignVerificationComponent } from './wallet/msg-sign-verify/msg-sign-verify.component';
+import { SwapChxComponent } from './wallet/actions/swap-chx/swap-chx.component';
 
 @NgModule({
     declarations: [
@@ -59,7 +60,8 @@ import { MessageSignVerificationComponent } from './wallet/msg-sign-verify/msg-s
         ValidatorManagmentComponent,
         StakingComponent,
         MessageSignVerificationComponent,
-        PageNotFoundComponent
+        PageNotFoundComponent,
+        SwapChxComponent
     ],
     imports: [
         BrowserModule,

@@ -105,6 +105,28 @@ button.link {
   padding: 0px 4px 4px 4px;
 }
 
+.w-5 {
+  width: 1.25rem;
+}
+
+.h-5 {
+  height: 1.25rem;
+}
+
+.-ml-1 {
+  margin-left: -0.25rem;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
 .text-lg {
   font-size: 1.2rem;
 }
@@ -130,6 +152,10 @@ button.link {
 
 .text-info {
   color: var(--color-text-info);
+}
+
+.text-white {
+  color: white;
 }
 
 .text-center {

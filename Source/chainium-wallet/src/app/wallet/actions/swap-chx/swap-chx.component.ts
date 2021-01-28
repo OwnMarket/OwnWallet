@@ -1,6 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import detectEthereumProvider from "@metamask/detect-provider";
+import { environment } from "src/environments/environment";
+import Web3 from 'web3';
+
 
 @Component({
   selector: "app-swap-chx",
@@ -17,7 +20,13 @@ export class SwapChxComponent implements OnInit {
   risksAccepted = false;
   showWarning = false;
   warningMessage: string;
-  shouldInstallMetamask = false;
+
+  web3: any;
+  wChxMapping: any;
+  wChxToken: any;
+
+  ethAddrMapped = false;
+  wChxBalance: number;
 
   constructor(private fb: FormBuilder) {}
 
@@ -29,28 +38,33 @@ export class SwapChxComponent implements OnInit {
     });
 
     this.swapForm = this.fb.group({
-      fromCurrency: ["chx"],
-      toCurrency: ["eth"],
+      ethAddress: [null],
+      fromBlockchain: ["chx"],
+      toBlockchain: ["eth"],
       fromAmount: [0],
       toAmount: [0],
     });
 
-    this.swapForm.valueChanges.subscribe((value) => {
-      if (value.fromCurrency === value.toCurrency) {
-        if (value.fromCurrency === "eth") {
-          this.swapForm.get("toCurrency").setValue("chx");
-        } else {
-          this.swapForm.get("toCurrency").setValue("eth");
-        }
-      }
-    });
+   this.swapForm.get('fromBlockchain').valueChanges.subscribe(value => {
+     if (value === this.swapForm.get('toBlockchain').value) {
+       this.swapForm.get('toBlockchain').value === 'eth' ? this.swapForm.get('toBlockchain').setValue('chx') : this.swapForm.get('toBlockchain').setValue('eth');
+     }
+   });
+
+   this.swapForm.get('toBlockchain').valueChanges.subscribe(value => {
+    if (value === this.swapForm.get('fromBlockchain').value) {
+      this.swapForm.get('fromBlockchain').value === 'eth' ? this.swapForm.get('fromBlockchain').setValue('chx') : this.swapForm.get('fromBlockchain').setValue('eth');
+    }
+  });
+
+
   }
 
   swapBlockchains() {
-    if (this.swapForm.get("fromCurrency").value === "eth") {
-      this.swapForm.get("fromCurrency").setValue("chx");
+    if (this.swapForm.get("fromBlockchain").value === "eth") {
+      this.swapForm.get("fromBlockchain").setValue("chx");
     } else {
-      this.swapForm.get("fromCurrency").setValue("eth");
+      this.swapForm.get("fromBlockchain").setValue("eth");
     }
   }
 
@@ -66,8 +80,37 @@ export class SwapChxComponent implements OnInit {
         this.warningMessage = `Please check if you have other wallet installed and active besides MetaMask wallet`;
         this.loading = false;
       } else {
+
         this.provider = provider;
-        console.log(provider);
+        this.web3 = new Web3(this.provider);
+
+        this.wChxMapping = new this.web3.eth.Contract(
+          environment.wChxMappingABI,
+          environment.wChxMappingContract
+        );
+
+        this.wChxToken = new this.web3.eth.Contract(
+          environment.wChxTokenABI,
+          environment.wChxTokenContract
+        );
+
+        const ethAddr = await this.wChxMapping.methods.ethAddress(
+          "CHcBVLtTuY393fSAZfwMERpkwBJfzuYva3Q"
+        ).call();
+
+        if (ethAddr) {
+          this.ethAddrMapped = true;
+          this.swapForm.get('ethAddress').setValue(ethAddr);
+          this.swapForm.get('ethAddress').disable();
+          this.wChxBalance = await this.wChxToken.methods.balanceOf(ethAddr).call();
+          const minAmount = await this.wChxToken.methods.minSwapAmount().call() / Math.pow(10, 7);
+          console.log('minAmount', minAmount);
+          console.log('balance', this.wChxBalance)
+        }
+
+  
+
+        console.log(ethAddr);
         this.risksAccepted = true;
         this.loading = false;
       }

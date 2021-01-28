@@ -123,6 +123,15 @@
               <form [formGroup]="swapForm">
                 <div class="row">
                   <div class="col">
+
+                    <div class="row mb-4">
+                      <div class="col">
+                        <label>Etherum address</label>
+                      </div>
+                      <div class="col-12">
+                        <input class="block" type="text" formControlName="ethAddress" />
+                      </div>
+                    </div>
                     <div class="row justify-content-between">
                       <label for="from" class="col">From</label>
                       <div class="col-4 text-center text-info">
@@ -138,7 +147,7 @@
                       <div class="border-right my-2"></div>
                       <select
                         class="no-borders col-4 text-center"
-                        formControlName="fromCurrency"
+                        formControlName="fromBlockchain"
                       >
                         <option value="chx">CHX</option>
                         <option value="eth">wCHX</option>
@@ -170,7 +179,7 @@
                       <div class="border-right my-2"></div>
                       <select
                         class="no-borders col-4"
-                        formControlName="toCurrency"
+                        formControlName="toBlockchain"
                       >
                         <option value="eth">wCHX</option>
                         <option value="chx">CHX</option>

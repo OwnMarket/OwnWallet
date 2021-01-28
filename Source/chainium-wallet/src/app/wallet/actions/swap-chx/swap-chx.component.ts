@@ -1,6 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import detectEthereumProvider from "@metamask/detect-provider";
+import { Subscription } from "rxjs";
+import { TxResult } from "src/app/shared/models/submit-transactions.model";
+import { WalletInfo } from "src/app/shared/models/wallet-info.model";
+import { NodeService } from "src/app/shared/services/node.service";
+import { PrivatekeyService } from "src/app/shared/services/privatekey.service";
 import { environment } from "src/environments/environment";
 import Web3 from 'web3';
 
@@ -15,22 +20,50 @@ export class SwapChxComponent implements OnInit {
   swapForm: FormGroup;
   provider: any;
   currentAccount: any;
+  addressSub: Subscription;
 
   loading = false;
   risksAccepted = false;
   showWarning = false;
   warningMessage: string;
 
+  isKeyImported = false;
+  txResult: TxResult;
+  wallet: WalletInfo;
+
   web3: any;
   wChxMapping: any;
   wChxToken: any;
 
   ethAddrMapped = false;
+  chxBalance: number;
   wChxBalance: number;
+  minSwapAmount: number;
+  nonce: number;
+  fee: number;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,    
+    private nodeService: NodeService,
+    private privateKeyService: PrivatekeyService
+  ) {}
 
   ngOnInit() {
+    this.isKeyImported = this.privateKeyService.existsKey();
+    if (!this.isKeyImported) { return; }
+
+    this.wallet = this.privateKeyService.getWalletInfo();
+
+    this.addressSub = this.nodeService.getAddressInfo(this.wallet.address)
+    .subscribe(balInfo => {
+      this.chxBalance = balInfo.balance.available;
+      this.nonce = balInfo.nonce + 1;
+      this.fee = this.nodeService.getMinFee();
+      this.setupForms();
+    });
+  }
+
+  setupForms() {
     this.acceptSwapForm = this.fb.group({
       aware: [false, [Validators.requiredTrue]],
       confirm: [false, [Validators.requiredTrue]],
@@ -41,8 +74,8 @@ export class SwapChxComponent implements OnInit {
       ethAddress: [null],
       fromBlockchain: ["chx"],
       toBlockchain: ["eth"],
-      fromAmount: [0],
-      toAmount: [0],
+      fromAmount: [null],
+      toAmount: [null],
     });
 
    this.swapForm.get('fromBlockchain').valueChanges.subscribe(value => {
@@ -57,7 +90,18 @@ export class SwapChxComponent implements OnInit {
     }
   });
 
+  this.swapForm.get('fromAmount').valueChanges.subscribe(value => {
+    this.swapForm.get('toAmount').setValue(value);
+  })
 
+  }
+
+  get fromBlockchain(): string {
+    return this.swapForm.get('fromBlockchain').value;
+  }
+
+  get toBlockchain(): string {
+    return this.swapForm.get('toBlockchain').value;
   }
 
   swapBlockchains() {
@@ -94,25 +138,8 @@ export class SwapChxComponent implements OnInit {
           environment.wChxTokenContract
         );
 
-        const ethAddr = await this.wChxMapping.methods.ethAddress(
-          "CHcBVLtTuY393fSAZfwMERpkwBJfzuYva3Q"
-        ).call();
-
-        if (ethAddr) {
-          this.ethAddrMapped = true;
-          this.swapForm.get('ethAddress').setValue(ethAddr);
-          this.swapForm.get('ethAddress').disable();
-          this.wChxBalance = await this.wChxToken.methods.balanceOf(ethAddr).call();
-          const minAmount = await this.wChxToken.methods.minSwapAmount().call() / Math.pow(10, 7);
-          console.log('minAmount', minAmount);
-          console.log('balance', this.wChxBalance)
-        }
-
-  
-
-        console.log(ethAddr);
         this.risksAccepted = true;
-        this.loading = false;
+          this.connect();
       }
     } else {
       this.showWarning = true;
@@ -121,21 +148,43 @@ export class SwapChxComponent implements OnInit {
     }
   }
 
-  handleAccountsChanged(accounts) {
-    if (accounts.length === 0) {
-      console.log("Please connect to MetaMask.");
-      this.showWarning = true;
-      this.warningMessage = `Your MetaMask wallet is locked or you didn't connect any accounts.`;
-    } else if (accounts[0] !== this.currentAccount) {
-      this.currentAccount = accounts[0];
-      // Do any other work!
-    }
-  }
-
   connect() {
     this.provider
       .request({ method: "eth_requestAccounts" })
-      .then(this.handleAccountsChanged)
+      .then(async (accounts) => {
+        this.loading = false;
+        if (accounts.length === 0) {
+          console.log("Please connect to MetaMask.");
+          this.showWarning = true;
+          this.warningMessage = `Your MetaMask wallet is locked or you didn't connect any accounts.`;
+        } else if (accounts[0] !== this.currentAccount) {
+          this.currentAccount = accounts[0];
+          console.log('account', this.currentAccount);
+   
+          const ethAddr = await this.wChxMapping.methods.ethAddress(
+            this.currentAccount
+          ).call();
+    
+          if (ethAddr !== '0x0000000000000000000000000000000000000000' && ethAddr !== '') {
+            this.ethAddrMapped = true;
+            this.swapForm.get('ethAddress').setValue(ethAddr);
+            this.swapForm.get('ethAddress').disable();
+            this.wChxBalance = await this.wChxToken.methods.balanceOf(ethAddr).call();
+   
+          } else {
+            this.ethAddrMapped = false;
+            this.swapForm.get('ethAddress').setValue(this.currentAccount);
+            this.swapForm.get('ethAddress').disable();
+            this.wChxBalance = await this.wChxToken.methods.balanceOf(this.currentAccount).call();
+            console.log('balance', this.wChxBalance)
+          }
+    
+          this.minSwapAmount = await this.wChxToken.methods.minSwapAmount().call() / Math.pow(10, 7);
+          this.swapForm.get('fromAmount').setValidators([Validators.required, Validators.min(this.minSwapAmount)]);
+          this.swapForm.markAsDirty();
+    
+        }
+      })
       .catch((err) => {
         if (err.code === 4001) {
           console.log("Please connect to MetaMask.");
@@ -144,6 +193,7 @@ export class SwapChxComponent implements OnInit {
         } else {
           console.error(err);
         }
+        this.loading = false;
       });
   }
 

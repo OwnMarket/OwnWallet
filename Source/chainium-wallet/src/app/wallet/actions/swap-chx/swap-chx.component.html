@@ -1,4 +1,4 @@
-<div class="container my-5">
+<div class="container my-5"  *ngIf="isKeyImported && acceptSwapForm && swapForm">
   <div class="row justify-content-center">
     <div class="col-12 col-sm-12 col-md-8">
       <own-card>
@@ -126,7 +126,7 @@
 
                     <div class="row mb-4">
                       <div class="col">
-                        <label>Etherum address</label>
+                        <label>Ethereum address</label>
                       </div>
                       <div class="col-12">
                         <input class="block" type="text" formControlName="ethAddress" />
@@ -135,7 +135,7 @@
                     <div class="row justify-content-between">
                       <label for="from" class="col">From</label>
                       <div class="col-4 text-center text-info">
-                        Balance: 232323 CHX
+                        Balance: {{ fromBlockchain === 'chx' ?  chxBalance + ' CHX' : wChxBalance + ' wCHX' }}
                       </div>
                     </div>
                     <div class="mega-input text-lg">
@@ -152,6 +152,9 @@
                         <option value="chx">CHX</option>
                         <option value="eth">wCHX</option>
                       </select>
+                    </div>
+                    <div class="text-danger" *ngIf="swapForm.get('fromAmount').dirty && swapForm.get('fromAmount').touched &&swapForm.get('fromAmount').errors?.min">
+                      Minimum amount is {{ minSwapAmount }}
                     </div>
                   </div>
                 </div>
@@ -172,6 +175,7 @@
 
                     <div class="mega-input text-lg">
                       <input
+                      readonly
                         class="block no-borders"
                         type="number"
                         formControlName="toAmount"
@@ -185,16 +189,21 @@
                         <option value="chx">CHX</option>
                       </select>
                     </div>
+
+                    <div class="row justify-content-end mt-2">
+                    <div class="col-4 text-info">Balance: {{ toBlockchain === 'eth' ?  wChxBalance + ' wCHX' : chxBalance + ' CHX' }}</div>
+                    </div>
+
                   </div>
                 </div>
                 <div class="row mt-4 justify-content-center">
-                  <div class="col col-sm-6++ mt-4">
+                  <div class="col col-sm-6 mt-4">
                     <button
-                      [disabled]="acceptSwapForm.invalid || loading"
+                      [disabled]="swapForm.invalid || loading"
                       class="block own-effect"
                       (click)="connect()"
                     >
-                      CONNECT TO METAMASK
+                      SWAP
                     </button>
                   </div>
                 </div>

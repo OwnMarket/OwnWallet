@@ -154,6 +154,10 @@ button.link {
   color: var(--color-text-info);
 }
 
+.text-danger {
+  color: var(--color-danger);
+}
+
 .text-white {
   color: white;
 }

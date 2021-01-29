@@ -135,9 +135,9 @@ export const ROUTERCONFIGS: Routes = [
         data: { state: "receive-chx" },
       },
       {
-        path: "wrap-chx",
+        path: "bridge-chx",
         component: SwapChxComponent,
-        data: { state: "swap" },
+        data: { state: "bridge" },
       },
       {
         path: "validator-managment",

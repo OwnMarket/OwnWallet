@@ -2,7 +2,7 @@
   <div class="row justify-content-center">
     <div class="col-12 col-sm-12 col-md-8">
       <own-card>
-        <own-card-title>Wrap CHX</own-card-title>
+        <own-card-title>Bridge CHX</own-card-title>
         <own-card-body [padding]="true">
           <div class="row" *ngIf="!risksAccepted && !showWarning">
             <div class="col">
@@ -126,34 +126,19 @@
 
           <div
             class="row"
-            *ngIf="risksAccepted && !showWarning && !connectingToMetaMask"
+            *ngIf="
+              risksAccepted &&
+              !showWarning &&
+              !connectingToMetaMask &&
+              !txResult
+            "
           >
             <div class="col">
               <form [formGroup]="wrapForm">
                 <div class="row">
                   <div class="col">
-                    <div class="row mb-4">
-                      <div class="col">
-                        <label>Ethereum address</label>
-                      </div>
-                      <div class="col-12">
-                        <input
-                          class="block"
-                          type="text"
-                          formControlName="ethAddress"
-                        />
-                      </div>
-                    </div>
-                    <div class="row justify-content-between">
+                    <div class="row">
                       <label for="from" class="col">From</label>
-                      <div class="col-4 text-center text-info">
-                        Balance:
-                        {{
-                          fromBlockchain === "chx"
-                            ? chxBalance + " CHX"
-                            : wChxBalance + " wCHX"
-                        }}
-                      </div>
                     </div>
                     <div class="mega-input text-lg">
                       <input
@@ -175,10 +160,40 @@
                       *ngIf="
                         wrapForm.get('fromAmount').dirty &&
                         wrapForm.get('fromAmount').touched &&
-                        wrapForm.get('fromAmount').errors?.min
+                        wrapForm.get('fromAmount').errors
                       "
                     >
-                      Minimum amount is {{ minWrapAmount }}
+                      <span
+                        *ngIf="
+                          wrapForm.get('fromAmount').errors?.min &&
+                          !wrapForm.get('fromAmount').errors?.max
+                        "
+                      >
+                        Minimum amount is {{ minWrapAmount }}
+                      </span>
+
+                      <span *ngIf="wrapForm.get('fromAmount').errors?.max">
+                        Amount can't be greater than your current balance
+                        {{
+                          fromBlockchain === "chx"
+                            ? chxBalance + " CHX"
+                            : wChxBalance + " wCHX"
+                        }}
+                      </span>
+                    </div>
+
+                    <div class="row text-info justify-content-between mt-2">
+                      <div class="col">
+                        {{ fromBlockchain === "chx" ? chxAddress : ethAddress }}
+                      </div>
+                      <div class="col-4">
+                        Balance:
+                        {{
+                          fromBlockchain === "chx"
+                            ? chxBalance + " CHX"
+                            : wChxBalance + " wCHX"
+                        }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -214,8 +229,12 @@
                       </select>
                     </div>
 
-                    <div class="row justify-content-end mt-2">
-                      <div class="col-4 text-info">
+                    <div class="row justify-content-between mt-2 text-info">
+                      <div class="col">
+                        {{ toBlockchain === "eth" ? ethAddress : chxAddress }}
+                      </div>
+
+                      <div class="col-4">
                         Balance:
                         {{
                           toBlockchain === "eth"
@@ -231,13 +250,88 @@
                     <button
                       [disabled]="wrapForm.invalid || loading"
                       class="block own-effect"
-                      (click)="connect()"
+                      (click)="wrap()"
                     >
-                      {{ fromBlockchain === "chx" ? "WRAP" : "UNWRAP" }}
+                      <svg
+                        *ngIf="loading"
+                        class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          class="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="#ffffff"
+                          stroke-width="4"
+                        ></circle>
+                        <path
+                          class="opacity-75"
+                          fill="#dfdfdf"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      BRIDGE
                     </button>
                   </div>
                 </div>
               </form>
+            </div>
+          </div>
+
+          <div
+            class="row justify-content-center"
+            *ngIf="txResult && !showWarning"
+          >
+            <div class="col-12">
+              <div
+                class="row full-height align-items-center justify-content-between"
+              >
+                <div class="col-12 col-md-4">
+                  <div class="token-success"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <h4>Success!</h4>
+                  <p class="info">
+                    Your transaction has been successfully submitted.
+                  </p>
+                  <p>
+                    <b>
+                      <div class="row">
+                        <div class="col-12">Transaction:</div>
+                        <div class="col-12">
+                          <div class="row">
+                            <div class="col-12">
+                              {{ txResult.txHash }}
+                              <button
+                                class="button-transparent"
+                                title="Copy Transaction"
+                                ngxClipboard
+                                cbContent="{{ txResult.txHash }}"
+                              >
+                                <own-icon
+                                  icon="copy"
+                                  color="#eb6723"
+                                ></own-icon>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </b>
+                  </p>
+                  <p class="mt-5">
+                    <button
+                      class="outline own-effect mr-4"
+                      [routerLink]="['/info/tx/' + txResult.txHash]"
+                    >
+                      VIEW TRANSACTION INFO
+                    </button>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </own-card-body>

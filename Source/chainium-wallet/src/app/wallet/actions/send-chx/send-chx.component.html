@@ -1,167 +1,196 @@
 <div class="container my-5" *ngIf="isKeyImported && sendChxForm">
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-8">
-
-        <!-- tx form -->
-        <own-card *ngIf="step === 1 && !isSubmited">
-          <own-card-title>
-            <b>Send CHX</b>
-          </own-card-title>
-          <own-card-body [padding]="true">
-            <form [formGroup]="sendChxForm">
-              <div class="row">
-                <div class="col-12">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8">
+      <!-- tx form -->
+      <own-card *ngIf="step === 1 && !isSubmited">
+        <own-card-title>
+          <b>Send CHX</b>
+        </own-card-title>
+        <own-card-body [padding]="true">
+          <form [formGroup]="sendChxForm">
+            <div class="row">
+              <div class="col-12">
                 <div class="row">
                   <div class="col-12 col-md-6">
                     <label class="block mt-3 mt-md-0">Amount</label>
-                    <input class="block" type="number" formControlName="amount">
+                    <input
+                      class="block"
+                      type="number"
+                      formControlName="amount"
+                    />
                   </div>
                   <div class="col-12 col-md-6">
                     <label class="block mt-3 mt-md-0">Address</label>
-                    <input class="block" type="text" formControlName="recipientAddress">
+                    <input
+                      class="block"
+                      type="text"
+                      formControlName="recipientAddress"
+                    />
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12 col-md-6">
-                      <button class="button-transparent my-3 row" (click)="displayActions = !displayActions">
-                        <span class="col-2 drop-menu" [class.open]="displayActions">
-                          <own-icon icon="arrow-down"></own-icon>
-                        </span>
-                        <span class="col-10">
-                          Advanced Options
-                        </span>
-                      </button>
-                      <div class="row" *ngIf="displayActions">
-                        <div class="col-12 col-md-6">
-                          <label class="block mt-3 mt-md-0">Nonce</label>
-                          <input class="block" type="number" formControlName="nonce">
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="block mt-3 mt-md-0">Action Fee</label>
-                          <input class="block" type="number" formControlName="actionFee">
-                        </div>
+                    <button
+                      class="button-transparent my-3 row"
+                      (click)="displayActions = !displayActions"
+                    >
+                      <span
+                        class="col-2 drop-menu"
+                        [class.open]="displayActions"
+                      >
+                        <own-icon icon="arrow-down"></own-icon>
+                      </span>
+                      <span class="col-10"> Advanced Options </span>
+                    </button>
+                    <div class="row" *ngIf="displayActions">
+                      <div class="col-12 col-md-6">
+                        <label class="block mt-3 mt-md-0">Nonce</label>
+                        <input
+                          class="block"
+                          type="number"
+                          formControlName="nonce"
+                        />
                       </div>
+                      <div class="col-12 col-md-6">
+                        <label class="block mt-3 mt-md-0">Action Fee</label>
+                        <input
+                          class="block"
+                          type="number"
+                          formControlName="actionFee"
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div class="col-12 col-md-6 text-right mt-5">
-                    <button class="own-effect" [disabled]="sendChxForm.invalid" type="button" (click)="step = 2">
+                    <button
+                      class="own-effect"
+                      [disabled]="sendChxForm.invalid"
+                      type="button"
+                      (click)="step = 2"
+                    >
                       Continue
                     </button>
                   </div>
                 </div>
               </div>
-              </div>
-            </form>
-          </own-card-body>
-        </own-card>
+            </div>
+          </form>
+        </own-card-body>
+      </own-card>
 
-        <!-- tx summary -->
-        <own-card *ngIf="step === 2 && !isSubmited">
-            <own-card-title>
-              <b>Summary</b>
-            </own-card-title>
-            <own-card-body [padding]="true">
+      <!-- tx summary -->
+      <own-card *ngIf="step === 2 && !isSubmited">
+        <own-card-title>
+          <b>Summary</b>
+        </own-card-title>
+        <own-card-body [padding]="true">
+          <div class="row">
+            <div class="col-12 col-md-4">
               <div class="row">
-                <div class="col-12 col-md-4">
-                  <div class="row">
-                    <div class="col-6">
-                      Amount:
-                    </div>
-                    <div class="col-6 text-right">
-                      <b>{{ sendChxForm.get('amount').value }} CHX</b>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-6">
-                        Fee:
-                      </div>
-                      <div class="col-6 text-right">
-                        <b>{{ sendChxForm.get('actionFee').value }} CHX</b>
-                      </div>
-                  </div>
-                  <div class="row brand total mt-5 pt-3 border-top-all">
-                    <div class="col-4">
-                      Total:
-                    </div>
-                    <div class="col-8 text-right">
-                      <b>{{ sendChxForm.get('amount').value + sendChxForm.get('actionFee').value }} CHX</b>
-                    </div>
-                  </div>
+                <div class="col-6">Amount:</div>
+                <div class="col-6 text-right">
+                  <b>{{ sendChxForm.get("amount").value }} CHX</b>
                 </div>
-                <div class="col-12 col-md-8 mt-5 mt-md-0">
+              </div>
+              <div class="row">
+                <div class="col-6">Fee:</div>
+                <div class="col-6 text-right">
+                  <b>{{ sendChxForm.get("actionFee").value }} CHX</b>
+                </div>
+              </div>
+              <div class="row brand total mt-5 pt-3 border-top-all">
+                <div class="col-4">Total:</div>
+                <div class="col-8 text-right">
+                  <b
+                    >{{
+                      sendChxForm.get("amount").value +
+                        sendChxForm.get("actionFee").value
+                    }}
+                    CHX</b
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-8 mt-5 mt-md-0">
+              <div class="row">
+                <div class="col-4">Sender:</div>
+                <div class="col-8 text-truncate">
+                  <b>{{ wallet.address }}</b>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">Recipient:</div>
+                <div class="col-8 text-truncate">
+                  <b>{{ sendChxForm.get("recipientAddress").value }}</b>
+                </div>
+              </div>
+              <div class="row mt-5 pt-3 border-top-all">
+                <div class="col-6 col-md-4 text-right offset-md-4">
+                  <button
+                    class="own-effect outline flat block"
+                    (click)="reset()"
+                  >
+                    Cancel
+                  </button>
+                </div>
+                <div class="col-6 col-md-4">
+                  <button
+                    class="block own-effect"
+                    (click)="submit(sendChxForm)"
+                  >
+                    SEND
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </own-card-body>
+      </own-card>
+    </div>
+  </div>
+</div>
+
+<div class="container mb-5">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="row full-height align-items-center justify-content-center">
+        <div class="col-12 col-md-4">
+          <div class="token-success"></div>
+        </div>
+        <div class="col-12 col-md-7">
+          <h4>Success!</h4>
+          <p class="info">Your transaction has been successfully submitted.</p>
+          <p>
+            <b>
+              <div class="row">
+                <div class="col-12">Transaction:</div>
+                <div class="col-12">
                   <div class="row">
-                    <div class="col-4">
-                      Sender:
-                    </div>
-                    <div class="col-8 text-truncate">
-                      <b>{{ wallet.address }}</b>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-4">
-                        Recipient:
-                    </div>
-                    <div class="col-8 text-truncate">
-                      <b>{{ sendChxForm.get('recipientAddress').value }}</b>
-                    </div>
-                  </div>
-                  <div class="row mt-5 pt-3 border-top-all">
-                    <div class="col-6 col-md-4 text-right offset-md-4">
-                      <button class="own-effect outline flat block" (click)="reset()">Cancel</button>
-                    </div>
-                    <div class="col-6 col-md-4">
-                      <button class="block own-effect" (click)="submit(sendChxForm)">
-                        SEND
+                    <div class="col-12">
+                      {{ txResult.txHash }}
+                      <button
+                        class="button-transparent"
+                        title="Copy Transaction"
+                        ngxClipboard
+                        cbContent="{{ txResult.txHash }}"
+                      >
+                        <own-icon icon="copy" color="#eb6723"></own-icon>
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
-            </own-card-body>
-          </own-card>
-
-      </div>
-    </div>
-  </div>
-
-<div class="container mb-5" *ngIf="isSubmited && txResult && !submissionErrors">
-    <div class="row justify-content-center">
-      <div class="col-12">
-        <div class="row full-height align-items-center justify-content-center">
-            <div class="col-12 col-md-4">
-              <div class="token-success"></div>
-            </div>
-            <div class="col-12 col-md-7">
-              <h4>Success!</h4>
-              <p class="info">
-                Your transaction has been successfully submitted.
-              </p>
-              <p>
-                <b>
-                  <div class="row">
-                    <div class="col-12">
-                      Transaction:
-                    </div>
-                    <div class="col-12">
-                      <div class="row">
-                        <div class="col-12">
-                          {{ txResult.txHash }} 
-                          <button class="button-transparent" title="Copy Transaction" ngxClipboard cbContent="{{ txResult.txHash }}">
-                            <own-icon icon="copy" color="#eb6723"></own-icon>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </b>
-              </p>
-              <p class="mt-5">
-                <button class="outline own-effect mr-4" [routerLink]="['/info/tx/' + txResult.txHash]">
-                  VIEW TRANSACTION INFO
-                </button>
-                <button class="own-effect" (click)="reset()">
-                  SEND MORE ?
-                </button>
-              </p>
+            </b>
+          </p>
+          <p class="mt-5">
+            <button
+              class="outline own-effect mr-4"
+              [routerLink]="['/info/tx/' + txResult.txHash]"
+            >
+              VIEW TRANSACTION INFO
+            </button>
+            <button class="own-effect" (click)="reset()">SEND MORE ?</button>
+          </p>
         </div>
       </div>
     </div>
@@ -169,24 +198,24 @@
 </div>
 
 <div class="container mb-5" *ngIf="isSubmited && submissionErrors">
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-8">
-        <div class="row full-height align-items-center">
-            <div class="col-12 col-md-6">
-              <div class="token-fail"></div>
-            </div>
-            <div class="col-12 col-md-6">
-              <h4>Sorry, your transaction was rejected.</h4>
-              <p class="info">
-                <li *ngFor="let error of submissionErrors">
-                  {{ error }}
-                </li>
-              </p>
-              <p class="text-center mt-5">
-                  <button class="outline own-effect" (click)="reset()">
-                    TRY AGAIN ?
-                  </button>
-              </p>
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8">
+      <div class="row full-height align-items-center">
+        <div class="col-12 col-md-6">
+          <div class="token-fail"></div>
+        </div>
+        <div class="col-12 col-md-6">
+          <h4>Sorry, your transaction was rejected.</h4>
+          <p class="info">
+            <li *ngFor="let error of submissionErrors">
+              {{ error }}
+            </li>
+          </p>
+          <p class="text-center mt-5">
+            <button class="outline own-effect" (click)="reset()">
+              TRY AGAIN ?
+            </button>
+          </p>
         </div>
       </div>
     </div>

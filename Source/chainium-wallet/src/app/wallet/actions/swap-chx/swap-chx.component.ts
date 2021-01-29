@@ -9,6 +9,7 @@ import { NodeService } from "src/app/shared/services/node.service";
 import { PrivatekeyService } from "src/app/shared/services/privatekey.service";
 import { environment } from "src/environments/environment";
 import Web3 from "web3";
+declare var ownBlockchainSdk: any;
 
 @Component({
   selector: "app-swap-chx",
@@ -18,6 +19,7 @@ import Web3 from "web3";
 export class SwapChxComponent implements OnInit, OnDestroy {
   acceptWrapForm: FormGroup;
   wrapForm: FormGroup;
+  txSub: Subscription;
   provider: any;
   currentAccount: any;
   addressSub: Subscription;
@@ -75,6 +77,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.addressSub) this.addressSub.unsubscribe();
     if (this.signatureSub) this.signatureSub.unsubscribe();
+    if (this.txSub) this.txSub.unsubscribe();
   }
 
   setupForms() {
@@ -97,6 +100,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
         this.wrapForm.get("toBlockchain").value === "eth"
           ? this.wrapForm.get("toBlockchain").setValue("chx")
           : this.wrapForm.get("toBlockchain").setValue("eth");
+        this.setValidators();
       }
     });
 
@@ -105,12 +109,25 @@ export class SwapChxComponent implements OnInit, OnDestroy {
         this.wrapForm.get("fromBlockchain").value === "eth"
           ? this.wrapForm.get("fromBlockchain").setValue("chx")
           : this.wrapForm.get("fromBlockchain").setValue("eth");
+        this.setValidators();
       }
     });
 
     this.wrapForm.get("fromAmount").valueChanges.subscribe((value) => {
       this.wrapForm.get("toAmount").setValue(value);
     });
+  }
+
+  setValidators() {
+    this.wrapForm
+      .get("fromAmount")
+      .setValidators([
+        Validators.required,
+        Validators.min(this.minWrapAmount),
+        Validators.max(
+          this.fromBlockchain === "chx" ? this.chxBalance : this.wChxBalance
+        ),
+      ]);
   }
 
   get fromBlockchain(): string {
@@ -193,24 +210,15 @@ export class SwapChxComponent implements OnInit, OnDestroy {
             this.ethAddrMapped = false;
           }
 
-          this.wrapForm.get("ethAddress").setValue(this.ethAddress);
-          this.wrapForm.get("ethAddress").disable();
-
-          this.wChxBalance = await this.wChxToken.methods
-            .balanceOf(this.ethAddress)
-            .call();
+          this.wChxBalance =
+            (await this.wChxToken.methods.balanceOf(this.ethAddress).call()) /
+            Math.pow(10, 7);
 
           this.minWrapAmount =
             (await this.wChxToken.methods.minWrapAmount().call()) /
             Math.pow(10, 7);
 
-          this.wrapForm
-            .get("fromAmount")
-            .setValidators([
-              Validators.required,
-              Validators.min(this.minWrapAmount),
-            ]);
-
+          this.setValidators();
           this.wrapForm.get("fromAmount").setValue(0);
         }
       })
@@ -228,6 +236,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
 
   wrap() {
     if (!this.ethAddrMapped) {
+      this.loading = true;
       this.signatureSub = this.cryptoService
         .signMessage(
           this.privateKeyService.getWalletInfo().privateKey,
@@ -236,8 +245,57 @@ export class SwapChxComponent implements OnInit, OnDestroy {
         .subscribe(async (signature: string) => {
           const mapAddr = await this.wChxMapping.methods
             .mapAddress(this.chxAddress, signature)
-            .send();
+            .send({
+              from: this.ethAddress,
+            });
+          this.transfer();
         });
+    } else {
+      this.transfer();
+    }
+  }
+
+  async transfer() {
+    if (this.fromBlockchain === "chx") {
+      const txToSign = ownBlockchainSdk.transactions.createTx(
+        this.wallet.address,
+        this.nonce,
+        this.fee
+      );
+
+      txToSign.addTransferChxAction(
+        environment.ownerChxAddress,
+        +this.wrapForm.get("fromAmount").value
+      );
+
+      const signature = txToSign.sign(
+        environment.networkCode,
+        this.wallet.privateKey
+      );
+
+      this.txSub = this.nodeService
+        .submitTransaction(signature)
+        .subscribe((result) => {
+          this.loading = false;
+          if (result.errors) {
+            this.showWarning = true;
+            this.warningMessage = result.errors;
+            return;
+          }
+          this.txResult = result as TxResult;
+        });
+    }
+    if (this.fromBlockchain === "eth") {
+      const tx = await this.wChxToken.methods
+        .transfer(
+          environment.ownerEthAddress,
+          +this.wrapForm.get("fromAmount").value
+        )
+        .send({
+          from: this.ethAddress,
+        });
+      console.log(tx);
+      this.loading = false;
     }
   }
 

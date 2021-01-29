@@ -27,9 +27,12 @@ export class SwapChxComponent implements OnInit, OnDestroy {
 
   loading = false;
   risksAccepted = false;
+  metaMaskConnected = false;
   connectingToMetaMask = false;
+  confirmTransfer = false;
   showWarning = false;
   warningMessage: string;
+  isProduction: boolean;
 
   isKeyImported = false;
   txResult: TxResult;
@@ -43,7 +46,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
   chxAddress: string;
   ethAddress: string;
   chxBalance: number;
-  wChxBalance: number;
+  wChxBalance: number = 0;
   minWrapAmount: number;
   nonce: number;
   fee: number;
@@ -56,6 +59,8 @@ export class SwapChxComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.isProduction = environment.production;
+
     this.isKeyImported = this.privateKeyService.existsKey();
     if (!this.isKeyImported) {
       return;
@@ -147,6 +152,10 @@ export class SwapChxComponent implements OnInit, OnDestroy {
   }
 
   async acceptRisks() {
+    this.risksAccepted = true;
+  }
+
+  async initiateMetaMaskProvider() {
     this.loading = true;
     const provider = await detectEthereumProvider();
 
@@ -171,7 +180,6 @@ export class SwapChxComponent implements OnInit, OnDestroy {
           environment.wChxTokenContract
         );
 
-        this.risksAccepted = true;
         this.connect();
       }
     } else {
@@ -187,6 +195,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
       .request({ method: "eth_requestAccounts" })
       .then(async (accounts) => {
         this.loading = false;
+        this.metaMaskConnected = true;
         this.connectingToMetaMask = false;
         if (accounts.length === 0) {
           console.log("Please connect to MetaMask.");
@@ -286,16 +295,17 @@ export class SwapChxComponent implements OnInit, OnDestroy {
         });
     }
     if (this.fromBlockchain === "eth") {
+      const amount = +this.wrapForm.get("fromAmount").value * Math.pow(10, 7);
       const tx = await this.wChxToken.methods
-        .transfer(
-          environment.ownerEthAddress,
-          +this.wrapForm.get("fromAmount").value
-        )
+        .transfer(environment.ownerEthAddress, amount)
         .send({
           from: this.ethAddress,
+        })
+        .on("transactionHash", (hash) => {
+          this.txResult.txHash = hash;
+          console.log(hash);
+          this.loading = false;
         });
-      console.log(tx);
-      this.loading = false;
     }
   }
 

@@ -2,31 +2,34 @@
   <div class="row justify-content-center">
     <div class="col-12 col-sm-12 col-md-8">
       <own-card>
-        <own-card-title>Bridge CHX</own-card-title>
+        <own-card-title>Bridge</own-card-title>
         <own-card-body [padding]="true">
           <div class="row" *ngIf="!risksAccepted && !showWarning">
             <div class="col">
               <p>
                 This process allows you to transfer CHX tokens from the
-                <strong>Own Blockchain</strong> to other blockchains and vice
-                versa.
+                <strong>WeOwn Blockchain</strong> onto other blockchains and
+                back.
               </p>
               <p>
-                Before you proceed, please make sure that you are familiar with
-                the concept of token wraps and risks associated with it.
+                Before you proceed, please make sure you are familiar with
+                inter-blockchain related swap / bridge / wrap risks involved.
               </p>
-              <p class="mt-4">The pre-requisites for token wrap are:</p>
+              <p class="mt-4">The pre-requisites for the token bridge are:</p>
               <ul>
                 <li>
-                  You have already created a CHX wallet with a holding of at
-                  least X CHX token
+                  You have created a CHX wallet, loaded with enough CHX tokens
+                  incl. transaction fees.
                 </li>
                 <li>
-                  You have a wallet on the supported source/target blockchain
-                  with sufficient holding
+                  You have a wallet on the supported source and target
+                  blockchain with enough tokens and transaction fees.
                 </li>
-                <li>You are in control of the private keys of both wallets</li>
-                <li>You have a MetaMask wallet account</li>
+                <li>
+                  You are in control of all private keys for both source and
+                  target blockchain, safely stored in a secure place.
+                </li>
+                <li>You have a MetaMask installed and you can access it.</li>
               </ul>
               <form [formGroup]="acceptWrapForm">
                 <div class="row mt-4">
@@ -37,9 +40,9 @@
                       id="aware-of-risks"
                     />
                     <label class="m-0" for="aware-of-risks"
-                      >I'am fully aware of the risks of a token wrap and the
-                      fact that incorrect use may result in a total or partial
-                      loss of my tokens.</label
+                      >I am fully aware of the risks involved, and any incorrect
+                      usage could result in total or partial loss of my
+                      funds</label
                     >
                   </div>
                 </div>
@@ -51,9 +54,9 @@
                       id="confirm"
                     />
                     <label class="m-0" for="confirm">
-                      I hereby confirm that the Wallets used for the Token Wrap
-                      are under my control and possession and that I have the
-                      requirements for a Token Wrap described above
+                      I hereby confirm that both target and source wallets are
+                      in my control and I meet all prerequisites described
+                      above.
                     </label>
                   </div>
                 </div>
@@ -61,8 +64,8 @@
                   <div class="col">
                     <input type="checkbox" formControlName="agree" id="agree" />
                     <label class="m-0" for="agree">
-                      I agree that Own accepts no liability whatsoever for any
-                      incorrect or improper use of the Token Wrap functionality
+                      I confirm and agree that WeOwn cannot be held accountable
+                      for any incorrect or improper use of the bridge feature.
                     </label>
                   </div>
                 </div>
@@ -130,6 +133,7 @@
               risksAccepted &&
               !showWarning &&
               !connectingToMetaMask &&
+              !confirmTransfer &&
               !txResult
             "
           >
@@ -137,8 +141,33 @@
               <form [formGroup]="wrapForm">
                 <div class="row">
                   <div class="col">
-                    <div class="row">
-                      <label for="from" class="col">From</label>
+                    <div class="row justify-content-between">
+                      <label for="from" class="col-2">From</label>
+                      <div class="col text-right">
+                        <span
+                          class="text-white bg-danger p-2 rounded text-small"
+                          *ngIf="
+                            wrapForm.get('fromAmount').dirty &&
+                            wrapForm.get('fromAmount').touched &&
+                            wrapForm.get('fromAmount').errors
+                          "
+                        >
+                          <span
+                            *ngIf="
+                              wrapForm.get('fromAmount').errors?.min &&
+                              !wrapForm.get('fromAmount').errors?.max
+                            "
+                          >
+                            Minimum amount is {{ minWrapAmount }}
+                          </span>
+
+                          <span *ngIf="wrapForm.get('fromAmount').errors?.max">
+                            Amount can't be greater than your current
+                            {{ fromBlockchain === "chx" ? "CHX" : "wCHX" }}
+                            balance
+                          </span>
+                        </span>
+                      </div>
                     </div>
                     <div class="mega-input text-lg">
                       <input
@@ -154,32 +183,6 @@
                         <option value="chx">CHX</option>
                         <option value="eth">wCHX</option>
                       </select>
-                    </div>
-                    <div
-                      class="text-danger"
-                      *ngIf="
-                        wrapForm.get('fromAmount').dirty &&
-                        wrapForm.get('fromAmount').touched &&
-                        wrapForm.get('fromAmount').errors
-                      "
-                    >
-                      <span
-                        *ngIf="
-                          wrapForm.get('fromAmount').errors?.min &&
-                          !wrapForm.get('fromAmount').errors?.max
-                        "
-                      >
-                        Minimum amount is {{ minWrapAmount }}
-                      </span>
-
-                      <span *ngIf="wrapForm.get('fromAmount').errors?.max">
-                        Amount can't be greater than your current balance
-                        {{
-                          fromBlockchain === "chx"
-                            ? chxBalance + " CHX"
-                            : wChxBalance + " wCHX"
-                        }}
-                      </span>
                     </div>
 
                     <div class="row text-info justify-content-between mt-2">
@@ -248,9 +251,10 @@
                 <div class="row mt-4 justify-content-center">
                   <div class="col col-sm-6 mt-4">
                     <button
-                      [disabled]="wrapForm.invalid || loading"
+                      *ngIf="!metaMaskConnected"
+                      [disabled]="loading"
                       class="block own-effect"
-                      (click)="wrap()"
+                      (click)="initiateMetaMaskProvider()"
                     >
                       <svg
                         *ngIf="loading"
@@ -273,11 +277,131 @@
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
-                      BRIDGE
+                      CONECT WITH METAMASK
+                    </button>
+                    <button
+                      *ngIf="metaMaskConnected"
+                      [disabled]="wrapForm.invalid || loading"
+                      class="block own-effect"
+                      (click)="confirmTransfer = true"
+                    >
+                      <svg
+                        *ngIf="loading"
+                        class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          class="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="#ffffff"
+                          stroke-width="4"
+                        ></circle>
+                        <path
+                          class="opacity-75"
+                          fill="#dfdfdf"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      TRANSFER
                     </button>
                   </div>
                 </div>
               </form>
+            </div>
+          </div>
+
+          <div
+            class="row"
+            *ngIf="
+              risksAccepted &&
+              wrapForm &&
+              confirmTransfer &&
+              !showWarning &&
+              !txResult
+            "
+          >
+            <div class="col">
+              <div class="row justify-content-between">
+                <div class="col">
+                  <h2 class="m-0">{{ wrapForm.get("fromAmount").value }}</h2>
+                </div>
+                <div class="col text-right">
+                  <h2 class="m-0">
+                    {{ fromBlockchain === "chx" ? "CHX" : "wCHX" }}
+                  </h2>
+                </div>
+              </div>
+              <div class="row justify-content-between">
+                <div class="col text-brand">
+                  {{ fromBlockchain === "chx" ? chxAddress : ethAddress }}
+                </div>
+                <div class="col-1">
+                  <own-icon
+                    icon="arrow-down"
+                    size="20"
+                    color="#848484"
+                  ></own-icon>
+                </div>
+              </div>
+              <div class="row justify-content-between mt-4">
+                <div class="col">
+                  <h2 class="m-0">{{ wrapForm.get("toAmount").value }}</h2>
+                </div>
+                <div class="col text-right">
+                  <h2 class="m-0">
+                    {{ toBlockchain === "eth" ? "wCHX" : "CHX" }}
+                  </h2>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col text-brand">
+                  {{ toBlockchain === "eth" ? ethAddress : chxAddress }}
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col">
+                  <span class="text-info text-small">
+                    <own-icon icon="info" size="25" color="#848484"></own-icon>
+                    Output value is estimated.
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-4 justify-content-center">
+                <div class="col col-sm-6 mt-4">
+                  <button
+                    [disabled]="loading"
+                    class="block own-effect"
+                    (click)="wrap()"
+                  >
+                    <svg
+                      *ngIf="loading"
+                      class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        class="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="#ffffff"
+                        stroke-width="4"
+                      ></circle>
+                      <path
+                        class="opacity-75"
+                        fill="#dfdfdf"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    CONFIRM TRANSFER
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -289,10 +413,10 @@
               <div
                 class="row full-height align-items-center justify-content-between"
               >
-                <div class="col-12 col-md-4">
+                <div class="col-12">
                   <div class="token-success"></div>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12">
                   <h4>Success!</h4>
                   <p class="info">
                     Your transaction has been successfully submitted.
@@ -322,14 +446,35 @@
                       </div>
                     </b>
                   </p>
-                  <p class="mt-5">
-                    <button
-                      class="outline own-effect mr-4"
-                      [routerLink]="['/info/tx/' + txResult.txHash]"
-                    >
-                      VIEW TRANSACTION INFO
-                    </button>
-                  </p>
+                  <div class="mt-5">
+                    <div class="row justify-content-center">
+                      <div class="col col-md-6">
+                        <button
+                          *ngIf="fromBlockchain === 'chx'"
+                          class="outline own-effect block"
+                          [routerLink]="['/info/tx/' + txResult.txHash]"
+                        >
+                          VIEW TRANSACTION INFO
+                        </button>
+                        <a
+                          *ngIf="fromBlockchain === 'eth' && !isProduction"
+                          class="outline own-effect block"
+                          [href]="
+                            'https://rinkeby.etherscan.io/tx/' + txResult.txHash
+                          "
+                        >
+                          VIEW TRANSACTION INFO
+                        </a>
+                        <a
+                          *ngIf="fromBlockchain === 'eth' && isProduction"
+                          class="outline own-effect block"
+                          [href]="'https://etherscan.io/tx/' + txResult.txHash"
+                        >
+                          VIEW TRANSACTION INFO
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

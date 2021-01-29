@@ -2,10 +2,10 @@ export const environment = {
   production: false,
   nodeApiUrl: "https://wallet-node.testnet.weown.com",
   networkCode: "OWN_PUBLIC_BLOCKCHAIN_TESTNET",
-  ownerChxAddress: "CHUA5wbk8kGk8iE1N8UnFGDpFvBVjPytojL",
+  ownerChxAddress: "CHRMeEM5dJfWarCJGPSTutUhc9wpm3CYdb8",
   ownerEthAddress: "0xdb74f4198490829952C70F9a5cFaCa8ea25771CB",
   wChxMappingContract: "0xF31eC897eEEac4fE47fa3D1738D27f0d235c74ae",
-  wChxTokenContract: "0xeA2Df99CAf386B4AE59dd9169b1854719fB09E54",
+  wChxTokenContract: "0xa7abe281ea712aec2b49418644b70211e3ddf0f6",
   wChxMappingABI: [
     { inputs: [], stateMutability: "nonpayable", type: "constructor" },
     {

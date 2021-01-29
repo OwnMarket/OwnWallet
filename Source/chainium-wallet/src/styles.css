@@ -117,6 +117,10 @@ button.link {
   margin-left: -0.25rem;
 }
 
+.m-0 {
+  margin: 0;
+}
+
 .animate-spin {
   animation: spin 1s linear infinite;
 }
@@ -158,22 +162,42 @@ button.link {
   color: var(--color-danger);
 }
 
+.text-brand {
+  color: var(--color-brand);
+}
+
+.bg-danger {
+  background-color: var(--color-danger);
+}
+
+.bg-info {
+  background-color: var(--color-text-info);
+}
+
 .text-white {
   color: white;
+}
+
+.rounded {
+  border-radius: 4px;
 }
 
 .text-center {
   text-align: center;
 }
 
+.text-right {
+  text-align: right;
+}
+
+.text-small {
+  font-size: 0.9rem;
+}
+
 .elipsis {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.text-right {
-  text-align: right;
 }
 
 .monospace-font {

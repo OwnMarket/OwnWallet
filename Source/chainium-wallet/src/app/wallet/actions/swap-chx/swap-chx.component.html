@@ -1,8 +1,8 @@
-<div class="container my-5"  *ngIf="isKeyImported && acceptSwapForm && swapForm">
+<div class="container my-5" *ngIf="isKeyImported && acceptWrapForm && wrapForm">
   <div class="row justify-content-center">
     <div class="col-12 col-sm-12 col-md-8">
       <own-card>
-        <own-card-title>CHX Bridge</own-card-title>
+        <own-card-title>Wrap CHX</own-card-title>
         <own-card-body [padding]="true">
           <div class="row" *ngIf="!risksAccepted && !showWarning">
             <div class="col">
@@ -13,9 +13,9 @@
               </p>
               <p>
                 Before you proceed, please make sure that you are familiar with
-                the concept of token swaps and risks associated with it.
+                the concept of token wraps and risks associated with it.
               </p>
-              <p class="mt-4">The pre-requisites for token swap are:</p>
+              <p class="mt-4">The pre-requisites for token wrap are:</p>
               <ul>
                 <li>
                   You have already created a CHX wallet with a holding of at
@@ -28,7 +28,7 @@
                 <li>You are in control of the private keys of both wallets</li>
                 <li>You have a MetaMask wallet account</li>
               </ul>
-              <form [formGroup]="acceptSwapForm">
+              <form [formGroup]="acceptWrapForm">
                 <div class="row mt-4">
                   <div class="col mt-4">
                     <input
@@ -37,7 +37,7 @@
                       id="aware-of-risks"
                     />
                     <label class="m-0" for="aware-of-risks"
-                      >I'am fully aware of the risks of a token swap and the
+                      >I'am fully aware of the risks of a token wrap and the
                       fact that incorrect use may result in a total or partial
                       loss of my tokens.</label
                     >
@@ -51,9 +51,9 @@
                       id="confirm"
                     />
                     <label class="m-0" for="confirm">
-                      I hereby confirm that the Wallets used for the Token Swap
+                      I hereby confirm that the Wallets used for the Token Wrap
                       are under my control and possession and that I have the
-                      requirements for a Token Swap described above
+                      requirements for a Token Wrap described above
                     </label>
                   </div>
                 </div>
@@ -62,14 +62,14 @@
                     <input type="checkbox" formControlName="agree" id="agree" />
                     <label class="m-0" for="agree">
                       I agree that Own accepts no liability whatsoever for any
-                      incorrect or improper use of the Token Swap functionality
+                      incorrect or improper use of the Token Wrap functionality
                     </label>
                   </div>
                 </div>
                 <div class="row mt-4 justify-content-center">
                   <div class="col col-sm-6 mt-4">
                     <button
-                      [disabled]="acceptSwapForm.invalid || loading"
+                      [disabled]="acceptWrapForm.invalid || loading"
                       class="block own-effect"
                       (click)="acceptRisks()"
                     >
@@ -118,24 +118,41 @@
             </div>
           </div>
 
-          <div class="row" *ngIf="risksAccepted && !showWarning">
+          <div class="row" *ngIf="connectingToMetaMask">
+            <div class="col-12">
+              <h2>Connecting to MetaMask ...</h2>
+            </div>
+          </div>
+
+          <div
+            class="row"
+            *ngIf="risksAccepted && !showWarning && !connectingToMetaMask"
+          >
             <div class="col">
-              <form [formGroup]="swapForm">
+              <form [formGroup]="wrapForm">
                 <div class="row">
                   <div class="col">
-
                     <div class="row mb-4">
                       <div class="col">
                         <label>Ethereum address</label>
                       </div>
                       <div class="col-12">
-                        <input class="block" type="text" formControlName="ethAddress" />
+                        <input
+                          class="block"
+                          type="text"
+                          formControlName="ethAddress"
+                        />
                       </div>
                     </div>
                     <div class="row justify-content-between">
                       <label for="from" class="col">From</label>
                       <div class="col-4 text-center text-info">
-                        Balance: {{ fromBlockchain === 'chx' ?  chxBalance + ' CHX' : wChxBalance + ' wCHX' }}
+                        Balance:
+                        {{
+                          fromBlockchain === "chx"
+                            ? chxBalance + " CHX"
+                            : wChxBalance + " wCHX"
+                        }}
                       </div>
                     </div>
                     <div class="mega-input text-lg">
@@ -153,8 +170,15 @@
                         <option value="eth">wCHX</option>
                       </select>
                     </div>
-                    <div class="text-danger" *ngIf="swapForm.get('fromAmount').dirty && swapForm.get('fromAmount').touched &&swapForm.get('fromAmount').errors?.min">
-                      Minimum amount is {{ minSwapAmount }}
+                    <div
+                      class="text-danger"
+                      *ngIf="
+                        wrapForm.get('fromAmount').dirty &&
+                        wrapForm.get('fromAmount').touched &&
+                        wrapForm.get('fromAmount').errors?.min
+                      "
+                    >
+                      Minimum amount is {{ minWrapAmount }}
                     </div>
                   </div>
                 </div>
@@ -175,7 +199,7 @@
 
                     <div class="mega-input text-lg">
                       <input
-                      readonly
+                        readonly
                         class="block no-borders"
                         type="number"
                         formControlName="toAmount"
@@ -191,19 +215,25 @@
                     </div>
 
                     <div class="row justify-content-end mt-2">
-                    <div class="col-4 text-info">Balance: {{ toBlockchain === 'eth' ?  wChxBalance + ' wCHX' : chxBalance + ' CHX' }}</div>
+                      <div class="col-4 text-info">
+                        Balance:
+                        {{
+                          toBlockchain === "eth"
+                            ? wChxBalance + " wCHX"
+                            : chxBalance + " CHX"
+                        }}
+                      </div>
                     </div>
-
                   </div>
                 </div>
                 <div class="row mt-4 justify-content-center">
                   <div class="col col-sm-6 mt-4">
                     <button
-                      [disabled]="swapForm.invalid || loading"
+                      [disabled]="wrapForm.invalid || loading"
                       class="block own-effect"
                       (click)="connect()"
                     >
-                      SWAP
+                      {{ fromBlockchain === "chx" ? "WRAP" : "UNWRAP" }}
                     </button>
                   </div>
                 </div>

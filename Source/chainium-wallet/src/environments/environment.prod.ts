@@ -2,8 +2,10 @@ export const environment = {
   production: true,
   nodeApiUrl: "<<NODE_API_URL>>",
   networkCode: "<<NETWORK_CODE>>",
-  wChxMappingContract: "0x906836a70d9e384d9ee8942df855f6f2cda220a9",
-  wChxTokenContract: "0x8b7627ea65838c98c9bc74e10c602cc769ececc6",
+  ownerChxAddress: "CHUA5wbk8kGk8iE1N8UnFGDpFvBVjPytojL",
+  ownerEthAddress: "0xdb74f4198490829952C70F9a5cFaCa8ea25771CB",
+  wChxMappingContract: "0xF31eC897eEEac4fE47fa3D1738D27f0d235c74ae",
+  wChxTokenContract: "0xeA2Df99CAf386B4AE59dd9169b1854719fB09E54",
   wChxMappingABI: [
     { inputs: [], stateMutability: "nonpayable", type: "constructor" },
     {
@@ -161,7 +163,7 @@ export const environment = {
       inputs: [
         {
           internalType: "address",
-          name: "mappingContractAddress",
+          name: "_mappingContractAddress",
           type: "address",
         },
       ],
@@ -216,25 +218,6 @@ export const environment = {
       anonymous: false,
       inputs: [
         {
-          indexed: false,
-          internalType: "address",
-          name: "ethAddress",
-          type: "address",
-        },
-        {
-          indexed: false,
-          internalType: "string",
-          name: "chxAddress",
-          type: "string",
-        },
-      ],
-      name: "SwapToChx",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
           indexed: true,
           internalType: "address",
           name: "from",
@@ -249,6 +232,31 @@ export const environment = {
         },
       ],
       name: "Transfer",
+      type: "event",
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: false,
+          internalType: "address",
+          name: "ethAddress",
+          type: "address",
+        },
+        {
+          indexed: false,
+          internalType: "string",
+          name: "chxAddress",
+          type: "string",
+        },
+        {
+          indexed: false,
+          internalType: "uint256",
+          name: "amount",
+          type: "uint256",
+        },
+      ],
+      name: "UnwrapChx",
       type: "event",
     },
     {
@@ -288,7 +296,7 @@ export const environment = {
       type: "function",
     },
     {
-      inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
+      inputs: [{ internalType: "uint256", name: "_amount", type: "uint256" }],
       name: "burn",
       outputs: [],
       stateMutability: "nonpayable",
@@ -347,7 +355,7 @@ export const environment = {
     },
     {
       inputs: [],
-      name: "minSwapAmount",
+      name: "minWrapAmount",
       outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
       stateMutability: "view",
       type: "function",
@@ -374,18 +382,8 @@ export const environment = {
       type: "function",
     },
     {
-      inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
-      name: "setMinSwapAmount",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "recipient", type: "address" },
-        { internalType: "uint256", name: "amount", type: "uint256" },
-      ],
-      name: "swap",
+      inputs: [{ internalType: "uint256", name: "_amount", type: "uint256" }],
+      name: "setMinWrapAmount",
       outputs: [],
       stateMutability: "nonpayable",
       type: "function",
@@ -406,8 +404,8 @@ export const environment = {
     },
     {
       inputs: [
-        { internalType: "address", name: "recipient", type: "address" },
-        { internalType: "uint256", name: "amount", type: "uint256" },
+        { internalType: "address", name: "_recipient", type: "address" },
+        { internalType: "uint256", name: "_amount", type: "uint256" },
       ],
       name: "transfer",
       outputs: [{ internalType: "bool", name: "", type: "bool" }],
@@ -416,9 +414,9 @@ export const environment = {
     },
     {
       inputs: [
-        { internalType: "address", name: "sender", type: "address" },
-        { internalType: "address", name: "recipient", type: "address" },
-        { internalType: "uint256", name: "amount", type: "uint256" },
+        { internalType: "address", name: "_sender", type: "address" },
+        { internalType: "address", name: "_recipient", type: "address" },
+        { internalType: "uint256", name: "_amount", type: "uint256" },
       ],
       name: "transferFrom",
       outputs: [{ internalType: "bool", name: "", type: "bool" }],
@@ -428,6 +426,16 @@ export const environment = {
     {
       inputs: [{ internalType: "address", name: "newOwner", type: "address" }],
       name: "transferOwnership",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
+      inputs: [
+        { internalType: "address", name: "_recipient", type: "address" },
+        { internalType: "uint256", name: "_amount", type: "uint256" },
+      ],
+      name: "wrap",
       outputs: [],
       stateMutability: "nonpayable",
       type: "function",

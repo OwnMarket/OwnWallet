@@ -135,7 +135,7 @@ export const ROUTERCONFIGS: Routes = [
         data: { state: "receive-chx" },
       },
       {
-        path: "bridge-chx",
+        path: "wrap-chx",
         component: SwapChxComponent,
         data: { state: "swap" },
       },

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import detectEthereumProvider from "@metamask/detect-provider";
-import { Subscription } from "rxjs";
+import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { TxResult } from "src/app/shared/models/submit-transactions.model";
 import { WalletInfo } from "src/app/shared/models/wallet-info.model";
 import { CryptoService } from "src/app/shared/services/crypto.service";
@@ -40,6 +40,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
   wallet: WalletInfo;
 
   web3: any;
+  chainId: string;
   wChxMapping: any;
   wChxToken: any;
 
@@ -52,6 +53,14 @@ export class SwapChxComponent implements OnInit, OnDestroy {
   nonce: number;
   fee: number;
 
+  chains = {
+    "0x1": "Ethereum Main Network",
+    "0x3": "Ropsten Test Network",
+    "0x4": "Rinkeby Test Network",
+    "0x5": "Goerli Test Network",
+    "0x2a": "Kovan Test Network",
+  };
+
   constructor(
     private fb: FormBuilder,
     private nodeService: NodeService,
@@ -60,8 +69,6 @@ export class SwapChxComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.isProduction = environment.production;
-
     this.isKeyImported = this.privateKeyService.existsKey();
     if (!this.isKeyImported) {
       return;
@@ -146,6 +153,10 @@ export class SwapChxComponent implements OnInit, OnDestroy {
     return this.wrapForm.get("toBlockchain").value;
   }
 
+  get chainName(): string {
+    return this.chains[this.chainId];
+  }
+
   swapBlockchains() {
     if (this.wrapForm.get("fromBlockchain").value === "eth") {
       this.wrapForm.get("fromBlockchain").setValue("chx");
@@ -172,6 +183,13 @@ export class SwapChxComponent implements OnInit, OnDestroy {
       } else {
         this.provider = provider;
         this.web3 = new Web3(this.provider);
+        this.chainId = this.provider.chainId;
+        this.isProduction = this.chainId === "0x1";
+
+        // Reload window if network has been changed in MetaMask
+        await this.provider.on("chainChanged", (chainId: string) =>
+          window.location.reload()
+        );
 
         this.wChxMapping = new this.web3.eth.Contract(
           environment.wChxMappingABI,

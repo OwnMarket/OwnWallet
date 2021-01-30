@@ -2,7 +2,22 @@
   <div class="row justify-content-center">
     <div class="col-12 col-sm-12 col-md-8">
       <own-card>
-        <own-card-title>Bridge</own-card-title>
+        <own-card-title>
+          <div class="row justify-content-between">
+            <div class="col-2">Bridge</div>
+            <div class="col text-right" *ngIf="metaMaskConnected && chainId">
+              <span class="text-small text-info mr-2">
+                {{ chainName }}
+              </span>
+              <span
+                class="bg-danger rounded text-white text-small p-1"
+                *ngIf="!isProduction"
+              >
+                TEST MODE
+              </span>
+            </div>
+          </div>
+        </own-card-title>
         <own-card-body [padding]="true">
           <div class="row" *ngIf="!risksAccepted && !showWarning">
             <div class="col">
@@ -207,6 +222,12 @@
                             Amount can't be greater than your current
                             {{ fromBlockchain === "chx" ? "CHX" : "wCHX" }}
                             balance
+                          </span>
+
+                          <span
+                            *ngIf="wrapForm.get('fromAmount').errors?.required"
+                          >
+                            Amount is required
                           </span>
                         </span>
                       </div>

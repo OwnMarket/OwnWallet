@@ -161,12 +161,20 @@ button.link {
   color: var(--color-danger);
 }
 
+.text-accent {
+  color: var(--color-accent);
+}
+
 .text-brand {
   color: var(--color-brand);
 }
 
 .bg-danger {
   background-color: var(--color-danger);
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
 }
 
 .bg-info {

@@ -33,6 +33,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
   showWarning = false;
   warningMessage: string;
   isProduction: boolean;
+  inProgress = false;
 
   isKeyImported = false;
   txResult: TxResult;
@@ -99,6 +100,8 @@ export class SwapChxComponent implements OnInit, OnDestroy {
       fromAmount: [null],
       toAmount: [null],
     });
+
+    this.wrapForm.get("fromAmount").disable();
 
     this.wrapForm.get("fromBlockchain").valueChanges.subscribe((value) => {
       if (value === this.wrapForm.get("toBlockchain").value) {
@@ -227,6 +230,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
             (await this.wChxToken.methods.minWrapAmount().call()) /
             Math.pow(10, 7);
 
+          this.wrapForm.get("fromAmount").enable();
           this.setValidators();
           this.wrapForm.get("fromAmount").setValue(0);
         }
@@ -244,8 +248,8 @@ export class SwapChxComponent implements OnInit, OnDestroy {
   }
 
   wrap() {
+    this.loading = true;
     if (!this.ethAddrMapped) {
-      this.loading = true;
       this.signatureSub = this.cryptoService
         .signMessage(
           this.privateKeyService.getWalletInfo().privateKey,
@@ -302,9 +306,18 @@ export class SwapChxComponent implements OnInit, OnDestroy {
           from: this.ethAddress,
         })
         .on("transactionHash", (hash) => {
+          this.txResult = new TxResult();
           this.txResult.txHash = hash;
-          console.log(hash);
+          this.inProgress = true;
           this.loading = false;
+        })
+        .on("receipt", (receipt) => {
+          this.inProgress = false;
+        })
+        .on("error", (error, receipt) => {
+          this.inProgress = false;
+          this.showWarning = true;
+          this.warningMessage = error;
         });
     }
   }

@@ -24,7 +24,6 @@
 *:before {
   box-sizing: inherit;
 }
-/* ROOT FONT STYLES */
 
 * {
   font-family: var(--base-font-family);
@@ -373,7 +372,8 @@ label + label {
   margin-right: 1.5rem;
 }
 
-button {
+button,
+.button {
   position: relative;
   border-radius: 2rem;
   padding: 10px 25px;
@@ -398,25 +398,30 @@ button {
   transition: all 1s ease-in-out;
 }
 
-button.own-effect:hover::before {
+button.own-effect:hover::before,
+.button.own-effect:hover::before {
   right: 500px;
 }
 
-button:hover {
+button:hover,
+.button:hover {
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-button.outline {
+button.outline,
+.button.outline {
   color: var(--color-brand);
   background-color: transparent;
   border: 1px solid var(--color-brand);
 }
 
-button.outline:hover {
+button.outline:hover,
+.button.outline:hover {
   color: var(--color-navbar-bg);
   background-color: var(--color-brand);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
 }
 
 button.flat {
@@ -864,6 +869,13 @@ input[type="checkbox"].own-switch + label::before {
 .drop-menu.open {
   transform-origin: center center;
   transform: rotate(180deg);
+}
+
+.svg-loader {
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  display: inline-block;
 }
 
 @keyframes rotate {

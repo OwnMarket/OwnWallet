@@ -122,8 +122,50 @@
           </div>
 
           <div class="row" *ngIf="connectingToMetaMask">
+            <div class="col-12 text-center">
+              <svg
+                class="svg-loader"
+                version="1.1"
+                id="L4"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                viewBox="0 0 100 100"
+                enable-background="new 0 0 0 0"
+                xml:space="preserve"
+              >
+                <circle fill="#eb6723" stroke="none" cx="6" cy="50" r="6">
+                  <animate
+                    attributeName="opacity"
+                    dur="1s"
+                    values="0;1;0"
+                    repeatCount="indefinite"
+                    begin="0.1"
+                  />
+                </circle>
+                <circle fill="#eb6723" stroke="none" cx="26" cy="50" r="6">
+                  <animate
+                    attributeName="opacity"
+                    dur="1s"
+                    values="0;1;0"
+                    repeatCount="indefinite"
+                    begin="0.2"
+                  />
+                </circle>
+                <circle fill="#eb6723" stroke="none" cx="46" cy="50" r="6">
+                  <animate
+                    attributeName="opacity"
+                    dur="1s"
+                    values="0;1;0"
+                    repeatCount="indefinite"
+                    begin="0.3"
+                  />
+                </circle>
+              </svg>
+            </div>
             <div class="col-12">
-              <h2>Connecting to MetaMask ...</h2>
+              <h4 class="text-center">Connecting to MetaMask ...</h4>
             </div>
           </div>
 
@@ -405,9 +447,85 @@
             </div>
           </div>
 
+          <div class="row" *ngIf="txResult && inProgress && !showWarning">
+            <div class="col-12 text-center">
+              <svg
+                class="svg-loader"
+                version="1.1"
+                id="L4"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                viewBox="0 0 100 100"
+                enable-background="new 0 0 0 0"
+                xml:space="preserve"
+              >
+                <circle fill="#eb6723" stroke="none" cx="6" cy="50" r="6">
+                  <animate
+                    attributeName="opacity"
+                    dur="1s"
+                    values="0;1;0"
+                    repeatCount="indefinite"
+                    begin="0.1"
+                  />
+                </circle>
+                <circle fill="#eb6723" stroke="none" cx="26" cy="50" r="6">
+                  <animate
+                    attributeName="opacity"
+                    dur="1s"
+                    values="0;1;0"
+                    repeatCount="indefinite"
+                    begin="0.2"
+                  />
+                </circle>
+                <circle fill="#eb6723" stroke="none" cx="46" cy="50" r="6">
+                  <animate
+                    attributeName="opacity"
+                    dur="1s"
+                    values="0;1;0"
+                    repeatCount="indefinite"
+                    begin="0.3"
+                  />
+                </circle>
+              </svg>
+            </div>
+            <div class="col-12 text-center">
+              <h4>Processing...</h4>
+              <p>
+                Your {{ fromBlockchain === "chx" ? "CHX" : "wCHX" }} will be
+                added to your account once this transavtion has processed.
+              </p>
+            </div>
+            <div class="col-12 mt-5">
+              <div class="row justify-content-center">
+                <div class="col col-md-6">
+                  <a
+                    *ngIf="fromBlockchain === 'eth' && !isProduction"
+                    class="button outline own-effect block"
+                    [href]="
+                      'https://rinkeby.etherscan.io/tx/' + txResult.txHash
+                    "
+                    target="_blank"
+                  >
+                    VIEW TRANSACTION INFO
+                  </a>
+                  <a
+                    *ngIf="fromBlockchain === 'eth' && isProduction"
+                    class="button outline own-effect block"
+                    [href]="'https://etherscan.io/tx/' + txResult.txHash"
+                    target="_blank"
+                  >
+                    VIEW TRANSACTION INFO
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div
             class="row justify-content-center"
-            *ngIf="txResult && !showWarning"
+            *ngIf="txResult && !inProgress && !showWarning"
           >
             <div class="col-12">
               <div
@@ -458,17 +576,19 @@
                         </button>
                         <a
                           *ngIf="fromBlockchain === 'eth' && !isProduction"
-                          class="outline own-effect block"
+                          class="button outline own-effect block"
                           [href]="
                             'https://rinkeby.etherscan.io/tx/' + txResult.txHash
                           "
+                          target="_blank"
                         >
                           VIEW TRANSACTION INFO
                         </a>
                         <a
                           *ngIf="fromBlockchain === 'eth' && isProduction"
-                          class="outline own-effect block"
+                          class="button outline own-effect block"
                           [href]="'https://etherscan.io/tx/' + txResult.txHash"
+                          target="_blank"
                         >
                           VIEW TRANSACTION INFO
                         </a>

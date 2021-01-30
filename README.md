@@ -1,4 +1,4 @@
-# [![own-explorer-logo](https://github.com/OwnMarket/OwnBlockchainExplorerFrontend/blob/master/Source/src/assets/images/logo.png?raw=true)](https://wallet.weown.com) <span style="float:right">Wallet</span>
+# [![own-explorer-logo](https://github.com/OwnMarket/OwnBlockchainExplorerFrontend/blob/master/Source/src/assets/images/logo.png?raw=true)](https://wallet.weown.com) <div style="float:right">Wallet</div>
 
 Wallet frontend application for WeOwn public blockchain node, powered by [Angular](https://angular.io) framework.
 
@@ -32,6 +32,22 @@ You have to use **build.sh** script to build wallet frontend for production.
 ```
 
 Script will run ng --prod build and gulp inline script which will bundle all js files into one html file **index.html** and place it into ./dist/single-file-wallet/ directory.
+
+### Test production build
+
+You can test production build using **http-server** if you dont have it installed you can install it.
+
+```bash
+npm i -g http-server
+```
+
+Serve folder with **index.html** file.
+
+```bash
+http-server ./dist/single-file-wallet -c-1
+```
+
+**-c-1** command flag will disable caching
 
 ### Possible build issues
 

@@ -346,7 +346,12 @@ export class SwapChxComponent implements OnInit, OnDestroy {
         .on("error", (error, receipt) => {
           this.inProgress = false;
           this.showWarning = true;
-          this.warningMessage = error.message;
+          if (error.code === 4001) {
+            this.warningMessage =
+              "The transaction was rejected in MetaMask. The process was therefore cancelled and no tokens are transferred.";
+          } else {
+            this.warningMessage = error.message;
+          }
         });
     }
   }

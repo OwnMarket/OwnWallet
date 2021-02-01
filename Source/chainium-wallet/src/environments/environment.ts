@@ -4,7 +4,6 @@ export const environment = {
   networkCode: "OWN_PUBLIC_BLOCKCHAIN_TESTNET",
   ethGasstationAPI:
     "4f0ee117c6a6b610bcb5e89743b565794eb604e7f5abc47a5448cd2a48e0",
-  coinMarketCapAPI: "7026527a-7a76-4220-8e85-16e2fffbe8eb",
   chxToWchx: 53068,
   wChxToChx: 37537,
   ownerChxAddress: "CHRMeEM5dJfWarCJGPSTutUhc9wpm3CYdb8",

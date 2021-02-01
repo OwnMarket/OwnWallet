@@ -300,7 +300,7 @@
                         {{ toBlockchain === "eth" ? ethAddress : chxAddress }}
                       </div>
 
-                      <div class="col-4">
+                      <div class="col-4" *ngIf="wChxBalance !== undefined">
                         Balance:
                         {{
                           toBlockchain === "eth"
@@ -515,7 +515,7 @@
               <h4>Processing...</h4>
               <p>
                 Your {{ fromBlockchain === "chx" ? "CHX" : "wCHX" }} will be
-                added to your account once this transavtion has processed.
+                added to your account after the transaction has been executed.
               </p>
             </div>
             <div class="col-12 mt-5">

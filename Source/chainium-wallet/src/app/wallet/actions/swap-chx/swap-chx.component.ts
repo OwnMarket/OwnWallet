@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import detectEthereumProvider from "@metamask/detect-provider";
-import { BehaviorSubject, Observable, Subscription } from "rxjs";
+import { Subscription } from "rxjs";
 import { TxResult } from "src/app/shared/models/submit-transactions.model";
 import { WalletInfo } from "src/app/shared/models/wallet-info.model";
 import { CryptoService } from "src/app/shared/services/crypto.service";
@@ -48,7 +48,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
   chxAddress: string;
   ethAddress: string;
   chxBalance: number;
-  wChxBalance: number = 0;
+  wChxBalance: number;
   minWrapAmount: number;
   nonce: number;
   fee: number;
@@ -191,6 +191,16 @@ export class SwapChxComponent implements OnInit, OnDestroy {
           window.location.reload()
         );
 
+        await this.provider.on("accountsChanged", (accounts: string[]) => {
+          if (accounts.length === 0) {
+            this.showWarning = true;
+            this.warningMessage = `Your MetaMask wallet is locked or you didn't connect any accounts.`;
+          } else if (accounts[0] !== this.currentAccount) {
+            this.currentAccount = accounts[0];
+            this.ethAddress = this.currentAccount;
+          }
+        });
+
         this.wChxMapping = new this.web3.eth.Contract(
           environment.wChxMappingABI,
           environment.wChxMappingContract
@@ -214,45 +224,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
     this.connectingToMetaMask = true;
     this.provider
       .request({ method: "eth_requestAccounts" })
-      .then(async (accounts) => {
-        this.loading = false;
-        this.metaMaskConnected = true;
-        this.connectingToMetaMask = false;
-        if (accounts.length === 0) {
-          console.log("Please connect to MetaMask.");
-          this.showWarning = true;
-          this.warningMessage = `Your MetaMask wallet is locked or you didn't connect any accounts.`;
-        } else if (accounts[0] !== this.currentAccount) {
-          this.currentAccount = accounts[0];
-          this.ethAddress = this.currentAccount;
-
-          const ethAddr = await this.wChxMapping.methods
-            .ethAddress(this.chxAddress)
-            .call();
-
-          if (
-            ethAddr !== "0x0000000000000000000000000000000000000000" &&
-            ethAddr !== ""
-          ) {
-            this.ethAddrMapped = true;
-            this.ethAddress = ethAddr;
-          } else {
-            this.ethAddrMapped = false;
-          }
-
-          this.wChxBalance =
-            (await this.wChxToken.methods.balanceOf(this.ethAddress).call()) /
-            Math.pow(10, 7);
-
-          this.minWrapAmount =
-            (await this.wChxToken.methods.minWrapAmount().call()) /
-            Math.pow(10, 7);
-
-          this.wrapForm.get("fromAmount").enable();
-          this.setValidators();
-          this.wrapForm.get("fromAmount").setValue(0);
-        }
-      })
+      .then(async (accounts) => await this.syncAccounts(accounts))
       .catch((err) => {
         if (err.code === 4001) {
           console.log("Please connect to MetaMask.");
@@ -263,6 +235,45 @@ export class SwapChxComponent implements OnInit, OnDestroy {
         }
         this.loading = false;
       });
+  }
+
+  async syncAccounts(accounts: string[]) {
+    this.loading = false;
+    this.metaMaskConnected = true;
+    this.connectingToMetaMask = false;
+    if (accounts.length === 0) {
+      console.log("Please connect to MetaMask.");
+      this.showWarning = true;
+      this.warningMessage = `Your MetaMask wallet is locked or you didn't connect any accounts.`;
+    } else if (accounts[0] !== this.currentAccount) {
+      this.currentAccount = accounts[0];
+      this.ethAddress = this.currentAccount;
+
+      const ethAddr = await this.wChxMapping.methods
+        .ethAddress(this.chxAddress)
+        .call();
+
+      if (
+        ethAddr !== "0x0000000000000000000000000000000000000000" &&
+        ethAddr !== ""
+      ) {
+        this.ethAddrMapped = true;
+        this.ethAddress = ethAddr;
+      } else {
+        this.ethAddrMapped = false;
+      }
+
+      this.wChxBalance =
+        (await this.wChxToken.methods.balanceOf(this.ethAddress).call()) /
+        Math.pow(10, 7);
+
+      this.minWrapAmount =
+        (await this.wChxToken.methods.minWrapAmount().call()) / Math.pow(10, 7);
+
+      this.wrapForm.get("fromAmount").enable();
+      this.setValidators();
+      this.wrapForm.get("fromAmount").setValue(0);
+    }
   }
 
   wrap() {
@@ -335,7 +346,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
         .on("error", (error, receipt) => {
           this.inProgress = false;
           this.showWarning = true;
-          this.warningMessage = error;
+          this.warningMessage = error.message;
         });
     }
   }
@@ -346,5 +357,8 @@ export class SwapChxComponent implements OnInit, OnDestroy {
     this.risksAccepted = false;
     this.showWarning = false;
     this.warningMessage = null;
+    this.loading = false;
+    this.confirmTransfer = false;
+    this.inProgress = false;
   }
 }

@@ -191,16 +191,6 @@ export class SwapChxComponent implements OnInit, OnDestroy {
           window.location.reload()
         );
 
-        await this.provider.on("accountsChanged", (accounts: string[]) => {
-          if (accounts.length === 0) {
-            this.showWarning = true;
-            this.warningMessage = `Your MetaMask wallet is locked or you didn't connect any accounts.`;
-          } else if (accounts[0] !== this.currentAccount) {
-            this.currentAccount = accounts[0];
-            this.ethAddress = this.currentAccount;
-          }
-        });
-
         this.wChxMapping = new this.web3.eth.Contract(
           environment.wChxMappingABI,
           environment.wChxMappingContract

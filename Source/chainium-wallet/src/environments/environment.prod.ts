@@ -2,10 +2,6 @@ export const environment = {
   production: true,
   nodeApiUrl: "<<NODE_API_URL>>",
   networkCode: "<<NETWORK_CODE>>",
-  ethGasstationAPI:
-    "4f0ee117c6a6b610bcb5e89743b565794eb604e7f5abc47a5448cd2a48e0",
-  chxToWchx: 53068,
-  wChxToChx: 37537,
   ownerChxAddress: "CHRMeEM5dJfWarCJGPSTutUhc9wpm3CYdb8",
   ownerEthAddress: "0xdb74f4198490829952C70F9a5cFaCa8ea25771CB",
   wChxMappingContract: "0xF31eC897eEEac4fE47fa3D1738D27f0d235c74ae",

@@ -199,7 +199,7 @@
                 <div class="row">
                   <div class="col">
                     <div class="row justify-content-between">
-                      <label for="from" class="col-2">Source</label>
+                      <label for="from" class="col-2">From</label>
                       <div class="col text-right">
                         <span
                           class="text-white bg-danger p-2 rounded text-small"
@@ -239,13 +239,26 @@
                         formControlName="fromAmount"
                       />
                       <div class="border-right my-2"></div>
-                      <select
-                        class="no-borders col-4 text-center"
-                        formControlName="fromBlockchain"
+
+                      <own-dropdown-menu
+                        [showIcon]="false"
+                        [label]="fromBlockchain === 'chx' ? 'CHX' : 'wCHX'"
                       >
-                        <option value="chx">CHX</option>
-                        <option value="eth">wCHX</option>
-                      </select>
+                        <own-dropdown-item
+                          (click)="
+                            wrapForm.get('fromBlockchain').setValue('chx')
+                          "
+                        >
+                          CHX
+                        </own-dropdown-item>
+                        <own-dropdown-item
+                          (click)="
+                            wrapForm.get('fromBlockchain').setValue('eth')
+                          "
+                        >
+                          wCHX
+                        </own-dropdown-item>
+                      </own-dropdown-menu>
                     </div>
 
                     <div class="row text-info justify-content-between mt-2">
@@ -266,7 +279,7 @@
                 <div class="row mt-4">
                   <div class="col">
                     <div class="row justify-content-between">
-                      <label for="from" class="col">Destination</label>
+                      <label for="from" class="col">To</label>
                       <div class="col-4 text-center position-relative">
                         <span class="swap-button" (click)="swapBlockchains()">
                           <own-icon
@@ -286,13 +299,22 @@
                         formControlName="toAmount"
                       />
                       <div class="border-right my-2"></div>
-                      <select
-                        class="no-borders col-4"
-                        formControlName="toBlockchain"
+
+                      <own-dropdown-menu
+                        [showIcon]="false"
+                        [label]="toBlockchain === 'eth' ? 'wCHX' : 'CHX'"
                       >
-                        <option value="eth">wCHX</option>
-                        <option value="chx">CHX</option>
-                      </select>
+                        <own-dropdown-item
+                          (click)="wrapForm.get('toBlockchain').setValue('chx')"
+                        >
+                          CHX
+                        </own-dropdown-item>
+                        <own-dropdown-item
+                          (click)="wrapForm.get('toBlockchain').setValue('eth')"
+                        >
+                          wCHX
+                        </own-dropdown-item>
+                      </own-dropdown-menu>
                     </div>
 
                     <div class="row justify-content-between mt-2 text-info">

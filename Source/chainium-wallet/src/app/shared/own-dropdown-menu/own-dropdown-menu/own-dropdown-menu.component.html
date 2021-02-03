@@ -5,16 +5,56 @@
   role="menu"
   [attr.aria-label]="ariaLabel || null"
   [attr.aria-labelledby]="ariaLabelledby || null"
-  [attr.aria-describedby]="ariaDescribedby || null">
-    <button class="dropdown-trigger" (click)="isActive=!isActive">
-    <svg viewBox="0 0 515.555 515.555" width="15" fill="#848484" >
-      <path d="m303.347 18.875c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138c25.166-25.167 65.97-25.167 91.138 0"/>
-      <path d="m303.347 212.209c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138c25.166-25.167 65.97-25.167 91.138 0"/>
-      <path d="m303.347 405.541c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138c25.166-25.167 65.97-25.167 91.138 0"/>
+  [attr.aria-describedby]="ariaDescribedby || null"
+>
+  <button
+    class="dropdown-trigger"
+    (click)="isActive = !isActive"
+    [ngStyle]="{ width: !showIcon ? '212px' : '' }"
+  >
+    <svg
+      *ngIf="showIcon"
+      viewBox="0 0 515.555 515.555"
+      width="15"
+      fill="#848484"
+    >
+      <path
+        d="m303.347 18.875c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138c25.166-25.167 65.97-25.167 91.138 0"
+      />
+      <path
+        d="m303.347 212.209c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138c25.166-25.167 65.97-25.167 91.138 0"
+      />
+      <path
+        d="m303.347 405.541c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138c25.166-25.167 65.97-25.167 91.138 0"
+      />
     </svg>
-    </button>
-    <div class="dropdown-items" [class.active]="isActive">
-      <ng-content>
-      </ng-content>
+    <div class="text-center block" *ngIf="label">
+      {{ label }}
     </div>
+
+    <svg
+      *ngIf="!showIcon"
+      [ngStyle]="{ transform: isActive ? 'rotate(180deg)' : 'rotate(0)' }"
+      width="20"
+      fill="currentColor"
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+        clip-rule="evenodd"
+      ></path>
+    </svg>
+  </button>
+  <div
+    class="dropdown-items"
+    [class.active]="isActive"
+    (click)="isActive = false"
+    [ngStyle]="{ left: showIcon ? '-140px' : '0', right: showIcon ? '' : '0' }"
+  >
+    <ng-content> </ng-content>
   </div>
+</div>
+
+<div class="menu-backdrop" *ngIf="isActive" (click)="isActive = false"></div>

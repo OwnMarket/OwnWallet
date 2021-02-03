@@ -248,7 +248,13 @@ export class SwapChxComponent implements OnInit, OnDestroy {
         ethAddr !== ""
       ) {
         this.ethAddrMapped = true;
-        this.ethAddress = ethAddr;
+        if (ethAddr.toLowerCase() !== accounts[0]) {
+          this.showWarning = true;
+          this.warningMessage = `Your current CHX address is already mapped to ${ethAddr} please check if in your MetaMask currently selected account is ${ethAddr} and try again.`;
+          return;
+        } else {
+          this.ethAddress = ethAddr;
+        }
       } else {
         this.ethAddrMapped = false;
       }
@@ -329,18 +335,24 @@ export class SwapChxComponent implements OnInit, OnDestroy {
           this.txResult.txHash = hash;
           this.inProgress = true;
           this.loading = false;
+          console.log("hash", hash);
         })
         .on("receipt", (receipt) => {
           this.inProgress = false;
+          console.log("receipt", receipt);
         })
         .on("error", (error, receipt) => {
           this.inProgress = false;
           this.showWarning = true;
-          if (error.code === 4001) {
-            this.warningMessage =
-              "The transaction was rejected in MetaMask. The process was therefore cancelled and no tokens are transferred.";
-          } else {
-            this.warningMessage = error.message;
+          switch (error.code) {
+            case 4001:
+              this.warningMessage =
+                "The transaction was rejected in MetaMask. The process was therefore cancelled and no tokens are transferred.";
+              break;
+            case -32602:
+              this.warningMessage = `Check if your currently selected address in MetaMask is ${this.ethAddress} and try again.`;
+            default:
+              this.warningMessage = error.message;
           }
         });
     }
@@ -354,6 +366,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
     this.warningMessage = null;
     this.loading = false;
     this.confirmTransfer = false;
+    this.metaMaskConnected = false;
     this.inProgress = false;
   }
 }

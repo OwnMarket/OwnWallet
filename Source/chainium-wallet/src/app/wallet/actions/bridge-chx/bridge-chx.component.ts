@@ -14,12 +14,12 @@ declare var ownBlockchainSdk: any;
 
 @Component({
   selector: "app-swap-chx",
-  templateUrl: "./swap-chx.component.html",
-  styleUrls: ["./swap-chx.component.css"],
+  templateUrl: "./bridge-chx.component.html",
+  styleUrls: ["./bridge-chx.component.css"],
 })
-export class SwapChxComponent implements OnInit, OnDestroy {
-  acceptWrapForm: FormGroup;
-  wrapForm: FormGroup;
+export class BridgeChxComponent implements OnInit, OnDestroy {
+  acceptBridgeForm: FormGroup;
+  bridgeForm: FormGroup;
   txSub: Subscription;
   provider: any;
   currentAccount: any;
@@ -95,13 +95,13 @@ export class SwapChxComponent implements OnInit, OnDestroy {
   }
 
   setupForms() {
-    this.acceptWrapForm = this.fb.group({
+    this.acceptBridgeForm = this.fb.group({
       aware: [false, [Validators.requiredTrue]],
       confirm: [false, [Validators.requiredTrue]],
       agree: [false, [Validators.requiredTrue]],
     });
 
-    this.wrapForm = this.fb.group({
+    this.bridgeForm = this.fb.group({
       ethAddress: [null],
       fromBlockchain: ["chx"],
       toBlockchain: ["eth"],
@@ -109,31 +109,31 @@ export class SwapChxComponent implements OnInit, OnDestroy {
       toAmount: [null],
     });
 
-    this.wrapForm.get("fromBlockchain").valueChanges.subscribe((value) => {
-      if (value === this.wrapForm.get("toBlockchain").value) {
-        this.wrapForm.get("toBlockchain").value === "eth"
-          ? this.wrapForm.get("toBlockchain").setValue("chx")
-          : this.wrapForm.get("toBlockchain").setValue("eth");
+    this.bridgeForm.get("fromBlockchain").valueChanges.subscribe((value) => {
+      if (value === this.bridgeForm.get("toBlockchain").value) {
+        this.bridgeForm.get("toBlockchain").value === "eth"
+          ? this.bridgeForm.get("toBlockchain").setValue("chx")
+          : this.bridgeForm.get("toBlockchain").setValue("eth");
         this.setValidators();
       }
     });
 
-    this.wrapForm.get("toBlockchain").valueChanges.subscribe((value) => {
-      if (value === this.wrapForm.get("fromBlockchain").value) {
-        this.wrapForm.get("fromBlockchain").value === "eth"
-          ? this.wrapForm.get("fromBlockchain").setValue("chx")
-          : this.wrapForm.get("fromBlockchain").setValue("eth");
+    this.bridgeForm.get("toBlockchain").valueChanges.subscribe((value) => {
+      if (value === this.bridgeForm.get("fromBlockchain").value) {
+        this.bridgeForm.get("fromBlockchain").value === "eth"
+          ? this.bridgeForm.get("fromBlockchain").setValue("chx")
+          : this.bridgeForm.get("fromBlockchain").setValue("eth");
         this.setValidators();
       }
     });
 
-    this.wrapForm.get("fromAmount").valueChanges.subscribe((value) => {
-      this.wrapForm.get("toAmount").setValue(value);
+    this.bridgeForm.get("fromAmount").valueChanges.subscribe((value) => {
+      this.bridgeForm.get("toAmount").setValue(value);
     });
   }
 
   setValidators() {
-    this.wrapForm
+    this.bridgeForm
       .get("fromAmount")
       .setValidators([
         Validators.required,
@@ -145,11 +145,11 @@ export class SwapChxComponent implements OnInit, OnDestroy {
   }
 
   get fromBlockchain(): string {
-    return this.wrapForm.get("fromBlockchain").value;
+    return this.bridgeForm.get("fromBlockchain").value;
   }
 
   get toBlockchain(): string {
-    return this.wrapForm.get("toBlockchain").value;
+    return this.bridgeForm.get("toBlockchain").value;
   }
 
   get chainName(): string {
@@ -157,10 +157,10 @@ export class SwapChxComponent implements OnInit, OnDestroy {
   }
 
   swapBlockchains() {
-    if (this.wrapForm.get("fromBlockchain").value === "eth") {
-      this.wrapForm.get("fromBlockchain").setValue("chx");
+    if (this.bridgeForm.get("fromBlockchain").value === "eth") {
+      this.bridgeForm.get("fromBlockchain").setValue("chx");
     } else {
-      this.wrapForm.get("fromBlockchain").setValue("eth");
+      this.bridgeForm.get("fromBlockchain").setValue("eth");
     }
   }
 
@@ -239,6 +239,8 @@ export class SwapChxComponent implements OnInit, OnDestroy {
 
       this.minWrapAmount =
         (await this.wChxToken.methods.minWrapAmount().call()) / Math.pow(10, 7);
+
+      this.setValidators();
     }
   }
 
@@ -278,15 +280,14 @@ export class SwapChxComponent implements OnInit, OnDestroy {
         } else {
           this.ethAddress = this.currentAccount;
         }
+      } else {
+        this.ethAddress = this.currentAccount;
+        this.mapAddress();
       }
-
-      this.wrapForm.get("fromAmount").enable();
-      this.setValidators();
-      this.wrapForm.get("fromAmount").setValue(0);
     }
   }
 
-  wrap() {
+  mapAddress() {
     this.loading = true;
     if (!this.ethAddrMapped) {
       this.signatureSub = this.cryptoService
@@ -295,16 +296,18 @@ export class SwapChxComponent implements OnInit, OnDestroy {
           this.ethAddress
         )
         .subscribe(async (signature: string) => {
-          const mapAddr = await this.wChxMapping.methods
-            .mapAddress(this.chxAddress, signature)
-            .send({
-              from: this.ethAddress,
-            });
-          this.getBalanceAndMinAmount();
-          this.transfer();
+          try {
+            await this.wChxMapping.methods
+              .mapAddress(this.chxAddress, signature)
+              .send({
+                from: this.ethAddress,
+              });
+            this.getBalanceAndMinAmount();
+          } catch (error) {
+            this.showWarning = true;
+            this.warningMessage = error.message;
+          }
         });
-    } else {
-      this.transfer();
     }
   }
 
@@ -318,7 +321,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
 
       txToSign.addTransferChxAction(
         environment.ownerChxAddress,
-        +this.wrapForm.get("fromAmount").value
+        +this.bridgeForm.get("fromAmount").value
       );
 
       const signature = txToSign.sign(
@@ -339,7 +342,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
         });
     }
     if (this.fromBlockchain === "eth") {
-      const amount = +this.wrapForm.get("fromAmount").value * Math.pow(10, 7);
+      const amount = +this.bridgeForm.get("fromAmount").value * Math.pow(10, 7);
       const tx = await this.wChxToken.methods
         .transfer(environment.ownerEthAddress, amount)
         .send({
@@ -350,11 +353,9 @@ export class SwapChxComponent implements OnInit, OnDestroy {
           this.txResult.txHash = hash;
           this.inProgress = true;
           this.loading = false;
-          console.log("hash", hash);
         })
         .on("receipt", (receipt) => {
           this.inProgress = false;
-          console.log("receipt", receipt);
         })
         .on("error", (error, receipt) => {
           this.inProgress = false;
@@ -374,8 +375,8 @@ export class SwapChxComponent implements OnInit, OnDestroy {
   }
 
   reset() {
-    this.acceptWrapForm.reset();
-    this.wrapForm.reset();
+    this.acceptBridgeForm.reset();
+    this.bridgeForm.reset();
     this.risksAccepted = false;
     this.showWarning = false;
     this.warningMessage = null;

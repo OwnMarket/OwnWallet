@@ -1,4 +1,7 @@
-<div class="container my-5" *ngIf="isKeyImported && acceptWrapForm && wrapForm">
+<div
+  class="container my-5"
+  *ngIf="isKeyImported && acceptBridgeForm && bridgeForm"
+>
   <div class="row justify-content-center">
     <div class="col-12 col-sm-12 col-md-8">
       <own-card>
@@ -46,7 +49,7 @@
                 </li>
                 <li>You have a MetaMask installed and you can access it.</li>
               </ul>
-              <form [formGroup]="acceptWrapForm">
+              <form [formGroup]="acceptBridgeForm">
                 <div class="row mt-4">
                   <div class="col mt-4">
                     <input
@@ -87,7 +90,7 @@
                 <div class="row mt-4 justify-content-center">
                   <div class="col col-sm-6 mt-4">
                     <button
-                      [disabled]="acceptWrapForm.invalid || loading"
+                      [disabled]="acceptBridgeForm.invalid || loading"
                       class="block own-effect"
                       (click)="acceptRisks()"
                     >
@@ -195,7 +198,7 @@
             "
           >
             <div class="col">
-              <form [formGroup]="wrapForm">
+              <form [formGroup]="bridgeForm">
                 <div class="row">
                   <div class="col">
                     <div class="row justify-content-between">
@@ -204,28 +207,32 @@
                         <span
                           class="text-white bg-danger p-2 rounded text-small"
                           *ngIf="
-                            wrapForm.get('fromAmount').dirty &&
-                            wrapForm.get('fromAmount').touched &&
-                            wrapForm.get('fromAmount').errors
+                            bridgeForm.get('fromAmount').dirty &&
+                            bridgeForm.get('fromAmount').touched &&
+                            bridgeForm.get('fromAmount').errors
                           "
                         >
                           <span
                             *ngIf="
-                              wrapForm.get('fromAmount').errors?.min &&
-                              !wrapForm.get('fromAmount').errors?.max
+                              bridgeForm.get('fromAmount').errors?.min &&
+                              !bridgeForm.get('fromAmount').errors?.max
                             "
                           >
                             Minimum amount is {{ minWrapAmount }}
                           </span>
 
-                          <span *ngIf="wrapForm.get('fromAmount').errors?.max">
+                          <span
+                            *ngIf="bridgeForm.get('fromAmount').errors?.max"
+                          >
                             Amount can't be greater than your current
                             {{ fromBlockchain === "chx" ? "CHX" : "wCHX" }}
                             balance
                           </span>
 
                           <span
-                            *ngIf="wrapForm.get('fromAmount').errors?.required"
+                            *ngIf="
+                              bridgeForm.get('fromAmount').errors?.required
+                            "
                           >
                             Amount is required
                           </span>
@@ -246,14 +253,14 @@
                       >
                         <own-dropdown-item
                           (click)="
-                            wrapForm.get('fromBlockchain').setValue('chx')
+                            bridgeForm.get('fromBlockchain').setValue('chx')
                           "
                         >
                           CHX
                         </own-dropdown-item>
                         <own-dropdown-item
                           (click)="
-                            wrapForm.get('fromBlockchain').setValue('eth')
+                            bridgeForm.get('fromBlockchain').setValue('eth')
                           "
                         >
                           wCHX
@@ -305,12 +312,16 @@
                         [label]="toBlockchain === 'eth' ? 'wCHX' : 'CHX'"
                       >
                         <own-dropdown-item
-                          (click)="wrapForm.get('toBlockchain').setValue('chx')"
+                          (click)="
+                            bridgeForm.get('toBlockchain').setValue('chx')
+                          "
                         >
                           CHX
                         </own-dropdown-item>
                         <own-dropdown-item
-                          (click)="wrapForm.get('toBlockchain').setValue('eth')"
+                          (click)="
+                            bridgeForm.get('toBlockchain').setValue('eth')
+                          "
                         >
                           wCHX
                         </own-dropdown-item>
@@ -338,7 +349,7 @@
                     <button
                       *ngIf="
                         (!metaMaskConnected && fromBlockchain === 'eth') ||
-                        !ethAddrMapped
+                        (!metaMaskConnected && !ethAddrMapped)
                       "
                       [disabled]="loading"
                       class="block own-effect"
@@ -372,7 +383,7 @@
                         metaMaskConnected ||
                         (fromBlockchain === 'chx' && ethAddrMapped)
                       "
-                      [disabled]="wrapForm.invalid || loading"
+                      [disabled]="bridgeForm.invalid || loading"
                       class="block own-effect"
                       (click)="confirmTransfer = true"
                     >
@@ -409,7 +420,7 @@
             class="row"
             *ngIf="
               risksAccepted &&
-              wrapForm &&
+              bridgeForm &&
               confirmTransfer &&
               !showWarning &&
               !txResult
@@ -418,7 +429,7 @@
             <div class="col">
               <div class="row justify-content-between">
                 <div class="col">
-                  <h2 class="m-0">{{ wrapForm.get("fromAmount").value }}</h2>
+                  <h2 class="m-0">{{ bridgeForm.get("fromAmount").value }}</h2>
                 </div>
                 <div class="col text-right">
                   <h2 class="m-0">
@@ -440,7 +451,7 @@
               </div>
               <div class="row justify-content-between mt-4">
                 <div class="col">
-                  <h2 class="m-0">{{ wrapForm.get("toAmount").value }}</h2>
+                  <h2 class="m-0">{{ bridgeForm.get("toAmount").value }}</h2>
                 </div>
                 <div class="col text-right">
                   <h2 class="m-0">
@@ -466,7 +477,7 @@
                   <button
                     [disabled]="loading"
                     class="block own-effect"
-                    (click)="wrap()"
+                    (click)="transfer()"
                   >
                     <svg
                       *ngIf="loading"

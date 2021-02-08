@@ -336,7 +336,10 @@
                 <div class="row mt-4 justify-content-center">
                   <div class="col col-sm-6 mt-4">
                     <button
-                      *ngIf="!metaMaskConnected"
+                      *ngIf="
+                        (!metaMaskConnected && fromBlockchain === 'eth') ||
+                        !ethAddrMapped
+                      "
                       [disabled]="loading"
                       class="block own-effect"
                       (click)="initiateMetaMaskProvider()"
@@ -365,7 +368,10 @@
                       CONNECT WITH METAMASK
                     </button>
                     <button
-                      *ngIf="metaMaskConnected"
+                      *ngIf="
+                        metaMaskConnected ||
+                        (fromBlockchain === 'chx' && ethAddrMapped)
+                      "
                       [disabled]="wrapForm.invalid || loading"
                       class="block own-effect"
                       (click)="confirmTransfer = true"

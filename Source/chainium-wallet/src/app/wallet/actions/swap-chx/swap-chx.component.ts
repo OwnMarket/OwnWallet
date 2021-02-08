@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import detectEthereumProvider from "@metamask/detect-provider";
 import { Subscription } from "rxjs";
 import { TxResult } from "src/app/shared/models/submit-transactions.model";
 import { WalletInfo } from "src/app/shared/models/wallet-info.model";
@@ -8,6 +7,8 @@ import { CryptoService } from "src/app/shared/services/crypto.service";
 import { NodeService } from "src/app/shared/services/node.service";
 import { PrivatekeyService } from "src/app/shared/services/privatekey.service";
 import { environment } from "src/environments/environment";
+
+import detectEthereumProvider from "@metamask/detect-provider";
 import Web3 from "web3";
 declare var ownBlockchainSdk: any;
 
@@ -108,8 +109,6 @@ export class SwapChxComponent implements OnInit, OnDestroy {
       toAmount: [null],
     });
 
-    this.wrapForm.get("fromAmount").disable();
-
     this.wrapForm.get("fromBlockchain").valueChanges.subscribe((value) => {
       if (value === this.wrapForm.get("toBlockchain").value) {
         this.wrapForm.get("toBlockchain").value === "eth"
@@ -167,6 +166,10 @@ export class SwapChxComponent implements OnInit, OnDestroy {
 
   async acceptRisks() {
     this.risksAccepted = true;
+    this.web3 = new Web3(Web3.givenProvider);
+    this.initContracts();
+    await this.checkIfAddresIsMapped();
+    await this.getBalanceAndMinAmount();
   }
 
   async initiateMetaMaskProvider() {
@@ -182,23 +185,13 @@ export class SwapChxComponent implements OnInit, OnDestroy {
         this.loading = false;
       } else {
         this.provider = provider;
-        this.web3 = new Web3(this.provider);
+        this.web3.setProvider(this.provider);
         this.chainId = this.provider.chainId;
         this.isProduction = this.chainId === "0x1";
 
         // Reload window if network has been changed in MetaMask
         await this.provider.on("chainChanged", (chainId: string) =>
           window.location.reload()
-        );
-
-        this.wChxMapping = new this.web3.eth.Contract(
-          environment.wChxMappingABI,
-          environment.wChxMappingContract
-        );
-
-        this.wChxToken = new this.web3.eth.Contract(
-          environment.wChxTokenABI,
-          environment.wChxTokenContract
         );
 
         this.connect();
@@ -210,12 +203,51 @@ export class SwapChxComponent implements OnInit, OnDestroy {
     }
   }
 
+  initContracts() {
+    this.wChxMapping = new this.web3.eth.Contract(
+      environment.wChxMappingABI,
+      environment.wChxMappingContract
+    );
+
+    this.wChxToken = new this.web3.eth.Contract(
+      environment.wChxTokenABI,
+      environment.wChxTokenContract
+    );
+  }
+
+  async checkIfAddresIsMapped() {
+    const ethAddr = await this.wChxMapping.methods
+      .ethAddress(this.chxAddress)
+      .call();
+
+    if (
+      ethAddr !== "0x0000000000000000000000000000000000000000" &&
+      ethAddr !== ""
+    ) {
+      this.ethAddrMapped = true;
+      this.ethAddress = ethAddr;
+    } else {
+      this.ethAddrMapped = false;
+    }
+  }
+
+  async getBalanceAndMinAmount() {
+    if (this.ethAddrMapped && this.ethAddress) {
+      this.wChxBalance =
+        (await this.wChxToken.methods.balanceOf(this.ethAddress).call()) /
+        Math.pow(10, 7);
+
+      this.minWrapAmount =
+        (await this.wChxToken.methods.minWrapAmount().call()) / Math.pow(10, 7);
+    }
+  }
+
   connect() {
     this.connectingToMetaMask = true;
     this.provider
       .request({ method: "eth_requestAccounts" })
-      .then(async (accounts) => await this.syncAccounts(accounts))
-      .catch((err) => {
+      .then(async (accounts: string[]) => await this.syncAccounts(accounts))
+      .catch((err: any) => {
         if (err.code === 4001) {
           console.log("Please connect to MetaMask.");
           this.showWarning = true;
@@ -237,34 +269,16 @@ export class SwapChxComponent implements OnInit, OnDestroy {
       this.warningMessage = `Your MetaMask wallet is locked or you didn't connect any accounts.`;
     } else if (accounts[0] !== this.currentAccount) {
       this.currentAccount = accounts[0];
-      this.ethAddress = this.currentAccount;
 
-      const ethAddr = await this.wChxMapping.methods
-        .ethAddress(this.chxAddress)
-        .call();
-
-      if (
-        ethAddr !== "0x0000000000000000000000000000000000000000" &&
-        ethAddr !== ""
-      ) {
-        this.ethAddrMapped = true;
-        if (ethAddr.toLowerCase() !== accounts[0]) {
+      if (this.ethAddrMapped) {
+        if (this.ethAddress.toLowerCase() !== this.currentAccount) {
           this.showWarning = true;
-          this.warningMessage = `Your current CHX address is already mapped to ${ethAddr} please check if in your MetaMask currently selected account is ${ethAddr} and try again.`;
+          this.warningMessage = `Your current CHX address is already mapped to ${this.ethAddress} please check if in your MetaMask currently selected account is ${this.ethAddress} and try again.`;
           return;
         } else {
-          this.ethAddress = ethAddr;
+          this.ethAddress = this.currentAccount;
         }
-      } else {
-        this.ethAddrMapped = false;
       }
-
-      this.wChxBalance =
-        (await this.wChxToken.methods.balanceOf(this.ethAddress).call()) /
-        Math.pow(10, 7);
-
-      this.minWrapAmount =
-        (await this.wChxToken.methods.minWrapAmount().call()) / Math.pow(10, 7);
 
       this.wrapForm.get("fromAmount").enable();
       this.setValidators();
@@ -286,6 +300,7 @@ export class SwapChxComponent implements OnInit, OnDestroy {
             .send({
               from: this.ethAddress,
             });
+          this.getBalanceAndMinAmount();
           this.transfer();
         });
     } else {

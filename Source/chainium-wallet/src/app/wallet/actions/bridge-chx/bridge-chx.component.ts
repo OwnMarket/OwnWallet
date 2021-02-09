@@ -6,11 +6,13 @@ import { WalletInfo } from "src/app/shared/models/wallet-info.model";
 import { CryptoService } from "src/app/shared/services/crypto.service";
 import { NodeService } from "src/app/shared/services/node.service";
 import { PrivatekeyService } from "src/app/shared/services/privatekey.service";
+import { ChxBridgeFeeService } from "src/app/shared/services/chx-bridge-fee.service";
+declare var ownBlockchainSdk: any;
 import { environment } from "src/environments/environment";
 
 import detectEthereumProvider from "@metamask/detect-provider";
 import Web3 from "web3";
-declare var ownBlockchainSdk: any;
+import { BridgeFee } from "src/app/shared/models/bridge-fee.model";
 
 @Component({
   selector: "app-swap-chx",
@@ -20,11 +22,14 @@ declare var ownBlockchainSdk: any;
 export class BridgeChxComponent implements OnInit, OnDestroy {
   acceptBridgeForm: FormGroup;
   bridgeForm: FormGroup;
-  txSub: Subscription;
+
   provider: any;
   currentAccount: any;
+
+  txSub: Subscription;
   addressSub: Subscription;
   signatureSub: Subscription;
+  bridgeFeeSub: Subscription;
 
   loading = false;
   risksAccepted = false;
@@ -53,6 +58,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
   minWrapAmount: number;
   nonce: number;
   fee: number;
+  bridgeFee: BridgeFee;
 
   chains = {
     "0x1": "Ethereum Main Network",
@@ -66,7 +72,8 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private nodeService: NodeService,
     private privateKeyService: PrivatekeyService,
-    private cryptoService: CryptoService
+    private cryptoService: CryptoService,
+    private bridgeFeeService: ChxBridgeFeeService
   ) {}
 
   ngOnInit() {
@@ -162,6 +169,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     } else {
       this.bridgeForm.get("fromBlockchain").setValue("eth");
     }
+    this.getBridgeFee(this.ethAddress);
   }
 
   async acceptRisks() {
@@ -226,6 +234,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     ) {
       this.ethAddrMapped = true;
       this.ethAddress = ethAddr;
+      this.getBridgeFee(this.ethAddress);
     } else {
       this.ethAddrMapped = false;
     }
@@ -242,6 +251,15 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
 
       this.setValidators();
     }
+  }
+
+  getBridgeFee(ethAddress: string) {
+    const type = this.fromBlockchain === "chx" ? "chxToEth" : "ethToChx";
+    this.bridgeFeeSub = this.bridgeFeeService
+      .getBridgeFees(ethAddress, type)
+      .subscribe((resp) => {
+        this.bridgeFee = resp.data;
+      });
   }
 
   connect() {

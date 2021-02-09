@@ -2,6 +2,7 @@ export const environment = {
   production: true,
   nodeApiUrl: "<<NODE_API_URL>>",
   networkCode: "<<NETWORK_CODE>>",
+  bridgeApiUrl: "https://bridge-api.weown.com",
   ownerChxAddress: "CHRMeEM5dJfWarCJGPSTutUhc9wpm3CYdb8",
   ownerEthAddress: "0xdb74f4198490829952C70F9a5cFaCa8ea25771CB",
   wChxMappingContract: "0xF31eC897eEEac4fE47fa3D1738D27f0d235c74ae",

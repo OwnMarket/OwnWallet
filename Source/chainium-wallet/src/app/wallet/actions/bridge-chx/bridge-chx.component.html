@@ -412,6 +412,77 @@
                     </button>
                   </div>
                 </div>
+                <div
+                  class="row justify-content-center item-align-center text-info mt-4 p-2 bg rounded cursor-pointer"
+                  *ngIf="bridgeFee"
+                  tabindex="1"
+                  title="Click to view detailed fee calculation"
+                  (click)="showFees = !showFees"
+                >
+                  <div class="col">
+                    <ng-container *ngIf="showFees">
+                      <div class="row">
+                        <div class="col">Gas consumption:</div>
+                        <div class="col text-right">
+                          {{ bridgeFee.gasConsumption }} Gas
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">Gas price:</div>
+                        <div class="col text-right">
+                          {{ bridgeFee.gweiGasPrice }} Gwei
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col">ETH fee:</div>
+                        <div class="col text-right">
+                          {{ bridgeFee.ethFee }} ETH
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col">CHX/ETH price rate:</div>
+                        <div class="col text-right">
+                          {{ bridgeFee.chxEthPriceRate }}
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      <div class="row">
+                        <div class="col">Fee on Ethereum:</div>
+                        <div class="col text-right">
+                          {{ bridgeFee.ethFeeInChx | number: "1.0-7" }} CHX
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">Fee on WeOwn blockchain:</div>
+                        <div class="col text-right">
+                          {{ bridgeFee.chxFee | number: "1.0-7" }} CHX
+                        </div>
+                      </div>
+
+                      <hr />
+                    </ng-container>
+
+                    <div class="row" [class.text-bold]="showFees">
+                      <div class="col">
+                        <div class="float-left">
+                          <own-icon
+                            icon="info"
+                            size="24"
+                            color="#3aabb9"
+                          ></own-icon>
+                        </div>
+                        Total fee:
+                      </div>
+                      <div class="col text-right">
+                        {{ bridgeFee.totalFee | number: "1.0-7" }} CHX
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </form>
             </div>
           </div>

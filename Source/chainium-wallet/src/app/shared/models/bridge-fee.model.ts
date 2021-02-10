@@ -1,10 +1,10 @@
 export interface BridgeFee {
-  GweiGasPrice: number;
-  EthGasPrice: number;
-  GasConsumption: number;
-  EthFee: number;
-  ChxEthPriceRate: number;
-  EthFeeInChx: number;
-  ChxFee: number;
-  TotalFee: number;
+  gweiGasPrice: number;
+  ethGasPrice: number;
+  gasConsumption: number;
+  ethFee: number;
+  chxEthPriceRate: number;
+  ethFeeInChx: number;
+  chxFee: number;
+  totalFee: number;
 }

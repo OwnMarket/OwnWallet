@@ -40,6 +40,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
   warningMessage: string;
   isProduction: boolean;
   inProgress = false;
+  showFees = false;
 
   isKeyImported = false;
   txResult: TxResult;
@@ -135,7 +136,11 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     });
 
     this.bridgeForm.get("fromAmount").valueChanges.subscribe((value) => {
-      this.bridgeForm.get("toAmount").setValue(value);
+      let newValue = value ? value : 0;
+      if (this.bridgeFee && value) {
+        newValue = new Number((value - this.bridgeFee.totalFee).toFixed(7));
+      }
+      this.bridgeForm.get("toAmount").setValue(newValue);
     });
   }
 
@@ -321,6 +326,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
                 from: this.ethAddress,
               });
             this.getBalanceAndMinAmount();
+            this.getBridgeFee(this.ethAddress);
           } catch (error) {
             this.showWarning = true;
             this.warningMessage = error.message;

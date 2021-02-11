@@ -140,6 +140,9 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       if (this.bridgeFee && value) {
         newValue = new Number((value - this.bridgeFee.totalFee).toFixed(7));
       }
+      if (newValue < 0) {
+        newValue = 0;
+      }
       this.bridgeForm.get("toAmount").setValue(newValue);
     });
   }
@@ -181,7 +184,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     this.risksAccepted = true;
     this.web3 = new Web3(Web3.givenProvider);
     this.initContracts();
-    await this.checkIfAddresIsMapped();
+    await this.checkIfAddressIsMapped();
     await this.getBalanceAndMinAmount();
   }
 
@@ -228,7 +231,34 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     );
   }
 
-  async checkIfAddresIsMapped() {
+  async checkIfEthAddressIsMappedToOtherChxAddress(ethAddress: string) {
+    try {
+      const chxAddr = await this.wChxMapping.methods
+        .chxAddress(ethAddress)
+        .call();
+
+      if (chxAddr !== "") {
+        if (chxAddr !== this.chxAddress) {
+          this.showWarning = true;
+          this.warningMessage =
+            "Currently selected ETH Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.";
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    } catch (error) {
+      console.log(error);
+      this.showWarning = true;
+      this.warningMessage =
+        "Failed to check if ETH Address is mapped to other CHX Address.";
+      return false;
+    }
+  }
+
+  async checkIfAddressIsMapped() {
     const ethAddr = await this.wChxMapping.methods
       .ethAddress(this.chxAddress)
       .call();
@@ -298,14 +328,20 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       if (this.ethAddrMapped) {
         if (this.ethAddress.toLowerCase() !== this.currentAccount) {
           this.showWarning = true;
-          this.warningMessage = `Your current CHX address is already mapped to ${this.ethAddress} please check if in your MetaMask currently selected account is ${this.ethAddress} and try again.`;
+          this.warningMessage = `Please make sure that the address you connect to matches the ${this.ethAddress} in MetaMask. Then re-establish the connection.`;
           return;
         } else {
           this.ethAddress = this.currentAccount;
         }
       } else {
-        this.ethAddress = this.currentAccount;
-        this.mapAddress();
+        if (
+          await this.checkIfEthAddressIsMappedToOtherChxAddress(
+            this.currentAccount
+          )
+        ) {
+          this.ethAddress = this.currentAccount;
+          this.mapAddress();
+        }
       }
     }
   }

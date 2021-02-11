@@ -1,16 +1,19 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { environment } from "src/environments/environment";
 
 import { ApiResponse } from "../models/api-response.model";
 import { BridgeFee } from "../models/bridge-fee.model";
+import { ConfigurationService } from "./configuration.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class ChxBridgeFeeService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private configService: ConfigurationService
+  ) {}
 
   getBridgeFees(
     ethAddress: string,
@@ -20,7 +23,7 @@ export class ChxBridgeFeeService {
       .append("ethAddress", ethAddress)
       .append("transferType", type);
     return this.http.get<ApiResponse<BridgeFee>>(
-      `${environment.bridgeApiUrl}/fee`,
+      `${this.configService.config.bridgeApiUrl}/fee`,
       {
         params,
       }

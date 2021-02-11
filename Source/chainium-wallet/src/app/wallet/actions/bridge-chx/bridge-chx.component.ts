@@ -13,6 +13,7 @@ import { environment } from "src/environments/environment";
 import detectEthereumProvider from "@metamask/detect-provider";
 import Web3 from "web3";
 import { BridgeFee } from "src/app/shared/models/bridge-fee.model";
+import { ConfigurationService } from "src/app/shared/services/configuration.service";
 
 @Component({
   selector: "app-swap-chx",
@@ -74,7 +75,8 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     private nodeService: NodeService,
     private privateKeyService: PrivatekeyService,
     private cryptoService: CryptoService,
-    private bridgeFeeService: ChxBridgeFeeService
+    private bridgeFeeService: ChxBridgeFeeService,
+    private configService: ConfigurationService
   ) {}
 
   ngOnInit() {
@@ -221,13 +223,13 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
 
   initContracts() {
     this.wChxMapping = new this.web3.eth.Contract(
-      environment.wChxMappingABI,
-      environment.wChxMappingContract
+      this.configService.config.wChxMappingABI,
+      this.configService.config.wChxMappingContract
     );
 
     this.wChxToken = new this.web3.eth.Contract(
-      environment.wChxTokenABI,
-      environment.wChxTokenContract
+      this.configService.config.wChxTokenABI,
+      this.configService.config.wChxTokenContract
     );
   }
 
@@ -380,7 +382,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       );
 
       txToSign.addTransferChxAction(
-        environment.ownerChxAddress,
+        this.configService.config.ownerChxAddress,
         +this.bridgeForm.get("fromAmount").value
       );
 
@@ -404,7 +406,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     if (this.fromBlockchain === "eth") {
       const amount = +this.bridgeForm.get("fromAmount").value * Math.pow(10, 7);
       const tx = await this.wChxToken.methods
-        .transfer(environment.ownerEthAddress, amount)
+        .transfer(this.configService.config.ownerEthAddress, amount)
         .send({
           from: this.ethAddress,
         })

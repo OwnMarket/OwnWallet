@@ -1,10 +1,10 @@
 export const prodConfig = {
   explorerUrl: "https://explorer.weown.com",
   bridgeApiUrl: "https://bridge-api.weown.com",
-  ownerChxAddress: "CHRMeEM5dJfWarCJGPSTutUhc9wpm3CYdb8",
+  ownerChxAddress: "CHcfzvVSzFVTFFeYPnhLv9mCTnsyoSHHoz8",
   ownerEthAddress: "0xdb74f4198490829952C70F9a5cFaCa8ea25771CB",
-  wChxMappingContract: "0xF31eC897eEEac4fE47fa3D1738D27f0d235c74ae",
-  wChxTokenContract: "0xa7abe281ea712aec2b49418644b70211e3ddf0f6",
+  wChxMappingContract: "0x36f7BdBDC2E5dccb0761Cb4c0ab51691B4641374",
+  wChxTokenContract: "0x868456fFc98a1A55eC8628e274a468075E3bEbAD",
   wChxMappingABI: [
     { inputs: [], stateMutability: "nonpayable", type: "constructor" },
     {
@@ -360,6 +360,16 @@ export const prodConfig = {
       type: "function",
     },
     {
+      inputs: [
+        { internalType: "address", name: "_recipient", type: "address" },
+        { internalType: "uint256", name: "_amount", type: "uint256" },
+      ],
+      name: "mint",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
       inputs: [],
       name: "name",
       outputs: [{ internalType: "string", name: "", type: "string" }],
@@ -425,16 +435,6 @@ export const prodConfig = {
     {
       inputs: [{ internalType: "address", name: "newOwner", type: "address" }],
       name: "transferOwnership",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "_recipient", type: "address" },
-        { internalType: "uint256", name: "_amount", type: "uint256" },
-      ],
-      name: "wrap",
       outputs: [],
       stateMutability: "nonpayable",
       type: "function",

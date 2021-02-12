@@ -432,6 +432,7 @@ button:hover,
 .button:hover {
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
 }
 
 button.outline,
@@ -710,6 +711,7 @@ input[type="checkbox"].own-switch + label::before {
 
 .block {
   width: 100%;
+  display: block;
 }
 
 .input-group input {

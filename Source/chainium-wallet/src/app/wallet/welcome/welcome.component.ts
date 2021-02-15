@@ -14,6 +14,8 @@ import { OwnSliderComponent } from "src/app/shared/own-slider/own-slider/own-sli
 import { OwnModalService } from "src/app/shared/own-modal/services/own-modal.service";
 import { OwnDropdownMenuComponent } from "src/app/shared/own-dropdown-menu/own-dropdown-menu/own-dropdown-menu.component";
 import { ConfigurationService } from "src/app/shared/services/configuration.service";
+import { forkJoin } from "rxjs";
+import { StateService } from "src/app/shared/services/state.service";
 
 @Component({
   selector: "app-welcome",
@@ -27,9 +29,9 @@ import { ConfigurationService } from "src/app/shared/services/configuration.serv
 })
 export class WelcomeComponent implements OnInit {
   addressInfo: ChxAddressInfo;
+  addressInfos: ChxAddressInfo[];
   selectedWallet: WalletInfo;
   selectedChxAddress: string;
-  wChxBalance: number;
   chxAddresses: string[] = [];
   showImportedPk: boolean;
   isWalletContextValid: boolean;
@@ -43,19 +45,18 @@ export class WelcomeComponent implements OnInit {
     private walletService: WalletService,
     private ownModalService: OwnModalService,
     private nodeService: NodeService,
+    private state: StateService,
     private configService: ConfigurationService
-  ) {
-    this.onRefreshAddressInfoClick();
-    this.privateKeyService
-      .getMessage()
-      .subscribe((msg) => this.onRefreshAddressInfoClick());
+  ) {}
+
+  ngOnInit() {
+    this.explorerUrl = this.configService.config.explorerUrl;
+    this.privateKeyService.getMessage().subscribe((msg) => {
+      this.onRefreshAddressInfoClick();
+    });
     this.walletService.getMessage().subscribe(() => {
       this.validateWalletContext();
     });
-    this.explorerUrl = this.configService.config.explorerUrl;
-  }
-
-  async ngOnInit() {
     this.walletService.generateWalletFromContext();
     this.showAdvanced = false;
   }
@@ -71,6 +72,18 @@ export class WelcomeComponent implements OnInit {
     this.validateWalletContext();
     this.selectWallet(this.privateKeyService.getWalletInfo());
     this.chxAddresses = this.walletService.getAllChxAddresses();
+    this.addressInfos = [];
+
+    const requests = [];
+    this.chxAddresses.forEach((address) => {
+      requests.push(this.nodeService.getAddressInfo(address));
+    });
+
+    forkJoin(requests).subscribe((resp: ChxAddressInfo[]) => {
+      this.addressInfos = resp;
+      this.state.setAddressInfos(this.addressInfos);
+    });
+
     this.showImportedPk =
       this.chxAddresses.indexOf(this.selectedChxAddress) === -1;
     this.cryptoService
@@ -80,6 +93,12 @@ export class WelcomeComponent implements OnInit {
 
   onAddChxAddressClick() {
     this.walletService.createNewChxAddress();
+  }
+
+  getInfoForAddress(chxAddress: string): ChxAddressInfo {
+    return this.addressInfos.find(
+      (info) => info.blockchainAddress === chxAddress
+    );
   }
 
   onImportPrivateKeyClick() {
@@ -104,7 +123,7 @@ export class WelcomeComponent implements OnInit {
     }
   }
 
-  async onChxAddressChange(
+  onChxAddressChange(
     address: string,
     slider: OwnSliderComponent,
     index: number
@@ -130,7 +149,7 @@ export class WelcomeComponent implements OnInit {
     this.nodeService
       .getAddressInfo(this.privateKeyService.getWalletInfo().address)
       .subscribe((address) => {
-        if (!address || address.errors) {
+        if (!address) {
           this.privateKeyService.setWalletInfo(null);
           this.addressInfo = null;
           return;

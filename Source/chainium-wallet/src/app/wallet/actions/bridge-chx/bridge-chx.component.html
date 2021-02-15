@@ -413,35 +413,41 @@
                   </div>
                 </div>
                 <div
-                  class="row justify-content-center item-align-center text-info mt-4 p-2 bg rounded cursor-pointer"
+                  class="row justify-content-center item-align-center text-info mt-4 p-2 bg-lighter rounded cursor-pointer position-relative"
                   *ngIf="bridgeFee"
                   tabindex="1"
                   title="Click to view detailed fee calculation"
                   (click)="showFees = !showFees"
                 >
+                  <span
+                    class="col-1 drop-menu position-absolute right-0 top-0 mt-2 -mr-1"
+                    [class.open]="showFees"
+                  >
+                    <own-icon icon="arrow-down"></own-icon>
+                  </span>
                   <div class="col">
                     <ng-container *ngIf="showFees">
-                      <div class="row">
+                      <div class="row mr-2">
                         <div class="col">Gas consumption:</div>
                         <div class="col text-right">
                           {{ bridgeFee.gasConsumption }} Gas
                         </div>
                       </div>
-                      <div class="row">
+                      <div class="row mr-2">
                         <div class="col">Gas price:</div>
                         <div class="col text-right">
                           {{ bridgeFee.gweiGasPrice }} Gwei
                         </div>
                       </div>
 
-                      <div class="row">
+                      <div class="row mr-2">
                         <div class="col">ETH fee:</div>
                         <div class="col text-right">
                           {{ bridgeFee.ethFee }} ETH
                         </div>
                       </div>
 
-                      <div class="row">
+                      <div class="row mr-2">
                         <div class="col">CHX/ETH price rate:</div>
                         <div class="col text-right">
                           {{ bridgeFee.chxEthPriceRate }}
@@ -450,13 +456,13 @@
 
                       <hr />
 
-                      <div class="row">
+                      <div class="row mr-2">
                         <div class="col">Fee on Ethereum:</div>
                         <div class="col text-right">
                           {{ bridgeFee.ethFeeInChx | number: "1.0-7" }} CHX
                         </div>
                       </div>
-                      <div class="row">
+                      <div class="row mr-2">
                         <div class="col">Fee on WeOwn blockchain:</div>
                         <div class="col text-right">
                           {{ bridgeFee.chxFee | number: "1.0-7" }} CHX
@@ -478,7 +484,11 @@
                         Total fee:
                       </div>
                       <div class="col text-right">
-                        {{ bridgeFee.totalFee | number: "1.0-7" }} CHX
+                        <div class="row mr-2">
+                          <div class="col">
+                            {{ bridgeFee.totalFee | number: "1.0-7" }} CHX
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -633,7 +643,7 @@
                 <div class="col col-md-6">
                   <a
                     *ngIf="fromBlockchain === 'eth' && !isProduction"
-                    class="button outline own-effect block"
+                    class="button outline own-effect block text-center"
                     [href]="
                       'https://rinkeby.etherscan.io/tx/' + txResult.txHash
                     "
@@ -643,7 +653,7 @@
                   </a>
                   <a
                     *ngIf="fromBlockchain === 'eth' && isProduction"
-                    class="button outline own-effect block"
+                    class="button outline own-effect block text-center"
                     [href]="'https://etherscan.io/tx/' + txResult.txHash"
                     target="_blank"
                   >
@@ -700,14 +710,14 @@
                       <div class="col col-md-6">
                         <button
                           *ngIf="fromBlockchain === 'chx'"
-                          class="outline own-effect block"
+                          class="outline own-effect block text-center"
                           [routerLink]="['/info/tx/' + txResult.txHash]"
                         >
                           VIEW TRANSACTION INFO
                         </button>
                         <a
                           *ngIf="fromBlockchain === 'eth' && !isProduction"
-                          class="button outline own-effect block"
+                          class="button outline own-effect block text-center"
                           [href]="
                             'https://rinkeby.etherscan.io/tx/' + txResult.txHash
                           "
@@ -717,7 +727,7 @@
                         </a>
                         <a
                           *ngIf="fromBlockchain === 'eth' && isProduction"
-                          class="button outline own-effect block"
+                          class="button outline own-effect block text-center"
                           [href]="'https://etherscan.io/tx/' + txResult.txHash"
                           target="_blank"
                         >

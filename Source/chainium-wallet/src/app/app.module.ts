@@ -37,6 +37,7 @@ import { ValidatorManagmentComponent } from "./wallet/validator-managment/valida
 import { StakingComponent } from "./wallet/staking/staking.component";
 import { MessageSignVerificationComponent } from "./wallet/msg-sign-verify/msg-sign-verify.component";
 import { BridgeChxComponent } from "./wallet/actions/bridge-chx/bridge-chx.component";
+import { StateService } from "./shared/services/state.service";
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { BridgeChxComponent } from "./wallet/actions/bridge-chx/bridge-chx.compo
       useClass: WalletHttpInterceptor,
       multi: true,
     },
+    StateService,
   ],
   bootstrap: [AppComponent],
 })

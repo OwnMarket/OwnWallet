@@ -55,6 +55,7 @@
                 <div class="mx-4 mb-2">
                   <div class="row justify-content-between">
                     <b>My Addresses</b>
+
                     <div>
                       <button class="previous" (click)="slider.prev()">
                         <
@@ -78,14 +79,10 @@
                           <div class="address-index mb-3">
                             Address {{ i + 1 }}
                           </div>
-                          <h4
-                            class="address-balance-chx m-0"
-                            *ngIf="addressInfo.blockchainAddress === address"
-                          >
-                            {{ addressInfo.balance.total }}
+                          <h4 class="address-balance-chx m-0">
+                            {{ getInfoForAddress(address)?.balance.total }}
                           </h4>
                           <div>CHX</div>
-                          <div class="wallet"></div>
                         </div>
                       </own-slide>
                     </ng-container>
@@ -102,10 +99,12 @@
                         >
                           <div class="address-index mb-3">Address 1</div>
                           <h4 class="address-balance-chx m-0">
-                            {{ addressInfo.balance.total }}
+                            {{
+                              getInfoForAddress(addressInfo.blockchainAddress)
+                                ?.balance.total
+                            }}
                           </h4>
                           <div>CHX</div>
-                          <div class="wallet"></div>
                         </div>
                       </own-slide>
                     </ng-container>
@@ -191,9 +190,8 @@
                     </div>
                   </div>
                   <div class="col-12">
-                    <div class="row mt-4">
-                      <div class="col"></div>
-                      <div class="col">
+                    <div class="row mt-4 justify-content-end">
+                      <div class="col-12 col-md-6">
                         <a
                           class="button action-button-small block text-bold text-center"
                           [href]="

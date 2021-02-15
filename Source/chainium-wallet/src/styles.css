@@ -2,6 +2,7 @@
 
 :root {
   --color-bg: #f4f4f4;
+  --color-bg-lighter: #f7f7f7;
   --color-brand: #eb6723;
   --color-danger: #d3240c;
   --color-accent: #3aabb9;
@@ -39,6 +40,10 @@
 html {
   box-sizing: border-box;
   font-size: 14px;
+}
+
+hr {
+  border-top: 1px solid var(--color-border);
 }
 
 body {
@@ -117,6 +122,10 @@ button.link {
   height: 1.25rem;
 }
 
+.-mr-1 {
+  margin-right: -0.65rem;
+}
+
 .-ml-1 {
   margin-left: -0.25rem;
 }
@@ -127,6 +136,10 @@ button.link {
 
 .-mt-2 {
   margin-top: -1rem;
+}
+
+.mt-2 {
+  margin-top: 1rem;
 }
 
 .m-0 {
@@ -149,6 +162,26 @@ button.link {
 
 .position-relative {
   position: relative;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.right-0 {
+  right: 0;
+}
+
+.left {
+  left: 0;
+}
+
+.bottom {
+  bottom: 0;
 }
 
 .img-responsive {
@@ -184,6 +217,10 @@ button.link {
 
 .bg {
   background-color: var(--color-bg);
+}
+
+.bg-lighter {
+  background-color: var(--color-bg-lighter);
 }
 
 .bg-danger {

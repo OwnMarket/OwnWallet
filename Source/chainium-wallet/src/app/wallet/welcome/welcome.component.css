@@ -9,7 +9,7 @@
   box-shadow: none;
   overflow: hidden;
   position: relative;
-  transition: all .5s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 
 .plus-icon {
@@ -17,7 +17,7 @@
   top: -7px;
   left: 0;
   padding: 15px;
-  transition: all .5s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 
 .welcome-button:hover {
@@ -44,62 +44,51 @@
   color: var(--color-text);
   background: var(--color-bg);
   border-radius: 10px;
-  transition: all .4s ease-in-out;
-}
-
-.address-item .wallet {
-  position: absolute;
-  left: 0;
-  top: 150px;
-  width: 230px;
-  height: 200px;
-  border-radius: 10px;
-  box-shadow: 0 -4px 0 0 rgba(0, 0, 0, .2);
-  background: var(--color-bg-advanced);
-  transform: translateY(-100px);
-  transition: all .5s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }
 
 .address-item.selected {
-  color: var(--color-navbar-bg);;
-  background: linear-gradient(to right, rgba(227,85,34,1) 0%, rgba(244,113,53,1) 100%);
-  box-shadow: 0 4px 7px 0 rgba(0, 0, 0, .3);
-}
-
-.address-item.selected .wallet {
-  transform: translateX(0);
+  color: var(--color-navbar-bg);
+  background: linear-gradient(
+    to right,
+    rgba(227, 85, 34, 1) 0%,
+    rgba(244, 113, 53, 1) 100%
+  );
+  box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.3);
 }
 
 .address-item.selected:hover {
   box-shadow: none;
-  background: linear-gradient(to right, rgba(227,85,34,1) 100%, rgba(244,113,53,1) 100%);
-}
-.address-item.selected:hover .wallet {
-  transform: translateX(0);
+  background: linear-gradient(
+    to right,
+    rgba(227, 85, 34, 1) 100%,
+    rgba(244, 113, 53, 1) 100%
+  );
 }
 
 .address-item:hover {
   cursor: pointer;
 }
 
-.address-item:hover .wallet {
-  box-shadow: 0 -10px 0 0 rgba(0, 0, 0, .2),
-  inset 0 1px 0 0 rgba(255, 255, 255, .9),
-  inset 0 10px 10px 0 rgba(0, 0, 0, .1);
-  transform: translateY(-90px);
+.address-item:hover {
+  color: white;
+  background-color: var(--color-accent);
+  box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.2);
 }
 
-.next, .previous {
+.next,
+.previous {
   padding: 0;
   height: 30px;
   width: 30px;
   color: var(--color-text);
   background-color: var(--color-bg);
   box-shadow: none;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
-.next:hover, .previous:hover {
+.next:hover,
+.previous:hover {
   color: var(--color-navbar-bg);
   background-color: var(--color-accent);
 }
@@ -119,12 +108,12 @@
 .quick-action-button {
   position: relative;
   font-weight: 400;
-  padding: .5rem 1.5rem .5rem 3.2rem;
+  padding: 0.5rem 1.5rem 0.5rem 3.2rem;
   color: var(--color-text);
   background-color: var(--color-navbar-bg);
   box-shadow: none;
   overflow: hidden;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .quick-action-button:hover {
@@ -134,11 +123,11 @@
 
 .quick-action-button span {
   position: absolute;
-  top: -.2rem;
-  left: -.3rem;
+  top: -0.2rem;
+  left: -0.3rem;
   text-align: right;
-  padding-right: .7rem;
-  padding-top: .5rem;
+  padding-right: 0.7rem;
+  padding-top: 0.5rem;
   height: 3rem;
   width: 3rem;
   border-radius: 50%;
@@ -148,7 +137,7 @@
 .quick-action-button.selected {
   color: var(--color-text-info);
   background-color: transparent;
-  box-shadow: inset 0 0 4px rgba(0, 0, 0, .3);
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
 }
 
 .quick-action-button.selected span,
@@ -158,7 +147,7 @@
 
 .quick-action-button.selected:hover,
 .advanced-actions .quick-action-button.selected:hover {
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, .3);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .advanced-actions .quick-action-button.selected:hover span {
@@ -169,18 +158,18 @@
   background-color: transparent;
   box-shadow: none;
   color: var(--color-text);
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
 }
 
 .advanced-dropdown-button:hover {
   text-shadow: none;
-  box-shadow: 0 0 4px rgba(0, 0, 0, .3);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 }
 
 .advanced-actions .quick-action-button,
 .advanced-actions .quick-action-button span {
   background-color: var(--color-bg-advanced);
-  transition: all .9s ease-in-out;
+  transition: all 0.9s ease-in-out;
 }
 
 .advanced-actions .quick-action-button:hover {

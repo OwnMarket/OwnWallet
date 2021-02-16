@@ -42,10 +42,12 @@
       >
         <ul class="nav row justify-content-end">
           <li class="nav-item" *ngIf="totalBalance | async as balance">
-            <div class="text-bold" style="line-height: 63px">
-              <span class="text-brand border-right pr-4"
-                >{{ balance | number: "1.0-7" }} CHX</span
-              >
+            <div class="text-bold mt-2">
+              <div class="text-brand border-right pr-4">
+                {{ balance | number: "1.0-7" }} CHX
+              </div>
+
+              <div class="text-info text-right border-right pr-4">2000 USD</div>
             </div>
           </li>
           <li class="nav-item" routerLinkActive="active" routerLink="/wallet">

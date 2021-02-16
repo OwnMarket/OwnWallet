@@ -74,15 +74,17 @@ export class WelcomeComponent implements OnInit {
     this.chxAddresses = this.walletService.getAllChxAddresses();
     this.addressInfos = [];
 
-    const requests = [];
-    this.chxAddresses.forEach((address) => {
-      requests.push(this.nodeService.getAddressInfo(address));
-    });
+    if (this.chxAddresses.length > 1) {
+      const requests = [];
+      this.chxAddresses.forEach((address) => {
+        requests.push(this.nodeService.getAddressInfo(address));
+      });
 
-    forkJoin(requests).subscribe((resp: ChxAddressInfo[]) => {
-      this.addressInfos = resp;
-      this.state.setAddressInfos(this.addressInfos);
-    });
+      forkJoin(requests).subscribe((resp: ChxAddressInfo[]) => {
+        this.addressInfos = resp;
+        this.state.setAddressInfos(this.addressInfos);
+      });
+    }
 
     this.showImportedPk =
       this.chxAddresses.indexOf(this.selectedChxAddress) === -1;

@@ -1,24 +1,24 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Subscription } from "rxjs";
-import { TxResult } from "src/app/shared/models/submit-transactions.model";
-import { WalletInfo } from "src/app/shared/models/wallet-info.model";
-import { CryptoService } from "src/app/shared/services/crypto.service";
-import { NodeService } from "src/app/shared/services/node.service";
-import { PrivatekeyService } from "src/app/shared/services/privatekey.service";
-import { ChxBridgeFeeService } from "src/app/shared/services/chx-bridge-fee.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { TxResult } from 'src/app/shared/models/submit-transactions.model';
+import { WalletInfo } from 'src/app/shared/models/wallet-info.model';
+import { CryptoService } from 'src/app/shared/services/crypto.service';
+import { NodeService } from 'src/app/shared/services/node.service';
+import { PrivatekeyService } from 'src/app/shared/services/privatekey.service';
+import { ChxBridgeFeeService } from 'src/app/shared/services/chx-bridge-fee.service';
 declare var ownBlockchainSdk: any;
-import { environment } from "src/environments/environment";
+import { environment } from 'src/environments/environment';
 
-import detectEthereumProvider from "@metamask/detect-provider";
-import Web3 from "web3";
-import { BridgeFee } from "src/app/shared/models/bridge-fee.model";
-import { ConfigurationService } from "src/app/shared/services/configuration.service";
+import detectEthereumProvider from '@metamask/detect-provider';
+import Web3 from 'web3';
+import { BridgeFee } from 'src/app/shared/models/bridge-fee.model';
+import { ConfigurationService } from 'src/app/shared/services/configuration.service';
 
 @Component({
-  selector: "app-swap-chx",
-  templateUrl: "./bridge-chx.component.html",
-  styleUrls: ["./bridge-chx.component.css"],
+  selector: 'app-swap-chx',
+  templateUrl: './bridge-chx.component.html',
+  styleUrls: ['./bridge-chx.component.css'],
 })
 export class BridgeChxComponent implements OnInit, OnDestroy {
   acceptBridgeForm: FormGroup;
@@ -63,11 +63,11 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
   bridgeFee: BridgeFee;
 
   chains = {
-    "0x1": "Ethereum Main Network",
-    "0x3": "Ropsten Test Network",
-    "0x4": "Rinkeby Test Network",
-    "0x5": "Goerli Test Network",
-    "0x2a": "Kovan Test Network",
+    '0x1': 'Ethereum Main Network',
+    '0x3': 'Ropsten Test Network',
+    '0x4': 'Rinkeby Test Network',
+    '0x5': 'Goerli Test Network',
+    '0x2a': 'Kovan Test Network',
   };
 
   constructor(
@@ -88,14 +88,12 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     this.wallet = this.privateKeyService.getWalletInfo();
     this.chxAddress = this.wallet.address;
 
-    this.addressSub = this.nodeService
-      .getAddressInfo(this.wallet.address)
-      .subscribe((balInfo) => {
-        this.chxBalance = balInfo.balance.available;
-        this.nonce = balInfo.nonce + 1;
-        this.fee = this.nodeService.getMinFee();
-        this.setupForms();
-      });
+    this.addressSub = this.nodeService.getAddressInfo(this.wallet.address).subscribe((balInfo) => {
+      this.chxBalance = balInfo.balance.available;
+      this.nonce = balInfo.nonce + 1;
+      this.fee = this.nodeService.getMinFee();
+      this.setupForms();
+    });
   }
 
   ngOnDestroy(): void {
@@ -113,31 +111,31 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
 
     this.bridgeForm = this.fb.group({
       ethAddress: [null],
-      fromBlockchain: ["chx"],
-      toBlockchain: ["eth"],
+      fromBlockchain: ['chx'],
+      toBlockchain: ['eth'],
       fromAmount: [null],
       toAmount: [null],
     });
 
-    this.bridgeForm.get("fromBlockchain").valueChanges.subscribe((value) => {
-      if (value === this.bridgeForm.get("toBlockchain").value) {
-        this.bridgeForm.get("toBlockchain").value === "eth"
-          ? this.bridgeForm.get("toBlockchain").setValue("chx")
-          : this.bridgeForm.get("toBlockchain").setValue("eth");
+    this.bridgeForm.get('fromBlockchain').valueChanges.subscribe((value) => {
+      if (value === this.bridgeForm.get('toBlockchain').value) {
+        this.bridgeForm.get('toBlockchain').value === 'eth'
+          ? this.bridgeForm.get('toBlockchain').setValue('chx')
+          : this.bridgeForm.get('toBlockchain').setValue('eth');
         this.setValidators();
       }
     });
 
-    this.bridgeForm.get("toBlockchain").valueChanges.subscribe((value) => {
-      if (value === this.bridgeForm.get("fromBlockchain").value) {
-        this.bridgeForm.get("fromBlockchain").value === "eth"
-          ? this.bridgeForm.get("fromBlockchain").setValue("chx")
-          : this.bridgeForm.get("fromBlockchain").setValue("eth");
+    this.bridgeForm.get('toBlockchain').valueChanges.subscribe((value) => {
+      if (value === this.bridgeForm.get('fromBlockchain').value) {
+        this.bridgeForm.get('fromBlockchain').value === 'eth'
+          ? this.bridgeForm.get('fromBlockchain').setValue('chx')
+          : this.bridgeForm.get('fromBlockchain').setValue('eth');
         this.setValidators();
       }
     });
 
-    this.bridgeForm.get("fromAmount").valueChanges.subscribe((value) => {
+    this.bridgeForm.get('fromAmount').valueChanges.subscribe((value) => {
       let newValue = value ? value : 0;
       if (this.bridgeFee && value) {
         newValue = new Number((value - this.bridgeFee.totalFee).toFixed(7));
@@ -145,28 +143,26 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       if (newValue < 0) {
         newValue = 0;
       }
-      this.bridgeForm.get("toAmount").setValue(newValue);
+      this.bridgeForm.get('toAmount').setValue(newValue);
     });
   }
 
   setValidators() {
     this.bridgeForm
-      .get("fromAmount")
+      .get('fromAmount')
       .setValidators([
         Validators.required,
         Validators.min(this.minWrapAmount),
-        Validators.max(
-          this.fromBlockchain === "chx" ? this.chxBalance : this.wChxBalance
-        ),
+        Validators.max(this.fromBlockchain === 'chx' ? this.chxBalance : this.wChxBalance),
       ]);
   }
 
   get fromBlockchain(): string {
-    return this.bridgeForm.get("fromBlockchain").value;
+    return this.bridgeForm.get('fromBlockchain').value;
   }
 
   get toBlockchain(): string {
-    return this.bridgeForm.get("toBlockchain").value;
+    return this.bridgeForm.get('toBlockchain').value;
   }
 
   get chainName(): string {
@@ -174,10 +170,10 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
   }
 
   swapBlockchains() {
-    if (this.bridgeForm.get("fromBlockchain").value === "eth") {
-      this.bridgeForm.get("fromBlockchain").setValue("chx");
+    if (this.bridgeForm.get('fromBlockchain').value === 'eth') {
+      this.bridgeForm.get('fromBlockchain').setValue('chx');
     } else {
-      this.bridgeForm.get("fromBlockchain").setValue("eth");
+      this.bridgeForm.get('fromBlockchain').setValue('eth');
     }
     this.getBridgeFee(this.ethAddress);
   }
@@ -195,9 +191,9 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     const provider = await detectEthereumProvider();
 
     if (provider) {
-      console.log("metamask installed");
+      console.log('metamask installed');
       if (provider !== window.ethereum) {
-        console.error("Do you have multiple wallets installed?");
+        console.error('Do you have multiple wallets installed?');
         this.showWarning = true;
         this.warningMessage = `Please check if you have other wallet installed and active besides MetaMask wallet`;
         this.loading = false;
@@ -205,12 +201,10 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
         this.provider = provider;
         this.web3.setProvider(this.provider);
         this.chainId = this.provider.chainId;
-        this.isProduction = this.chainId === "0x1";
+        this.isProduction = this.chainId === '0x1';
 
         // Reload window if network has been changed in MetaMask
-        await this.provider.on("chainChanged", (chainId: string) =>
-          window.location.reload()
-        );
+        await this.provider.on('chainChanged', (chainId: string) => window.location.reload());
 
         this.connect();
       }
@@ -235,15 +229,13 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
 
   async checkIfEthAddressIsMappedToOtherChxAddress(ethAddress: string) {
     try {
-      const chxAddr = await this.wChxMapping.methods
-        .chxAddress(ethAddress)
-        .call();
+      const chxAddr = await this.wChxMapping.methods.chxAddress(ethAddress).call();
 
-      if (chxAddr !== "") {
+      if (chxAddr !== '') {
         if (chxAddr !== this.chxAddress) {
           this.showWarning = true;
           this.warningMessage =
-            "Currently selected ETH Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.";
+            'Currently selected ETH Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.';
           return false;
         } else {
           return true;
@@ -254,21 +246,15 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     } catch (error) {
       console.log(error);
       this.showWarning = true;
-      this.warningMessage =
-        "Failed to check if ETH Address is mapped to other CHX Address.";
+      this.warningMessage = 'Failed to check if ETH Address is mapped to other CHX Address.';
       return false;
     }
   }
 
   async checkIfAddressIsMapped() {
-    const ethAddr = await this.wChxMapping.methods
-      .ethAddress(this.chxAddress)
-      .call();
+    const ethAddr = await this.wChxMapping.methods.ethAddress(this.chxAddress).call();
 
-    if (
-      ethAddr !== "0x0000000000000000000000000000000000000000" &&
-      ethAddr !== ""
-    ) {
+    if (ethAddr !== '0x0000000000000000000000000000000000000000' && ethAddr !== '') {
       this.ethAddrMapped = true;
       this.ethAddress = ethAddr;
       this.getBridgeFee(this.ethAddress);
@@ -279,34 +265,29 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
 
   async getBalanceAndMinAmount() {
     if (this.ethAddrMapped && this.ethAddress) {
-      this.wChxBalance =
-        (await this.wChxToken.methods.balanceOf(this.ethAddress).call()) /
-        Math.pow(10, 7);
+      this.wChxBalance = (await this.wChxToken.methods.balanceOf(this.ethAddress).call()) / Math.pow(10, 7);
 
-      this.minWrapAmount =
-        (await this.wChxToken.methods.minWrapAmount().call()) / Math.pow(10, 7);
+      this.minWrapAmount = (await this.wChxToken.methods.minWrapAmount().call()) / Math.pow(10, 7);
 
       this.setValidators();
     }
   }
 
   getBridgeFee(ethAddress: string) {
-    const type = this.fromBlockchain === "chx" ? "chxToEth" : "ethToChx";
-    this.bridgeFeeSub = this.bridgeFeeService
-      .getBridgeFees(ethAddress, type)
-      .subscribe((resp) => {
-        this.bridgeFee = resp.data;
-      });
+    const type = this.fromBlockchain === 'chx' ? 'chxToEth' : 'ethToChx';
+    this.bridgeFeeSub = this.bridgeFeeService.getBridgeFees(ethAddress, type).subscribe((resp) => {
+      this.bridgeFee = resp.data;
+    });
   }
 
   connect() {
     this.connectingToMetaMask = true;
     this.provider
-      .request({ method: "eth_requestAccounts" })
+      .request({ method: 'eth_requestAccounts' })
       .then(async (accounts: string[]) => await this.syncAccounts(accounts))
       .catch((err: any) => {
         if (err.code === 4001) {
-          console.log("Please connect to MetaMask.");
+          console.log('Please connect to MetaMask.');
           this.showWarning = true;
           this.warningMessage = `You have rejected to connect WeOwn wallet with your MetaMask wallet.`;
         } else {
@@ -321,7 +302,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     this.metaMaskConnected = true;
     this.connectingToMetaMask = false;
     if (accounts.length === 0) {
-      console.log("Please connect to MetaMask.");
+      console.log('Please connect to MetaMask.');
       this.showWarning = true;
       this.warningMessage = `Your MetaMask wallet is locked or you didn't connect any accounts.`;
     } else if (accounts[0] !== this.currentAccount) {
@@ -336,11 +317,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
           this.ethAddress = this.currentAccount;
         }
       } else {
-        if (
-          await this.checkIfEthAddressIsMappedToOtherChxAddress(
-            this.currentAccount
-          )
-        ) {
+        if (await this.checkIfEthAddressIsMappedToOtherChxAddress(this.currentAccount)) {
           this.ethAddress = this.currentAccount;
           this.mapAddress();
         }
@@ -352,17 +329,12 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     this.loading = true;
     if (!this.ethAddrMapped) {
       this.signatureSub = this.cryptoService
-        .signMessage(
-          this.privateKeyService.getWalletInfo().privateKey,
-          this.ethAddress
-        )
+        .signMessage(this.privateKeyService.getWalletInfo().privateKey, this.ethAddress)
         .subscribe(async (signature: string) => {
           try {
-            await this.wChxMapping.methods
-              .mapAddress(this.chxAddress, signature)
-              .send({
-                from: this.ethAddress,
-              });
+            await this.wChxMapping.methods.mapAddress(this.chxAddress, signature).send({
+              from: this.ethAddress,
+            });
             this.getBalanceAndMinAmount();
             this.getBridgeFee(this.ethAddress);
           } catch (error) {
@@ -374,58 +346,49 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
   }
 
   async transfer() {
-    if (this.fromBlockchain === "chx") {
-      const txToSign = ownBlockchainSdk.transactions.createTx(
-        this.wallet.address,
-        this.nonce,
-        this.fee
-      );
+    if (this.fromBlockchain === 'chx') {
+      const txToSign = ownBlockchainSdk.transactions.createTx(this.wallet.address, this.nonce, this.fee);
 
       txToSign.addTransferChxAction(
         this.configService.config.ownerChxAddress,
-        +this.bridgeForm.get("fromAmount").value
+        +this.bridgeForm.get('fromAmount').value
       );
 
-      const signature = txToSign.sign(
-        environment.networkCode,
-        this.wallet.privateKey
-      );
+      const signature = txToSign.sign(environment.networkCode, this.wallet.privateKey);
 
-      this.txSub = this.nodeService
-        .submitTransaction(signature)
-        .subscribe((result) => {
-          this.loading = false;
-          if (result.errors) {
-            this.showWarning = true;
-            this.warningMessage = result.errors;
-            return;
-          }
-          this.txResult = result as TxResult;
-        });
+      this.txSub = this.nodeService.submitTransaction(signature).subscribe((result) => {
+        this.loading = false;
+        if (result.errors) {
+          this.showWarning = true;
+          this.warningMessage = result.errors;
+          return;
+        }
+        this.txResult = result as TxResult;
+      });
     }
-    if (this.fromBlockchain === "eth") {
-      const amount = +this.bridgeForm.get("fromAmount").value * Math.pow(10, 7);
+    if (this.fromBlockchain === 'eth') {
+      const amount = +this.bridgeForm.get('fromAmount').value * Math.pow(10, 7);
       const tx = await this.wChxToken.methods
-        .transfer(this.configService.config.ownerEthAddress, amount)
+        .transfer(this.configService.config.wChxTokenContract, amount)
         .send({
           from: this.ethAddress,
         })
-        .on("transactionHash", (hash) => {
+        .on('transactionHash', (hash) => {
           this.txResult = new TxResult();
           this.txResult.txHash = hash;
           this.inProgress = true;
           this.loading = false;
         })
-        .on("receipt", (receipt) => {
+        .on('receipt', (receipt) => {
           this.inProgress = false;
         })
-        .on("error", (error, receipt) => {
+        .on('error', (error, receipt) => {
           this.inProgress = false;
           this.showWarning = true;
           switch (error.code) {
             case 4001:
               this.warningMessage =
-                "The transaction was rejected in MetaMask. The process was therefore cancelled and no tokens are transferred.";
+                'The transaction was rejected in MetaMask. The process was therefore cancelled and no tokens are transferred.';
               break;
             case -32602:
               this.warningMessage = `Check if your currently selected address in MetaMask is ${this.ethAddress} and try again.`;

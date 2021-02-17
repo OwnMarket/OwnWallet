@@ -14,11 +14,7 @@
           </p>
           <div class="row">
             <div class="col-12 col-md-6">
-              <button
-                class="welcome-button"
-                routerLink="create"
-                routerLinkActive="active"
-              >
+              <button class="welcome-button" routerLink="create" routerLinkActive="active">
                 <span class="plus-icon">
                   <own-icon icon="plus" color="#39a2ae"></own-icon>
                 </span>
@@ -26,11 +22,7 @@
               </button>
             </div>
             <div class="col-12 col-md-6 mt-4 mt-md-0">
-              <button
-                class="welcome-button"
-                routerLink="import"
-                routerLinkActive="active"
-              >
+              <button class="welcome-button" routerLink="import" routerLinkActive="active">
                 <span class="plus-icon">
                   <own-icon icon="plus" color="#39a2ae"></own-icon>
                 </span>
@@ -57,9 +49,7 @@
                     <b>My Addresses</b>
 
                     <div>
-                      <button class="previous" (click)="slider.prev()">
-                        <
-                      </button>
+                      <button class="previous" (click)="slider.prev()"><</button>
                       <button class="next" (click)="slider.next()">></button>
                     </div>
                   </div>
@@ -67,22 +57,23 @@
                 <div class="border-right">
                   <own-slider [showDots]="false" #slider>
                     <ng-container *ngIf="chxAddresses.length > 1">
-                      <own-slide
-                        [width]="230"
-                        *ngFor="let address of chxAddresses; let i = index"
-                      >
+                      <own-slide [width]="230" *ngFor="let address of chxAddresses; let i = index">
                         <div
                           class="address-item"
                           [class.selected]="selectedChxAddress === address"
                           (click)="onChxAddressChange(address, slider, i)"
                         >
-                          <div class="address-index mb-3">
-                            Address {{ i + 1 }}
+                          <div class="row justify-content-between">
+                            <div class="address-index mb-3 col">Address {{ i + 1 }}</div>
+                            <div class="col text-right">CHX</div>
                           </div>
                           <h4 class="address-balance-chx m-0">
                             {{ getInfoForAddress(address)?.balance.total }}
                           </h4>
-                          <div>CHX</div>
+
+                          <div>
+                            {{ getInfoForAddress(address)?.balance.total * chxToUsdRate | number: '1.2-2' }} USD
+                          </div>
                         </div>
                       </own-slide>
                     </ng-container>
@@ -90,18 +81,16 @@
                       <own-slide [width]="230">
                         <div
                           class="address-item"
-                          [class.selected]="
-                            selectedChxAddress === addressInfo.blockchainAddress
-                          "
-                          (click)="
-                            onChxAddressChange(addressInfo.blockchainAddress)
-                          "
+                          [class.selected]="selectedChxAddress === addressInfo.blockchainAddress"
+                          (click)="onChxAddressChange(addressInfo.blockchainAddress)"
                         >
-                          <div class="address-index mb-3">Address 1</div>
+                          <div class="row justify-content-between">
+                            <div class="address-index mb-3 col">Address 1</div>
+                            <div class="col text-right">CHX</div>
+                          </div>
                           <h4 class="address-balance-chx m-0">
-                            {{ addressInfo.balance.total }}
+                            {{ addressInfo.balance.total * chxToUsdRate | number: '1.2-2' }} USD
                           </h4>
-                          <div>CHX</div>
                         </div>
                       </own-slide>
                     </ng-container>
@@ -111,11 +100,7 @@
               <div class="col-12 col-md-6 mt-4 mt-md-0">
                 <h6 class="mx-4 mb-2">
                   <div class="row justify-content-end align-items-center">
-                    <button
-                      class="action-button-small"
-                      (click)="onAddChxAddressClick()"
-                      *ngIf="!showImportedPk"
-                    >
+                    <button class="action-button-small" (click)="onAddChxAddressClick()" *ngIf="!showImportedPk">
                       <span>+</span>
                       Add Address
                     </button>
@@ -127,23 +112,19 @@
                       <own-icon icon="refresh"></own-icon>
                     </button>
                     <own-dropdown-menu #menu>
-                      <own-dropdown-item
-                        (click)="openModal('show-private-key', menu)"
-                      >
+                      <own-dropdown-item (click)="openModal('show-private-key', menu)">
                         Show Private Key
                       </own-dropdown-item>
-                      <own-dropdown-item
-                        (click)="openModal('unload-modal', menu)"
-                      >
-                        Unload Wallet
-                      </own-dropdown-item>
+                      <own-dropdown-item (click)="openModal('unload-modal', menu)"> Unload Wallet </own-dropdown-item>
                     </own-dropdown-menu>
                   </div>
                 </h6>
 
                 <div class="row mt-4">
-                  <div class="col-9 col-md-10 address-hash text-center elipsis">
-                    {{ addressInfo.blockchainAddress }}
+                  <div class="col-9 col-md-10 address-hash elipsis">
+                    <div class="ml-md-4 pl-md-3 pl-0 ml-0">
+                      {{ addressInfo.blockchainAddress }}
+                    </div>
                   </div>
                   <div class="col-3 col-md-2">
                     <button
@@ -187,15 +168,11 @@
                     </div>
                   </div>
                   <div class="col-12">
-                    <div class="row mt-4 justify-content-end">
+                    <div class="row mt-4">
                       <div class="col-12 col-md-6">
                         <a
                           class="button action-button-small block text-bold text-center"
-                          [href]="
-                            explorerUrl +
-                            '/address/' +
-                            addressInfo.blockchainAddress
-                          "
+                          [href]="explorerUrl + '/address/' + addressInfo.blockchainAddress"
                           target="_blank"
                         >
                           View transactions
@@ -217,44 +194,28 @@
       </div>
       <div class="col-12 col-md-7">
         <div class="quick-actions">
-          <button
-            class="quick-action-button mr-4"
-            routerLink="send-chx"
-            routerLinkActive="selected"
-          >
+          <button class="quick-action-button mr-4" routerLink="send-chx" routerLinkActive="selected">
             <span>
               <own-icon icon="send" size="15" color="#39a2ae"></own-icon>
             </span>
             Send CHX
           </button>
 
-          <button
-            class="quick-action-button mr-4"
-            routerLink="receive-chx"
-            routerLinkActive="selected"
-          >
+          <button class="quick-action-button mr-4" routerLink="receive-chx" routerLinkActive="selected">
             <span>
               <own-icon icon="receive" size="15" color="#39a2ae"></own-icon>
             </span>
             Receive CHX
           </button>
 
-          <button
-            class="quick-action-button mr-4"
-            routerLink="staking"
-            routerLinkActive="selected"
-          >
+          <button class="quick-action-button mr-4" routerLink="staking" routerLinkActive="selected">
             <span>
               <own-icon icon="staking" size="15" color="#39a2ae"></own-icon>
             </span>
             Staking
           </button>
 
-          <button
-            class="quick-action-button"
-            routerLink="bridge"
-            routerLinkActive="selected"
-          >
+          <button class="quick-action-button" routerLink="bridge" routerLinkActive="selected">
             <span>
               <own-icon icon="swap" size="15" color="#39a2ae"></own-icon>
             </span>
@@ -264,10 +225,7 @@
       </div>
 
       <div class="col-12 col-md-3 text-right mt-4 mt-md-0">
-        <button
-          class="advanced-dropdown-button row"
-          (click)="showAdvanced = !showAdvanced"
-        >
+        <button class="advanced-dropdown-button row" (click)="showAdvanced = !showAdvanced">
           <div class="col-10">
             <b class="mr-2">Advanced actions</b>
           </div>
@@ -278,11 +236,7 @@
       </div>
     </div>
 
-    <div
-      class="row advanced-actions mt-3 px-0 px-md-5"
-      *ngIf="showAdvanced"
-      @flyUp
-    >
+    <div class="row advanced-actions mt-3 px-0 px-md-5" *ngIf="showAdvanced" @flyUp>
       <div class="col-12 col-md-4">
         <button
           class="quick-action-button block"
@@ -330,12 +284,7 @@
           <b>CHX Address</b>
         </div>
         <div class="col-3 col-md-2">
-          <button
-            class="button-transparent"
-            title="Copy Address"
-            ngxClipboard
-            cbContent="{{ selectedWallet.address }}"
-          >
+          <button class="button-transparent" title="Copy Address" ngxClipboard cbContent="{{ selectedWallet.address }}">
             <own-icon icon="copy" color="#eb6723"></own-icon>
           </button>
         </div>
@@ -368,12 +317,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <button
-          class="own-effect outline flat block mt-2"
-          (click)="hidePrivateKey('show-private-key')"
-        >
-          CLOSE
-        </button>
+        <button class="own-effect outline flat block mt-2" (click)="hidePrivateKey('show-private-key')">CLOSE</button>
       </div>
     </div>
   </own-modal>

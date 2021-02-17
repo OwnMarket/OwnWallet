@@ -1,69 +1,62 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { ApiResponse } from "../models/api-response.model";
-import { ChxAddressInfo } from "../models/chx-address-info.model";
-import { ConfigurationService } from "./configuration.service";
+import { ApiResponse } from '../models/api-response.model';
+import { ChxAddressInfo } from '../models/chx-address-info.model';
+import { ConfigurationService } from './configuration.service';
 
 @Injectable()
 export class StateService {
-  private totalBalanceSubj: BehaviorSubject<number> = new BehaviorSubject<number>(
-    0
-  );
+  private totalBalanceSubj: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   public totalBalance$: Observable<number> = this.totalBalanceSubj.asObservable();
-  private totalUsdBalanceSubj: BehaviorSubject<number> = new BehaviorSubject<number>(
-    0
-  );
-  public totalUsdBalance$: Observable<number> = this.totalUsdBalanceSubj.asObservable();
 
-  private usdToChxRatioSubj: BehaviorSubject<number> = new BehaviorSubject<number>(
-    0
-  );
-  public usdToChxRatio$: Observable<number> = this.usdToChxRatioSubj.asObservable();
+  private usdToChxRateSubj: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  public usdToChxRate$: Observable<number> = this.usdToChxRateSubj.asObservable();
 
-  private addressInfosSubj: BehaviorSubject<
-    ChxAddressInfo[]
-  > = new BehaviorSubject<ChxAddressInfo[]>([]);
-  public addressInfos$: Observable<
-    ChxAddressInfo[]
-  > = this.addressInfosSubj.asObservable();
+  private addressInfosSubj: BehaviorSubject<ChxAddressInfo[]> = new BehaviorSubject<ChxAddressInfo[]>([]);
+  public addressInfos$: Observable<ChxAddressInfo[]> = this.addressInfosSubj.asObservable();
 
-  constructor(
-    private http: HttpClient,
-    private configService: ConfigurationService
-  ) {}
+  private refreshInfosSubj: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public refreshInfos$: Observable<boolean> = this.refreshInfosSubj.asObservable();
+
+  constructor(private http: HttpClient, private configService: ConfigurationService) {}
 
   setBalance(value: number) {
     this.totalBalanceSubj.next(value);
   }
 
   getBalance(addressInfos: ChxAddressInfo[]): number {
-    return addressInfos.reduce(
-      (curr: number, next: ChxAddressInfo) => curr + next.balance.available,
-      0
-    );
+    return addressInfos.reduce((curr: number, next: ChxAddressInfo) => curr + next.balance.total, 0);
   }
 
-  getTotalUsdBalance(
-    balance: number,
-    baseCurrency: string = "CHX",
-    quoteCurrency: string = "USD"
-  ) {
-    this.http
-      .get<ApiResponse<number>>(
-        `${this.configService.config.bridgeApiUrl}/rate/${baseCurrency}/${quoteCurrency}`
-      )
-      .subscribe((resp) => {
-        this.usdToChxRatioSubj.next(resp.data);
-        this.totalUsdBalanceSubj.next(balance * resp.data);
-      });
+  getTotalUsdBalance(): Observable<number> {
+    return combineLatest([this.totalBalance$, this.usdToChxRate$]).pipe(map(([balance, rate]) => balance * rate));
+  }
+
+  getChxToUsdRate(baseCurrency: string = 'CHX', quoteCurrency: string = 'USD'): Observable<number> {
+    return this.http
+      .get<ApiResponse<number>>(`${this.configService.config.bridgeApiUrl}/rate/${baseCurrency}/${quoteCurrency}`)
+      .pipe(
+        map((resp) => {
+          this.usdToChxRateSubj.next(resp.data);
+          return resp.data;
+        })
+      );
   }
 
   setAddressInfos(addressInfos: ChxAddressInfo[]) {
     this.addressInfosSubj.next(addressInfos);
     this.totalBalanceSubj.next(this.getBalance(addressInfos));
-    //this.getTotalUsdBalance(this.getBalance(addressInfos));
+  }
+
+  refresh() {
+    this.refreshInfosSubj.next(true);
+  }
+
+  endRefresh() {
+    this.refreshInfosSubj.next(false);
   }
 }

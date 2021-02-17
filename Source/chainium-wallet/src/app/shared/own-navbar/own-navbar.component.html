@@ -36,18 +36,15 @@
         </a>
       </div>
 
-      <div
-        class="col-12 col-md-4 own-nav-collapse"
-        [class.collapsed]="menuOpen"
-      >
+      <div class="col-12 col-md-6 own-nav-collapse" [class.collapsed]="menuOpen">
         <ul class="nav row justify-content-end">
-          <li class="nav-item" *ngIf="totalBalance | async as balance">
-            <div class="text-bold mt-2">
-              <div class="text-brand border-right pr-4">
-                {{ balance | number: "1.0-7" }} CHX
-              </div>
+          <li class="nav-item pr-6" *ngIf="totalBalance | async as balance">
+            <div class="mt-2 border-right text-right pr-6">
+              <div class="text-brand text-bold">{{ balance | number: '1.0-7' }} CHX</div>
 
-              <div class="text-info text-right border-right pr-4">2000 USD</div>
+              <div class="text-info" *ngIf="totalBalanceInUsd | async as usdBalance">
+                {{ usdBalance | number: '1.2-2' }} USD
+              </div>
             </div>
           </li>
           <li class="nav-item" routerLinkActive="active" routerLink="/wallet">
@@ -62,16 +59,8 @@
       <div class="own-toggler">
         <button (click)="toggleMenu()">
           <svg viewBox="0 0 40 40" width="10px">
-            <path
-              *ngIf="!menuOpen"
-              class="path"
-              d="M0 2 L20 2 L40 2 M0 20 L40 20 M0 38 L20 38 L40 38"
-            ></path>
-            <path
-              *ngIf="menuOpen"
-              class="path"
-              d="M2 2 L20 20 L38 2 M20 20 L20 20 M2 38 L20 20 L38 38"
-            ></path>
+            <path *ngIf="!menuOpen" class="path" d="M0 2 L20 2 L40 2 M0 20 L40 20 M0 38 L20 38 L40 38"></path>
+            <path *ngIf="menuOpen" class="path" d="M2 2 L20 20 L38 2 M20 20 L20 20 M2 38 L20 20 L38 38"></path>
           </svg>
         </button>
       </div>

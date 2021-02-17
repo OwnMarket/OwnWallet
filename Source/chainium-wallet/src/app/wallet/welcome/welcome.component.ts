@@ -1,31 +1,27 @@
-import { Component, OnInit } from "@angular/core";
-import { Router, RouterOutlet } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 
-import { ChxAddressInfo } from "src/app/shared/models/chx-address-info.model";
-import { WalletInfo } from "src/app/shared/models/wallet-info.model";
+import { ChxAddressInfo } from 'src/app/shared/models/chx-address-info.model';
+import { WalletInfo } from 'src/app/shared/models/wallet-info.model';
 
-import { CryptoService } from "src/app/shared/services/crypto.service";
-import { PrivatekeyService } from "src/app/shared/services/privatekey.service";
-import { WalletService } from "src/app/shared/services/wallet.service";
-import { NodeService } from "src/app/shared/services/node.service";
+import { CryptoService } from 'src/app/shared/services/crypto.service';
+import { PrivatekeyService } from 'src/app/shared/services/privatekey.service';
+import { WalletService } from 'src/app/shared/services/wallet.service';
+import { NodeService } from 'src/app/shared/services/node.service';
 
-import { OwnAnimations } from "../../shared";
-import { OwnSliderComponent } from "src/app/shared/own-slider/own-slider/own-slider.component";
-import { OwnModalService } from "src/app/shared/own-modal/services/own-modal.service";
-import { OwnDropdownMenuComponent } from "src/app/shared/own-dropdown-menu/own-dropdown-menu/own-dropdown-menu.component";
-import { ConfigurationService } from "src/app/shared/services/configuration.service";
-import { forkJoin } from "rxjs";
-import { StateService } from "src/app/shared/services/state.service";
+import { OwnAnimations } from '../../shared';
+import { OwnSliderComponent } from 'src/app/shared/own-slider/own-slider/own-slider.component';
+import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
+import { OwnDropdownMenuComponent } from 'src/app/shared/own-dropdown-menu/own-dropdown-menu/own-dropdown-menu.component';
+import { ConfigurationService } from 'src/app/shared/services/configuration.service';
+import { forkJoin, Observable } from 'rxjs';
+import { StateService } from 'src/app/shared/services/state.service';
 
 @Component({
-  selector: "app-welcome",
-  templateUrl: "./welcome.component.html",
-  styleUrls: ["./welcome.component.css"],
-  animations: [
-    OwnAnimations.flyDown,
-    OwnAnimations.flyUp,
-    OwnAnimations.flyUpDown,
-  ],
+  selector: 'app-welcome',
+  templateUrl: './welcome.component.html',
+  styleUrls: ['./welcome.component.css'],
+  animations: [OwnAnimations.flyDown, OwnAnimations.flyUp, OwnAnimations.flyUpDown],
 })
 export class WelcomeComponent implements OnInit {
   addressInfo: ChxAddressInfo;
@@ -37,6 +33,7 @@ export class WelcomeComponent implements OnInit {
   isWalletContextValid: boolean;
   showAdvanced = false;
   explorerUrl: string;
+  chxToUsdRate: number;
 
   constructor(
     private router: Router,
@@ -51,6 +48,7 @@ export class WelcomeComponent implements OnInit {
 
   ngOnInit() {
     this.explorerUrl = this.configService.config.explorerUrl;
+    this.state.getChxToUsdRate().subscribe((rate) => (this.chxToUsdRate = rate));
     this.privateKeyService.getMessage().subscribe((msg) => {
       this.onRefreshAddressInfoClick();
     });
@@ -74,20 +72,17 @@ export class WelcomeComponent implements OnInit {
     this.chxAddresses = this.walletService.getAllChxAddresses();
     this.addressInfos = [];
 
-    if (this.chxAddresses.length > 1) {
-      const requests = [];
-      this.chxAddresses.forEach((address) => {
-        requests.push(this.nodeService.getAddressInfo(address));
-      });
+    const requests = [];
+    this.chxAddresses.forEach((address) => {
+      requests.push(this.nodeService.getAddressInfo(address));
+    });
 
-      forkJoin(requests).subscribe((resp: ChxAddressInfo[]) => {
-        this.addressInfos = resp;
-        this.state.setAddressInfos(this.addressInfos);
-      });
-    }
+    forkJoin(requests).subscribe((resp: ChxAddressInfo[]) => {
+      this.addressInfos = resp;
+      this.state.setAddressInfos(this.addressInfos);
+    });
 
-    this.showImportedPk =
-      this.chxAddresses.indexOf(this.selectedChxAddress) === -1;
+    this.showImportedPk = this.chxAddresses.indexOf(this.selectedChxAddress) === -1;
     this.cryptoService
       .getAddressFromKey(this.privateKeyService.getWalletInfo().privateKey)
       .subscribe((addr) => this.setAddress(addr));
@@ -98,13 +93,11 @@ export class WelcomeComponent implements OnInit {
   }
 
   getInfoForAddress(chxAddress: string): ChxAddressInfo {
-    return this.addressInfos.find(
-      (info) => info.blockchainAddress === chxAddress
-    );
+    return this.addressInfos.find((info) => info.blockchainAddress === chxAddress);
   }
 
   onImportPrivateKeyClick() {
-    this.router.navigate(["/import-wallet"]);
+    this.router.navigate(['/import-wallet']);
   }
 
   private setActiveWallet(chxAddress: string) {
@@ -114,9 +107,7 @@ export class WelcomeComponent implements OnInit {
         this.selectWallet(walletInfo);
         if (this.selectedWallet) {
           this.privateKeyService.setWalletInfo(this.selectedWallet);
-          this.privateKeyService.sendMessage(
-            this.privateKeyService.existsKey()
-          );
+          this.privateKeyService.sendMessage(this.privateKeyService.existsKey());
         }
       });
     } else {
@@ -125,15 +116,11 @@ export class WelcomeComponent implements OnInit {
     }
   }
 
-  onChxAddressChange(
-    address: string,
-    slider: OwnSliderComponent,
-    index: number
-  ) {
+  onChxAddressChange(address: string, slider: OwnSliderComponent, index: number) {
     slider.goTo(index);
     this.selectedChxAddress = address;
     this.setActiveWallet(this.selectedChxAddress);
-    this.router.navigate(["/wallet"]);
+    this.router.navigate(['/wallet']);
     this.showAdvanced = false;
   }
 
@@ -142,29 +129,28 @@ export class WelcomeComponent implements OnInit {
       if (this.chxAddresses.indexOf(this.selectedChxAddress) === -1) {
         this.selectedChxAddress = this.chxAddresses[0];
         this.setActiveWallet(this.selectedChxAddress);
-        this.router.navigate(["/wallet"]);
+        this.router.navigate(['/wallet']);
       }
     }
   }
 
   private setAddress(addr: any): void {
-    this.nodeService
-      .getAddressInfo(this.privateKeyService.getWalletInfo().address)
-      .subscribe((address) => {
-        if (!address) {
-          this.privateKeyService.setWalletInfo(null);
-          this.addressInfo = null;
-          return;
-        }
-        this.addressInfo = address;
-      });
+    this.nodeService.getAddressInfo(this.privateKeyService.getWalletInfo().address).subscribe((address) => {
+      if (!address) {
+        this.privateKeyService.setWalletInfo(null);
+        this.addressInfo = null;
+        return;
+      }
+      this.addressInfo = address;
+      if (this.chxAddresses.length === 0) {
+        this.chxAddresses.push(address.blockchainAddress);
+      }
+    });
   }
 
   private selectWallet(walletInfo: WalletInfo) {
     this.selectedWallet = walletInfo;
-    this.selectedChxAddress = this.selectedWallet
-      ? this.selectedWallet.address
-      : null;
+    this.selectedChxAddress = this.selectedWallet ? this.selectedWallet.address : null;
 
     if (!this.selectedChxAddress) {
       this.selectedChxAddress = this.walletService.getSelectedChxAddress();
@@ -176,9 +162,7 @@ export class WelcomeComponent implements OnInit {
 
   private validateWalletContext() {
     const walletContext = this.walletService.getWalletContext();
-    this.isWalletContextValid =
-      walletContext.passwordHash != null &&
-      walletContext.walletKeystore != null;
+    this.isWalletContextValid = walletContext.passwordHash != null && walletContext.walletKeystore != null;
   }
 
   getState(outlet: RouterOutlet) {

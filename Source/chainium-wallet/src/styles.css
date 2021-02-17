@@ -122,6 +122,10 @@ button.link {
   height: 1.25rem;
 }
 
+.mb-6 {
+  margin-bottom: 1rem;
+}
+
 .-mr-1 {
   margin-right: -0.65rem;
 }
@@ -587,9 +591,6 @@ select:focus {
 
 .no-borders {
   border: none;
-  border-radius: 0;
-  box-shadow: none;
-  background-color: transparent;
 }
 
 .mega-input {
@@ -598,6 +599,10 @@ select:focus {
   border-radius: 7px;
   display: flex;
   justify-content: space-between;
+}
+
+.mega-input input {
+  font-weight: 600;
 }
 
 input {
@@ -682,6 +687,11 @@ input[type='checkbox'].own-switch + label::before {
   height: 0;
   width: 0;
   visibility: hidden;
+}
+
+input:read-only {
+  color: var(--color-text-info);
+  background-color: var(--color-bg-lighter);
 }
 
 .own-switch-label {
@@ -845,6 +855,10 @@ input[type='checkbox'].own-switch + label::before {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
 }
 
 .wallet-info {

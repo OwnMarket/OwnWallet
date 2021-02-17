@@ -1,7 +1,4 @@
-<div
-  class="container my-5"
-  *ngIf="isKeyImported && acceptBridgeForm && bridgeForm"
->
+<div class="container my-5" *ngIf="isKeyImported && acceptBridgeForm && bridgeForm">
   <div class="row justify-content-center">
     <div class="col-12 col-sm-12 col-md-8">
       <own-card>
@@ -12,12 +9,7 @@
               <span class="text-small text-info mr-2">
                 {{ chainName }}
               </span>
-              <span
-                class="bg-danger rounded text-white text-small p-1"
-                *ngIf="!isProduction"
-              >
-                TEST MODE
-              </span>
+              <span class="bg-danger rounded text-white text-small p-1" *ngIf="!isProduction"> TEST MODE </span>
             </div>
           </div>
         </own-card-title>
@@ -26,55 +18,41 @@
             <div class="col">
               <p>
                 This process allows you to transfer CHX tokens from the
-                <strong>WeOwn Blockchain</strong> onto other blockchains and
-                back.
+                <strong>WeOwn Blockchain</strong> onto other blockchains and back.
               </p>
               <p>
-                Before you proceed, please make sure you are familiar with
-                inter-blockchain related swap / bridge / wrap risks involved.
+                Before you proceed, please make sure you are familiar with inter-blockchain related swap / bridge / wrap
+                risks involved.
               </p>
               <p class="mt-4">The pre-requisites for the token bridge are:</p>
               <ul>
+                <li>You have created a CHX wallet, loaded with enough CHX tokens incl. transaction fees.</li>
                 <li>
-                  You have created a CHX wallet, loaded with enough CHX tokens
-                  incl. transaction fees.
+                  You have a wallet on the supported source and target blockchain with enough tokens and transaction
+                  fees.
                 </li>
                 <li>
-                  You have a wallet on the supported source and target
-                  blockchain with enough tokens and transaction fees.
-                </li>
-                <li>
-                  You are in control of all private keys for both source and
-                  target blockchain, safely stored in a secure place.
+                  You are in control of all private keys for both source and target blockchain, safely stored in a
+                  secure place.
                 </li>
                 <li>You have a MetaMask installed and you can access it.</li>
               </ul>
               <form [formGroup]="acceptBridgeForm">
                 <div class="row mt-4">
                   <div class="col mt-4">
-                    <input
-                      type="checkbox"
-                      formControlName="aware"
-                      id="aware-of-risks"
-                    />
+                    <input type="checkbox" formControlName="aware" id="aware-of-risks" />
                     <label class="m-0" for="aware-of-risks"
-                      >I am fully aware of the risks involved, and any incorrect
-                      usage could result in total or partial loss of my
-                      funds</label
+                      >I am fully aware of the risks involved, and any incorrect usage could result in total or partial
+                      loss of my funds</label
                     >
                   </div>
                 </div>
                 <div class="row mt-4">
                   <div class="col">
-                    <input
-                      type="checkbox"
-                      formControlName="confirm"
-                      id="confirm"
-                    />
+                    <input type="checkbox" formControlName="confirm" id="confirm" />
                     <label class="m-0" for="confirm">
-                      I hereby confirm that both target and source wallets are
-                      in my control and I meet all prerequisites described
-                      above.
+                      I hereby confirm that both target and source wallets are in my control and I meet all
+                      prerequisites described above.
                     </label>
                   </div>
                 </div>
@@ -82,8 +60,8 @@
                   <div class="col">
                     <input type="checkbox" formControlName="agree" id="agree" />
                     <label class="m-0" for="agree">
-                      I confirm and agree that WeOwn cannot be held accountable
-                      for any incorrect or improper use of the bridge feature.
+                      I confirm and agree that WeOwn cannot be held accountable for any incorrect or improper use of the
+                      bridge feature.
                     </label>
                   </div>
                 </div>
@@ -101,14 +79,7 @@
                         fill="none"
                         viewBox="0 0 24 24"
                       >
-                        <circle
-                          class="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="#ffffff"
-                          stroke-width="4"
-                        ></circle>
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="4"></circle>
                         <path
                           class="opacity-75"
                           fill="#dfdfdf"
@@ -131,9 +102,7 @@
             <div class="col-12">
               <div class="row">
                 <div class="col col-sm-6">
-                  <button class="block own-effect mt-4" (click)="reset()">
-                    BACK
-                  </button>
+                  <button class="block own-effect mt-4" (click)="reset()">BACK</button>
                 </div>
               </div>
             </div>
@@ -154,31 +123,13 @@
                 xml:space="preserve"
               >
                 <circle fill="#eb6723" stroke="none" cx="6" cy="50" r="6">
-                  <animate
-                    attributeName="opacity"
-                    dur="1s"
-                    values="0;1;0"
-                    repeatCount="indefinite"
-                    begin="0.1"
-                  />
+                  <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
                 </circle>
                 <circle fill="#eb6723" stroke="none" cx="26" cy="50" r="6">
-                  <animate
-                    attributeName="opacity"
-                    dur="1s"
-                    values="0;1;0"
-                    repeatCount="indefinite"
-                    begin="0.2"
-                  />
+                  <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.2" />
                 </circle>
                 <circle fill="#eb6723" stroke="none" cx="46" cy="50" r="6">
-                  <animate
-                    attributeName="opacity"
-                    dur="1s"
-                    values="0;1;0"
-                    repeatCount="indefinite"
-                    begin="0.3"
-                  />
+                  <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.3" />
                 </circle>
               </svg>
             </div>
@@ -189,19 +140,13 @@
 
           <div
             class="row"
-            *ngIf="
-              risksAccepted &&
-              !showWarning &&
-              !connectingToMetaMask &&
-              !confirmTransfer &&
-              !txResult
-            "
+            *ngIf="risksAccepted && !showWarning && !connectingToMetaMask && !confirmTransfer && !txResult"
           >
             <div class="col">
               <form [formGroup]="bridgeForm">
                 <div class="row">
                   <div class="col">
-                    <div class="row justify-content-between">
+                    <div class="row justify-content-between mb-6">
                       <label for="from" class="col-2">From</label>
                       <div class="col text-right">
                         <span
@@ -214,55 +159,31 @@
                         >
                           <span
                             *ngIf="
-                              bridgeForm.get('fromAmount').errors?.min &&
-                              !bridgeForm.get('fromAmount').errors?.max
+                              bridgeForm.get('fromAmount').errors?.min && !bridgeForm.get('fromAmount').errors?.max
                             "
                           >
                             Minimum amount is {{ minWrapAmount }}
                           </span>
 
-                          <span
-                            *ngIf="bridgeForm.get('fromAmount').errors?.max"
-                          >
+                          <span *ngIf="bridgeForm.get('fromAmount').errors?.max">
                             Amount can't be greater than your current
-                            {{ fromBlockchain === "chx" ? "CHX" : "wCHX" }}
+                            {{ fromBlockchain === 'chx' ? 'CHX' : 'wCHX' }}
                             balance
                           </span>
 
-                          <span
-                            *ngIf="
-                              bridgeForm.get('fromAmount').errors?.required
-                            "
-                          >
-                            Amount is required
-                          </span>
+                          <span *ngIf="bridgeForm.get('fromAmount').errors?.required"> Amount is required </span>
                         </span>
                       </div>
                     </div>
                     <div class="mega-input text-lg">
-                      <input
-                        class="block no-borders"
-                        type="number"
-                        formControlName="fromAmount"
-                      />
+                      <input class="block no-borders" type="number" formControlName="fromAmount" />
                       <div class="border-right my-2"></div>
 
-                      <own-dropdown-menu
-                        [showIcon]="false"
-                        [label]="fromBlockchain === 'chx' ? 'CHX' : 'wCHX'"
-                      >
-                        <own-dropdown-item
-                          (click)="
-                            bridgeForm.get('fromBlockchain').setValue('chx')
-                          "
-                        >
+                      <own-dropdown-menu [showIcon]="false" [label]="fromBlockchain === 'chx' ? 'CHX' : 'wCHX'">
+                        <own-dropdown-item (click)="bridgeForm.get('fromBlockchain').setValue('chx')">
                           CHX
                         </own-dropdown-item>
-                        <own-dropdown-item
-                          (click)="
-                            bridgeForm.get('fromBlockchain').setValue('eth')
-                          "
-                        >
+                        <own-dropdown-item (click)="bridgeForm.get('fromBlockchain').setValue('eth')">
                           wCHX
                         </own-dropdown-item>
                       </own-dropdown-menu>
@@ -270,30 +191,22 @@
 
                     <div class="row text-info justify-content-between mt-2">
                       <div class="col">
-                        {{ fromBlockchain === "chx" ? chxAddress : ethAddress }}
+                        {{ fromBlockchain === 'chx' ? chxAddress : ethAddress }}
                       </div>
                       <div class="col-4">
                         Balance:
-                        {{
-                          fromBlockchain === "chx"
-                            ? chxBalance + " CHX"
-                            : wChxBalance + " wCHX"
-                        }}
+                        {{ fromBlockchain === 'chx' ? chxBalance + ' CHX' : wChxBalance + ' wCHX' }}
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="row mt-4">
                   <div class="col">
-                    <div class="row justify-content-between">
+                    <div class="row justify-content-between mb-6">
                       <label for="from" class="col">To</label>
                       <div class="col-4 text-center position-relative">
                         <span class="swap-button" (click)="swapBlockchains()">
-                          <own-icon
-                            icon="swap"
-                            size="15"
-                            color="#ffffff"
-                          ></own-icon>
+                          <own-icon icon="swap" size="15" color="#ffffff"></own-icon>
                         </span>
                       </div>
                     </div>
@@ -301,28 +214,17 @@
                     <div class="mega-input text-lg">
                       <input
                         readonly
-                        class="block no-borders"
+                        class="block no-borders cursor-not-allowed"
                         type="number"
                         formControlName="toAmount"
                       />
                       <div class="border-right my-2"></div>
 
-                      <own-dropdown-menu
-                        [showIcon]="false"
-                        [label]="toBlockchain === 'eth' ? 'wCHX' : 'CHX'"
-                      >
-                        <own-dropdown-item
-                          (click)="
-                            bridgeForm.get('toBlockchain').setValue('chx')
-                          "
-                        >
+                      <own-dropdown-menu [showIcon]="false" [label]="toBlockchain === 'eth' ? 'wCHX' : 'CHX'">
+                        <own-dropdown-item (click)="bridgeForm.get('toBlockchain').setValue('chx')">
                           CHX
                         </own-dropdown-item>
-                        <own-dropdown-item
-                          (click)="
-                            bridgeForm.get('toBlockchain').setValue('eth')
-                          "
-                        >
+                        <own-dropdown-item (click)="bridgeForm.get('toBlockchain').setValue('eth')">
                           wCHX
                         </own-dropdown-item>
                       </own-dropdown-menu>
@@ -330,16 +232,12 @@
 
                     <div class="row justify-content-between mt-2 text-info">
                       <div class="col">
-                        {{ toBlockchain === "eth" ? ethAddress : chxAddress }}
+                        {{ toBlockchain === 'eth' ? ethAddress : chxAddress }}
                       </div>
 
                       <div class="col-4" *ngIf="wChxBalance !== undefined">
                         Balance:
-                        {{
-                          toBlockchain === "eth"
-                            ? wChxBalance + " wCHX"
-                            : chxBalance + " CHX"
-                        }}
+                        {{ toBlockchain === 'eth' ? wChxBalance + ' wCHX' : chxBalance + ' CHX' }}
                       </div>
                     </div>
                   </div>
@@ -347,10 +245,7 @@
                 <div class="row mt-4 justify-content-center">
                   <div class="col col-sm-6 mt-4">
                     <button
-                      *ngIf="
-                        (!metaMaskConnected && fromBlockchain === 'eth') ||
-                        (!metaMaskConnected && !ethAddrMapped)
-                      "
+                      *ngIf="(!metaMaskConnected && fromBlockchain === 'eth') || (!metaMaskConnected && !ethAddrMapped)"
                       [disabled]="loading"
                       class="block own-effect"
                       (click)="initiateMetaMaskProvider()"
@@ -362,14 +257,7 @@
                         fill="none"
                         viewBox="0 0 24 24"
                       >
-                        <circle
-                          class="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="#ffffff"
-                          stroke-width="4"
-                        ></circle>
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="4"></circle>
                         <path
                           class="opacity-75"
                           fill="#dfdfdf"
@@ -379,10 +267,7 @@
                       CONNECT WITH METAMASK
                     </button>
                     <button
-                      *ngIf="
-                        metaMaskConnected ||
-                        (fromBlockchain === 'chx' && ethAddrMapped)
-                      "
+                      *ngIf="metaMaskConnected || (fromBlockchain === 'chx' && ethAddrMapped)"
                       [disabled]="bridgeForm.invalid || loading"
                       class="block own-effect"
                       (click)="confirmTransfer = true"
@@ -394,14 +279,7 @@
                         fill="none"
                         viewBox="0 0 24 24"
                       >
-                        <circle
-                          class="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="#ffffff"
-                          stroke-width="4"
-                        ></circle>
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="4"></circle>
                         <path
                           class="opacity-75"
                           fill="#dfdfdf"
@@ -419,32 +297,23 @@
                   title="Click to view detailed fee calculation"
                   (click)="showFees = !showFees"
                 >
-                  <span
-                    class="col-1 drop-menu position-absolute right-0 top-0 mt-2 -mr-1"
-                    [class.open]="showFees"
-                  >
+                  <span class="col-1 drop-menu position-absolute right-0 top-0 mt-1 -mr-1" [class.open]="showFees">
                     <own-icon icon="arrow-down"></own-icon>
                   </span>
                   <div class="col">
                     <ng-container *ngIf="showFees">
                       <div class="row mr-2">
                         <div class="col">Gas consumption:</div>
-                        <div class="col text-right">
-                          {{ bridgeFee.gasConsumption }} Gas
-                        </div>
+                        <div class="col text-right">{{ bridgeFee.gasConsumption }} Gas</div>
                       </div>
                       <div class="row mr-2">
                         <div class="col">Gas price:</div>
-                        <div class="col text-right">
-                          {{ bridgeFee.gweiGasPrice }} Gwei
-                        </div>
+                        <div class="col text-right">{{ bridgeFee.gweiGasPrice }} Gwei</div>
                       </div>
 
                       <div class="row mr-2">
                         <div class="col">ETH fee:</div>
-                        <div class="col text-right">
-                          {{ bridgeFee.ethFee }} ETH
-                        </div>
+                        <div class="col text-right">{{ bridgeFee.ethFee }} ETH</div>
                       </div>
 
                       <div class="row mr-2">
@@ -458,15 +327,11 @@
 
                       <div class="row mr-2">
                         <div class="col">Fee on Ethereum:</div>
-                        <div class="col text-right">
-                          {{ bridgeFee.ethFeeInChx | number: "1.0-7" }} CHX
-                        </div>
+                        <div class="col text-right">{{ bridgeFee.ethFeeInChx | number: '1.0-7' }} CHX</div>
                       </div>
                       <div class="row mr-2">
                         <div class="col">Fee on WeOwn blockchain:</div>
-                        <div class="col text-right">
-                          {{ bridgeFee.chxFee | number: "1.0-7" }} CHX
-                        </div>
+                        <div class="col text-right">{{ bridgeFee.chxFee | number: '1.0-7' }} CHX</div>
                       </div>
 
                       <hr />
@@ -475,19 +340,13 @@
                     <div class="row" [class.text-bold]="showFees">
                       <div class="col">
                         <div class="float-left">
-                          <own-icon
-                            icon="info"
-                            size="24"
-                            color="#3aabb9"
-                          ></own-icon>
+                          <own-icon icon="info" size="24" color="#3aabb9"></own-icon>
                         </div>
                         Total fee:
                       </div>
                       <div class="col text-right">
                         <div class="row mr-2">
-                          <div class="col">
-                            {{ bridgeFee.totalFee | number: "1.0-7" }} CHX
-                          </div>
+                          <div class="col">{{ bridgeFee.totalFee | number: '1.0-7' }} CHX</div>
                         </div>
                       </div>
                     </div>
@@ -497,52 +356,39 @@
             </div>
           </div>
 
-          <div
-            class="row"
-            *ngIf="
-              risksAccepted &&
-              bridgeForm &&
-              confirmTransfer &&
-              !showWarning &&
-              !txResult
-            "
-          >
+          <div class="row" *ngIf="risksAccepted && bridgeForm && confirmTransfer && !showWarning && !txResult">
             <div class="col">
               <div class="row justify-content-between">
                 <div class="col">
-                  <h2 class="m-0">{{ bridgeForm.get("fromAmount").value }}</h2>
+                  <h2 class="m-0">{{ bridgeForm.get('fromAmount').value }}</h2>
                 </div>
                 <div class="col text-right">
                   <h2 class="m-0">
-                    {{ fromBlockchain === "chx" ? "CHX" : "wCHX" }}
+                    {{ fromBlockchain === 'chx' ? 'CHX' : 'wCHX' }}
                   </h2>
                 </div>
               </div>
               <div class="row justify-content-between">
                 <div class="col text-brand">
-                  {{ fromBlockchain === "chx" ? chxAddress : ethAddress }}
+                  {{ fromBlockchain === 'chx' ? chxAddress : ethAddress }}
                 </div>
                 <div class="col-1">
-                  <own-icon
-                    icon="arrow-down"
-                    size="20"
-                    color="#848484"
-                  ></own-icon>
+                  <own-icon icon="arrow-down" size="20" color="#848484"></own-icon>
                 </div>
               </div>
               <div class="row justify-content-between mt-4">
                 <div class="col">
-                  <h2 class="m-0">{{ bridgeForm.get("toAmount").value }}</h2>
+                  <h2 class="m-0">{{ bridgeForm.get('toAmount').value }}</h2>
                 </div>
                 <div class="col text-right">
                   <h2 class="m-0">
-                    {{ toBlockchain === "eth" ? "wCHX" : "CHX" }}
+                    {{ toBlockchain === 'eth' ? 'wCHX' : 'CHX' }}
                   </h2>
                 </div>
               </div>
               <div class="row">
                 <div class="col text-brand">
-                  {{ toBlockchain === "eth" ? ethAddress : chxAddress }}
+                  {{ toBlockchain === 'eth' ? ethAddress : chxAddress }}
                 </div>
               </div>
               <div class="row mt-4">
@@ -555,11 +401,7 @@
               </div>
               <div class="row mt-4 justify-content-center">
                 <div class="col col-sm-6 mt-4">
-                  <button
-                    [disabled]="loading"
-                    class="block own-effect"
-                    (click)="transfer()"
-                  >
+                  <button [disabled]="loading" class="block own-effect" (click)="transfer()">
                     <svg
                       *ngIf="loading"
                       class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -567,14 +409,7 @@
                       fill="none"
                       viewBox="0 0 24 24"
                     >
-                      <circle
-                        class="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="#ffffff"
-                        stroke-width="4"
-                      ></circle>
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="4"></circle>
                       <path
                         class="opacity-75"
                         fill="#dfdfdf"
@@ -603,39 +438,21 @@
                 xml:space="preserve"
               >
                 <circle fill="#eb6723" stroke="none" cx="6" cy="50" r="6">
-                  <animate
-                    attributeName="opacity"
-                    dur="1s"
-                    values="0;1;0"
-                    repeatCount="indefinite"
-                    begin="0.1"
-                  />
+                  <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
                 </circle>
                 <circle fill="#eb6723" stroke="none" cx="26" cy="50" r="6">
-                  <animate
-                    attributeName="opacity"
-                    dur="1s"
-                    values="0;1;0"
-                    repeatCount="indefinite"
-                    begin="0.2"
-                  />
+                  <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.2" />
                 </circle>
                 <circle fill="#eb6723" stroke="none" cx="46" cy="50" r="6">
-                  <animate
-                    attributeName="opacity"
-                    dur="1s"
-                    values="0;1;0"
-                    repeatCount="indefinite"
-                    begin="0.3"
-                  />
+                  <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.3" />
                 </circle>
               </svg>
             </div>
             <div class="col-12 text-center">
               <h4>Processing...</h4>
               <p>
-                Your {{ fromBlockchain === "chx" ? "CHX" : "wCHX" }} will be
-                added to your account after the transaction has been executed.
+                Your {{ fromBlockchain === 'chx' ? 'CHX' : 'wCHX' }} will be added to your account after the transaction
+                has been executed.
               </p>
             </div>
             <div class="col-12 mt-5">
@@ -644,9 +461,7 @@
                   <a
                     *ngIf="fromBlockchain === 'eth' && !isProduction"
                     class="button outline own-effect block text-center"
-                    [href]="
-                      'https://rinkeby.etherscan.io/tx/' + txResult.txHash
-                    "
+                    [href]="'https://rinkeby.etherscan.io/tx/' + txResult.txHash"
                     target="_blank"
                   >
                     VIEW TRANSACTION INFO
@@ -664,22 +479,15 @@
             </div>
           </div>
 
-          <div
-            class="row justify-content-center"
-            *ngIf="txResult && !inProgress && !showWarning"
-          >
+          <div class="row justify-content-center" *ngIf="txResult && !inProgress && !showWarning">
             <div class="col-12">
-              <div
-                class="row full-height align-items-center justify-content-between"
-              >
+              <div class="row full-height align-items-center justify-content-between">
                 <div class="col-12">
                   <div class="token-success"></div>
                 </div>
                 <div class="col-12">
                   <h4>Success!</h4>
-                  <p class="info">
-                    Your transaction has been successfully submitted.
-                  </p>
+                  <p class="info">Your transaction has been successfully submitted.</p>
                   <p>
                     <b>
                       <div class="row">
@@ -694,10 +502,7 @@
                                 ngxClipboard
                                 cbContent="{{ txResult.txHash }}"
                               >
-                                <own-icon
-                                  icon="copy"
-                                  color="#eb6723"
-                                ></own-icon>
+                                <own-icon icon="copy" color="#eb6723"></own-icon>
                               </button>
                             </div>
                           </div>
@@ -718,9 +523,7 @@
                         <a
                           *ngIf="fromBlockchain === 'eth' && !isProduction"
                           class="button outline own-effect block text-center"
-                          [href]="
-                            'https://rinkeby.etherscan.io/tx/' + txResult.txHash
-                          "
+                          [href]="'https://rinkeby.etherscan.io/tx/' + txResult.txHash"
                           target="_blank"
                         >
                           VIEW TRANSACTION INFO

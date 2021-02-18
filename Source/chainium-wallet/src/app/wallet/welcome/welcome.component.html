@@ -89,9 +89,15 @@
                             <div class="col text-right">CHX</div>
                           </div>
                           <h4 class="address-balance-chx m-0">
-                            {{ addressInfo.balance.total }}
+                            {{ getInfoForAddress(addressInfo.blockchainAddress)?.balance.total }}
                           </h4>
-                          <div>{{ addressInfo.balance.total * chxToUsdRate | number: '1.2-2' }} USD</div>
+                          <div>
+                            {{
+                              getInfoForAddress(addressInfo.blockchainAddress)?.balance.total * chxToUsdRate
+                                | number: '1.2-2'
+                            }}
+                            USD
+                          </div>
                         </div>
                       </own-slide>
                     </ng-container>

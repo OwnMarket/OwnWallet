@@ -123,6 +123,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
           ? this.bridgeForm.get('toBlockchain').setValue('chx')
           : this.bridgeForm.get('toBlockchain').setValue('eth');
         this.setValidators();
+        this.getBridgeFee(this.ethAddress);
       }
     });
 
@@ -132,6 +133,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
           ? this.bridgeForm.get('fromBlockchain').setValue('chx')
           : this.bridgeForm.get('fromBlockchain').setValue('eth');
         this.setValidators();
+        this.getBridgeFee(this.ethAddress);
       }
     });
 

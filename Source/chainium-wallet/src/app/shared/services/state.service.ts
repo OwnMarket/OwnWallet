@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpBackend, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
@@ -10,6 +10,8 @@ import { ConfigurationService } from './configuration.service';
 
 @Injectable()
 export class StateService {
+  private httpHandler: HttpClient;
+
   private totalBalanceSubj: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   public totalBalance$: Observable<number> = this.totalBalanceSubj.asObservable();
 
@@ -22,7 +24,9 @@ export class StateService {
   private refreshInfosSubj: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public refreshInfos$: Observable<boolean> = this.refreshInfosSubj.asObservable();
 
-  constructor(private http: HttpClient, private configService: ConfigurationService) {}
+  constructor(private handler: HttpBackend, private configService: ConfigurationService) {
+    this.httpHandler = new HttpClient(handler);
+  }
 
   setBalance(value: number) {
     this.totalBalanceSubj.next(value);
@@ -37,7 +41,7 @@ export class StateService {
   }
 
   getChxToUsdRate(baseCurrency: string = 'CHX', quoteCurrency: string = 'USD'): Observable<number> {
-    return this.http
+    return this.httpHandler
       .get<ApiResponse<number>>(`${this.configService.config.bridgeApiUrl}/rate/${baseCurrency}/${quoteCurrency}`)
       .pipe(
         map((resp) => {

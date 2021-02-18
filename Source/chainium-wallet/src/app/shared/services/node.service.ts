@@ -1,27 +1,29 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { environment } from "../../../environments/environment";
+import { Injectable } from '@angular/core';
+import { HttpBackend, HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
-import { AccountInfo } from "../models/account-info.model";
-import { TxEnvelope } from "../models/submit-transactions.model";
-import { ChxAddressInfo } from "../models/chx-address-info.model";
+import { AccountInfo } from '../models/account-info.model';
+import { TxEnvelope } from '../models/submit-transactions.model';
+import { ChxAddressInfo } from '../models/chx-address-info.model';
 
-const TXENDPOINT = "tx";
+const TXENDPOINT = 'tx';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class NodeService {
   private baseServiceUrl: string;
+  private httpHandler: HttpClient;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private handler: HttpBackend) {
     this.baseServiceUrl = environment.nodeApiUrl;
+    this.httpHandler = new HttpClient(handler);
   }
 
   public getAddressInfo(chxAddress: string): Observable<ChxAddressInfo> {
     const addresInfoUrl = `${this.baseServiceUrl}/address/${chxAddress}`;
-    return this.http.get<any>(addresInfoUrl);
+    return this.httpHandler.get<any>(addresInfoUrl);
   }
 
   public getAccountInfo(accountHash: string): Observable<any> {
@@ -88,9 +90,7 @@ export class NodeService {
     return this.http.get<any>(stakesInfoUrl);
   }
 
-  public getequivocationProofInfo(
-    equivocationProofHash: string
-  ): Observable<any> {
+  public getequivocationProofInfo(equivocationProofHash: string): Observable<any> {
     const equivocationProofInfoUrl = `${this.baseServiceUrl}/equivocation/${equivocationProofHash}`;
     return this.http.get<any>(equivocationProofInfoUrl);
   }

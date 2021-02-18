@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 
 import { ChxAddressInfo } from 'src/app/shared/models/chx-address-info.model';
@@ -14,8 +14,9 @@ import { OwnSliderComponent } from 'src/app/shared/own-slider/own-slider/own-sli
 import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.service';
 import { OwnDropdownMenuComponent } from 'src/app/shared/own-dropdown-menu/own-dropdown-menu/own-dropdown-menu.component';
 import { ConfigurationService } from 'src/app/shared/services/configuration.service';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Subscription, timer } from 'rxjs';
 import { StateService } from 'src/app/shared/services/state.service';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-welcome',
@@ -23,9 +24,9 @@ import { StateService } from 'src/app/shared/services/state.service';
   styleUrls: ['./welcome.component.css'],
   animations: [OwnAnimations.flyDown, OwnAnimations.flyUp, OwnAnimations.flyUpDown],
 })
-export class WelcomeComponent implements OnInit {
+export class WelcomeComponent implements OnInit, OnDestroy {
   addressInfo: ChxAddressInfo;
-  addressInfos: ChxAddressInfo[];
+  addressInfos: ChxAddressInfo[] = [];
   selectedWallet: WalletInfo;
   selectedChxAddress: string;
   chxAddresses: string[] = [];
@@ -34,6 +35,10 @@ export class WelcomeComponent implements OnInit {
   showAdvanced = false;
   explorerUrl: string;
   chxToUsdRate: number;
+
+  selectedSlideIndex: number = 0;
+  fetchChxToUsdSub: Subscription;
+  fetchAddressInfosSub: Subscription;
 
   constructor(
     private router: Router,
@@ -48,7 +53,7 @@ export class WelcomeComponent implements OnInit {
 
   ngOnInit() {
     this.explorerUrl = this.configService.config.explorerUrl;
-    this.state.getChxToUsdRate().subscribe((rate) => (this.chxToUsdRate = rate));
+    this.fetchChxToUsdRatio();
     this.privateKeyService.getMessage().subscribe((msg) => {
       this.onRefreshAddressInfoClick();
     });
@@ -57,6 +62,11 @@ export class WelcomeComponent implements OnInit {
     });
     this.walletService.generateWalletFromContext();
     this.showAdvanced = false;
+  }
+
+  ngOnDestroy(): void {
+    if (this.fetchChxToUsdSub) this.fetchChxToUsdSub.unsubscribe();
+    if (this.fetchAddressInfosSub) this.fetchAddressInfosSub.unsubscribe();
   }
 
   onRefreshAddressInfoClick() {
@@ -70,26 +80,50 @@ export class WelcomeComponent implements OnInit {
     this.validateWalletContext();
     this.selectWallet(this.privateKeyService.getWalletInfo());
     this.chxAddresses = this.walletService.getAllChxAddresses();
-    this.addressInfos = [];
+    this.showImportedPk = this.chxAddresses.indexOf(this.selectedChxAddress) === -1;
+    this.cryptoService
+      .getAddressFromKey(this.privateKeyService.getWalletInfo().privateKey)
+      .subscribe((addr) => this.setAddress(addr));
+    this.fetchAddressInfos();
+  }
 
+  onAddChxAddressClick(slider: OwnSliderComponent) {
+    this.walletService.createNewChxAddress();
+    this.chxAddresses = this.walletService.getAllChxAddresses();
+    const index = this.chxAddresses.length - 1;
+    const addr = this.chxAddresses[index];
+    slider.goTo(index);
+    this.setActiveWallet(addr);
+    this.router.navigate(['/wallet']);
+  }
+
+  fetchChxToUsdRatio() {
+    this.fetchChxToUsdSub = timer(1000, 60000)
+      .pipe(mergeMap(() => this.state.getChxToUsdRate()))
+      .subscribe((rate) => {
+        if (this.chxToUsdRate !== rate) {
+          this.chxToUsdRate = rate;
+        }
+      });
+  }
+
+  fetchAddressInfos() {
     const requests = [];
     this.chxAddresses.forEach((address) => {
       requests.push(this.nodeService.getAddressInfo(address));
     });
 
-    forkJoin(requests).subscribe((resp: ChxAddressInfo[]) => {
-      this.addressInfos = resp;
-      this.state.setAddressInfos(this.addressInfos);
-    });
+    if (this.fetchAddressInfosSub) this.fetchAddressInfosSub.unsubscribe();
 
-    this.showImportedPk = this.chxAddresses.indexOf(this.selectedChxAddress) === -1;
-    this.cryptoService
-      .getAddressFromKey(this.privateKeyService.getWalletInfo().privateKey)
-      .subscribe((addr) => this.setAddress(addr));
-  }
-
-  onAddChxAddressClick() {
-    this.walletService.createNewChxAddress();
+    this.fetchAddressInfosSub = timer(1000, 30000)
+      .pipe(mergeMap(() => forkJoin(requests)))
+      .subscribe((resp: ChxAddressInfo[]) => {
+        if (JSON.stringify(this.addressInfos) !== JSON.stringify(resp)) {
+          console.log('not same');
+          this.addressInfos = resp;
+          this.state.setAddressInfos(this.addressInfos);
+        }
+      });
   }
 
   getInfoForAddress(chxAddress: string): ChxAddressInfo {
@@ -155,6 +189,7 @@ export class WelcomeComponent implements OnInit {
     if (!this.selectedChxAddress) {
       this.selectedChxAddress = this.walletService.getSelectedChxAddress();
     }
+
     if (this.selectedChxAddress) {
       this.walletService.setSelectedChxAddress(this.selectedChxAddress);
     }

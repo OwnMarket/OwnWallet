@@ -194,8 +194,13 @@
                         {{ fromBlockchain === 'chx' ? chxAddress : ethAddress }}
                       </div>
                       <div class="col-4">
-                        Balance:
-                        {{ fromBlockchain === 'chx' ? chxBalance + ' CHX' : wChxBalance + ' wCHX' }}
+                        {{
+                          fromBlockchain === 'chx'
+                            ? 'Balance: ' + chxBalance + ' CHX'
+                            : wChxBalance
+                            ? 'Balance: ' + wChxBalance + ' wCHX'
+                            : ''
+                        }}
                       </div>
                     </div>
                   </div>
@@ -235,9 +240,16 @@
                         {{ toBlockchain === 'eth' ? ethAddress : chxAddress }}
                       </div>
 
-                      <div class="col-4" *ngIf="wChxBalance !== undefined">
-                        Balance:
-                        {{ toBlockchain === 'eth' ? wChxBalance + ' wCHX' : chxBalance + ' CHX' }}
+                      <div class="col-4">
+                        {{
+                          toBlockchain === 'eth'
+                            ? wChxBalance
+                              ? 'Balance: ' + wChxBalance + ' wCHX'
+                              : ''
+                            : chxBalance
+                            ? 'Balance: ' + chxBalance + ' CHX'
+                            : ''
+                        }}
                       </div>
                     </div>
                   </div>

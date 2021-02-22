@@ -321,7 +321,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       } else {
         if (await this.checkIfEthAddressIsMappedToOtherChxAddress(this.currentAccount)) {
           this.ethAddress = this.currentAccount;
-          this.mapAddress();
+          // this.mapAddress();
         }
       }
     }

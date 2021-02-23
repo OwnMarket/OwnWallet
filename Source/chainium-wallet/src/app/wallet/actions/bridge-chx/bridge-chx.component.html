@@ -281,6 +281,8 @@
                     </div>
                     <div class="mega-input text-lg">
                       <input class="block no-borders" type="number" formControlName="fromAmount" />
+
+                      <div class="max-button text-white text-small" (click)="setMax()">MAX</div>
                       <div class="border-right my-2"></div>
 
                       <own-dropdown-menu [showIcon]="false" [label]="fromBlockchain === 'chx' ? 'CHX' : 'wCHX'">
@@ -297,7 +299,7 @@
                       <div class="col">
                         {{ fromBlockchain === 'chx' ? chxAddress : ethAddress }}
                       </div>
-                      <div class="col-4">
+                      <div class="col-4 cursor-pointer" (click)="setMax()">
                         {{
                           fromBlockchain === 'chx'
                             ? 'Balance: ' + chxBalance + ' CHX'

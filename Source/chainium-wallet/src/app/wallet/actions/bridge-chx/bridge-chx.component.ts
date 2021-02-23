@@ -177,7 +177,20 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     } else {
       this.bridgeForm.get('fromBlockchain').setValue('eth');
     }
+    this.bridgeForm.get('fromAmount').setValue(0);
+    this.bridgeForm.get('toAmount').setValue(0);
+    this.bridgeForm.markAsPristine();
     this.getBridgeFee(this.ethAddress);
+  }
+
+  setMax() {
+    let balance: number;
+    if (this.fromBlockchain === 'chx') {
+      balance = this.chxBalance - 0.1;
+    } else {
+      balance = this.wChxBalance;
+    }
+    this.bridgeForm.get('fromAmount').setValue(balance);
   }
 
   async acceptRisks() {

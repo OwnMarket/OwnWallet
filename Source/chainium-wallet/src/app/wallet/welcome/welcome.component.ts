@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { NavigationStart, Router, RouterEvent, RouterOutlet } from '@angular/router';
 
 import { ChxAddressInfo } from 'src/app/shared/models/chx-address-info.model';
 import { WalletInfo } from 'src/app/shared/models/wallet-info.model';
@@ -37,6 +37,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
   chxToUsdRate: number;
 
   selectedSlideIndex: number = 0;
+  routerSub: Subscription;
   fetchChxToUsdSub: Subscription;
   fetchAddressInfosSub: Subscription;
 
@@ -62,11 +63,20 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     });
     this.walletService.generateWalletFromContext();
     this.showAdvanced = false;
+
+    this.routerSub = this.router.events.subscribe((event: RouterEvent) => {
+      if (event instanceof NavigationStart) {
+        if (this.router.url === event.url) {
+          this.router.navigate(['/wallet']);
+        }
+      }
+    });
   }
 
   ngOnDestroy(): void {
     if (this.fetchChxToUsdSub) this.fetchChxToUsdSub.unsubscribe();
     if (this.fetchAddressInfosSub) this.fetchAddressInfosSub.unsubscribe();
+    if (this.routerSub) this.routerSub.unsubscribe();
   }
 
   onRefreshAddressInfoClick() {

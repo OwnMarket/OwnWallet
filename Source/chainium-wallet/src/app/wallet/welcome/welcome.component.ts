@@ -40,6 +40,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
   routerSub: Subscription;
   fetchChxToUsdSub: Subscription;
   fetchAddressInfosSub: Subscription;
+  setAddrSub: Subscription;
 
   constructor(
     private router: Router,
@@ -50,20 +51,20 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     private nodeService: NodeService,
     private state: StateService,
     private configService: ConfigurationService
-  ) {}
-
-  ngOnInit() {
-    this.explorerUrl = this.configService.config.explorerUrl;
-    this.fetchChxToUsdRatio();
+  ) {
     this.privateKeyService.getMessage().subscribe((msg) => {
       this.onRefreshAddressInfoClick();
     });
     this.walletService.getMessage().subscribe(() => {
       this.validateWalletContext();
     });
+  }
+
+  ngOnInit() {
+    this.explorerUrl = this.configService.config.explorerUrl;
     this.walletService.generateWalletFromContext();
     this.showAdvanced = false;
-
+    this.fetchChxToUsdRatio();
     this.routerSub = this.router.events.subscribe((event: RouterEvent) => {
       if (event instanceof NavigationStart) {
         if (this.router.url === event.url) {
@@ -91,6 +92,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     this.selectWallet(this.privateKeyService.getWalletInfo());
     this.chxAddresses = this.walletService.getAllChxAddresses();
     this.showImportedPk = this.chxAddresses.indexOf(this.selectedChxAddress) === -1;
+
     this.cryptoService
       .getAddressFromKey(this.privateKeyService.getWalletInfo().privateKey)
       .subscribe((addr) => this.setAddress(addr));
@@ -108,6 +110,9 @@ export class WelcomeComponent implements OnInit, OnDestroy {
   }
 
   fetchChxToUsdRatio() {
+    if (this.fetchChxToUsdSub) {
+      this.fetchChxToUsdSub.unsubscribe();
+    }
     this.fetchChxToUsdSub = timer(1000, 240000)
       .pipe(mergeMap(() => this.state.getChxToUsdRate()))
       .subscribe((rate) => {
@@ -119,6 +124,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
 
   fetchAddressInfos() {
     const requests = [];
+
     this.chxAddresses.forEach((address) => {
       requests.push(this.nodeService.getAddressInfo(address));
     });
@@ -177,7 +183,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setAddress(addr: any): void {
+  private setAddress(addr: string): void {
     this.nodeService.getAddressInfo(this.privateKeyService.getWalletInfo().address).subscribe((address) => {
       if (!address) {
         this.privateKeyService.setWalletInfo(null);
@@ -187,6 +193,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
       this.addressInfo = address;
       if (this.chxAddresses.length === 0) {
         this.chxAddresses.push(address.blockchainAddress);
+        this.addressInfos.push(address);
       }
     });
   }

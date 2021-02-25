@@ -8,9 +8,20 @@
         <own-card-body [padding]="true">
           <div class="row">
             <div class="col-12">
-              <label>Password</label>
-              <input class="block" [type]="hide ? 'password' : 'text'" [formControl]="password"
-              (keydown)="onKeyDown($event)" required />
+              <div class="row">
+                <div class="col">
+                  <label>Password</label>
+                </div>
+                <div class="col text-brand text-right" *ngIf="capsLockStatus">CapsLock is ON</div>
+              </div>
+              <input
+                class="block"
+                [type]="hide ? 'password' : 'text'"
+                [formControl]="password"
+                (keydown)="onKeyDown($event)"
+                (keyup)="onKeyUp($event)"
+                required
+              />
               <div class="info" *ngIf="password.errors && password.errors.required && password.touched">
                 This field is required.
               </div>
@@ -18,12 +29,14 @@
                 Invalid password!
               </div>
               <div class="row mt-5">
-                  <div class="col-12 col-sm-6">
-                    <button class="own-effect outline flat block" (click)="openModal('unload-modal')">UNLOAD WALLET</button>
-                  </div>
-                  <div class="col-12 col-sm-6 mb-2 mb-md-0 mt-3 mt-sm-0">
-                    <button class="own-effect block" (click)="onSubmitPassword()">LOGIN</button>
-                  </div>
+                <div class="col-12 col-sm-6">
+                  <button class="own-effect outline flat block" (click)="openModal('unload-modal')">
+                    UNLOAD WALLET
+                  </button>
+                </div>
+                <div class="col-12 col-sm-6 mb-2 mb-md-0 mt-3 mt-sm-0">
+                  <button class="own-effect block" (click)="onSubmitPassword()">LOGIN</button>
+                </div>
               </div>
             </div>
           </div>
@@ -32,6 +45,3 @@
     </div>
   </div>
 </div>
-
-
-

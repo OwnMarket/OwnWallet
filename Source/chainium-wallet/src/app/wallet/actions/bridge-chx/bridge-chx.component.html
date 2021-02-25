@@ -163,7 +163,7 @@
                   <li>
                     <strong>CHX Address:</strong><span class="text-brand"> {{ chxAddress }}</span>
                   </li>
-                  <li *ngIf="!metaMaskConnected && !ethAddrMapped">
+                  <li *ngIf="!metaMaskConnected && !ethAddress">
                     <strong>ETH Address:</strong> Currently selected MetaMask address
                   </li>
                   <li *ngIf="ethAddress">
@@ -311,7 +311,7 @@
                             ? 'Balance: ' + chxBalance + ' CHX'
                             : wChxBalance
                             ? 'Balance: ' + wChxBalance + ' wCHX'
-                            : ''
+                            : 'Balance: 0 wCHX'
                         }}
                       </div>
                     </div>
@@ -357,10 +357,10 @@
                           toBlockchain === 'eth'
                             ? wChxBalance
                               ? 'Balance: ' + wChxBalance + ' wCHX'
-                              : ''
+                              : 'Balance: 0 wCHX'
                             : chxBalance
                             ? 'Balance: ' + chxBalance + ' CHX'
-                            : ''
+                            : 'Balance: 0 CHX'
                         }}
                       </div>
                     </div>

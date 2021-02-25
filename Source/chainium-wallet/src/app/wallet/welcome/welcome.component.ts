@@ -65,13 +65,14 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     this.walletService.generateWalletFromContext();
     this.showAdvanced = false;
     this.fetchChxToUsdRatio();
-    this.routerSub = this.router.events.subscribe((event: RouterEvent) => {
-      if (event instanceof NavigationStart) {
-        if (this.router.url === event.url) {
-          this.router.navigate(['/wallet']);
-        }
-      }
-    });
+  }
+
+  navigateTo(route: string) {
+    const currUrl = this.router.url;
+    if (route === currUrl) {
+      this.router.navigate(['/wallet']);
+    }
+    this.showAdvanced = false;
   }
 
   ngOnDestroy(): void {

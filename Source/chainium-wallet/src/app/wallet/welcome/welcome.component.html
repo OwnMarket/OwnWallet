@@ -170,28 +170,48 @@
       </div>
       <div class="col-12 col-md-7">
         <div class="quick-actions">
-          <button class="quick-action-button mr-4" routerLink="send-chx" routerLinkActive="selected">
+          <button
+            class="quick-action-button mr-4"
+            routerLink="send-chx"
+            routerLinkActive="selected"
+            (click)="navigateTo('/wallet/send-chx')"
+          >
             <span>
               <own-icon icon="send" size="15" color="#39a2ae"></own-icon>
             </span>
             Send CHX
           </button>
 
-          <button class="quick-action-button mr-4" routerLink="receive-chx" routerLinkActive="selected">
+          <button
+            class="quick-action-button mr-4"
+            routerLink="receive-chx"
+            routerLinkActive="selected"
+            (click)="navigateTo('/wallet/receive-chx')"
+          >
             <span>
               <own-icon icon="receive" size="15" color="#39a2ae"></own-icon>
             </span>
             Receive CHX
           </button>
 
-          <button class="quick-action-button mr-4" routerLink="staking" routerLinkActive="selected">
+          <button
+            class="quick-action-button mr-4"
+            routerLink="staking"
+            routerLinkActive="selected"
+            (click)="navigateTo('/wallet/staking')"
+          >
             <span>
               <own-icon icon="staking" size="15" color="#39a2ae"></own-icon>
             </span>
             Staking
           </button>
 
-          <button class="quick-action-button" routerLink="bridge" routerLinkActive="selected">
+          <button
+            class="quick-action-button"
+            routerLink="bridge"
+            routerLinkActive="selected"
+            (click)="navigateTo('/wallet/bridge')"
+          >
             <span>
               <own-icon icon="swap" size="15" color="#39a2ae"></own-icon>
             </span>
@@ -219,6 +239,7 @@
           (click)="showAdvanced = !showAdvanced"
           routerLink="validator-managment"
           routerLinkActive="selected"
+          (click)="navigateTo('/wallet/validator-management')"
         >
           <span>
             <own-icon icon="validator" size="15" color="#39a2ae"></own-icon>
@@ -233,6 +254,7 @@
           (click)="showAdvanced = !showAdvanced"
           routerLink="sign-verify"
           routerLinkActive="selected"
+          (click)="navigateTo('/wallet/sign-verify')"
         >
           <span>
             <own-icon icon="signature" size="15" color="#39a2ae"></own-icon>

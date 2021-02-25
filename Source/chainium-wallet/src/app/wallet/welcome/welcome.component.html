@@ -111,13 +111,6 @@
                       <span>+</span>
                       Add Address
                     </button>
-                    <button
-                      class="button-transparent mr-3"
-                      (click)="onRefreshAddressInfoClick()"
-                      title="Click to refresh balance info."
-                    >
-                      <own-icon icon="refresh"></own-icon>
-                    </button>
                     <own-dropdown-menu #menu>
                       <own-dropdown-item (click)="openModal('show-private-key', menu)">
                         Show Private Key
@@ -257,16 +250,7 @@
           Validator Management
         </button>
       </div>
-      <!--
-          <div class="col-12 col-md-3">
-            <button class="quick-action-button block">
-              <span>
 
-              </span>
-              Multi-action Transaction
-            </button>
-          </div>
-          -->
       <div class="col-12 col-md-3">
         <button
           class="quick-action-button block"

@@ -108,7 +108,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
   }
 
   fetchChxToUsdRatio() {
-    this.fetchChxToUsdSub = timer(1000, 60000)
+    this.fetchChxToUsdSub = timer(1000, 240000)
       .pipe(mergeMap(() => this.state.getChxToUsdRate()))
       .subscribe((rate) => {
         if (this.chxToUsdRate !== rate) {

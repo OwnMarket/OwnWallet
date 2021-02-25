@@ -129,7 +129,6 @@ export class WelcomeComponent implements OnInit, OnDestroy {
       .pipe(mergeMap(() => forkJoin(requests)))
       .subscribe((resp: ChxAddressInfo[]) => {
         if (JSON.stringify(this.addressInfos) !== JSON.stringify(resp)) {
-          console.log('not same');
           this.addressInfos = resp;
           this.state.setAddressInfos(this.addressInfos);
         }

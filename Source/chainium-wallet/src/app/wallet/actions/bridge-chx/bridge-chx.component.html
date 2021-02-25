@@ -254,6 +254,12 @@
                       <label for="from" class="col-2">From</label>
                       <div class="col text-right">
                         <span
+                          class="text-brand text-small"
+                          *ngIf="bridgeForm.get('fromAmount').value === maxAmount && fromBlockchain === 'chx'"
+                        >
+                          Transaction fee of 0.1 CHX is automatically subtracted from balance
+                        </span>
+                        <span
                           class="text-white bg-danger p-2 rounded text-small"
                           *ngIf="
                             bridgeForm.get('fromAmount').dirty &&
@@ -282,7 +288,7 @@
                     <div class="mega-input text-lg">
                       <input class="block no-borders" type="number" formControlName="fromAmount" />
 
-                      <div class="max-button text-white text-small" (click)="setMax()">MAX</div>
+                      <div class="max-button text-white text-small" (click)="setMaxAmount()">MAX</div>
                       <div class="border-right my-2"></div>
 
                       <own-dropdown-menu [showIcon]="false" [label]="fromBlockchain === 'chx' ? 'CHX' : 'wCHX'">
@@ -299,7 +305,7 @@
                       <div class="col">
                         {{ fromBlockchain === 'chx' ? chxAddress : ethAddress }}
                       </div>
-                      <div class="col-4 cursor-pointer" (click)="setMax()">
+                      <div class="col-4 cursor-pointer" (click)="setMaxAmount()">
                         {{
                           fromBlockchain === 'chx'
                             ? 'Balance: ' + chxBalance + ' CHX'
@@ -449,7 +455,14 @@
                       </div>
                       <div class="row mr-2">
                         <div class="col">Fee on WeOwn blockchain:</div>
-                        <div class="col text-right">{{ bridgeFee.chxFee | number: '1.0-7' }} CHX</div>
+                        <div class="col text-right">
+                          {{
+                            fromBlockchain === 'chx'
+                              ? (bridgeFee.chxFee + fee | number: '1.0-7')
+                              : (bridgeFee.chxFee | number: '1.0-7')
+                          }}
+                          CHX
+                        </div>
                       </div>
 
                       <hr />
@@ -464,7 +477,14 @@
                       </div>
                       <div class="col text-right">
                         <div class="row mr-2">
-                          <div class="col">{{ bridgeFee.totalFee | number: '1.0-7' }} CHX</div>
+                          <div class="col">
+                            {{
+                              fromBlockchain === 'chx'
+                                ? (bridgeFee.totalFee + fee | number: '1.0-7')
+                                : (bridgeFee.totalFee | number: '1.0-7')
+                            }}
+                            CHX
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -551,7 +571,14 @@
                   </div>
                   <div class="row">
                     <div class="col">Fee on WeOwn blockchain:</div>
-                    <div class="col text-right">{{ bridgeFee.chxFee | number: '1.0-7' }} CHX</div>
+                    <div class="col text-right">
+                      {{
+                        fromBlockchain === 'chx'
+                          ? (bridgeFee.chxFee + fee | number: '1.0-7')
+                          : (bridgeFee.chxFee | number: '1.0-7')
+                      }}
+                      CHX
+                    </div>
                   </div>
 
                   <hr />
@@ -565,7 +592,14 @@
                     </div>
                     <div class="col text-right">
                       <div class="row">
-                        <div class="col">{{ bridgeFee.totalFee | number: '1.0-7' }} CHX</div>
+                        <div class="col">
+                          {{
+                            fromBlockchain === 'chx'
+                              ? (bridgeFee.totalFee + fee | number: '1.0-7')
+                              : (bridgeFee.totalFee | number: '1.0-7')
+                          }}
+                          CHX
+                        </div>
                       </div>
                     </div>
                   </div>

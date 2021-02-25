@@ -155,7 +155,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       .setValidators([
         Validators.required,
         Validators.min(this.minWrapAmount),
-        Validators.max(this.fromBlockchain === 'chx' ? this.chxBalance : this.wChxBalance),
+        Validators.max(this.fromBlockchain === 'chx' ? this.chxBalance - this.fee : this.wChxBalance),
       ]);
   }
 
@@ -171,6 +171,20 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     return this.chains[this.chainId];
   }
 
+  get maxAmount(): number {
+    let balance: number;
+    if (this.fromBlockchain === 'chx') {
+      balance = this.chxBalance - this.fee;
+    } else {
+      balance = this.wChxBalance;
+    }
+    return balance;
+  }
+
+  setMaxAmount() {
+    this.bridgeForm.get('fromAmount').setValue(this.maxAmount);
+  }
+
   swapBlockchains() {
     if (this.bridgeForm.get('fromBlockchain').value === 'eth') {
       this.bridgeForm.get('fromBlockchain').setValue('chx');
@@ -181,16 +195,6 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     this.bridgeForm.get('toAmount').setValue(0);
     this.bridgeForm.markAsPristine();
     this.getBridgeFee(this.ethAddress);
-  }
-
-  setMax() {
-    let balance: number;
-    if (this.fromBlockchain === 'chx') {
-      balance = this.chxBalance - 0.1;
-    } else {
-      balance = this.wChxBalance;
-    }
-    this.bridgeForm.get('fromAmount').setValue(balance);
   }
 
   async acceptRisks() {
@@ -352,7 +356,9 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
             });
             this.getBalanceAndMinAmount();
             this.getBridgeFee(this.ethAddress);
+            this.loading = false;
           } catch (error) {
+            this.loading = false;
             this.showWarning = true;
             this.warningMessage = error.message;
           }

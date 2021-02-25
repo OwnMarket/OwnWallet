@@ -146,16 +146,23 @@
             "
           >
             <div class="col-12">
-              <h4 class="mb-4">Bind your CHX mainnet address with your Ethereum address</h4>
+              <h4 class="mb-4">
+                Bind your CHX {{ weOwnNet ? 'Mainnet' : 'Testnet' }} address with your Ethereum
+                {{ weOwnNet ? 'Mainnet' : 'Rinkeby' }} address
+              </h4>
               <p>
-                In order to transfer and move CHX Tokens between both our WeOwn Mainnet blockchain and the Ethereum
-                network, you’ll have to bind your CHX mainnet address directly with one of your Ethereum addresses by
-                using MetaMask. Once MetaMasks opens, please confirm the mapped transaction, which binds your current
-                CHX mainnet address with the Ethereum address you select on MetaMask.
+                In order to transfer and move CHX Tokens between both our WeOwn
+                {{ weOwnNet ? 'Mainnet' : 'Testnet' }} blockchain and the Ethereum
+                {{ weOwnNet ? 'Mainnet' : 'Rinkeby' }} network, you’ll have to bind your CHX
+                {{ weOwnNet ? 'Mainnet' : 'Testnet' }} address directly with one of your Ethereum
+                {{ weOwnNet ? 'Mainnet' : 'Rinkeby' }} addresses by using MetaMask. Once MetaMasks opens, please confirm
+                the mapped transaction, which binds your current CHX {{ weOwnNet ? 'Mainnet' : 'Testnet' }} address with
+                the Ethereum {{ weOwnNet ? 'Mainnet' : 'Rinkeby' }} address you select on MetaMask.
               </p>
               <p>
-                The binding of the CHX mainnet address to your Ethereum address is a one-time event. For transparency
-                purpose, the following addresses and smart contracts are involved in the process:
+                The binding of the CHX {{ weOwnNet ? 'Mainnet' : 'Testnet' }} address to your Ethereum
+                {{ weOwnNet ? 'Mainnet' : 'Rinkeby' }} address is a one-time event. For transparency purpose, the
+                following addresses and smart contracts are involved in the process:
               </p>
 
               <h6>
@@ -175,7 +182,8 @@
               <div class="mt-4">
                 <p>
                   Once you have confirmed the mapping between both addresses, it cannot be undone. If you made a mistake
-                  with the binding, you need to create a new CHX mainnet address, and repeat the steps.
+                  with the binding, you need to create a new CHX {{ weOwnNet ? 'Mainnet' : 'Testnet' }} address, and
+                  repeat the steps.
                 </p>
                 <p>
                   The mapping does not automatically transfer funds – it only binds and connects both of your addresses.
@@ -185,7 +193,7 @@
                 <p>
                   A transaction fee will be required while binding to the Ethereum network. So please make sure you have
                   adequate funds available in your MetaMask wallet. There will be no transaction fee required on the
-                  WeOwn Mainnet blockchain during this process.
+                  WeOwn {{ weOwnNet ? 'Mainnet' : 'Testnet' }} blockchain during this process.
                 </p>
               </div>
 

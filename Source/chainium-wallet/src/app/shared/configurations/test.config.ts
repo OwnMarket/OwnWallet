@@ -1,4 +1,5 @@
 export const testConfig = {
+  isProduction: false,
   explorerUrl: 'https://test.explorer.weown.com',
   bridgeApiUrl: 'https://test.bridge-api.weown.com',
   ownerChxAddress: 'CHWBRa8ovb9xcGncaJcgSJrYPtwvrSf8P2K',

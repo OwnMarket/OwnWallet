@@ -40,6 +40,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
   showWarning = false;
   warningMessage: string;
   isProduction: boolean;
+  weOwnNet: boolean;
   inProgress = false;
   showFees = false;
 
@@ -87,6 +88,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
 
     this.wallet = this.privateKeyService.getWalletInfo();
     this.chxAddress = this.wallet.address;
+    this.weOwnNet = this.configService.config.isProduction;
 
     this.addressSub = this.nodeService.getAddressInfo(this.wallet.address).subscribe((balInfo) => {
       this.chxBalance = balInfo.balance.available;

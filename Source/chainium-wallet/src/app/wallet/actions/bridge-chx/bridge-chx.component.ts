@@ -155,7 +155,9 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       .setValidators([
         Validators.required,
         Validators.min(this.minWrapAmount),
-        Validators.max(this.fromBlockchain === 'chx' ? this.chxBalance - this.fee : this.wChxBalance),
+        Validators.max(
+          this.fromBlockchain === 'chx' ? (this.chxBalance > 0 ? this.chxBalance - this.fee : 0.1) : this.wChxBalance
+        ),
       ]);
   }
 
@@ -338,7 +340,6 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       } else {
         if (await this.checkIfEthAddressIsMappedToOtherChxAddress(this.currentAccount)) {
           this.ethAddress = this.currentAccount;
-          // this.mapAddress();
         }
       }
     }
@@ -351,12 +352,24 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
         .signMessage(this.privateKeyService.getWalletInfo().privateKey, this.ethAddress)
         .subscribe(async (signature: string) => {
           try {
-            await this.wChxMapping.methods.mapAddress(this.chxAddress, signature).send({
-              from: this.ethAddress,
-            });
-            this.getBalanceAndMinAmount();
-            this.getBridgeFee(this.ethAddress);
-            this.loading = false;
+            await this.wChxMapping.methods
+              .mapAddress(this.chxAddress, signature)
+              .send({
+                from: this.ethAddress,
+              })
+              .on('transactionHash', (hash) => {
+                this.txResult = new TxResult();
+                this.txResult.txHash = hash;
+                this.inProgress = true;
+                this.loading = false;
+              })
+              .on('receipt', (receipt) => {
+                this.inProgress = false;
+                this.txResult = null;
+                this.getBalanceAndMinAmount();
+                this.getBridgeFee(this.ethAddress);
+                this.ethAddrMapped = true;
+              });
           } catch (error) {
             this.loading = false;
             this.showWarning = true;
@@ -389,7 +402,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     }
     if (this.fromBlockchain === 'eth') {
       const amount = +this.bridgeForm.get('fromAmount').value * Math.pow(10, 7);
-      const tx = await this.wChxToken.methods
+      await this.wChxToken.methods
         .transfer(this.configService.config.wChxTokenContract, amount)
         .send({
           from: this.ethAddress,

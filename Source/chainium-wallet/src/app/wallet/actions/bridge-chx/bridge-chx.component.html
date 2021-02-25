@@ -656,7 +656,8 @@
             </div>
             <div class="col-12 text-center">
               <h4>Processing...</h4>
-              <p>
+              <p *ngIf="!ethAddrMapped">Binding addresses ...</p>
+              <p *ngIf="ethAddrMapped">
                 Your {{ fromBlockchain === 'chx' ? 'CHX' : 'wCHX' }} will be added to your account after the transaction
                 has been executed.
               </p>

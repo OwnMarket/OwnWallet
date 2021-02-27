@@ -21,6 +21,7 @@
                 (keydown)="onKeyDown($event)"
                 (keyup)="onKeyUp($event)"
                 required
+                autocomplete="new-password"
               />
               <div class="info" *ngIf="password.errors && password.errors.required && password.touched">
                 This field is required.

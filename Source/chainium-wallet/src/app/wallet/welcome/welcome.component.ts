@@ -51,20 +51,18 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     private nodeService: NodeService,
     private state: StateService,
     private configService: ConfigurationService
-  ) {
+  ) {}
+
+  ngOnInit() {
+    this.explorerUrl = this.configService.config.explorerUrl;
     this.privateKeyService.getMessage().subscribe((msg) => {
       this.onRefreshAddressInfoClick();
     });
     this.walletService.getMessage().subscribe(() => {
       this.validateWalletContext();
     });
-  }
-
-  ngOnInit() {
-    this.explorerUrl = this.configService.config.explorerUrl;
     this.walletService.generateWalletFromContext();
     this.showAdvanced = false;
-    this.fetchChxToUsdRatio();
   }
 
   navigateTo(route: string) {
@@ -89,6 +87,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.fetchChxToUsdRatio();
     this.validateWalletContext();
     this.selectWallet(this.privateKeyService.getWalletInfo());
     this.chxAddresses = this.walletService.getAllChxAddresses();

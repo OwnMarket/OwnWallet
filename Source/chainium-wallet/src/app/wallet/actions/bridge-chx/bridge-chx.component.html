@@ -14,7 +14,23 @@
           </div>
         </own-card-title>
         <own-card-body [padding]="true">
-          <div class="row" *ngIf="!risksAccepted && !showWarning">
+          <!-- Step 0 - Warning -->
+          <div class="row" *ngIf="step === 0">
+            <div class="col-12">
+              <h2>Warning</h2>
+              <p [innerHTML]="warningMessage"></p>
+            </div>
+            <div class="col-12">
+              <div class="row">
+                <div class="col col-sm-6">
+                  <button class="block own-effect mt-4" (click)="reset()">BACK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 1 - Accept Risks -->
+          <div class="row" *ngIf="step === 1">
             <div class="col">
               <h4 class="mb-4">Terms to accept</h4>
               <p>
@@ -95,21 +111,8 @@
             </div>
           </div>
 
-          <div class="row" *ngIf="showWarning && warningMessage">
-            <div class="col-12">
-              <h2>Warning</h2>
-              <p [innerHTML]="warningMessage"></p>
-            </div>
-            <div class="col-12">
-              <div class="row">
-                <div class="col col-sm-6">
-                  <button class="block own-effect mt-4" (click)="reset()">BACK</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row" *ngIf="connectingToMetaMask">
+          <!-- Step 1.5 - Connecting to MetaMask -->
+          <div class="row" *ngIf="step === 1.5">
             <div class="col-12 text-center">
               <svg
                 class="svg-loader"
@@ -139,30 +142,21 @@
             </div>
           </div>
 
-          <div
-            class="row"
-            *ngIf="
-              risksAccepted && !ethAddrMapped && !showWarning && !connectingToMetaMask && !confirmTransfer && !txResult
-            "
-          >
+          <!-- Step 2 - Mapping -->
+          <div class="row" *ngIf="step === 2">
             <div class="col-12">
-              <h4 class="mb-4">
-                Bind your CHX {{ weOwnNet ? 'Mainnet' : 'Testnet' }} address with your Ethereum
-                {{ weOwnNet ? 'Mainnet' : 'Rinkeby' }} address
-              </h4>
+              <h4 class="mb-4">Bind your CHX {{ ownNet }} address with your Ethereum {{ ethNet }} address</h4>
               <p>
                 In order to transfer and move CHX Tokens between both our WeOwn
-                {{ weOwnNet ? 'Mainnet' : 'Testnet' }} blockchain and the Ethereum
-                {{ weOwnNet ? 'Mainnet' : 'Rinkeby' }} network, you’ll have to bind your CHX
-                {{ weOwnNet ? 'Mainnet' : 'Testnet' }} address directly with one of your Ethereum
-                {{ weOwnNet ? 'Mainnet' : 'Rinkeby' }} addresses by using MetaMask. Once MetaMasks opens, please confirm
-                the mapped transaction, which binds your current CHX {{ weOwnNet ? 'Mainnet' : 'Testnet' }} address with
-                the Ethereum {{ weOwnNet ? 'Mainnet' : 'Rinkeby' }} address you select on MetaMask.
+                {{ ownNet }} blockchain and the Ethereum {{ ethNet }} network, you’ll have to bind your CHX
+                {{ ownNet }} address directly with one of your Ethereum {{ ethNet }} addresses by using MetaMask. Once
+                MetaMasks opens, please confirm the mapped transaction, which binds your current CHX
+                {{ ownNet }} address with the Ethereum {{ weOwnNet ? 'Mainnet' : 'Rinkeby' }} address you select on
+                MetaMask.
               </p>
               <p>
-                The binding of the CHX {{ weOwnNet ? 'Mainnet' : 'Testnet' }} address to your Ethereum
-                {{ weOwnNet ? 'Mainnet' : 'Rinkeby' }} address is a one-time event. For transparency purpose, the
-                following addresses and smart contracts are involved in the process:
+                The binding of the CHX {{ ownNet }} address to your Ethereum {{ ethNet }} address is a one-time event.
+                For transparency purpose, the following addresses and smart contracts are involved in the process:
               </p>
 
               <h6>
@@ -182,8 +176,7 @@
               <div class="mt-4">
                 <p>
                   Once you have confirmed the mapping between both addresses, it cannot be undone. If you made a mistake
-                  with the binding, you need to create a new CHX {{ weOwnNet ? 'Mainnet' : 'Testnet' }} address, and
-                  repeat the steps.
+                  with the binding, you need to create a new CHX {{ ownNet }} address, and repeat the steps.
                 </p>
                 <p>
                   The mapping does not automatically transfer funds – it only binds and connects both of your addresses.
@@ -191,9 +184,9 @@
                   tokens across both networks and your addresses.
                 </p>
                 <p>
-                  A transaction fee will be required while binding to the Ethereum network. So please make sure you have
-                  adequate funds available in your MetaMask wallet. There will be no transaction fee required on the
-                  WeOwn {{ weOwnNet ? 'Mainnet' : 'Testnet' }} blockchain during this process.
+                  A transaction fee will be required while binding to the Ethereum {{ ethNet }} network. So please make
+                  sure you have adequate funds available in your MetaMask wallet. There will be no transaction fee
+                  required on the WeOwn {{ ownNet }} blockchain during this process.
                 </p>
               </div>
 
@@ -248,12 +241,8 @@
             </div>
           </div>
 
-          <div
-            class="row"
-            *ngIf="
-              risksAccepted && ethAddrMapped && !showWarning && !connectingToMetaMask && !confirmTransfer && !txResult
-            "
-          >
+          <!-- Step 3 - Bridge Form -->
+          <div class="row" *ngIf="step === 3">
             <div class="col">
               <form [formGroup]="bridgeForm">
                 <div class="row">
@@ -402,7 +391,7 @@
                       *ngIf="metaMaskConnected || (fromBlockchain === 'chx' && ethAddrMapped)"
                       [disabled]="bridgeForm.invalid || loading"
                       class="block own-effect"
-                      (click)="confirmTransfer = true"
+                      (click)="step = 4"
                     >
                       <svg
                         *ngIf="loading"
@@ -502,7 +491,8 @@
             </div>
           </div>
 
-          <div class="row" *ngIf="risksAccepted && bridgeForm && confirmTransfer && !showWarning && !txResult">
+          <!-- Step 4 - Confirm Bridge -->
+          <div class="row" *ngIf="step === 4">
             <div class="col">
               <div class="row justify-content-between">
                 <div class="col">
@@ -637,7 +627,8 @@
             </div>
           </div>
 
-          <div class="row" *ngIf="txResult && inProgress && !showWarning">
+          <!-- Proccessing -->
+          <div class="row" *ngIf="step === 2.5 || step === 5">
             <div class="col-12 text-center">
               <svg
                 class="svg-loader"
@@ -694,7 +685,8 @@
             </div>
           </div>
 
-          <div class="row justify-content-center" *ngIf="txResult && !inProgress && !showWarning">
+          <!-- Step 6 - Transaction details -->
+          <div class="row justify-content-center" *ngIf="step === 6">
             <div class="col-12">
               <div class="row full-height align-items-center justify-content-between">
                 <div class="col-12">

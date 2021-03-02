@@ -62,6 +62,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
   nonce: number;
   fee: number;
   bridgeFee: BridgeFee;
+  step: number = 1;
 
   chains = {
     '0x1': 'Ethereum Main Network',
@@ -185,15 +186,23 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     return balance;
   }
 
+  get ownNet(): string {
+    return this.weOwnNet ? 'Mainnet' : 'Testnet';
+  }
+
+  get ethNet(): string {
+    return this.weOwnNet ? 'Mainnet' : 'Rinkeby';
+  }
+
   setMaxAmount() {
     this.bridgeForm.get('fromAmount').setValue(this.maxAmount);
   }
 
   swapBlockchains() {
-    if (this.bridgeForm.get('fromBlockchain').value === 'eth') {
-      this.bridgeForm.get('fromBlockchain').setValue('chx');
-    } else {
+    if (this.bridgeForm.get('fromBlockchain').value === 'chx') {
       this.bridgeForm.get('fromBlockchain').setValue('eth');
+    } else {
+      this.bridgeForm.get('fromBlockchain').setValue('chx');
     }
     this.bridgeForm.get('fromAmount').setValue(0);
     this.bridgeForm.get('toAmount').setValue(0);
@@ -225,16 +234,14 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
         this.web3.setProvider(this.provider);
         this.chainId = this.provider.chainId;
         this.isProduction = this.chainId === '0x1';
-
-        // Reload window if network has been changed in MetaMask
         await this.provider.on('chainChanged', (chainId: string) => window.location.reload());
-
         this.connect();
       }
     } else {
       this.showWarning = true;
       this.warningMessage = `Please install <a href="https://metamask.io/download.html" target="_blank">MetaMask browser extension</a> before using <strong>CHX Bridge</strong> functionality.`;
       this.loading = false;
+      this.step = 0;
     }
   }
 
@@ -259,6 +266,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
           this.showWarning = true;
           this.warningMessage =
             'Currently selected ETH Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.';
+          this.step = 0;
           return false;
         } else {
           return true;
@@ -267,32 +275,44 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
         return true;
       }
     } catch (error) {
-      console.log(error);
       this.showWarning = true;
       this.warningMessage = 'Failed to check if ETH Address is mapped to other CHX Address.';
+      this.step = 0;
       return false;
     }
   }
 
   async checkIfAddressIsMapped() {
-    const ethAddr = await this.wChxMapping.methods.ethAddress(this.chxAddress).call();
+    try {
+      const ethAddr = await this.wChxMapping.methods.ethAddress(this.chxAddress).call();
 
-    if (ethAddr !== '0x0000000000000000000000000000000000000000' && ethAddr !== '') {
-      this.ethAddrMapped = true;
-      this.ethAddress = ethAddr;
-      this.getBridgeFee(this.ethAddress);
-    } else {
-      this.ethAddrMapped = false;
+      if (ethAddr !== '0x0000000000000000000000000000000000000000' && ethAddr !== '') {
+        this.ethAddrMapped = true;
+        this.ethAddress = ethAddr;
+        this.getBridgeFee(this.ethAddress);
+        this.step = 3;
+      } else {
+        this.ethAddrMapped = false;
+        this.step = 2;
+      }
+    } catch (error) {
+      this.showWarning = true;
+      this.warningMessage = error;
+      this.step = 0;
     }
   }
 
   async getBalanceAndMinAmount() {
-    if (this.ethAddrMapped && this.ethAddress) {
-      this.wChxBalance = (await this.wChxToken.methods.balanceOf(this.ethAddress).call()) / Math.pow(10, 7);
-
-      this.minWrapAmount = (await this.wChxToken.methods.minWrapAmount().call()) / Math.pow(10, 7);
-
-      this.setValidators();
+    try {
+      if (this.ethAddrMapped && this.ethAddress) {
+        this.wChxBalance = (await this.wChxToken.methods.balanceOf(this.ethAddress).call()) / Math.pow(10, 7);
+        this.minWrapAmount = (await this.wChxToken.methods.minWrapAmount().call()) / Math.pow(10, 7);
+        this.setValidators();
+      }
+    } catch (error) {
+      this.showWarning = true;
+      this.warningMessage = error;
+      this.step = 0;
     }
   }
 
@@ -305,6 +325,9 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
 
   connect() {
     this.connectingToMetaMask = true;
+    if (this.step !== 3) {
+      this.step = 1.5;
+    }
     this.provider
       .request({ method: 'eth_requestAccounts' })
       .then(async (accounts: string[]) => await this.syncAccounts(accounts))
@@ -313,8 +336,11 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
           console.log('Please connect to MetaMask.');
           this.showWarning = true;
           this.warningMessage = `You have rejected to connect WeOwn wallet with your MetaMask wallet.`;
+          this.step = 0;
         } else {
-          console.error(err);
+          this.showWarning = true;
+          this.warningMessage = err;
+          this.step = 0;
         }
         this.loading = false;
       });
@@ -324,17 +350,21 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     this.loading = false;
     this.metaMaskConnected = true;
     this.connectingToMetaMask = false;
+    if (this.step !== 3) {
+      this.step = 2;
+    }
     if (accounts.length === 0) {
       console.log('Please connect to MetaMask.');
       this.showWarning = true;
       this.warningMessage = `Your MetaMask wallet is locked or you didn't connect any accounts.`;
+      this.step = 0;
     } else if (accounts[0] !== this.currentAccount) {
       this.currentAccount = accounts[0];
-
       if (this.ethAddrMapped) {
         if (this.ethAddress.toLowerCase() !== this.currentAccount) {
           this.showWarning = true;
           this.warningMessage = `Please make sure that the address you connect to matches the ${this.ethAddress} in MetaMask. Then re-establish the connection.`;
+          this.step = 0;
           return;
         } else {
           this.ethAddress = this.currentAccount;
@@ -364,6 +394,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
                 this.txResult.txHash = hash;
                 this.inProgress = true;
                 this.loading = false;
+                this.step = 2.5;
               })
               .on('receipt', (receipt) => {
                 this.inProgress = false;
@@ -371,11 +402,13 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
                 this.getBalanceAndMinAmount();
                 this.getBridgeFee(this.ethAddress);
                 this.ethAddrMapped = true;
+                this.step = 3;
               });
           } catch (error) {
             this.loading = false;
             this.showWarning = true;
             this.warningMessage = error.message;
+            this.step = 0;
           }
         });
     }
@@ -397,9 +430,11 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
         if (result.errors) {
           this.showWarning = true;
           this.warningMessage = result.errors;
+          this.step = 0;
           return;
         }
         this.txResult = result as TxResult;
+        this.step = 6;
       });
     }
     if (this.fromBlockchain === 'eth') {
@@ -414,9 +449,11 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
           this.txResult.txHash = hash;
           this.inProgress = true;
           this.loading = false;
+          this.step = 5;
         })
         .on('receipt', (receipt) => {
           this.inProgress = false;
+          this.step = 6;
         })
         .on('error', (error, receipt) => {
           this.inProgress = false;
@@ -425,11 +462,14 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
             case 4001:
               this.warningMessage =
                 'The transaction was rejected in MetaMask. The process was therefore cancelled and no tokens are transferred.';
+              this.step = 0;
               break;
             case -32602:
               this.warningMessage = `Check if your currently selected address in MetaMask is ${this.ethAddress} and try again.`;
+              this.step = 0;
             default:
               this.warningMessage = error.message;
+              this.step = 0;
           }
         });
     }
@@ -445,5 +485,6 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     this.confirmTransfer = false;
     this.metaMaskConnected = false;
     this.inProgress = false;
+    this.step = 1;
   }
 }

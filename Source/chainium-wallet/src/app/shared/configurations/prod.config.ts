@@ -2,7 +2,7 @@ export const prodConfig = {
   isProduction: true,
   explorerUrl: 'https://explorer.weown.com',
   bridgeApiUrl: 'https://bridge-api.weown.com',
-  ownerChxAddress: '0xca707EFc57b768A97155CB20aaE0FDd8219a6E7B',
+  ownerChxAddress: 'CHXhwGQecv9oThxD9ZnWWENVc26N1X5FJAQ',
   wChxMappingContract: '0x766eAAbd47c53f548Cf225f8EB7AB300648FC236',
   wChxTokenContract: '0xD883D21AF976Ec9fA409c9f2944A1E7D03D21946',
   wChxMappingABI: [

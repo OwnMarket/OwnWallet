@@ -2,9 +2,9 @@ export const prodConfig = {
   isProduction: true,
   explorerUrl: 'https://explorer.weown.com',
   bridgeApiUrl: 'https://bridge-api.weown.com',
-  ownerChxAddress: 'CHWBRa8ovb9xcGncaJcgSJrYPtwvrSf8P2K',
-  wChxMappingContract: '0x821f375d636f779ea831536f75b06db582817b77',
-  wChxTokenContract: '0xe6991e5d1f3a41015d8332cbb1a5e6db440da875',
+  ownerChxAddress: '0xca707EFc57b768A97155CB20aaE0FDd8219a6E7B',
+  wChxMappingContract: '0x766eAAbd47c53f548Cf225f8EB7AB300648FC236',
+  wChxTokenContract: '0xD883D21AF976Ec9fA409c9f2944A1E7D03D21946',
   wChxMappingABI: [
     { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
     {

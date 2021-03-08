@@ -12,10 +12,13 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { LoaderService } from './shared/services/loader.service';
+import { StateService } from './shared/services/state.service';
+import { ConfigurationService } from './shared/services/configuration.service';
 
 // App level components
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { LongPress } from './shared';
 
 // Info section
 import { InfoPageComponent } from './info/info-page/info-page.component';
@@ -37,8 +40,6 @@ import { ValidatorManagmentComponent } from './wallet/validator-managment/valida
 import { StakingComponent } from './wallet/staking/staking.component';
 import { MessageSignVerificationComponent } from './wallet/msg-sign-verify/msg-sign-verify.component';
 import { BridgeChxComponent } from './wallet/actions/bridge-chx/bridge-chx.component';
-import { StateService } from './shared/services/state.service';
-import { ConfigurationService } from './shared/services/configuration.service';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { ConfigurationService } from './shared/services/configuration.service';
     MessageSignVerificationComponent,
     PageNotFoundComponent,
     BridgeChxComponent,
+    LongPress,
   ],
   imports: [
     BrowserModule,

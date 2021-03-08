@@ -188,6 +188,10 @@
               autocomplete="new-password"
             />
 
+            <div class="info mt-1" *ngIf="invalidPrivateKey">
+              Private key is invalid please check if you entered it correctly or if it contains invalid characters.
+            </div>
+
             <div class="row justify-content-between mt-4">
               <div class="col-12 col-sm-6">
                 <button class="block own-effect" (click)="onRestoreWithPrivateKey()">IMPORT</button>

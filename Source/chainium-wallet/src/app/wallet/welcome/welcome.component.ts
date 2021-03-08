@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationStart, Router, RouterEvent, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 
 import { ChxAddressInfo } from 'src/app/shared/models/chx-address-info.model';
 import { WalletInfo } from 'src/app/shared/models/wallet-info.model';
@@ -35,6 +35,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
   showAdvanced = false;
   explorerUrl: string;
   chxToUsdRate: number;
+  privateKeyIsImported: boolean = false;
 
   selectedSlideIndex: number = 0;
   routerSub: Subscription;
@@ -51,19 +52,26 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     private nodeService: NodeService,
     private state: StateService,
     private configService: ConfigurationService
-  ) {}
-
-  ngOnInit() {
+  ) {
     this.explorerUrl = this.configService.config.explorerUrl;
+
+    try {
+      this.showImportedPk = JSON.parse(sessionStorage.getItem('isPrivateKeyImported')) || false;
+      if (this.showImportedPk) this.onRefreshAddressInfoClick();
+    } catch (error) {}
+
     this.privateKeyService.getMessage().subscribe((msg) => {
       this.onRefreshAddressInfoClick();
     });
     this.walletService.getMessage().subscribe(() => {
+      console.log('vwc');
       this.validateWalletContext();
     });
     this.walletService.generateWalletFromContext();
     this.showAdvanced = false;
   }
+
+  ngOnInit() {}
 
   navigateTo(route: string) {
     const currUrl = this.router.url;
@@ -91,7 +99,16 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     this.validateWalletContext();
     this.selectWallet(this.privateKeyService.getWalletInfo());
     this.chxAddresses = this.walletService.getAllChxAddresses();
-    this.showImportedPk = this.chxAddresses.indexOf(this.selectedChxAddress) === -1;
+
+    try {
+      let currentAddresses = JSON.parse(localStorage.getItem('walletChxAddresses')) || [];
+      this.showImportedPk = currentAddresses.indexOf(this.selectedChxAddress) === -1;
+    } catch (error) {
+      console.log(error);
+      this.showImportedPk = false;
+    }
+
+    sessionStorage.setItem('isPrivateKeyImported', JSON.stringify(this.showImportedPk));
 
     this.cryptoService
       .getAddressFromKey(this.privateKeyService.getWalletInfo().privateKey)
@@ -143,10 +160,6 @@ export class WelcomeComponent implements OnInit, OnDestroy {
 
   getInfoForAddress(chxAddress: string): ChxAddressInfo {
     return this.addressInfos.find((info) => info.blockchainAddress === chxAddress);
-  }
-
-  onImportPrivateKeyClick() {
-    this.router.navigate(['/import-wallet']);
   }
 
   private setActiveWallet(chxAddress: string) {

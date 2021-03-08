@@ -1,4 +1,4 @@
-<div class="container my-5" *ngIf="!addressInfo && !selectedWallet">
+<div class="container my-5" *ngIf="!addressInfo && !selectedWallet && !showImportedPk">
   <own-card>
     <own-card-body [padding]="true">
       <div class="row align-items-center py-0 py-md-5">
@@ -36,7 +36,7 @@
   </own-card>
 </div>
 
-<div class="container my-5" *ngIf="addressInfo && selectedWallet">
+<div class="container my-5" *ngIf="(addressInfo && selectedWallet) || showImportedPk">
   <div class="container my-5">
     <div class="row">
       <div class="col">
@@ -99,7 +99,7 @@
                 <div class="row mt-4">
                   <div class="col-9 col-md-10 address-hash elipsis">
                     <div class="ml-md-4 pl-md-3 pl-0 ml-0">
-                      {{ addressInfo.blockchainAddress }}
+                      {{ addressInfo?.blockchainAddress }}
                     </div>
                   </div>
                   <div class="col-3 col-md-2">
@@ -107,7 +107,7 @@
                       class="button-transparent"
                       title="Copy Address"
                       ngxClipboard
-                      cbContent="{{ addressInfo.blockchainAddress }}"
+                      cbContent="{{ addressInfo?.blockchainAddress }}"
                     >
                       <own-icon icon="copy" color="#eb6723"></own-icon>
                     </button>
@@ -119,13 +119,13 @@
                     <div class="row mb-2">
                       <div class="col-6">Nonce</div>
                       <div class="col-6 text-right">
-                        <b>{{ addressInfo.nonce }}</b>
+                        <b>{{ addressInfo?.nonce }}</b>
                       </div>
                     </div>
                     <div class="row mb-2 mb-sm-0">
                       <div class="col-6">Deposit</div>
                       <div class="col-6 text-right">
-                        <b>{{ addressInfo.balance.deposit }}</b>
+                        <b>{{ addressInfo?.balance.deposit }}</b>
                       </div>
                     </div>
                   </div>
@@ -133,13 +133,13 @@
                     <div class="row mb-2">
                       <div class="col-4">Delegated</div>
                       <div class="col-8 text-right">
-                        <b>{{ addressInfo.balance.staked }}</b>
+                        <b>{{ addressInfo?.balance.staked }}</b>
                       </div>
                     </div>
                     <div class="row mb-2 mb-sm-0">
                       <div class="col-4">Available</div>
                       <div class="col-8 text-right">
-                        <b>{{ addressInfo.balance.available }}</b>
+                        <b>{{ addressInfo?.balance.available }}</b>
                       </div>
                     </div>
                   </div>
@@ -148,7 +148,7 @@
                       <div class="col-12 col-md-6">
                         <a
                           class="button action-button-small block text-bold text-center"
-                          [href]="explorerUrl + '/address/' + addressInfo.blockchainAddress"
+                          [href]="explorerUrl + '/address/' + addressInfo?.blockchainAddress"
                           target="_blank"
                         >
                           View transactions
@@ -273,12 +273,17 @@
           <b>CHX Address</b>
         </div>
         <div class="col-3 col-md-2">
-          <button class="button-transparent" title="Copy Address" ngxClipboard cbContent="{{ selectedWallet.address }}">
+          <button
+            class="button-transparent"
+            title="Copy Address"
+            ngxClipboard
+            cbContent="{{ selectedWallet?.address }}"
+          >
             <own-icon icon="copy" color="#eb6723"></own-icon>
           </button>
         </div>
         <div class="col-12 mt-2 elipsis">
-          {{ selectedWallet.address }}
+          {{ selectedWallet?.address }}
         </div>
       </div>
       <div class="row justify-content-between">
@@ -290,7 +295,7 @@
             class="button-transparent"
             title="Copy Private Key"
             ngxClipboard
-            cbContent="{{ selectedWallet.privateKey }}"
+            cbContent="{{ selectedWallet?.privateKey }}"
           >
             <own-icon icon="copy" color="#eb6723"></own-icon>
           </button>
@@ -298,7 +303,7 @@
         <div class="col-12 mt-2">
           <div class="row">
             <div class="col-12 elipsis">
-              {{ selectedWallet.privateKey }}
+              {{ selectedWallet?.privateKey }}
             </div>
           </div>
         </div>

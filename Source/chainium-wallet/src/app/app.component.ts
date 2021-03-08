@@ -29,8 +29,10 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    window.onload = function () {
+      sessionStorage.clear();
+    };
     this.errorHandler.getMessage().subscribe((error) => this.loadErrorDialog(error));
-
     this.interceptor.getMessage().subscribe((msg) => this.progressBarAction(msg));
   }
 
@@ -42,6 +44,7 @@ export class AppComponent implements OnInit {
     this.walletService.unloadWallet();
     this.ownModalService.close(id);
     this.router.navigate(['/wallet']);
+    sessionStorage.clear();
     location.reload();
   }
 

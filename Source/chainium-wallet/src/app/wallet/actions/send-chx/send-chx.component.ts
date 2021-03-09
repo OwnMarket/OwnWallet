@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { NodeService } from 'src/app/shared/services/node.service';
@@ -16,7 +16,7 @@ declare var ownBlockchainSdk: any;
   templateUrl: './send-chx.component.html',
   styleUrls: ['./send-chx.component.css'],
 })
-export class SendChxComponent implements OnDestroy {
+export class SendChxComponent implements OnInit, OnDestroy {
   sendChxForm: FormGroup;
   submissionErrors: string[];
 
@@ -40,16 +40,23 @@ export class SendChxComponent implements OnDestroy {
     private formBuilder: FormBuilder,
     private nodeService: NodeService,
     private privateKeyService: PrivatekeyService
-  ) {
-    this.isKeyImported = privateKeyService.existsKey();
+  ) {}
+
+  ngOnInit(): void {
+    this.isKeyImported = this.privateKeyService.existsKey();
     if (!this.isKeyImported) {
       return;
     }
 
     this.wallet = this.privateKeyService.getWalletInfo();
+    this.fetchAddressInfo();
+  }
+
+  fetchAddressInfo() {
     this.addressSub = this.nodeService.getAddressInfo(this.wallet.address).subscribe((balInfo) => {
       this.balance = balInfo.balance.total;
       this.nonce = balInfo.nonce + 1;
+      console.log(this.nonce);
       this.fee = this.nodeService.getMinFee();
       this.setupForm();
     });
@@ -92,15 +99,11 @@ export class SendChxComponent implements OnDestroy {
     this.isSubmited = false;
     this.submissionErrors = null;
     this.displayActions = false;
-    this.setupForm();
+    this.fetchAddressInfo();
   }
 
   ngOnDestroy() {
-    if (this.addressSub) {
-      this.addressSub.unsubscribe();
-    }
-    if (this.txSub) {
-      this.txSub.unsubscribe();
-    }
+    if (this.addressSub) this.addressSub.unsubscribe();
+    if (this.txSub) this.txSub.unsubscribe();
   }
 }

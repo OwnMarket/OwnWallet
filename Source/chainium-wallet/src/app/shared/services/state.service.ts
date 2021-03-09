@@ -33,7 +33,7 @@ export class StateService {
   }
 
   getBalance(addressInfos: ChxAddressInfo[]): number {
-    return addressInfos.reduce((curr: number, next: ChxAddressInfo) => curr + next.balance.total, 0);
+    return Number(addressInfos.reduce((curr: number, next: ChxAddressInfo) => curr + next.balance.total, 0).toFixed(7));
   }
 
   getTotalUsdBalance(): Observable<number> {

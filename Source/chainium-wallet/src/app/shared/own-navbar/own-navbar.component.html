@@ -40,7 +40,7 @@
         <ul class="nav row justify-content-end">
           <li class="nav-item pr-6" *ngIf="totalBalance | async as balance">
             <div class="mt-2 border-right text-right pr-6">
-              <div class="text-brand text-bold">{{ balance | number: '1.0-7' }} CHX</div>
+              <div class="text-brand text-bold">{{ balance }} CHX</div>
 
               <div class="text-info" *ngIf="totalBalanceInUsd | async as usdBalance">
                 {{ usdBalance | number: '1.2-2' }} USD

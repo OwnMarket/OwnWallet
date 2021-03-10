@@ -7,16 +7,18 @@ import { CryptoService } from 'src/app/shared/services/crypto.service';
 import { NodeService } from 'src/app/shared/services/node.service';
 import { PrivatekeyService } from 'src/app/shared/services/privatekey.service';
 import { ChxBridgeFeeService } from 'src/app/shared/services/chx-bridge-fee.service';
-declare var ownBlockchainSdk: any;
-import { environment } from 'src/environments/environment';
 
-import detectEthereumProvider from '@metamask/detect-provider';
-import Web3 from 'web3';
 import { BridgeFee } from 'src/app/shared/models/bridge-fee.model';
 import { ConfigurationService } from 'src/app/shared/services/configuration.service';
 
+import { environment } from 'src/environments/environment';
+import detectEthereumProvider from '@metamask/detect-provider';
+import Web3 from 'web3';
+
+declare var ownBlockchainSdk: any;
+
 @Component({
-  selector: 'app-swap-chx',
+  selector: 'app-bridge-chx',
   templateUrl: './bridge-chx.component.html',
   styleUrls: ['./bridge-chx.component.css'],
 })
@@ -232,9 +234,16 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       } else {
         this.provider = provider;
         this.web3.setProvider(this.provider);
-        this.chainId = this.provider.chainId;
+        this.chainId = await this.provider.request({ method: 'eth_chainId' });
         this.isProduction = this.chainId === '0x1';
-        await this.provider.on('chainChanged', (chainId: string) => window.location.reload());
+        this.provider.on('chainChanged', this.handleChainChanged);
+        this.provider.on('accountsChanged', (accounts: string[]) => {
+          if (accounts.length === 0) {
+            console.log('Please connect to MetaMask.');
+          } else if (accounts[0] !== this.currentAccount) {
+            this.reset();
+          }
+        });
         this.connect();
       }
     } else {
@@ -242,6 +251,20 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       this.warningMessage = `Please install <a href="https://metamask.io/download.html" target="_blank">MetaMask browser extension</a> before using <strong>CHX Bridge</strong> functionality.`;
       this.loading = false;
       this.step = 0;
+    }
+  }
+
+  handleChainChanged(chainId: string) {
+    window.location.reload();
+  }
+
+  networkIsValid(): boolean {
+    if (this.weOwnNet && this.chainId === '0x1') {
+      return true;
+    } else if (!this.weOwnNet && this.chainId === '0x4') {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -276,7 +299,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       }
     } catch (error) {
       this.showWarning = true;
-      this.warningMessage = 'Failed to check if ETH Address is mapped to other CHX Address.';
+      this.warningMessage = `Please check if your currently selected network in MetaMask is ${this.ethNet}. Change currently selected network in MetaMask to ${this.ethNet} and try again.`;
       this.step = 0;
       return false;
     }
@@ -297,7 +320,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       }
     } catch (error) {
       this.showWarning = true;
-      this.warningMessage = error;
+      this.warningMessage = `Please check if your currently selected network in MetaMask is ${this.ethNet}. Change currently selected network in MetaMask to ${this.ethNet} and try again.`;
       this.step = 0;
     }
   }

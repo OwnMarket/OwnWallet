@@ -65,12 +65,50 @@
 
 .address-item:hover {
   cursor: pointer;
-}
-
-.address-item:hover {
   color: white;
   background-color: var(--color-accent);
   box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.2);
+  fill: white !important;
+}
+
+.address-item svg {
+  max-width: 200px;
+}
+
+.address-item.binance,
+.address-item.ethereum {
+  text-align: center;
+}
+
+.address-item.binance {
+  fill: #eeb80c;
+}
+.ethereum-one {
+  fill: #62688f;
+}
+.ethereum-two {
+  fill: #8a92b1;
+}
+.address-item.ethereum .ethereum-three {
+  fill: #454a75;
+}
+.ethereum-four {
+  fill: #62688f;
+}
+.ethereum-five {
+  fill: #8a92b2;
+}
+.ethereum-six {
+  fill: #62688f;
+}
+
+.address-item.ethereum:hover .ethereum-one,
+.address-item.ethereum:hover .ethereum-two,
+.address-item.ethereum:hover .ethereum-three,
+.address-item.ethereum:hover .ethereum-four,
+.address-item.ethereum:hover .ethereum-five,
+.address-item.ethereum:hover .ethereum-six {
+  fill: white;
 }
 
 .next,

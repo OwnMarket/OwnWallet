@@ -52,26 +52,29 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
 
   web3: any;
   chainId: string;
-  wChxMapping: any;
-  wChxToken: any;
+  mapping: any;
+  token: any;
 
-  ethAddrMapped = false;
+  addrMapped = false;
   chxAddress: string;
-  ethAddress: string;
+  address: string;
   chxBalance: number;
-  wChxBalance: number;
+  balance: number;
   minWrapAmount: number;
   nonce: number;
   fee: number;
   bridgeFee: BridgeFee;
   step: number = 1;
 
-  chains = {
+  blockchain: string;
+
+  networks = {
     '0x1': 'Ethereum Main Network',
     '0x3': 'Ropsten Test Network',
     '0x4': 'Rinkeby Test Network',
     '0x5': 'Goerli Test Network',
     '0x2a': 'Kovan Test Network',
+    '0x61': 'Smart Chain - Testnet',
   };
 
   constructor(
@@ -117,28 +120,28 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     this.bridgeForm = this.fb.group({
       ethAddress: [null],
       fromBlockchain: ['chx'],
-      toBlockchain: ['eth'],
+      toBlockchain: [this.blockchain],
       fromAmount: [null],
       toAmount: [null],
     });
 
     this.bridgeForm.get('fromBlockchain').valueChanges.subscribe((value) => {
       if (value === this.bridgeForm.get('toBlockchain').value) {
-        this.bridgeForm.get('toBlockchain').value === 'eth'
+        this.bridgeForm.get('toBlockchain').value === this.blockchain
           ? this.bridgeForm.get('toBlockchain').setValue('chx')
-          : this.bridgeForm.get('toBlockchain').setValue('eth');
+          : this.bridgeForm.get('toBlockchain').setValue(this.blockchain);
         this.setValidators();
-        this.getBridgeFee(this.ethAddress);
+        this.getBridgeFee(this.address);
       }
     });
 
     this.bridgeForm.get('toBlockchain').valueChanges.subscribe((value) => {
       if (value === this.bridgeForm.get('fromBlockchain').value) {
-        this.bridgeForm.get('fromBlockchain').value === 'eth'
+        this.bridgeForm.get('fromBlockchain').value === this.blockchain
           ? this.bridgeForm.get('fromBlockchain').setValue('chx')
-          : this.bridgeForm.get('fromBlockchain').setValue('eth');
+          : this.bridgeForm.get('fromBlockchain').setValue(this.blockchain);
         this.setValidators();
-        this.getBridgeFee(this.ethAddress);
+        this.getBridgeFee(this.address);
       }
     });
 
@@ -161,9 +164,21 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.min(this.minWrapAmount),
         Validators.max(
-          this.fromBlockchain === 'chx' ? (this.chxBalance > 0 ? this.chxBalance - this.fee : 0.1) : this.wChxBalance
+          this.fromBlockchain === 'chx' ? (this.chxBalance > 0 ? this.chxBalance - this.fee : 0.1) : this.balance
         ),
       ]);
+  }
+
+  get tokenName(): string {
+    return this.configService.config[this.blockchain].token;
+  }
+
+  get networkToken(): string {
+    return this.configService.config[this.blockchain].networkToken;
+  }
+
+  get explorer(): string {
+    return this.configService.config[this.blockchain].explorerUrl;
   }
 
   get fromBlockchain(): string {
@@ -175,7 +190,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
   }
 
   get chainName(): string {
-    return this.chains[this.chainId];
+    return this.networks[this.chainId];
   }
 
   get maxAmount(): number {
@@ -183,17 +198,17 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     if (this.fromBlockchain === 'chx') {
       balance = this.chxBalance - this.fee;
     } else {
-      balance = this.wChxBalance;
+      balance = this.balance;
     }
     return balance;
   }
 
   get ownNet(): string {
-    return this.weOwnNet ? 'Mainnet' : 'Testnet';
+    return this.configService.config.network;
   }
 
-  get ethNet(): string {
-    return this.weOwnNet ? 'Mainnet' : 'Rinkeby';
+  get network(): string {
+    return this.configService.config[this.blockchain].network;
   }
 
   setMaxAmount() {
@@ -202,18 +217,23 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
 
   swapBlockchains() {
     if (this.bridgeForm.get('fromBlockchain').value === 'chx') {
-      this.bridgeForm.get('fromBlockchain').setValue('eth');
+      this.bridgeForm.get('fromBlockchain').setValue(this.blockchain);
     } else {
       this.bridgeForm.get('fromBlockchain').setValue('chx');
     }
     this.bridgeForm.get('fromAmount').setValue(0);
     this.bridgeForm.get('toAmount').setValue(0);
     this.bridgeForm.markAsPristine();
-    this.getBridgeFee(this.ethAddress);
+    this.getBridgeFee(this.address);
   }
 
   async acceptRisks() {
     this.risksAccepted = true;
+    this.step = 1.1;
+  }
+
+  async startProvider(blockchain: string) {
+    this.blockchain = blockchain;
     this.web3 = new Web3(Web3.givenProvider);
     this.initContracts();
     await this.checkIfAddressIsMapped();
@@ -235,6 +255,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
         this.provider = provider;
         this.web3.setProvider(this.provider);
         this.chainId = await this.provider.request({ method: 'eth_chainId' });
+        console.log(this.chainId);
         this.isProduction = this.chainId === '0x1';
         this.provider.on('chainChanged', this.handleChainChanged);
         this.provider.on('accountsChanged', (accounts: string[]) => {
@@ -269,20 +290,20 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
   }
 
   initContracts() {
-    this.wChxMapping = new this.web3.eth.Contract(
-      this.configService.config.wChxMappingABI,
-      this.configService.config.wChxMappingContract
+    this.mapping = new this.web3.eth.Contract(
+      this.configService.config[this.blockchain].mappingABI,
+      this.configService.config[this.blockchain].mappingContract
     );
 
-    this.wChxToken = new this.web3.eth.Contract(
-      this.configService.config.wChxTokenABI,
-      this.configService.config.wChxTokenContract
+    this.token = new this.web3.eth.Contract(
+      this.configService.config[this.blockchain].tokenABI,
+      this.configService.config[this.blockchain].tokenContract
     );
   }
 
   async checkIfEthAddressIsMappedToOtherChxAddress(ethAddress: string) {
     try {
-      const chxAddr = await this.wChxMapping.methods.chxAddress(ethAddress).call();
+      const chxAddr = await this.mapping.methods.chxAddress(ethAddress).call();
 
       if (chxAddr !== '') {
         if (chxAddr !== this.chxAddress) {
@@ -299,7 +320,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       }
     } catch (error) {
       this.showWarning = true;
-      this.warningMessage = `Please check if your currently selected network in MetaMask is ${this.ethNet}. Change currently selected network in MetaMask to ${this.ethNet} and try again.`;
+      this.warningMessage = `Please check if your currently selected network in MetaMask is ${this.network}. Change currently selected network in MetaMask to ${this.network} and try again.`;
       this.step = 0;
       return false;
     }
@@ -307,29 +328,30 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
 
   async checkIfAddressIsMapped() {
     try {
-      const ethAddr = await this.wChxMapping.methods.ethAddress(this.chxAddress).call();
+      const ethAddr = await this.mapping.methods[this.blockchain + 'Address'](this.chxAddress).call();
 
       if (ethAddr !== '0x0000000000000000000000000000000000000000' && ethAddr !== '') {
-        this.ethAddrMapped = true;
-        this.ethAddress = ethAddr;
-        this.getBridgeFee(this.ethAddress);
+        this.addrMapped = true;
+        this.address = ethAddr;
+        this.getBridgeFee(this.address);
         this.step = 3;
       } else {
-        this.ethAddrMapped = false;
+        this.addrMapped = false;
         this.step = 2;
       }
     } catch (error) {
       this.showWarning = true;
-      this.warningMessage = `Please check if your currently selected network in MetaMask is ${this.ethNet}. Change currently selected network in MetaMask to ${this.ethNet} and try again.`;
+      console.log(error);
+      this.warningMessage = `Please check if your currently selected network in MetaMask is ${this.network}. Change currently selected network in MetaMask to ${this.network} and try again.`;
       this.step = 0;
     }
   }
 
   async getBalanceAndMinAmount() {
     try {
-      if (this.ethAddrMapped && this.ethAddress) {
-        this.wChxBalance = (await this.wChxToken.methods.balanceOf(this.ethAddress).call()) / Math.pow(10, 7);
-        this.minWrapAmount = (await this.wChxToken.methods.minWrapAmount().call()) / Math.pow(10, 7);
+      if (this.addrMapped && this.address) {
+        this.balance = (await this.token.methods.balanceOf(this.address).call()) / Math.pow(10, 7);
+        this.minWrapAmount = (await this.token.methods.minWrapAmount().call()) / Math.pow(10, 7);
         this.setValidators();
       }
     } catch (error) {
@@ -383,18 +405,18 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       this.step = 0;
     } else if (accounts[0] !== this.currentAccount) {
       this.currentAccount = accounts[0];
-      if (this.ethAddrMapped) {
-        if (this.ethAddress.toLowerCase() !== this.currentAccount) {
+      if (this.addrMapped) {
+        if (this.address.toLowerCase() !== this.currentAccount) {
           this.showWarning = true;
-          this.warningMessage = `Please make sure that the address you connect to matches the ${this.ethAddress} in MetaMask. Then re-establish the connection.`;
+          this.warningMessage = `Please make sure that the address you connect to matches the ${this.address} in MetaMask. Then re-establish the connection.`;
           this.step = 0;
           return;
         } else {
-          this.ethAddress = this.currentAccount;
+          this.address = this.currentAccount;
         }
       } else {
         if (await this.checkIfEthAddressIsMappedToOtherChxAddress(this.currentAccount)) {
-          this.ethAddress = this.currentAccount;
+          this.address = this.currentAccount;
         }
       }
     }
@@ -402,15 +424,15 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
 
   mapAddress() {
     this.loading = true;
-    if (!this.ethAddrMapped) {
+    if (!this.addrMapped) {
       this.signatureSub = this.cryptoService
-        .signMessage(this.privateKeyService.getWalletInfo().privateKey, this.ethAddress)
+        .signMessage(this.privateKeyService.getWalletInfo().privateKey, this.address)
         .subscribe(async (signature: string) => {
           try {
-            await this.wChxMapping.methods
+            await this.mapping.methods
               .mapAddress(this.chxAddress, signature)
               .send({
-                from: this.ethAddress,
+                from: this.address,
               })
               .on('transactionHash', (hash) => {
                 this.txResult = new TxResult();
@@ -423,8 +445,8 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
                 this.inProgress = false;
                 this.txResult = null;
                 this.getBalanceAndMinAmount();
-                this.getBridgeFee(this.ethAddress);
-                this.ethAddrMapped = true;
+                this.getBridgeFee(this.address);
+                this.addrMapped = true;
                 this.step = 3;
               });
           } catch (error) {
@@ -442,7 +464,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       const txToSign = ownBlockchainSdk.transactions.createTx(this.wallet.address, this.nonce, this.fee);
 
       txToSign.addTransferChxAction(
-        this.configService.config.ownerChxAddress,
+        this.configService.config[this.blockchain].ownerChxAddress,
         +this.bridgeForm.get('fromAmount').value
       );
 
@@ -462,10 +484,10 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     }
     if (this.fromBlockchain === 'eth') {
       const amount = +this.bridgeForm.get('fromAmount').value * Math.pow(10, 7);
-      await this.wChxToken.methods
-        .transfer(this.configService.config.wChxTokenContract, amount)
+      await this.token.methods
+        .transfer(this.configService.config[this.blockchain].tokenContract, amount)
         .send({
-          from: this.ethAddress,
+          from: this.address,
         })
         .on('transactionHash', (hash) => {
           this.txResult = new TxResult();
@@ -488,7 +510,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
               this.step = 0;
               break;
             case -32602:
-              this.warningMessage = `Check if your currently selected address in MetaMask is ${this.ethAddress} and try again.`;
+              this.warningMessage = `Check if your currently selected address in MetaMask is ${this.address} and try again.`;
               this.step = 0;
             default:
               this.warningMessage = error.message;

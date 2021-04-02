@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 
 import { ChxAddressInfo } from 'src/app/shared/models/chx-address-info.model';
@@ -23,6 +23,7 @@ import { mergeMap } from 'rxjs/operators';
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.css'],
   animations: [OwnAnimations.flyDown, OwnAnimations.flyUp, OwnAnimations.flyUpDown],
+  encapsulation: ViewEncapsulation.None,
 })
 export class WelcomeComponent implements OnInit, OnDestroy {
   addressInfo: ChxAddressInfo;

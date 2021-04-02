@@ -111,6 +111,69 @@
             </div>
           </div>
 
+          <!-- Step 1.1 - Pick blockchain network -->
+          <div class="row" *ngIf="step === 1.1">
+            <div class="col-12">
+              <h4 class="mb-4">Pick blockchain to bridge</h4>
+              <div class="row">
+                <div class="col-12 col-sm-6">
+                  <div class="address-item ethereum" (click)="startProvider('eth')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+                      <path
+                        class="ethereum-one"
+                        d="M99.88,15.1c.32-.57.38,0,.44.13.74,1.18,1.46,2.38,2.18,3.57l49.23,81.7a2.11,2.11,0,0,1,.45.88,1.73,1.73,0,0,1-.89-.22c-1.93-.87-3.84-1.76-5.77-2.64l-9.21-4.21-13-5.87-9.22-4.21-13.1-6c-1-.45-1-.47-1,.63v53.2c-.24-.2-.15-.48-.15-.72q0-26.71,0-53.43a1.71,1.71,0,0,0,.15-1V15.89C100,15.63,100.15,15.32,99.88,15.1Z"
+                      />
+                      <path
+                        class="ethereum-two"
+                        d="M99.88,15.1c.27.22.16.53.16.79V77a1.71,1.71,0,0,1-.15,1c-.76.32-1.52.63-2.27,1l-9.29,4.24L75.38,89l-9.22,4.21c-4.86,2.2-9.71,4.42-14.59,6.59a18.84,18.84,0,0,1-3.68,1.54,45.38,45.38,0,0,1,2.6-4.48Q69.36,65.55,88.25,34.21L99.54,15.49C99.63,15.34,99.69,15.16,99.88,15.1Z"
+                      />
+                      <path
+                        class="ethereum-three"
+                        d="M100,132.11V78.91c0-1.1,0-1.08,1-.63l13.1,6,9.22,4.21,13,5.87,9.21,4.21c1.93.88,3.84,1.77,5.77,2.64a1.73,1.73,0,0,0,.89.22c.26.48-.24.43-.4.53-3.23,1.93-6.48,3.85-9.72,5.76q-9.69,5.73-19.38,11.45c-5.08,3-10.17,6-15.25,9-2.24,1.32-4.46,2.68-6.7,4-.22.13-.4.34-.69.32Z"
+                      />
+                      <path
+                        class="ethereum-four"
+                        d="M100,132.11v.31a21.22,21.22,0,0,1-3.16-1.76Q72.61,116.34,48.35,102l-.45-.3v-.3h0a18.84,18.84,0,0,0,3.68-1.54c4.88-2.17,9.73-4.39,14.59-6.59L75.38,89l13-5.87,9.29-4.24c.75-.34,1.51-.65,2.27-1q0,26.72,0,53.43C99.89,131.63,99.8,131.91,100,132.11Z"
+                      />
+                      <path
+                        class="ethereum-five"
+                        d="M100.18,185c-.38.34-.41-.11-.51-.26-1.69-2.35-3.36-4.71-5-7.07L58.11,126.22l-9.78-13.79-.39-.57c.26-.16.41,0,.58.14l28.76,17,22.49,13.29c.09.05.19.08.28.12s0,.21,0,.31v41.66C100,184.59,100,184.84,100.18,185Z"
+                      />
+                      <path
+                        class="ethereum-six"
+                        d="M100.18,185c-.21-.18-.14-.43-.14-.65V142.71c0-.1,0-.2,0-.31L131.29,124l20-11.82a1.37,1.37,0,0,1,.68-.31c.07.32-.17.48-.31.68q-25.58,36-51.17,72.07Z"
+                      />
+                      <path d="M47.89,101.38v.3C47.67,101.59,47.72,101.49,47.89,101.38Z" style="fill: #8a92b1" />
+                    </svg>
+                    <p class="text-center text-bold">Ethereum Blockchain</p>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <div class="address-item binance" (click)="startProvider('bsc')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+                      <path
+                        d="M66.29,113.93c.32.3.68.62,1,1q15.45,15.31,30.88,30.65c1.78,1.77,1.78,1.77,3.58,0q15.42-15.33,30.85-30.67c.91-.91,1.39-1,2.35,0q8.68,8.74,17.52,17.32c.87.85.93,1.31,0,2.22q-25.62,25.36-51.17,50.82c-1,1-1.54,1.1-2.6,0q-25.65-25.56-51.39-51c-.66-.65-.81-1,0-1.76,6-5.93,12.06-11.91,18.08-17.87C65.61,114.32,65.82,114,66.29,113.93Z"
+                      />
+                      <path
+                        d="M66.18,86.2c-.29-.25-.55-.44-.77-.66-6-6-12.09-12-18.18-18-.83-.81-.41-1.18.17-1.75L83.6,29.84c5.07-5,10.16-10,15.19-15.11.88-.89,1.35-1.06,2.35-.06q25.59,25.5,51.3,50.9c1,1,.82,1.47-.07,2.34q-8.85,8.67-17.58,17.47c-1,1-1.41.55-2.13-.16q-15.52-15.47-31.08-30.89c-1.62-1.6-1.61-1.6-3.24,0L67.24,85.21C66.91,85.54,66.56,85.85,66.18,86.2Z"
+                      />
+                      <path
+                        d="M100,80.23c.3.28.54.48.77.71C106.92,87,113,93.1,119.2,99.14c.74.73.62,1.15,0,1.8q-9.24,9.07-18.42,18.2c-.58.57-.95.61-1.55,0q-9.27-9.25-18.6-18.47c-.61-.6-.41-.9.08-1.4Q90,90.07,99.29,80.84C99.51,80.62,99.77,80.44,100,80.23Z"
+                      />
+                      <path
+                        d="M52.24,100c-.27.31-.46.55-.68.77q-9.08,9-18.13,18c-.66.66-1,.56-1.66,0q-9-9-18.16-18c-.62-.61-.55-.94,0-1.52q9-8.93,18-17.91c.73-.74,1.16-.72,1.9,0,5.94,6,11.93,11.87,17.91,17.8C51.73,99.42,52,99.7,52.24,100Z"
+                      />
+                      <path
+                        d="M167.33,119.47c-.29-.26-.54-.45-.77-.68q-9.08-9-18.16-18c-.6-.59-.61-.94,0-1.53q9.15-9,18.27-18.12c.52-.52.87-.57,1.42,0q9.16,9.15,18.37,18.25c.48.48.52.79,0,1.29q-9.21,9.11-18.39,18.23A7.3,7.3,0,0,1,167.33,119.47Z"
+                      />
+                    </svg>
+                    <p class="text-center text-bold">Binance Blockchain</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Step 1.5 - Connecting to MetaMask -->
           <div class="row" *ngIf="step === 1.5">
             <div class="col-12 text-center">
@@ -145,18 +208,17 @@
           <!-- Step 2 - Mapping -->
           <div class="row" *ngIf="step === 2">
             <div class="col-12">
-              <h4 class="mb-4">Bind your CHX {{ ownNet }} address with your Ethereum {{ ethNet }} address</h4>
+              <h4 class="mb-4">Bind your {{ ownNet }} address with your {{ network }} address</h4>
               <p>
                 In order to transfer and move CHX Tokens between both our WeOwn
-                {{ ownNet }} blockchain and the Ethereum {{ ethNet }} network, you’ll have to bind your CHX
-                {{ ownNet }} address directly with one of your Ethereum {{ ethNet }} addresses by using MetaMask. Once
-                MetaMasks opens, please confirm the mapped transaction, which binds your current CHX
-                {{ ownNet }} address with the Ethereum {{ weOwnNet ? 'Mainnet' : 'Rinkeby' }} address you select on
-                MetaMask.
+                {{ ownNet }} blockchain and the {{ network }} network, you’ll have to bind your {{ ownNet }} address
+                directly with one of your {{ network }} addresses by using MetaMask. Once MetaMasks opens, please
+                confirm the mapped transaction, which binds your current {{ ownNet }} address with the
+                {{ network }} address you select on MetaMask.
               </p>
               <p>
-                The binding of the CHX {{ ownNet }} address to your Ethereum {{ ethNet }} address is a one-time event.
-                For transparency purpose, the following addresses and smart contracts are involved in the process:
+                The binding of the {{ ownNet }} address to your {{ network }} address is a one-time event. For
+                transparency purpose, the following addresses and smart contracts are involved in the process:
               </p>
 
               <h6>
@@ -164,11 +226,11 @@
                   <li>
                     <strong>CHX Address:</strong><span class="text-brand"> {{ chxAddress }}</span>
                   </li>
-                  <li *ngIf="!metaMaskConnected && !ethAddress">
-                    <strong>ETH Address:</strong> Currently selected MetaMask address
+                  <li *ngIf="!metaMaskConnected && !address">
+                    <strong>{{ blockchain | uppercase }} Address:</strong> Currently selected MetaMask address
                   </li>
-                  <li *ngIf="ethAddress">
-                    <strong>ETH Address:</strong><span class="text-brand"> {{ ethAddress }}</span>
+                  <li *ngIf="address">
+                    <strong>{{ blockchain | uppercase }} Address:</strong><span class="text-brand"> {{ address }}</span>
                   </li>
                 </ul>
               </h6>
@@ -176,7 +238,7 @@
               <div class="mt-4">
                 <p>
                   Once you have confirmed the mapping between both addresses, it cannot be undone. If you made a mistake
-                  with the binding, you need to create a new CHX {{ ownNet }} address, and repeat the steps.
+                  with the binding, you need to create a new {{ ownNet }} address, and repeat the steps.
                 </p>
                 <p>
                   The mapping does not automatically transfer funds – it only binds and connects both of your addresses.
@@ -184,16 +246,16 @@
                   tokens across both networks and your addresses.
                 </p>
                 <p>
-                  A transaction fee will be required while binding to the Ethereum {{ ethNet }} network. So please make
-                  sure you have adequate funds available in your MetaMask wallet. There will be no transaction fee
-                  required on the WeOwn {{ ownNet }} blockchain during this process.
+                  A transaction fee will be required while binding to the {{ network }} network. So please make sure you
+                  have adequate funds available in your MetaMask wallet. There will be no transaction fee required on
+                  the WeOwn {{ ownNet }} blockchain during this process.
                 </p>
               </div>
 
               <div class="row mt-4 justify-content-center">
                 <div class="col col-sm-6 mt-4">
                   <button
-                    *ngIf="!metaMaskConnected && !ethAddrMapped"
+                    *ngIf="!metaMaskConnected && !addrMapped"
                     [disabled]="loading"
                     class="block own-effect"
                     (click)="initiateMetaMaskProvider()"
@@ -215,7 +277,7 @@
                     CONNECT WITH METAMASK
                   </button>
                   <button
-                    *ngIf="metaMaskConnected && !ethAddrMapped"
+                    *ngIf="metaMaskConnected && !addrMapped"
                     [disabled]="loading"
                     class="block own-effect"
                     (click)="mapAddress()"
@@ -274,7 +336,7 @@
 
                           <span *ngIf="bridgeForm.get('fromAmount').errors?.max">
                             Amount can't be greater than your current
-                            {{ fromBlockchain === 'chx' ? 'CHX' : 'wCHX' }}
+                            {{ fromBlockchain === 'chx' ? 'CHX' : tokenName }}
                             balance
                           </span>
 
@@ -288,27 +350,27 @@
                       <div class="max-button text-white text-small" (click)="setMaxAmount()">MAX</div>
                       <div class="border-right my-2"></div>
 
-                      <own-dropdown-menu [showIcon]="false" [label]="fromBlockchain === 'chx' ? 'CHX' : 'wCHX'">
+                      <own-dropdown-menu [showIcon]="false" [label]="fromBlockchain === 'chx' ? 'CHX' : tokenName">
                         <own-dropdown-item (click)="bridgeForm.get('fromBlockchain').setValue('chx')">
                           CHX
                         </own-dropdown-item>
-                        <own-dropdown-item (click)="bridgeForm.get('fromBlockchain').setValue('eth')">
-                          wCHX
+                        <own-dropdown-item (click)="bridgeForm.get('fromBlockchain').setValue(blockchain)">
+                          {{ tokenName }}
                         </own-dropdown-item>
                       </own-dropdown-menu>
                     </div>
 
                     <div class="row text-info justify-content-between mt-2">
                       <div class="col">
-                        {{ fromBlockchain === 'chx' ? chxAddress : ethAddress }}
+                        {{ fromBlockchain === 'chx' ? chxAddress : address }}
                       </div>
                       <div class="col-4 cursor-pointer" (click)="setMaxAmount()">
                         {{
                           fromBlockchain === 'chx'
                             ? 'Balance: ' + chxBalance + ' CHX'
-                            : wChxBalance
-                            ? 'Balance: ' + wChxBalance + ' wCHX'
-                            : 'Balance: 0 wCHX'
+                            : balance
+                            ? 'Balance: ' + balance + ' ' + tokenName
+                            : 'Balance: 0 ' + tokenName
                         }}
                       </div>
                     </div>
@@ -334,27 +396,27 @@
                       />
                       <div class="border-right my-2"></div>
 
-                      <own-dropdown-menu [showIcon]="false" [label]="toBlockchain === 'eth' ? 'wCHX' : 'CHX'">
+                      <own-dropdown-menu [showIcon]="false" [label]="toBlockchain === blockchain ? tokenName : 'CHX'">
                         <own-dropdown-item (click)="bridgeForm.get('toBlockchain').setValue('chx')">
                           CHX
                         </own-dropdown-item>
-                        <own-dropdown-item (click)="bridgeForm.get('toBlockchain').setValue('eth')">
-                          wCHX
+                        <own-dropdown-item (click)="bridgeForm.get('toBlockchain').setValue(blockchain)">
+                          {{ tokenName }}
                         </own-dropdown-item>
                       </own-dropdown-menu>
                     </div>
 
                     <div class="row justify-content-between mt-2 text-info">
                       <div class="col">
-                        {{ toBlockchain === 'eth' ? ethAddress : chxAddress }}
+                        {{ toBlockchain === blockchain ? address : chxAddress }}
                       </div>
 
                       <div class="col-4">
                         {{
-                          toBlockchain === 'eth'
-                            ? wChxBalance
-                              ? 'Balance: ' + wChxBalance + ' wCHX'
-                              : 'Balance: 0 wCHX'
+                          toBlockchain === blockchain
+                            ? balance
+                              ? 'Balance: ' + balance + ' ' + tokenName
+                              : 'Balance: 0 ' + tokenName
                             : chxBalance
                             ? 'Balance: ' + chxBalance + ' CHX'
                             : 'Balance: 0 CHX'
@@ -366,7 +428,9 @@
                 <div class="row mt-4 justify-content-center">
                   <div class="col col-sm-6 mt-4">
                     <button
-                      *ngIf="(!metaMaskConnected && fromBlockchain === 'eth') || (!metaMaskConnected && !ethAddrMapped)"
+                      *ngIf="
+                        (!metaMaskConnected && fromBlockchain === blockchain) || (!metaMaskConnected && !addrMapped)
+                      "
                       [disabled]="loading"
                       class="block own-effect"
                       (click)="initiateMetaMaskProvider()"
@@ -388,7 +452,7 @@
                       CONNECT WITH METAMASK
                     </button>
                     <button
-                      *ngIf="metaMaskConnected || (fromBlockchain === 'chx' && ethAddrMapped)"
+                      *ngIf="metaMaskConnected || (fromBlockchain === 'chx' && addrMapped)"
                       [disabled]="bridgeForm.invalid || loading"
                       class="block own-effect"
                       (click)="step = 4"
@@ -433,12 +497,12 @@
                       </div>
 
                       <div class="row mr-2">
-                        <div class="col">ETH fee:</div>
-                        <div class="col text-right">{{ bridgeFee.ethFee }} ETH</div>
+                        <div class="col">{{ networkToken }} fee:</div>
+                        <div class="col text-right">{{ bridgeFee.ethFee }} {{ networkToken }}</div>
                       </div>
 
                       <div class="row mr-2">
-                        <div class="col">CHX/ETH price rate:</div>
+                        <div class="col">CHX/{{ networkToken }} price rate:</div>
                         <div class="col text-right">
                           {{ bridgeFee.chxEthPriceRate }}
                         </div>
@@ -500,13 +564,13 @@
                 </div>
                 <div class="col text-right">
                   <h2 class="m-0">
-                    {{ fromBlockchain === 'chx' ? 'CHX' : 'wCHX' }}
+                    {{ fromBlockchain === 'chx' ? 'CHX' : tokenName }}
                   </h2>
                 </div>
               </div>
               <div class="row justify-content-between">
                 <div class="col text-brand">
-                  {{ fromBlockchain === 'chx' ? chxAddress : ethAddress }}
+                  {{ fromBlockchain === 'chx' ? chxAddress : address }}
                 </div>
                 <div class="col-1">
                   <own-icon icon="arrow-down" size="20" color="#848484"></own-icon>
@@ -518,13 +582,13 @@
                 </div>
                 <div class="col text-right">
                   <h2 class="m-0">
-                    {{ toBlockchain === 'eth' ? 'wCHX' : 'CHX' }}
+                    {{ toBlockchain === blockchain ? tokenName : 'CHX' }}
                   </h2>
                 </div>
               </div>
               <div class="row">
                 <div class="col text-brand">
-                  {{ toBlockchain === 'eth' ? ethAddress : chxAddress }}
+                  {{ toBlockchain === blockchain ? address : chxAddress }}
                 </div>
               </div>
               <div class="row mt-4">
@@ -550,12 +614,12 @@
                   </div>
 
                   <div class="row">
-                    <div class="col">ETH fee:</div>
-                    <div class="col text-right">{{ bridgeFee.ethFee }} ETH</div>
+                    <div class="col">{{ networkToken }} fee:</div>
+                    <div class="col text-right">{{ bridgeFee.ethFee }} {{ networkToken }}</div>
                   </div>
 
                   <div class="row">
-                    <div class="col">CHX/ETH price rate:</div>
+                    <div class="col">CHX/{{ networkToken }} price rate:</div>
                     <div class="col text-right">
                       {{ bridgeFee.chxEthPriceRate }}
                     </div>
@@ -655,27 +719,19 @@
             </div>
             <div class="col-12 text-center">
               <h4>Processing...</h4>
-              <p *ngIf="!ethAddrMapped">Binding addresses ...</p>
-              <p *ngIf="ethAddrMapped">
-                Your {{ fromBlockchain === 'chx' ? 'CHX' : 'wCHX' }} will be added to your account after the transaction
-                has been executed.
+              <p *ngIf="!addrMapped">Binding addresses ...</p>
+              <p *ngIf="addrMapped">
+                Your {{ fromBlockchain === 'chx' ? 'CHX' : tokenName }} will be added to your account after the
+                transaction has been executed.
               </p>
             </div>
             <div class="col-12 mt-5">
               <div class="row justify-content-center">
                 <div class="col col-md-6">
                   <a
-                    *ngIf="fromBlockchain === 'eth' && !isProduction"
+                    *ngIf="fromBlockchain === blockchain"
                     class="button outline own-effect block text-center"
-                    [href]="'https://rinkeby.etherscan.io/tx/' + txResult.txHash"
-                    target="_blank"
-                  >
-                    VIEW TRANSACTION INFO
-                  </a>
-                  <a
-                    *ngIf="fromBlockchain === 'eth' && isProduction"
-                    class="button outline own-effect block text-center"
-                    [href]="'https://etherscan.io/tx/' + txResult.txHash"
+                    [href]="explorer + '/tx/' + txResult.txHash"
                     target="_blank"
                   >
                     VIEW TRANSACTION INFO
@@ -728,17 +784,9 @@
                           VIEW TRANSACTION INFO
                         </button>
                         <a
-                          *ngIf="fromBlockchain === 'eth' && !isProduction"
+                          *ngIf="fromBlockchain === blockchain"
                           class="button outline own-effect block text-center"
-                          [href]="'https://rinkeby.etherscan.io/tx/' + txResult.txHash"
-                          target="_blank"
-                        >
-                          VIEW TRANSACTION INFO
-                        </a>
-                        <a
-                          *ngIf="fromBlockchain === 'eth' && isProduction"
-                          class="button outline own-effect block text-center"
-                          [href]="'https://etherscan.io/tx/' + txResult.txHash"
+                          [href]="explorer + '/tx/' + txResult.txHash"
                           target="_blank"
                         >
                           VIEW TRANSACTION INFO

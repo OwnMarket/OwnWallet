@@ -1,4 +1,4 @@
-<div class="container my-5" *ngIf="isKeyImported && acceptBridgeForm && bridgeForm">
+<div class="container my-5" *ngIf="isKeyImported && acceptBridgeForm">
   <div class="row justify-content-center">
     <div class="col-12 col-sm-12 col-md-8">
       <own-card>
@@ -304,7 +304,7 @@
           </div>
 
           <!-- Step 3 - Bridge Form -->
-          <div class="row" *ngIf="step === 3">
+          <div class="row" *ngIf="step === 3 && bridgeForm">
             <div class="col">
               <form [formGroup]="bridgeForm">
                 <div class="row">

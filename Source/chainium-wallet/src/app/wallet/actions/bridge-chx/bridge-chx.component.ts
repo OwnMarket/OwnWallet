@@ -100,7 +100,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       this.chxBalance = balInfo.balance.available;
       this.nonce = balInfo.nonce + 1;
       this.fee = this.nodeService.getMinFee();
-      this.setupForms();
+      this.initAcceptBridgeForm();
     });
   }
 
@@ -110,13 +110,15 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     if (this.txSub) this.txSub.unsubscribe();
   }
 
-  setupForms() {
+  initAcceptBridgeForm() {
     this.acceptBridgeForm = this.fb.group({
       aware: [false, [Validators.requiredTrue]],
       confirm: [false, [Validators.requiredTrue]],
       agree: [false, [Validators.requiredTrue]],
     });
+  }
 
+  initBridgeForm() {
     this.bridgeForm = this.fb.group({
       ethAddress: [null],
       fromBlockchain: ['chx'],
@@ -234,6 +236,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
 
   async startProvider(blockchain: string) {
     this.blockchain = blockchain;
+    this.initBridgeForm();
     this.web3 = new Web3(Web3.givenProvider);
     this.initContracts();
     await this.checkIfAddressIsMapped();
@@ -279,16 +282,6 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     window.location.reload();
   }
 
-  networkIsValid(): boolean {
-    if (this.weOwnNet && this.chainId === '0x1') {
-      return true;
-    } else if (!this.weOwnNet && this.chainId === '0x4') {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   initContracts() {
     this.mapping = new this.web3.eth.Contract(
       this.configService.config[this.blockchain].mappingABI,
@@ -301,15 +294,15 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     );
   }
 
-  async checkIfEthAddressIsMappedToOtherChxAddress(ethAddress: string) {
+  async checkIfEthAddressIsMappedToOtherChxAddress(address: string) {
     try {
-      const chxAddr = await this.mapping.methods.chxAddress(ethAddress).call();
+      const chxAddr = await this.mapping.methods.chxAddress(address).call();
 
       if (chxAddr !== '') {
         if (chxAddr !== this.chxAddress) {
           this.showWarning = true;
           this.warningMessage =
-            'Currently selected ETH Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.';
+            'Currently selected {{ this.network }} Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.';
           this.step = 0;
           return false;
         } else {
@@ -482,7 +475,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
         this.step = 6;
       });
     }
-    if (this.fromBlockchain === 'eth') {
+    if (this.fromBlockchain === this.blockchain) {
       const amount = +this.bridgeForm.get('fromAmount').value * Math.pow(10, 7);
       await this.token.methods
         .transfer(this.configService.config[this.blockchain].tokenContract, amount)

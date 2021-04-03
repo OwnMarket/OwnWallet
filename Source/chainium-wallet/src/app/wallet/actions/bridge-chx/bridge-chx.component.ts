@@ -302,7 +302,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
         if (chxAddr !== this.chxAddress) {
           this.showWarning = true;
           this.warningMessage =
-            'Currently selected {{ this.network }} Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.';
+            'Currently selected ${this.network} Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.';
           this.step = 0;
           return false;
         } else {

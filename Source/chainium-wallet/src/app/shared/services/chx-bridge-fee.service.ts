@@ -15,8 +15,11 @@ export class ChxBridgeFeeService {
     this.httpHandler = new HttpClient(handler);
   }
 
-  getBridgeFees(ethAddress: string, type: string): Observable<ApiResponse<BridgeFee>> {
-    const params = new HttpParams().append('ethAddress', ethAddress).append('transferType', type);
+  getBridgeFees(targetBlockchain: string, targetAddress: string, type: string): Observable<ApiResponse<BridgeFee>> {
+    const params = new HttpParams()
+      .append('targetBlockchain', targetBlockchain)
+      .append('targetAddress', targetAddress)
+      .append('transferType', type);
     return this.httpHandler.get<ApiResponse<BridgeFee>>(`${this.configService.config.bridgeApiUrl}/fee`, {
       params,
     });

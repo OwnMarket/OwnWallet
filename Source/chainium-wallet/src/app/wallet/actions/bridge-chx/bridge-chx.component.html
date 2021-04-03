@@ -497,22 +497,22 @@
                       </div>
 
                       <div class="row mr-2">
-                        <div class="col">{{ networkToken }} fee:</div>
-                        <div class="col text-right">{{ bridgeFee.ethFee }} {{ networkToken }}</div>
+                        <div class="col">{{ blockchain | uppercase }} fee:</div>
+                        <div class="col text-right">{{ bridgeFee.targetCurrencyFee }} {{ networkToken }}</div>
                       </div>
 
                       <div class="row mr-2">
                         <div class="col">CHX/{{ networkToken }} price rate:</div>
                         <div class="col text-right">
-                          {{ bridgeFee.chxEthPriceRate }}
+                          {{ bridgeFee.chxTargetCurrencyPriceRate }}
                         </div>
                       </div>
 
                       <hr />
 
                       <div class="row mr-2">
-                        <div class="col">Fee on Ethereum:</div>
-                        <div class="col text-right">{{ bridgeFee.ethFeeInChx | number: '1.0-7' }} CHX</div>
+                        <div class="col">Fee on {{ blockchain | uppercase }}:</div>
+                        <div class="col text-right">{{ bridgeFee.targetFeeInChx | number: '1.0-7' }} CHX</div>
                       </div>
                       <div class="row mr-2">
                         <div class="col">Fee on WeOwn blockchain:</div>
@@ -614,22 +614,22 @@
                   </div>
 
                   <div class="row">
-                    <div class="col">{{ networkToken }} fee:</div>
-                    <div class="col text-right">{{ bridgeFee.ethFee }} {{ networkToken }}</div>
+                    <div class="col">{{ blockchain | uppercase }} fee:</div>
+                    <div class="col text-right">{{ bridgeFee.targetCurrencyFee }} {{ networkToken }}</div>
                   </div>
 
                   <div class="row">
                     <div class="col">CHX/{{ networkToken }} price rate:</div>
                     <div class="col text-right">
-                      {{ bridgeFee.chxEthPriceRate }}
+                      {{ bridgeFee.chxTargetCurrencyPriceRate }}
                     </div>
                   </div>
 
                   <hr />
 
                   <div class="row">
-                    <div class="col">Fee on Ethereum:</div>
-                    <div class="col text-right">{{ bridgeFee.ethFeeInChx | number: '1.0-7' }} CHX</div>
+                    <div class="col">Fee on {{ blockchain | uppercase }}:</div>
+                    <div class="col text-right">{{ bridgeFee.targetFeeInChx | number: '1.0-7' }} CHX</div>
                   </div>
                   <div class="row">
                     <div class="col">Fee on WeOwn blockchain:</div>

@@ -9,7 +9,7 @@ import { OwnSlideComponent } from '../own-slide/own-slide.component';
 })
 export class OwnSliderComponent {
   @ContentChildren(OwnSlideComponent) slides: QueryList<OwnSlideComponent>;
-  @ViewChild('stage') stage: ElementRef;
+  @ViewChild('stage', { static: true }) stage: ElementRef;
 
   @Input() showDots = true;
   currentSlide = 0;

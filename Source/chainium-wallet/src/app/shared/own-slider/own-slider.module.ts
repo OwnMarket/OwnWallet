@@ -1,9 +1,10 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OwnSliderComponent } from './own-slider/own-slider.component';
 import { OwnSlideComponent } from './own-slide/own-slide.component';
 import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
+@Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
   overrides =  {
     swipe: { velocity: 0.4, threshold: 20 },

@@ -16,7 +16,7 @@ import { OwnModalService } from 'src/app/shared/own-modal/services/own-modal.ser
 })
 export class BlockInfoComponent implements OnInit, OnDestroy {
 
-  @ViewChild('rewardPerc') rewardPerc: TemplateRef<any>;
+  @ViewChild('rewardPerc', { static: true }) rewardPerc: TemplateRef<any>;
 
   blockNumber = 0;
   blockInfo: BlockInfo;

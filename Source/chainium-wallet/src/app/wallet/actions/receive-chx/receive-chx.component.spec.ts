@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ReceiveChxComponent } from './receive-chx.component';
 
@@ -6,7 +6,7 @@ describe('ReceiveChxComponent', () => {
   let component: ReceiveChxComponent;
   let fixture: ComponentFixture<ReceiveChxComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ReceiveChxComponent ]
     })

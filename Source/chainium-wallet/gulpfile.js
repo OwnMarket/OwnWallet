@@ -1,24 +1,13 @@
-const gulp = require("gulp"),
-  inlinesource = require("gulp-inline-source");
-  // inject = require("gulp-inject-string");
+const { src, dest, series } = require('gulp');
+const inlinesource = require('gulp-inline-source');
 
-gulp.task("inline", function() {
+function inline() {
   const options = {
     attribute: false,
     compress: false,
-    pretty: true
+    pretty: true,
   };
+  return src('./dist/chainium-wallet/*.html').pipe(inlinesource(options)).pipe(dest('./dist/single-file-wallet'));
+}
 
-  return gulp
-    .src("./dist/chainium-wallet/*.html")
-    // Uncomment below lines in order to enable run index.html from file system. 
-    // also set useHash:true for RouterModule
-    // .pipe(
-    //   inject.before(
-    //     "</body>",
-    //     "<script>document.write('<base href=\"' + document.location + '\" />');</script>\n"
-    //   )
-    // )
-    .pipe(inlinesource(options))
-    .pipe(gulp.dest("./dist/single-file-wallet"));
-});
+exports.default = series(inline);

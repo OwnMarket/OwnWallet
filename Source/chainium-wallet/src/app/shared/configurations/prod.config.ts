@@ -365,6 +365,7 @@ export const prodConfig = {
     ],
   },
   bsc: {
+    chainId: '0x38',
     token: 'bCHX',
     ownerChxAddress: 'CHbVoTPVRVZvEFcxw7ksddLULsdG5cTynFQ',
     mappingContract: '0x906836a70d9e384d9ee8942df855f6f2cda220a9',
@@ -372,6 +373,8 @@ export const prodConfig = {
     network: 'Smart Chain',
     networkToken: 'BNB',
     explorerUrl: 'https://bscscan.com',
+    rpcUrl: 'https://bsc-dataseed.binance.org',
+    decimals: 8,
     mappingABI: [
       {
         inputs: [],

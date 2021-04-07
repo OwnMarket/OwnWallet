@@ -74,6 +74,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     '0x4': 'Rinkeby Test Network',
     '0x5': 'Goerli Test Network',
     '0x2a': 'Kovan Test Network',
+    '0x38': 'Smart Chain',
     '0x61': 'Smart Chain - Testnet',
   };
 
@@ -259,7 +260,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
         this.web3.setProvider(this.provider);
         this.chainId = await this.provider.request({ method: 'eth_chainId' });
         console.log(this.chainId);
-        this.isProduction = this.chainId === '0x1';
+        this.isProduction = this.configService.config.isProduction;
         this.provider.on('chainChanged', this.handleChainChanged);
         this.provider.on('accountsChanged', (accounts: string[]) => {
           if (accounts.length === 0) {
@@ -510,6 +511,58 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
               this.step = 0;
           }
         });
+    }
+  }
+
+  async addCustomNetwork() {
+    try {
+      const rpcReq = {
+        id: 1,
+        jsonrpc: '2.0',
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            chainId: this.configService.config[this.blockchain].chainId,
+            chainName: this.configService.config[this.blockchain].network,
+            rpcUrls: [this.configService.config[this.blockchain].rpcUrl],
+            blockExplorerUrls: [this.configService.config[this.blockchain].explorerUrl],
+            nativeCurrency: {
+              name: this.configService.config[this.blockchain].networkToken,
+              symbol: this.configService.config[this.blockchain].networkToken,
+              decimals: this.configService.config[this.blockchain].decimals,
+            },
+          },
+        ],
+      };
+      await this.provider.request(rpcReq);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async addCustomToken() {
+    try {
+      const rpcReq = {
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20',
+          options: {
+            address: this.configService.config[this.blockchain].tokenContract,
+            symbol: this.configService.config[this.blockchain].token,
+            decimals: this.configService.config[this.blockchain].decimals,
+            image: 'https://s3.amazonaws.com/static.weown.com/own/WeOwn_logo_final.png',
+          },
+        },
+      };
+
+      const wasAdded = await this.provider.request(rpcReq);
+      if (wasAdded) {
+        console.log('Thanks for your interest!');
+      } else {
+        console.log('Your loss!');
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 

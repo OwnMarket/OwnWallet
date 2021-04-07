@@ -257,6 +257,10 @@ button.link {
   background-color: var(--color-text-info);
 }
 
+.bg-transparent {
+  background-color: transparent;
+}
+
 .text-white {
   color: white;
 }
@@ -820,6 +824,10 @@ input:read-only {
 
 .border-top {
   border-top: none;
+}
+
+.border {
+  border: 1px solid var(--color-border);
 }
 
 .border-top-all {

@@ -6,10 +6,12 @@
           <div class="row justify-content-between">
             <div class="col-2">Bridge</div>
             <div class="col text-right" *ngIf="metaMaskConnected && chainId">
-              <span class="text-small text-info mr-2">
+              <span class="text-small text-info mr-2" [class.text-danger]="!isProduction">
                 {{ chainName }}
               </span>
-              <span class="bg-danger rounded text-white text-small p-1" *ngIf="!isProduction"> TEST MODE </span>
+              <button class="border rounded bg-transparent text-info text-small px-2 py-1" (click)="addCustomToken()">
+                Add {{ tokenName }} to MetaMask
+              </button>
             </div>
           </div>
         </own-card-title>

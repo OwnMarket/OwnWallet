@@ -549,7 +549,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
           options: {
             address: this.configService.config[this.blockchain].tokenContract,
             symbol: this.configService.config[this.blockchain].token,
-            decimals: this.configService.config[this.blockchain].decimals,
+            decimals: 7,
             image: 'https://s3.amazonaws.com/static.weown.com/own/WeOwn_logo_final.png',
           },
         },
@@ -557,9 +557,9 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
 
       const wasAdded = await this.provider.request(rpcReq);
       if (wasAdded) {
-        console.log('Thanks for your interest!');
+        console.log('Token added to MetaMask');
       } else {
-        console.log('Your loss!');
+        console.log('Token not added to MetaMask');
       }
     } catch (error) {
       console.log(error);

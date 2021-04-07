@@ -56,6 +56,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
   token: any;
 
   addrMapped = false;
+  wrongNetwork = false;
   chxAddress: string;
   address: string;
   chxBalance: number;
@@ -259,7 +260,6 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
         this.provider = provider;
         this.web3.setProvider(this.provider);
         this.chainId = await this.provider.request({ method: 'eth_chainId' });
-        console.log(this.chainId);
         this.isProduction = this.configService.config.isProduction;
         this.provider.on('chainChanged', this.handleChainChanged);
         this.provider.on('accountsChanged', (accounts: string[]) => {
@@ -315,6 +315,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     } catch (error) {
       this.showWarning = true;
       this.warningMessage = `Please check if your currently selected network in MetaMask is ${this.network}. Change currently selected network in MetaMask to ${this.network} and try again.`;
+      this.wrongNetwork = true;
       this.step = 0;
       return false;
     }
@@ -337,6 +338,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       this.showWarning = true;
       console.log(error);
       this.warningMessage = `Please check if your currently selected network in MetaMask is ${this.network}. Change currently selected network in MetaMask to ${this.network} and try again.`;
+      this.wrongNetwork = true;
       this.step = 0;
     }
   }
@@ -516,6 +518,9 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
 
   async addCustomNetwork() {
     try {
+      if (!this.provider) {
+        this.provider = await detectEthereumProvider();
+      }
       const rpcReq = {
         id: 1,
         jsonrpc: '2.0',
@@ -526,15 +531,12 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
             chainName: this.configService.config[this.blockchain].network,
             rpcUrls: [this.configService.config[this.blockchain].rpcUrl],
             blockExplorerUrls: [this.configService.config[this.blockchain].explorerUrl],
-            nativeCurrency: {
-              name: this.configService.config[this.blockchain].networkToken,
-              symbol: this.configService.config[this.blockchain].networkToken,
-              decimals: this.configService.config[this.blockchain].decimals,
-            },
           },
         ],
       };
       await this.provider.request(rpcReq);
+      this.wrongNetwork = false;
+      this.reset();
     } catch (error) {
       console.log(error);
     }

@@ -72,7 +72,7 @@ export class SendChxComponent implements OnInit, OnDestroy {
   }
 
   get total(): number {
-    return Number((this.sendChxForm.get('amount').value - this.sendChxForm.get('actionFee').value).toFixed(7));
+    return Number((+this.sendChxForm.get('amount').value + +this.sendChxForm.get('actionFee').value).toFixed(7));
   }
 
   submit({ value, valid }: { value: any; valid: boolean }) {

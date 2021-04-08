@@ -1,170 +1,170 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
 // Guards
-import { AccessGuard } from "./shared/guards/access.guard";
+import { AccessGuard } from './shared/guards/access.guard';
 
 // App level components
-import { LoginComponent } from "./login/login.component";
-import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
+import { LoginComponent } from './login/login.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 // Info section
-import { InfoPageComponent } from "./info/info-page/info-page.component";
-import { AddressInfoComponent } from "./info/address-info/address-info.component";
-import { AccountInfoComponent } from "./info/account-info/account-info.component";
-import { AssetInfoComponent } from "./info/asset-info/asset-info.component";
-import { TransactionInfoComponent } from "./info/transaction-info/transaction-info.component";
-import { BlockInfoComponent } from "./info/block-info/block-info.component";
-import { ValidatorInfoComponent } from "./info/validator-info/validator-info.component";
-import { EquivocationProofInfoComponent } from "./info/equivocation-proof-info/equivocation-proof-info.component";
+import { InfoPageComponent } from './info/info-page/info-page.component';
+import { AddressInfoComponent } from './info/address-info/address-info.component';
+import { AccountInfoComponent } from './info/account-info/account-info.component';
+import { AssetInfoComponent } from './info/asset-info/asset-info.component';
+import { TransactionInfoComponent } from './info/transaction-info/transaction-info.component';
+import { BlockInfoComponent } from './info/block-info/block-info.component';
+import { ValidatorInfoComponent } from './info/validator-info/validator-info.component';
+import { EquivocationProofInfoComponent } from './info/equivocation-proof-info/equivocation-proof-info.component';
 
 // Wallet section
-import { WelcomeComponent } from "./wallet/welcome/welcome.component";
-import { ImportComponent } from "./wallet/import/import.component";
-import { CreateComponent } from "./wallet/create/create.component";
-import { SendChxComponent } from "./wallet/actions/send-chx/send-chx.component";
-import { ReceiveChxComponent } from "./wallet/actions/receive-chx/receive-chx.component";
-import { ValidatorManagmentComponent } from "./wallet/validator-managment/validator-managment.component";
-import { StakingComponent } from "./wallet/staking/staking.component";
-import { MessageSignVerificationComponent } from "./wallet/msg-sign-verify/msg-sign-verify.component";
-import { BridgeChxComponent } from "./wallet/actions/bridge-chx/bridge-chx.component";
+import { WelcomeComponent } from './wallet/welcome/welcome.component';
+import { ImportComponent } from './wallet/import/import.component';
+import { CreateComponent } from './wallet/create/create.component';
+import { SendChxComponent } from './wallet/actions/send-chx/send-chx.component';
+import { ReceiveChxComponent } from './wallet/actions/receive-chx/receive-chx.component';
+import { ValidatorManagmentComponent } from './wallet/validator-managment/validator-managment.component';
+import { StakingComponent } from './wallet/staking/staking.component';
+import { MessageSignVerificationComponent } from './wallet/msg-sign-verify/msg-sign-verify.component';
+import { BridgeChxComponent } from './wallet/actions/bridge-chx/bridge-chx.component';
 
 export const ROUTERCONFIGS: Routes = [
   {
-    path: "login",
+    path: 'login',
     component: LoginComponent,
   },
   {
-    path: "info",
+    path: 'info',
     component: InfoPageComponent,
     children: [
       {
-        path: "",
-        redirectTo: "block",
-        pathMatch: "full",
+        path: '',
+        redirectTo: 'block',
+        pathMatch: 'full',
       },
       {
-        path: "address",
+        path: 'address',
         component: AddressInfoComponent,
-        data: { state: "address" },
+        data: { state: 'address' },
       },
       {
-        path: "address/:addressHash",
+        path: 'address/:addressHash',
         component: AddressInfoComponent,
-        data: { state: "address" },
+        data: { state: 'address' },
       },
       {
-        path: "account",
+        path: 'account',
         component: AccountInfoComponent,
-        data: { state: "account" },
+        data: { state: 'account' },
       },
       {
-        path: "account/:accountHash",
+        path: 'account/:accountHash',
         component: AccountInfoComponent,
-        data: { state: "account" },
+        data: { state: 'account' },
       },
       {
-        path: "asset",
+        path: 'asset',
         component: AssetInfoComponent,
-        data: { state: "asset" },
+        data: { state: 'asset' },
       },
       {
-        path: "asset/:assetHash",
+        path: 'asset/:assetHash',
         component: AssetInfoComponent,
-        data: { state: "asset" },
+        data: { state: 'asset' },
       },
       {
-        path: "tx",
+        path: 'tx',
         component: TransactionInfoComponent,
-        data: { state: "tx" },
+        data: { state: 'tx' },
       },
       {
-        path: "tx/:transactionHash",
+        path: 'tx/:transactionHash',
         component: TransactionInfoComponent,
-        data: { state: "tx" },
+        data: { state: 'tx' },
       },
       {
-        path: "block",
+        path: 'block',
         component: BlockInfoComponent,
-        data: { state: "block" },
+        data: { state: 'block' },
       },
       {
-        path: "block/:blockNumber",
+        path: 'block/:blockNumber',
         component: BlockInfoComponent,
-        data: { state: "block" },
+        data: { state: 'block' },
       },
       {
-        path: "validator",
+        path: 'validator',
         component: ValidatorInfoComponent,
-        data: { state: "validator" },
+        data: { state: 'validator' },
       },
       {
-        path: "validator/:validatorHash",
+        path: 'validator/:validatorHash',
         component: ValidatorInfoComponent,
-        data: { state: "validator" },
+        data: { state: 'validator' },
       },
       {
-        path: "equivocation/:equivocationProofHash",
+        path: 'equivocation/:equivocationProofHash',
         component: EquivocationProofInfoComponent,
       },
     ],
   },
   {
-    path: "wallet",
+    path: 'wallet',
     canActivate: [AccessGuard],
     component: WelcomeComponent,
     children: [
       {
-        path: "create",
+        path: 'create',
         component: CreateComponent,
-        data: { state: "create" },
+        data: { state: 'create' },
       },
       {
-        path: "import",
+        path: 'import',
         component: ImportComponent,
-        data: { state: "import" },
+        data: { state: 'import' },
       },
       {
-        path: "send-chx",
+        path: 'send-chx',
         component: SendChxComponent,
-        data: { state: "send-chx" },
+        data: { state: 'send-chx' },
       },
       {
-        path: "receive-chx",
+        path: 'receive-chx',
         component: ReceiveChxComponent,
-        data: { state: "receive-chx" },
+        data: { state: 'receive-chx' },
       },
       {
-        path: "bridge",
+        path: 'bridge',
         component: BridgeChxComponent,
-        data: { state: "bridge" },
+        data: { state: 'bridge' },
       },
       {
-        path: "validator-managment",
+        path: 'validator-managment',
         component: ValidatorManagmentComponent,
-        data: { state: "validator-managment" },
+        data: { state: 'validator-managment' },
       },
       {
-        path: "staking",
+        path: 'staking',
         component: StakingComponent,
-        data: { state: "staking" },
+        data: { state: 'staking' },
       },
       {
-        path: "sign-verify",
+        path: 'sign-verify',
         component: MessageSignVerificationComponent,
-        data: { state: "sign-verify" },
+        data: { state: 'sign-verify' },
       },
     ],
-    runGuardsAndResolvers: "always",
+    runGuardsAndResolvers: 'always',
   },
   {
-    path: "",
-    pathMatch: "full",
-    redirectTo: "/wallet",
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'wallet',
   },
   {
-    path: "**",
-    pathMatch: "full",
+    path: '**',
+    pathMatch: 'full',
     component: PageNotFoundComponent,
   },
 ];
@@ -172,9 +172,9 @@ export const ROUTERCONFIGS: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(ROUTERCONFIGS, {
-    onSameUrlNavigation: "reload",
-    relativeLinkResolution: 'legacy'
-}),
+      onSameUrlNavigation: 'reload',
+      relativeLinkResolution: 'legacy',
+    }),
   ],
   exports: [RouterModule],
 })

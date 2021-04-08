@@ -4,13 +4,16 @@ export const testConfig = {
   bridgeApiUrl: 'https://test.bridge-api.weown.com',
   network: 'CHX Testnet',
   eth: {
+    chainId: '0x4',
     token: 'wCHX',
     networkToken: 'ETH',
     ownerChxAddress: 'CHWBRa8ovb9xcGncaJcgSJrYPtwvrSf8P2K',
     mappingContract: '0x821f375d636f779ea831536f75b06db582817b77',
     tokenContract: '0xe6991e5d1f3a41015d8332cbb1a5e6db440da875',
-    network: 'Rinkeby Test Network',
+    network: 'Ethereum Rinkeby Test Network',
     explorerUrl: 'https://rinkeby.etherscan.io',
+    rpcUrl: 'https://rinkeby.infura.io/v3/ebf7e4de5a24483d977a04e2199e4bfe',
+    decimals: 18,
     mappingABI: [
       { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
       {
@@ -370,7 +373,7 @@ export const testConfig = {
     ownerChxAddress: 'CHbVoTPVRVZvEFcxw7ksddLULsdG5cTynFQ',
     mappingContract: '0x906836a70d9e384d9ee8942df855f6f2cda220a9',
     tokenContract: '0x8b7627ea65838c98c9bc74e10c602cc769ececc6',
-    network: 'Smart Chain - Testnet',
+    network: 'Binance Smart Chain - Testnet',
     networkToken: 'BNB',
     explorerUrl: 'https://testnet.bscscan.com',
     rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',

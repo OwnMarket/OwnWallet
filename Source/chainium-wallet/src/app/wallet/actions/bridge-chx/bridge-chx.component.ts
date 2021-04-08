@@ -302,8 +302,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       if (chxAddr !== '') {
         if (chxAddr !== this.chxAddress) {
           this.showWarning = true;
-          this.warningMessage =
-            'Currently selected ${this.network} Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.';
+          this.warningMessage = `Currently selected ${this.network} Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.`;
           this.step = 0;
           return false;
         } else {
@@ -531,6 +530,11 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
             chainName: this.configService.config[this.blockchain].network,
             rpcUrls: [this.configService.config[this.blockchain].rpcUrl],
             blockExplorerUrls: [this.configService.config[this.blockchain].explorerUrl],
+            nativeCurrency: {
+              name: this.configService.config[this.blockchain].networkToken,
+              symbol: this.configService.config[this.blockchain].networkToken,
+              decimals: 18,
+            },
           },
         ],
       };

@@ -4,6 +4,7 @@ export const prodConfig = {
   bridgeApiUrl: 'https://bridge-api.weown.com',
   network: 'CHX Mainnet',
   eth: {
+    chainId: '0x1',
     token: 'wCHX',
     ownerChxAddress: 'CHXhwGQecv9oThxD9ZnWWENVc26N1X5FJAQ',
     mappingContract: '0x766eAAbd47c53f548Cf225f8EB7AB300648FC236',
@@ -11,6 +12,8 @@ export const prodConfig = {
     network: 'Ethereum Main Network',
     networkToken: 'ETH',
     explorerUrl: 'https://etherscan.io',
+    rpcUrl: 'https://mainnet.infura.io/v3/ebf7e4de5a24483d977a04e2199e4bfe',
+    decimals: 18,
     mappingABI: [
       { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
       {
@@ -370,7 +373,7 @@ export const prodConfig = {
     ownerChxAddress: 'CHbVoTPVRVZvEFcxw7ksddLULsdG5cTynFQ',
     mappingContract: '0x906836a70d9e384d9ee8942df855f6f2cda220a9',
     tokenContract: '0x8b7627ea65838c98c9bc74e10c602cc769ececc6',
-    network: 'Smart Chain',
+    network: 'Binance Smart Chain',
     networkToken: 'BNB',
     explorerUrl: 'https://bscscan.com',
     rpcUrl: 'https://bsc-dataseed.binance.org',

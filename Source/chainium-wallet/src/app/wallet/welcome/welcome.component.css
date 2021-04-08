@@ -72,7 +72,8 @@
 }
 
 .address-item svg {
-  max-width: 200px;
+  max-width: 100px;
+  margin-bottom: 20px;
 }
 
 .address-item.binance,

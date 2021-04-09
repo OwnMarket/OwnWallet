@@ -216,7 +216,11 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
   }
 
   setMaxAmount() {
-    this.bridgeForm.get('fromAmount').setValue(this.maxAmount);
+    if (this.maxAmount > this.minWrapAmount) {
+      this.bridgeForm.get('fromAmount').setValue(this.maxAmount);
+    } else {
+      this.bridgeForm.get('fromAmount').setErrors({ min: true });
+    }
   }
 
   swapBlockchains() {
@@ -347,7 +351,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
       if (this.addrMapped && this.address) {
         this.balance = (await this.token.methods.balanceOf(this.address).call()) / Math.pow(10, 7);
         this.minWrapAmount = (await this.token.methods.minWrapAmount().call()) / Math.pow(10, 7);
-        this.setValidators();
+        this.getBridgeFee(this.address);
       }
     } catch (error) {
       this.showWarning = true;
@@ -360,6 +364,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     const type = this.fromBlockchain === 'chx' ? 'chxToEth' : 'ethToChx';
     this.bridgeFeeSub = this.bridgeFeeService.getBridgeFees(this.blockchain, address, type).subscribe((resp) => {
       this.bridgeFee = resp.data;
+      this.setValidators();
     });
   }
 
@@ -440,7 +445,6 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
                 this.inProgress = false;
                 this.txResult = null;
                 this.getBalanceAndMinAmount();
-                this.getBridgeFee(this.address);
                 this.addrMapped = true;
                 this.step = 3;
               });

@@ -361,7 +361,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
   }
 
   getBridgeFee(address: string) {
-    const type = this.fromBlockchain === 'chx' ? 'chxToEth' : 'ethToChx';
+    const type = this.fromBlockchain === 'chx' ? 'wrap' : 'unwrap';
     this.bridgeFeeSub = this.bridgeFeeService.getBridgeFees(this.blockchain, address, type).subscribe((resp) => {
       this.bridgeFee = resp.data;
       this.setValidators();

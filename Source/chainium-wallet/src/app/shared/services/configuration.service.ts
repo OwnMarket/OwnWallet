@@ -6,7 +6,8 @@ import { prodConfig } from '../configurations/prod.config';
 @Injectable()
 export class ConfigurationService {
   get config() {
-    const config = environment.networkCode == 'OWN_PUBLIC_BLOCKCHAIN_TESTNET' ? testConfig : prodConfig;
+    const config = environment.networkCode.toString() == 'OWN_PUBLIC_BLOCKCHAIN_TESTNET' ? testConfig : prodConfig;
+    console.log('type', typeof environment.networkCode);
     console.log('is equal', environment.networkCode == 'OWN_PUBLIC_BLOCKCHAIN_TESTNET');
     console.log('chainId', config['bsc'].chainId);
     return config;

@@ -6,6 +6,8 @@ import { prodConfig } from '../configurations/prod.config';
 @Injectable()
 export class ConfigurationService {
   get config() {
-    return environment.networkCode === 'OWN_PUBLIC_BLOCKCHAIN_MAINNET' ? prodConfig : testConfig;
+    const config = environment.networkCode === 'OWN_PUBLIC_BLOCKCHAIN_MAINNET' ? prodConfig : testConfig;
+    console.log('network', environment.networkCode);
+    return config;
   }
 }

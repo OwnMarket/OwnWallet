@@ -370,9 +370,9 @@ export const prodConfig = {
   bsc: {
     chainId: '0x38',
     token: 'bCHX',
-    ownerChxAddress: 'CHbVoTPVRVZvEFcxw7ksddLULsdG5cTynFQ',
-    mappingContract: '0x906836a70d9e384d9ee8942df855f6f2cda220a9',
-    tokenContract: '0x8b7627ea65838c98c9bc74e10c602cc769ececc6',
+    ownerChxAddress: 'CHPkcSPjcXq2SxKM4CFLxE57x2JEuGCrwLv',
+    mappingContract: '0x766eaabd47c53f548cf225f8eb7ab300648fc236',
+    tokenContract: '0xD883D21AF976Ec9fA409c9f2944A1E7D03D21946',
     network: 'Binance Smart Chain',
     networkToken: 'BNB',
     explorerUrl: 'https://bscscan.com',

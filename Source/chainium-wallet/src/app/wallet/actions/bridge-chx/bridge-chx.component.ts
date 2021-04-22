@@ -168,7 +168,11 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.min(this.minWrapAmount),
         Validators.max(
-          this.fromBlockchain === 'chx' ? (this.chxBalance > 0 ? this.chxBalance - this.fee : 0.1) : this.balance
+          this.fromBlockchain === 'chx'
+            ? this.chxBalance > 0
+              ? +(this.chxBalance - this.fee).toFixed(7)
+              : 0.1
+            : this.balance
         ),
       ]);
   }
@@ -204,7 +208,7 @@ export class BridgeChxComponent implements OnInit, OnDestroy {
     } else {
       balance = this.balance;
     }
-    return balance;
+    return +balance.toFixed(7);
   }
 
   get ownNet(): string {

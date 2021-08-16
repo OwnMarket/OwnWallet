@@ -907,6 +907,7 @@ input:read-only {
 }
 .tabs ul li a {
   font-weight: 600;
+  color: var(--color-text-info);
 }
 .tabs ul li:hover a {
   color: var(--color-brand);

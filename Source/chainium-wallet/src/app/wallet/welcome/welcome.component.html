@@ -164,14 +164,12 @@
       </div>
     </div>
 
-    <div class="row mt-4 px-0 px-md-2 justify-content-between">
-      <div class="col-12 col-md-2 mb-4 mb-md-0">
-        <b>Quick actions:</b>
-      </div>
-      <div class="col-12 col-md-7">
+    <div class="mt-4 px-0 px-md-2">
+      <div class="quick-actions">
+        <div><b>Quick actions:</b></div>
         <div class="quick-actions">
           <button
-            class="quick-action-button mr-4"
+            class="quick-action-button"
             routerLink="send-chx"
             routerLinkActive="selected"
             (click)="navigateTo('/wallet/send-chx')"
@@ -183,7 +181,7 @@
           </button>
 
           <button
-            class="quick-action-button mr-4"
+            class="quick-action-button"
             routerLink="receive-chx"
             routerLinkActive="selected"
             (click)="navigateTo('/wallet/receive-chx')"
@@ -195,7 +193,7 @@
           </button>
 
           <button
-            class="quick-action-button mr-4"
+            class="quick-action-button"
             routerLink="staking"
             routerLinkActive="selected"
             (click)="navigateTo('/wallet/staking')"
@@ -204,6 +202,18 @@
               <own-icon icon="staking" size="15" color="#39a2ae"></own-icon>
             </span>
             Staking
+          </button>
+
+          <button
+            class="quick-action-button"
+            routerLink="portfolio"
+            routerLinkActive="selected"
+            (click)="navigateTo('/wallet/portfolio')"
+          >
+            <span>
+              <own-icon icon="portfolio" size="15" color="#39a2ae"></own-icon>
+            </span>
+            Portfolio
           </button>
 
           <button
@@ -218,13 +228,12 @@
             Bridge
           </button>
         </div>
-      </div>
 
-      <div class="col-12 col-md-3 text-right mt-4 mt-md-0">
-        <button class="advanced-dropdown-button row" (click)="showAdvanced = !showAdvanced">
-          <div class="col-10">
-            <b class="mr-2">Advanced actions</b>
-          </div>
+        <button
+          class="advanced-dropdown-button flex items-center justify-center"
+          (click)="showAdvanced = !showAdvanced"
+        >
+          <div class="mr-2">Advanced actions</div>
           <span class="col-2 drop-menu" [class.open]="showAdvanced">
             <own-icon icon="arrow-down"></own-icon>
           </span>

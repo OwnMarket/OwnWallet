@@ -141,14 +141,21 @@
   font-weight: 600;
 }
 
+.quick-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .quick-action-button {
   position: relative;
-  font-weight: 400;
   padding: 0.5rem 1.5rem 0.5rem 3.2rem;
+  font-weight: 400;
   color: var(--color-text);
   background-color: var(--color-navbar-bg);
   box-shadow: none;
   overflow: hidden;
+  margin-right: 1rem;
   transition: all 0.3s ease-in-out;
 }
 
@@ -194,7 +201,7 @@
   background-color: transparent;
   box-shadow: none;
   color: var(--color-text);
-  padding: 0.5rem 1rem;
+  padding: 0 0.5rem;
 }
 
 .advanced-dropdown-button:hover {
@@ -217,10 +224,14 @@
 }
 
 @media screen and (max-width: 496px) {
+  .quick-actions {
+    display: block;
+  }
   .quick-action-button {
     display: block;
     width: 100%;
-    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
   .quick-action-button:hover {
     box-shadow: inset -430px 0 0 0 var(--color-accent);

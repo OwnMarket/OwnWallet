@@ -120,6 +120,26 @@ button.link {
   padding: 4px;
 }
 
+.block {
+  display: block;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.items-center {
+  align-items: center;
+}
+
 .float-left {
   float: left;
 }
@@ -134,6 +154,10 @@ button.link {
 
 .mb-6 {
   margin-bottom: 1rem;
+}
+
+.mb-5 {
+  margin-bottom: 4rem !important;
 }
 
 .-mr-1 {
@@ -255,6 +279,10 @@ button.link {
 
 .bg-info {
   background-color: var(--color-text-info);
+}
+
+.bg-white {
+  background-color: white;
 }
 
 .bg-transparent {
@@ -606,7 +634,7 @@ select:focus {
 }
 
 .no-borders {
-  border: none;
+  border: none !important;
 }
 
 .mega-input {
@@ -620,6 +648,10 @@ select:focus {
 
 .mega-input input {
   font-weight: 600;
+}
+
+.shadow {
+  box-shadow: 0px -10px 10px rgb(255 255 255 / 60%), 0px 4px 15px rgb(0 0 0 / 10%), 0 -1px 5px rgb(0 0 0 / 40%);
 }
 
 input,
@@ -861,6 +893,10 @@ input:read-only {
 .text-wrap {
   white-space: pre-wrap;
   overflow-wrap: break-word;
+}
+
+.text-normal {
+  font-weight: 400 !important;
 }
 
 .full-height {

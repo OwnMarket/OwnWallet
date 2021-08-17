@@ -1,0 +1,9 @@
+<own-card *ngIf="isKeyImported && !isSubmited">
+  <own-card-title>
+    <b>Create the Account</b>
+  </own-card-title>
+  <own-card-body [padding]="true">
+    <div class="mb-6">Are you sure you want to create a new Account?</div>
+    <button class="own-effect mt-2" type="button" (click)="submit()">CREATE ACCOUNT</button>
+  </own-card-body>
+</own-card>

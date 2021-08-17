@@ -40,6 +40,8 @@ import { ValidatorManagmentComponent } from './wallet/validator-managment/valida
 import { StakingComponent } from './wallet/staking/staking.component';
 import { MessageSignVerificationComponent } from './wallet/msg-sign-verify/msg-sign-verify.component';
 import { BridgeChxComponent } from './wallet/actions/bridge-chx/bridge-chx.component';
+import { AddAccountComponent } from './wallet/actions/add-account/add-account.component';
+import { PortfolioComponent } from './wallet/portfolio/portfolio.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { BridgeChxComponent } from './wallet/actions/bridge-chx/bridge-chx.compo
     PageNotFoundComponent,
     BridgeChxComponent,
     LongPress,
+    AddAccountComponent,
+    PortfolioComponent,
   ],
   imports: [
     BrowserModule,

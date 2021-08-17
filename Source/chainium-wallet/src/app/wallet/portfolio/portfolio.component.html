@@ -1,0 +1,39 @@
+<div class="container my-5" *ngIf="isKeyImported && accounts | async as accs">
+  <div class="row justify-content-center mb-5">
+    <div class="col-12 col-md-9">
+      <div class="mega-input text-lg block bg-white shadow no-borders">
+        <own-dropdown-menu id="account-selector" [fullWidth]="true" [showIcon]="false">
+          <div class="label flex items-center">
+            <div class="px-4 border-right">Account</div>
+            <div class="px-4 text-normal">{{ selectedAccount ? selectedAccount : 'No accounts currently' }}</div>
+          </div>
+          <ng-container *ngFor="let acc of accs">
+            <own-dropdown-item *ngIf="acc !== selectedAccount" (click)="selectAccount(acc)">
+              <div class="flex items-center">
+                <div class="px-4 border-right">Account</div>
+                <div class="px-4 text-normal">{{ acc }}</div>
+              </div>
+            </own-dropdown-item>
+          </ng-container>
+        </own-dropdown-menu>
+      </div>
+    </div>
+    <div class="col-12 col-md-1">
+      <div
+        class="mega-input text-lg bg-white no-borders flex items-center justify-content-center cursor-pointer"
+        style="height: 45px"
+        (click)="addNewAccount()"
+      >
+        <own-icon icon="plus" class="mb-1" color="#3aabb9"></own-icon>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-9">
+      <ng-container *ngIf="addingNewAccount">
+        <app-add-account></app-add-account>
+      </ng-container>
+    </div>
+    <div class="col-12 col-md-1"></div>
+  </div>
+</div>

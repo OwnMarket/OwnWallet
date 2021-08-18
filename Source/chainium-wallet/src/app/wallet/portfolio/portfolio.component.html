@@ -30,8 +30,25 @@
   </div>
   <div class="row justify-content-center">
     <div class="col-12 col-md-9">
+      <button
+        *ngIf="selectedAccount && !addingNewAsset && !addingNewAccount"
+        class="own-effect"
+        type="button"
+        (click)="addingNewAsset = true"
+      >
+        ADD NEW ASSET
+      </button>
+
+      <div *ngIf="addingNewAsset" @flyUpDown>
+        <app-add-asset
+          (onClosed)="close()"
+          (onAdded)="onNewAssetAdded($event)"
+          [account]="selectedAccount"
+        ></app-add-asset>
+      </div>
+
       <div *ngIf="addingNewAccount" @flyUpDown>
-        <app-add-account (onClosed)="addingNewAccount = false" (onAdded)="onNewAccountAdded($event)"></app-add-account>
+        <app-add-account (onClosed)="close()" (onAdded)="onNewAccountAdded($event)"></app-add-account>
       </div>
     </div>
     <div class="col-12 col-md-1"></div>

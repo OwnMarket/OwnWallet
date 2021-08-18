@@ -1,18 +1,40 @@
-<ng-container *ngIf="isKeyImported">
+<ng-container *ngIf="isKeyImported && assetForm">
   <own-card *ngIf="!isSubmited">
     <own-card-title>
-      <b>Create the Account</b>
+      <b>Add new Asset</b>
     </own-card-title>
     <own-card-body [padding]="true">
-      <div>Are you sure you want to create a new Account?</div>
-      <div class="row mt-5">
-        <div class="col-12 col-sm-6">
-          <button class="own-effect outline flat block" type="button" (click)="close()">CANCEL</button>
+      <form [formGroup]="assetForm">
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <label class="block mt-3 mt-md-0">Asset Symbol</label>
+                <input id="asset-code" class="block" type="text" formControlName="assetCode" />
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="block mt-3 mt-md-0">Amount</label>
+                <input id="amount" class="block" type="number" formControlName="amount" />
+              </div>
+            </div>
+            <div class="row mt-5">
+              <div class="col-12 col-sm-6">
+                <button class="own-effect outline flat block" (click)="close()" type="button">CANCEL</button>
+              </div>
+              <div class="col-12 col-sm-6 mb-2 mb-md-0 mt-3 mt-sm-0">
+                <button
+                  class="own-effect block"
+                  [disabled]="assetForm.invalid"
+                  type="button"
+                  (click)="submit(assetForm)"
+                >
+                  ADD ASSET
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-12 col-sm-6 mb-2 mb-md-0 mt-3 mt-sm-0">
-          <button class="own-effect block" type="button" (click)="submit()">CREATE ACCOUNT</button>
-        </div>
-      </div>
+      </form>
     </own-card-body>
   </own-card>
 
@@ -25,7 +47,7 @@
           </div>
           <div class="col-12 col-md-7">
             <h4>Success!</h4>
-            <p class="info">Your new account has been created. It is linked to currently selected Address.</p>
+            <p class="info">New asset has been created.</p>
             <p>
               <b>
                 <div class="row">
@@ -47,16 +69,16 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-12">Account Hash:</div>
+                  <div class="col-12">Asset Hash:</div>
                   <div class="col-12">
                     <div class="row">
                       <div class="col-12">
-                        {{ accountHash }}
+                        {{ assetHash }}
                         <button
                           class="button-transparent"
-                          title="Copy Account Hash"
+                          title="Copy Asset Hash"
                           ngxClipboard
-                          cbContent="{{ accountHash }}"
+                          cbContent="{{ assetHash }}"
                         >
                           <own-icon icon="copy" color="#eb6723"></own-icon>
                         </button>

@@ -14,6 +14,7 @@ import { PrivatekeyService } from 'src/app/shared/services/privatekey.service';
 })
 export class PortfolioComponent implements OnInit, OnDestroy {
   addingNewAccount: boolean = false;
+  addingNewAsset: boolean = false;
   accounts: Observable<string[]>;
   selectedAccount: string;
   accInfoSub: Subscription;
@@ -73,9 +74,20 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     this.addingNewAccount = true;
   }
 
+  close(): void {
+    console.log('closed');
+    this.addingNewAccount = false;
+    this.addingNewAsset = false;
+  }
+
   onNewAccountAdded(accHash: string): void {
     this.addingNewAccount = false;
     this.selectedAccount = accHash;
+    this.fetchAccountsWithInfo();
+  }
+
+  onNewAssetAdded(assetHash: string): void {
+    this.addingNewAsset = false;
     this.fetchAccountsWithInfo();
   }
 }

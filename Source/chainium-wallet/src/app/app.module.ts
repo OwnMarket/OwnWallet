@@ -42,6 +42,7 @@ import { MessageSignVerificationComponent } from './wallet/msg-sign-verify/msg-s
 import { BridgeChxComponent } from './wallet/actions/bridge-chx/bridge-chx.component';
 import { AddAccountComponent } from './wallet/actions/add-account/add-account.component';
 import { PortfolioComponent } from './wallet/portfolio/portfolio.component';
+import { AddAssetComponent } from './wallet/actions/add-asset/add-asset.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { PortfolioComponent } from './wallet/portfolio/portfolio.component';
     LongPress,
     AddAccountComponent,
     PortfolioComponent,
+    AddAssetComponent,
   ],
   imports: [
     BrowserModule,

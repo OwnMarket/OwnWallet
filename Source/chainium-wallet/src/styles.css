@@ -206,6 +206,10 @@ button.link {
   font-size: 1.2rem;
 }
 
+.rotate-90 {
+  transform: rotate(90deg);
+}
+
 .position-relative {
   position: relative;
 }

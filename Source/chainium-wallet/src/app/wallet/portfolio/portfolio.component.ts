@@ -71,6 +71,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   }
 
   addNewAccount(): void {
+    if (this.addingNewAsset) this.addingNewAsset = false;
     this.addingNewAccount = true;
   }
 
@@ -86,8 +87,17 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     this.fetchAccountsWithInfo();
   }
 
+  addNewAsset() {
+    if (this.addNewAccount) this.addingNewAccount = false;
+    this.addingNewAsset = true;
+  }
+
   onNewAssetAdded(assetHash: string): void {
     this.addingNewAsset = false;
     this.fetchAccountsWithInfo();
+  }
+
+  copy(event: any): void {
+    event.stopPropagation();
   }
 }

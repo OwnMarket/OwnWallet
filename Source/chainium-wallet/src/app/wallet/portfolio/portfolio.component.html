@@ -5,7 +5,19 @@
         <own-dropdown-menu id="account-selector" [fullWidth]="true" [showIcon]="false">
           <div class="label flex items-center">
             <div class="px-4 border-right">Account</div>
-            <div class="px-4 text-normal">{{ selectedAccount ? selectedAccount : 'No accounts currently' }}</div>
+            <div class="px-4 text-normal">
+              {{ selectedAccount ? selectedAccount : 'No accounts currently' }}
+              <button
+                *ngIf="selectedAccount"
+                class="button-transparent"
+                title="Copy Account Hash"
+                ngxClipboard
+                cbContent="{{ selectedAccount }}"
+                (click)="copy($event)"
+              >
+                <own-icon icon="copy"></own-icon>
+              </button>
+            </div>
           </div>
           <ng-container *ngFor="let acc of accs">
             <own-dropdown-item *ngIf="acc !== selectedAccount" (click)="selectAccount(acc)">
@@ -27,17 +39,44 @@
         <own-icon icon="plus" class="mb-1" color="#3aabb9"></own-icon>
       </div>
     </div>
+
+    <div class="col-12 col-md-10">
+      <div class="mega-input block bg-white no-borders py-3 mt-4" *ngFor="let asset of accInfo.holdings">
+        <div class="flex items-center justify-content-between">
+          <div class="flex">
+            <div class="px-4 border-right"><b>Asset</b></div>
+            <div class="px-4 text-normal">
+              {{ asset.assetHash }}
+              <button class="button-transparent" title="Copy Asset Hash" ngxClipboard cbContent="{{ asset.assetHash }}">
+                <own-icon icon="copy"></own-icon>
+              </button>
+            </div>
+          </div>
+          <div class="flex">
+            <div class="px-4 border-right">
+              <b>{{ asset.balance }}</b>
+            </div>
+            <div class="rotate-90 px-4 cursor-pointer">
+              <own-icon icon="swap" color="#eb6723"></own-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
   <div class="row justify-content-center">
-    <div class="col-12 col-md-9">
-      <button
-        *ngIf="selectedAccount && !addingNewAsset && !addingNewAccount"
-        class="own-effect"
-        type="button"
-        (click)="addingNewAsset = true"
-      >
-        ADD NEW ASSET
-      </button>
+    <div class="col-12 col-md-10">
+      <div class="text-center">
+        <button
+          *ngIf="selectedAccount && !addingNewAsset && !addingNewAccount"
+          class="own-effect mx-auto"
+          type="button"
+          (click)="addNewAsset()"
+        >
+          ADD NEW ASSET
+        </button>
+      </div>
 
       <div *ngIf="addingNewAsset" @flyUpDown>
         <app-add-asset
@@ -51,6 +90,5 @@
         <app-add-account (onClosed)="close()" (onAdded)="onNewAccountAdded($event)"></app-add-account>
       </div>
     </div>
-    <div class="col-12 col-md-1"></div>
   </div>
 </div>

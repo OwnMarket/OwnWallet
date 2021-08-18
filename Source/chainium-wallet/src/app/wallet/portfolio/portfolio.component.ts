@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, of, Subscription } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
+import { flyUpDown } from 'src/app/shared/animations/router.animations';
 import { WalletInfo } from 'src/app/shared/models/wallet-info.model';
 import { NodeService } from 'src/app/shared/services/node.service';
 import { PrivatekeyService } from 'src/app/shared/services/privatekey.service';
@@ -9,11 +10,14 @@ import { PrivatekeyService } from 'src/app/shared/services/privatekey.service';
   selector: 'app-portfolio',
   templateUrl: './portfolio.component.html',
   styleUrls: ['./portfolio.component.css'],
+  animations: [flyUpDown],
 })
-export class PortfolioComponent implements OnInit {
+export class PortfolioComponent implements OnInit, OnDestroy {
   addingNewAccount: boolean = false;
   accounts: Observable<string[]>;
   selectedAccount: string;
+  accInfoSub: Subscription;
+  accInfo: any;
 
   wallet: WalletInfo;
   isKeyImported = false;
@@ -27,11 +31,26 @@ export class PortfolioComponent implements OnInit {
     }
 
     this.wallet = this.privateKeyService.getWalletInfo();
+    this.fetchAccountsWithInfo();
+  }
+
+  ngOnDestroy(): void {
+    if (this.accInfoSub) this.accInfoSub.unsubscribe();
+  }
+
+  fetchAccountsWithInfo(): void {
     this.accounts = this.nodeService.getChxAddressAccounts(this.wallet.address).pipe(
-      map((resp) => {
+      mergeMap((resp) => {
         if (resp && resp.accounts.length > 0) {
-          this.selectedAccount = resp.accounts[0];
-          return resp.accounts;
+          if (!this.selectedAccount) {
+            this.selectedAccount = resp.accounts[0];
+          }
+          return this.nodeService.getAccountInfo(this.selectedAccount).pipe(
+            map((infoResp) => {
+              this.accInfo = infoResp;
+              return resp.accounts;
+            })
+          );
         } else {
           return [];
         }
@@ -39,11 +58,24 @@ export class PortfolioComponent implements OnInit {
     );
   }
 
-  selectAccount(account: string): void {
-    this.selectedAccount = account;
+  fetchAccountInfo(): void {
+    this.accInfoSub = this.nodeService.getAccountInfo(this.selectedAccount).subscribe((resp) => {
+      this.accInfo = resp;
+    });
   }
 
-  addNewAccount() {
+  selectAccount(account: string): void {
+    this.selectedAccount = account;
+    this.fetchAccountInfo();
+  }
+
+  addNewAccount(): void {
     this.addingNewAccount = true;
+  }
+
+  onNewAccountAdded(accHash: string): void {
+    this.addingNewAccount = false;
+    this.selectedAccount = accHash;
+    this.fetchAccountsWithInfo();
   }
 }

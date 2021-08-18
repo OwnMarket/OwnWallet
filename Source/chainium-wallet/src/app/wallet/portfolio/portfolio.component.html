@@ -30,9 +30,9 @@
   </div>
   <div class="row justify-content-center">
     <div class="col-12 col-md-9">
-      <ng-container *ngIf="addingNewAccount">
-        <app-add-account></app-add-account>
-      </ng-container>
+      <div *ngIf="addingNewAccount" @flyUpDown>
+        <app-add-account (onClosed)="addingNewAccount = false" (onAdded)="onNewAccountAdded($event)"></app-add-account>
+      </div>
     </div>
     <div class="col-12 col-md-1"></div>
   </div>

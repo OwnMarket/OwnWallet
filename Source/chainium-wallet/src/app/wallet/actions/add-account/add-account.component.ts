@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -16,16 +16,18 @@ declare var ownBlockchainSdk: any;
   styleUrls: ['./add-account.component.css'],
 })
 export class AddAccountComponent implements OnInit, OnDestroy {
-  submissionErrors: string[];
+  @Output() onClosed: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onAdded: EventEmitter<string> = new EventEmitter<string>();
 
+  submissionErrors: string[];
   txResult: TxResult;
   wallet: WalletInfo;
 
   isKeyImported = false;
   isSubmited = false;
+  accountHash: string;
 
   txSub: Subscription;
-  step = 1;
 
   constructor(private nodeService: NodeService, private privateKeyService: PrivatekeyService) {}
 
@@ -46,14 +48,13 @@ export class AddAccountComponent implements OnInit, OnDestroy {
           const nonce = balInfo.nonce + 1;
           const fee = this.nodeService.getMinFee();
           const txToSign = ownBlockchainSdk.transactions.createTx(this.wallet.address, nonce, fee);
-          const accountHash = txToSign.addCreateAccountAction();
+          this.accountHash = txToSign.addCreateAccountAction();
           const signature = txToSign.sign(environment.networkCode, this.wallet.privateKey);
           return this.nodeService.submitTransaction(signature);
         })
       )
       .subscribe((result) => {
         this.isSubmited = true;
-        console.log(result);
         if (result.errors) {
           this.submissionErrors = result.errors;
           return;
@@ -62,7 +63,15 @@ export class AddAccountComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.txSub) this.txSub.unsubscribe();
+  }
+
+  close(): void {
+    if (this.accountHash && this.isSubmited && !this.submissionErrors) {
+      this.onAdded.emit(this.accountHash);
+    } else {
+      this.onClosed.emit();
+    }
   }
 }

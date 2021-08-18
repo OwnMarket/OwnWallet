@@ -1,9 +1,96 @@
-<own-card *ngIf="isKeyImported && !isSubmited">
-  <own-card-title>
-    <b>Create the Account</b>
-  </own-card-title>
-  <own-card-body [padding]="true">
-    <div class="mb-6">Are you sure you want to create a new Account?</div>
-    <button class="own-effect mt-2" type="button" (click)="submit()">CREATE ACCOUNT</button>
-  </own-card-body>
-</own-card>
+<ng-container *ngIf="isKeyImported">
+  <own-card *ngIf="!isSubmited">
+    <own-card-title>
+      <b>Create the Account</b>
+    </own-card-title>
+    <own-card-body [padding]="true">
+      <div class="mb-6">Are you sure you want to create a new Account?</div>
+      <button class="own-effect mt-2" type="button" (click)="submit()">CREATE ACCOUNT</button>
+    </own-card-body>
+  </own-card>
+
+  <div class="container mb-5" *ngIf="isSubmited && txResult && !submissionErrors">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="row full-height align-items-center justify-content-center">
+          <div class="col-12 col-md-4">
+            <div class="token-success"></div>
+          </div>
+          <div class="col-12 col-md-7">
+            <h4>Success!</h4>
+            <p class="info">Your new account has been created. It is linked to currently selected Address.</p>
+            <p>
+              <b>
+                <div class="row">
+                  <div class="col-12">Transaction:</div>
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="col-12">
+                        {{ txResult.txHash }}
+                        <button
+                          class="button-transparent"
+                          title="Copy Transaction"
+                          ngxClipboard
+                          cbContent="{{ txResult.txHash }}"
+                        >
+                          <own-icon icon="copy" color="#eb6723"></own-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">Account Hash:</div>
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="col-12">
+                        {{ accountHash }}
+                        <button
+                          class="button-transparent"
+                          title="Copy Account Hash"
+                          ngxClipboard
+                          cbContent="{{ accountHash }}"
+                        >
+                          <own-icon icon="copy" color="#eb6723"></own-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </b>
+            </p>
+            <p class="mt-5">
+              <button class="outline own-effect mr-4" [routerLink]="['/info/tx/' + txResult.txHash]">
+                VIEW TRANSACTION INFO
+              </button>
+              <button class="own-effect" (click)="close()">CLOSE</button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mb-5" *ngIf="isSubmited && submissionErrors">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8">
+        <div class="row full-height align-items-center">
+          <div class="col-12 col-md-6">
+            <div class="token-fail"></div>
+          </div>
+          <div class="col-12 col-md-6">
+            <h4>Sorry, your transaction was rejected.</h4>
+            <p class="info">
+              <li *ngFor="let error of submissionErrors">
+                {{ error }}
+              </li>
+            </p>
+            <p class="text-center mt-5">
+              <button class="outline own-effect" (click)="close()">CLOSE</button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

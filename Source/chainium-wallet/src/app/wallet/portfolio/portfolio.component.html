@@ -1,10 +1,10 @@
-<div class="container my-5" *ngIf="isKeyImported && accounts | async as accs">
+<div class="container my-5" *ngIf="isKeyImported">
   <div class="row justify-content-center mb-5">
-    <div class="col-12 col-md-9">
+    <div class="col-12 col-md-9" *ngIf="{ accs: accounts | async } as data">
       <div class="mega-input block bg-white shadow no-borders">
         <own-dropdown-menu id="account-selector" [fullWidth]="true" [showIcon]="false">
-          <div class="label flex items-center justify-content-between">
-            <div class="flex border-right">
+          <div class="label flex items-center justify-content-between wallet-table">
+            <div class="flex">
               <div class="pl-2 pr-4 border-right">Account</div>
               <div class="px-4 text-normal flex">
                 {{ selectedAccount ? selectedAccount : 'No accounts currently' }}
@@ -21,13 +21,13 @@
                 </button>
               </div>
             </div>
-            <div>
-              <a href="#" class="ml-4" title="Set Controller">
+            <div class="border-left" *ngIf="selectedAccount">
+              <button title="Set Controller" class="button-transparent px-4" (click)="setAccountController($event)">
                 <own-icon icon="settings" color="#eb6723"></own-icon>
-              </a>
+              </button>
             </div>
           </div>
-          <ng-container *ngFor="let acc of accs">
+          <ng-container *ngFor="let acc of data.accs">
             <own-dropdown-item *ngIf="acc !== selectedAccount" (click)="selectAccount(acc)">
               <div class="flex items-center">
                 <div class="px-4 border-right">Account</div>
@@ -49,8 +49,12 @@
       </a>
     </div>
 
-    <div class="col-12 col-md-10" *ngIf="!addingNewAsset && !addingNewAccount">
-      <div class="mega-input block bg-white no-borders py-3 mt-4" *ngFor="let asset of accInfo.holdings">
+    <div
+      class="col-12 col-md-10"
+      *ngIf="selectedAccount && !addingNewAsset && !addingNewAccount && !settingController"
+      @contentInOut
+    >
+      <div class="mega-input block bg-white no-borders py-3 mt-4" *ngFor="let asset of accInfo?.holdings">
         <div class="flex items-center justify-content-between">
           <div class="flex">
             <div class="px-4 border-right"><b>Asset</b></div>
@@ -78,13 +82,21 @@
     <div class="col-12 col-md-10">
       <div class="text-center">
         <button
-          *ngIf="selectedAccount && !addingNewAsset && !addingNewAccount"
+          *ngIf="selectedAccount && !addingNewAsset && !addingNewAccount && !settingController"
           class="own-effect mx-auto"
           type="button"
           (click)="addNewAsset()"
         >
           ADD NEW ASSET
         </button>
+      </div>
+
+      <div *ngIf="settingController" @flyUpDown>
+        <app-set-account-controller
+          (onClosed)="close()"
+          (onAdded)="onControllerSet()"
+          [account]="selectedAccount"
+        ></app-set-account-controller>
       </div>
 
       <div *ngIf="addingNewAsset" @flyUpDown>

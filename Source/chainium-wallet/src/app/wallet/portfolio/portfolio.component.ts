@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
-import { flyUpDown } from 'src/app/shared/animations/router.animations';
+import { contentInOut, flyUpDown } from 'src/app/shared/animations/router.animations';
 import { WalletInfo } from 'src/app/shared/models/wallet-info.model';
 import { NodeService } from 'src/app/shared/services/node.service';
 import { PrivatekeyService } from 'src/app/shared/services/privatekey.service';
@@ -10,11 +10,12 @@ import { PrivatekeyService } from 'src/app/shared/services/privatekey.service';
   selector: 'app-portfolio',
   templateUrl: './portfolio.component.html',
   styleUrls: ['./portfolio.component.css'],
-  animations: [flyUpDown],
+  animations: [flyUpDown, contentInOut],
 })
 export class PortfolioComponent implements OnInit, OnDestroy {
   addingNewAccount: boolean = false;
   addingNewAsset: boolean = false;
+  settingController: boolean = false;
   accounts: Observable<string[]>;
   selectedAccount: string;
   accInfoSub: Subscription;
@@ -39,7 +40,8 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     if (this.accInfoSub) this.accInfoSub.unsubscribe();
   }
 
-  fetchAccountsWithInfo(): void {
+  fetchAccountsWithInfo(transfered?: boolean): void {
+    if (transfered) this.selectAccount = null;
     this.accounts = this.nodeService.getChxAddressAccounts(this.wallet.address).pipe(
       mergeMap((resp) => {
         if (resp && resp.accounts.length > 0) {
@@ -72,14 +74,14 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   }
 
   addNewAccount(): void {
-    if (this.addingNewAsset) this.addingNewAsset = false;
+    this.close();
     this.addingNewAccount = true;
   }
 
   close(): void {
-    console.log('closed');
     this.addingNewAccount = false;
     this.addingNewAsset = false;
+    this.settingController = false;
   }
 
   onNewAccountAdded(accHash: string): void {
@@ -88,14 +90,25 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     this.fetchAccountsWithInfo();
   }
 
-  addNewAsset() {
-    if (this.addNewAccount) this.addingNewAccount = false;
+  addNewAsset(): void {
+    this.close();
     this.addingNewAsset = true;
   }
 
   onNewAssetAdded(assetHash: string): void {
     this.addingNewAsset = false;
     this.fetchAccountsWithInfo();
+  }
+
+  setAccountController(event: any): void {
+    event.stopPropagation();
+    this.close();
+    this.settingController = true;
+  }
+
+  onControllerSet() {
+    this.close();
+    this.fetchAccountsWithInfo(true);
   }
 
   copy(event: any): void {

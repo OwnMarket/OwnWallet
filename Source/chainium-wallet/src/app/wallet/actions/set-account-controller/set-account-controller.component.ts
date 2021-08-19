@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { TxResult } from 'src/app/shared/models/submit-transactions.model';
@@ -11,23 +11,23 @@ import { environment } from 'src/environments/environment';
 declare var ownBlockchainSdk: any;
 
 @Component({
-  selector: 'app-add-asset',
-  templateUrl: './add-asset.component.html',
-  styleUrls: ['./add-asset.component.css'],
+  selector: 'app-set-account-controller',
+  templateUrl: './set-account-controller.component.html',
+  styleUrls: ['./set-account-controller.component.css'],
 })
-export class AddAssetComponent implements OnInit, OnDestroy {
+export class SetAccountControllerComponent implements OnInit, OnDestroy {
   @Output() onClosed: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onAdded: EventEmitter<string> = new EventEmitter<string>();
+  @Output() onAdded: EventEmitter<any> = new EventEmitter<any>();
   @Input() account: string;
 
-  assetForm: FormGroup;
+  controllerForm: FormGroup;
   submissionErrors: string[];
   txResult: TxResult;
   wallet: WalletInfo;
 
   isKeyImported = false;
   isSubmited = false;
-  assetHash: string;
+  addr: string;
 
   txSub: Subscription;
 
@@ -44,20 +44,20 @@ export class AddAssetComponent implements OnInit, OnDestroy {
     }
 
     this.wallet = this.privateKeyService.getWalletInfo();
-    this.initAssetForm();
+    this.addr = this.wallet.address;
+    this.initControllerForm();
   }
 
-  initAssetForm(): void {
-    this.assetForm = this.fb.group({
-      assetCode: ['', Validators.required],
-      amount: [0, [Validators.required, Validators.min(1), Validators.max(99999999999)]],
+  initControllerForm(): void {
+    this.controllerForm = this.fb.group({
+      controllerAddress: ['', Validators.required],
     });
   }
 
   submit(form: FormGroup): void {
     const {
       valid,
-      value: { assetCode, amount },
+      value: { controllerAddress },
     } = form;
 
     if (valid) {
@@ -68,9 +68,7 @@ export class AddAssetComponent implements OnInit, OnDestroy {
             const nonce = balInfo.nonce + 1;
             const fee = this.nodeService.getMinFee();
             const txToSign = ownBlockchainSdk.transactions.createTx(this.wallet.address, nonce, fee);
-            this.assetHash = txToSign.addCreateAssetAction();
-            txToSign.addSetAssetCodeAction(this.assetHash, assetCode);
-            txToSign.addCreateAssetEmissionAction(this.account, this.assetHash, amount);
+            txToSign.addSetAccountControllerAction(this.account, controllerAddress);
             const signature = txToSign.sign(environment.networkCode, this.wallet.privateKey);
             return this.nodeService.submitTransaction(signature);
           })
@@ -91,8 +89,8 @@ export class AddAssetComponent implements OnInit, OnDestroy {
   }
 
   close(): void {
-    if (this.assetHash) {
-      this.onAdded.emit(this.assetHash);
+    if (this.isSubmited && !this.submissionErrors) {
+      this.onAdded.emit();
     } else {
       this.onClosed.emit();
     }

@@ -43,6 +43,7 @@ import { BridgeChxComponent } from './wallet/actions/bridge-chx/bridge-chx.compo
 import { AddAccountComponent } from './wallet/actions/add-account/add-account.component';
 import { PortfolioComponent } from './wallet/portfolio/portfolio.component';
 import { AddAssetComponent } from './wallet/actions/add-asset/add-asset.component';
+import { SetAccountControllerComponent } from './wallet/actions/set-account-controller/set-account-controller.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { AddAssetComponent } from './wallet/actions/add-asset/add-asset.componen
     AddAccountComponent,
     PortfolioComponent,
     AddAssetComponent,
+    SetAccountControllerComponent,
   ],
   imports: [
     BrowserModule,

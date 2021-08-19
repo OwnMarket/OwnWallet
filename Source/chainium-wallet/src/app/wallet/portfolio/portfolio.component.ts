@@ -67,6 +67,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
 
   selectAccount(account: string): void {
     this.selectedAccount = account;
+    this.close();
     this.fetchAccountInfo();
   }
 

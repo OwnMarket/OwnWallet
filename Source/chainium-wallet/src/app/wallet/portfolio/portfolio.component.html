@@ -1,22 +1,30 @@
 <div class="container my-5" *ngIf="isKeyImported && accounts | async as accs">
   <div class="row justify-content-center mb-5">
     <div class="col-12 col-md-9">
-      <div class="mega-input text-lg block bg-white shadow no-borders">
+      <div class="mega-input block bg-white shadow no-borders">
         <own-dropdown-menu id="account-selector" [fullWidth]="true" [showIcon]="false">
-          <div class="label flex items-center">
-            <div class="px-4 border-right">Account</div>
-            <div class="px-4 text-normal">
-              {{ selectedAccount ? selectedAccount : 'No accounts currently' }}
-              <button
-                *ngIf="selectedAccount"
-                class="button-transparent"
-                title="Copy Account Hash"
-                ngxClipboard
-                cbContent="{{ selectedAccount }}"
-                (click)="copy($event)"
-              >
-                <own-icon icon="copy"></own-icon>
-              </button>
+          <div class="label flex items-center justify-content-between">
+            <div class="flex border-right">
+              <div class="pl-2 pr-4 border-right">Account</div>
+              <div class="px-4 text-normal flex">
+                {{ selectedAccount ? selectedAccount : 'No accounts currently' }}
+
+                <button
+                  *ngIf="selectedAccount"
+                  class="button-transparent"
+                  title="Copy Account Hash"
+                  ngxClipboard
+                  cbContent="{{ selectedAccount }}"
+                  (click)="copy($event)"
+                >
+                  <own-icon icon="copy"></own-icon>
+                </button>
+              </div>
+            </div>
+            <div>
+              <a href="#" class="ml-4" title="Set Controller">
+                <own-icon icon="settings" color="#eb6723"></own-icon>
+              </a>
             </div>
           </div>
           <ng-container *ngFor="let acc of accs">
@@ -31,16 +39,17 @@
       </div>
     </div>
     <div class="col-12 col-md-1">
-      <div
+      <a
         class="mega-input text-lg bg-white no-borders flex items-center justify-content-center cursor-pointer"
         style="height: 45px"
+        title="Add Account"
         (click)="addNewAccount()"
       >
         <own-icon icon="plus" class="mb-1" color="#3aabb9"></own-icon>
-      </div>
+      </a>
     </div>
 
-    <div class="col-12 col-md-10">
+    <div class="col-12 col-md-10" *ngIf="!addingNewAsset && !addingNewAccount">
       <div class="mega-input block bg-white no-borders py-3 mt-4" *ngFor="let asset of accInfo.holdings">
         <div class="flex items-center justify-content-between">
           <div class="flex">

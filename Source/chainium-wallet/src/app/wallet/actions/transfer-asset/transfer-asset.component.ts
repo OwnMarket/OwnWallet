@@ -81,7 +81,7 @@ export class TransferAssetComponent implements OnInit {
             const nonce = balInfo.nonce + 1;
             const fee = this.nodeService.getMinFee();
             const txToSign = ownBlockchainSdk.transactions.createTx(this.wallet.address, nonce, fee);
-            txToSign.addTransferAssetAction(this.account, toAccountHash, this.asset, amount);
+            txToSign.addTransferAssetAction(this.account, toAccountHash, this.assetHash, amount);
             const signature = txToSign.sign(environment.networkCode, this.wallet.privateKey);
             return this.nodeService.submitTransaction(signature);
           })
@@ -103,7 +103,7 @@ export class TransferAssetComponent implements OnInit {
   }
 
   close(): void {
-    if (this.assetHash) {
+    if (this.isSubmited) {
       this.onAdded.emit(this.assetHash);
     } else {
       this.onClosed.emit();

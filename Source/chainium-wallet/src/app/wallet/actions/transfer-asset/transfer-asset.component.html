@@ -77,7 +77,7 @@
           </div>
           <div class="col-12 col-md-7">
             <h4>Success!</h4>
-            <p class="info">New asset has been created.</p>
+            <p class="info">Transaction has been submitted.</p>
             <p>
               <b>
                 <div class="row">
@@ -91,24 +91,6 @@
                           title="Copy Transaction"
                           ngxClipboard
                           cbContent="{{ txResult.txHash }}"
-                        >
-                          <own-icon icon="copy" color="#eb6723"></own-icon>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12">Asset Hash:</div>
-                  <div class="col-12">
-                    <div class="row">
-                      <div class="col-12">
-                        {{ assetHash }}
-                        <button
-                          class="button-transparent"
-                          title="Copy Asset Hash"
-                          ngxClipboard
-                          cbContent="{{ assetHash }}"
                         >
                           <own-icon icon="copy" color="#eb6723"></own-icon>
                         </button>

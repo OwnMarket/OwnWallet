@@ -100,7 +100,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   }
 
   onNewAssetAdded(assetHash: string): void {
-    this.addingNewAsset = false;
+    this.close();
     this.fetchAccountsWithInfo();
   }
 

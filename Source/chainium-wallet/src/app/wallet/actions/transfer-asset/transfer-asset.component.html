@@ -1,0 +1,155 @@
+<ng-container *ngIf="isKeyImported && transferAssetForm">
+  <own-card *ngIf="!isSubmited">
+    <own-card-title>
+      <b>Transfer {{ assetCode }}</b>
+    </own-card-title>
+    <own-card-body [padding]="true">
+      <form [formGroup]="transferAssetForm">
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <label class="block mt-3 mt-md-0">Amount</label>
+                <input id="amount" class="block" type="number" formControlName="amount" />
+                <div
+                  class="info"
+                  *ngIf="
+                    transferAssetForm.get('amount').errors &&
+                    transferAssetForm.get('amount').errors.max &&
+                    transferAssetForm.get('amount').touched
+                  "
+                >
+                  Maximum amount cant be grater than asset balance of {{ assetBalance }} {{ assetCode }}
+                </div>
+                <div
+                  class="info"
+                  *ngIf="
+                    transferAssetForm.get('amount').errors &&
+                    transferAssetForm.get('amount').errors.required &&
+                    transferAssetForm.get('amount').touched
+                  "
+                >
+                  Amount is required
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="block mt-3 mt-md-0">Recipient Account</label>
+                <input id="asset-code" class="block" type="text" formControlName="toAccountHash" />
+                <div
+                  class="info"
+                  *ngIf="
+                    transferAssetForm.get('toAccountHash').errors &&
+                    transferAssetForm.get('toAccountHash').errors.required &&
+                    transferAssetForm.get('toAccountHash').touched
+                  "
+                >
+                  Recipient Account is required
+                </div>
+              </div>
+            </div>
+            <div class="row mt-5">
+              <div class="col-12 col-sm-6">
+                <button class="own-effect outline flat block" (click)="close()" type="button">CANCEL</button>
+              </div>
+              <div class="col-12 col-sm-6 mb-2 mb-md-0 mt-3 mt-sm-0">
+                <button
+                  class="own-effect block"
+                  [disabled]="transferAssetForm.invalid"
+                  type="button"
+                  (click)="submit(transferAssetForm)"
+                >
+                  TRANSFER
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </own-card-body>
+  </own-card>
+
+  <div class="container mb-5" *ngIf="isSubmited && txResult && !submissionErrors">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="row full-height align-items-center justify-content-center">
+          <div class="col-12 col-md-4">
+            <div class="token-success"></div>
+          </div>
+          <div class="col-12 col-md-7">
+            <h4>Success!</h4>
+            <p class="info">New asset has been created.</p>
+            <p>
+              <b>
+                <div class="row">
+                  <div class="col-12">Transaction:</div>
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="col-12">
+                        {{ txResult.txHash }}
+                        <button
+                          class="button-transparent"
+                          title="Copy Transaction"
+                          ngxClipboard
+                          cbContent="{{ txResult.txHash }}"
+                        >
+                          <own-icon icon="copy" color="#eb6723"></own-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">Asset Hash:</div>
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="col-12">
+                        {{ assetHash }}
+                        <button
+                          class="button-transparent"
+                          title="Copy Asset Hash"
+                          ngxClipboard
+                          cbContent="{{ assetHash }}"
+                        >
+                          <own-icon icon="copy" color="#eb6723"></own-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </b>
+            </p>
+            <p class="mt-5">
+              <button class="outline own-effect mr-4" [routerLink]="['/info/tx/' + txResult.txHash]">
+                VIEW TRANSACTION INFO
+              </button>
+              <button class="own-effect" (click)="close()">CLOSE</button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mb-5" *ngIf="isSubmited && submissionErrors">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8">
+        <div class="row full-height align-items-center">
+          <div class="col-12 col-md-6">
+            <div class="token-fail"></div>
+          </div>
+          <div class="col-12 col-md-6">
+            <h4>Sorry, your transaction was rejected.</h4>
+            <p class="info">
+              <li *ngFor="let error of submissionErrors">
+                {{ error }}
+              </li>
+            </p>
+            <p class="text-center mt-5">
+              <button class="outline own-effect" (click)="close()">CLOSE</button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

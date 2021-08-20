@@ -51,7 +51,7 @@
 
     <div
       class="col-12 col-md-10"
-      *ngIf="selectedAccount && !addingNewAsset && !addingNewAccount && !settingController"
+      *ngIf="selectedAccount && !addingNewAsset && !addingNewAccount && !settingController && !transferingAsset"
       @contentInOut
     >
       <div class="mega-input block bg-white no-borders py-3 mt-4" *ngFor="let asset of accInfo?.holdings">
@@ -70,7 +70,13 @@
               <b>{{ asset.balance }}</b>
             </div>
             <div class="rotate-90 px-4 cursor-pointer">
-              <own-icon icon="swap" color="#eb6723"></own-icon>
+              <button
+                class="button-transparent p-0"
+                title="Transfer Asset"
+                (click)="transferAsset(asset.assetHash, asset.balance)"
+              >
+                <own-icon icon="swap" color="#eb6723"></own-icon>
+              </button>
             </div>
           </div>
         </div>
@@ -82,7 +88,7 @@
     <div class="col-12 col-md-10">
       <div class="text-center">
         <button
-          *ngIf="selectedAccount && !addingNewAsset && !addingNewAccount && !settingController"
+          *ngIf="selectedAccount && !addingNewAsset && !addingNewAccount && !settingController && !transferingAsset"
           class="own-effect mx-auto"
           type="button"
           (click)="addNewAsset()"
@@ -109,6 +115,16 @@
 
       <div *ngIf="addingNewAccount" @flyUpDown>
         <app-add-account (onClosed)="close()" (onAdded)="onNewAccountAdded($event)"></app-add-account>
+      </div>
+
+      <div *ngIf="transferingAsset" @flyUpDown>
+        <app-transfer-asset
+          (onClosed)="close()"
+          (onAdded)="onNewAssetAdded($event)"
+          [account]="selectedAccount"
+          [assetBalance]="selectedAssetBalance"
+          [asset]="selectedAsset"
+        ></app-transfer-asset>
       </div>
     </div>
   </div>

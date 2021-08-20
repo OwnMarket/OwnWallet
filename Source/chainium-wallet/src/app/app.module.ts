@@ -44,6 +44,7 @@ import { AddAccountComponent } from './wallet/actions/add-account/add-account.co
 import { PortfolioComponent } from './wallet/portfolio/portfolio.component';
 import { AddAssetComponent } from './wallet/actions/add-asset/add-asset.component';
 import { SetAccountControllerComponent } from './wallet/actions/set-account-controller/set-account-controller.component';
+import { TransferAssetComponent } from './wallet/actions/transfer-asset/transfer-asset.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { SetAccountControllerComponent } from './wallet/actions/set-account-cont
     PortfolioComponent,
     AddAssetComponent,
     SetAccountControllerComponent,
+    TransferAssetComponent,
   ],
   imports: [
     BrowserModule,

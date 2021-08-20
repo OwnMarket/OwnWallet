@@ -16,8 +16,11 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   addingNewAccount: boolean = false;
   addingNewAsset: boolean = false;
   settingController: boolean = false;
+  transferingAsset: boolean = false;
   accounts: Observable<string[]>;
   selectedAccount: string;
+  selectedAsset: string;
+  selectedAssetBalance: number;
   accInfoSub: Subscription;
   accInfo: any;
 
@@ -82,6 +85,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     this.addingNewAccount = false;
     this.addingNewAsset = false;
     this.settingController = false;
+    this.transferingAsset = false;
   }
 
   onNewAccountAdded(accHash: string): void {
@@ -106,9 +110,15 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     this.settingController = true;
   }
 
-  onControllerSet() {
+  onControllerSet(): void {
     this.close();
     this.fetchAccountsWithInfo(true);
+  }
+
+  transferAsset(assetHash: string, assetBalance: number): void {
+    this.selectedAsset = assetHash;
+    this.selectedAssetBalance = assetBalance;
+    this.transferingAsset = true;
   }
 
   copy(event: any): void {

@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'own-dropdown-item',
   templateUrl: './own-dropdown-item.component.html',
-  styleUrls: ['./own-dropdown-item.component.css']
+  styleUrls: ['./own-dropdown-item.component.css'],
 })
-export class OwnDropdownItemComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class OwnDropdownItemComponent {
+  @Input() hasPadding = true;
 }

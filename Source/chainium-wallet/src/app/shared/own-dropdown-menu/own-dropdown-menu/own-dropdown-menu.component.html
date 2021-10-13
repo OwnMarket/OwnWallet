@@ -30,6 +30,7 @@
   <div
     class="dropdown-items"
     [class.active]="isActive"
+    [class.dropdown-spacer]="fullWidth"
     (click)="isActive = false"
     [ngStyle]="{ left: showIcon ? '-140px' : '0', right: showIcon ? '' : '0' }"
   >

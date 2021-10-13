@@ -32,6 +32,10 @@
   transition: all 0.3s ease-in-out;
 }
 
+.dropdown-spacer {
+  padding-top: 20px;
+}
+
 .dropdown-items.active {
   opacity: 1;
   pointer-events: all;

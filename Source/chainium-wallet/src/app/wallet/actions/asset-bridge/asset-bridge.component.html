@@ -1,0 +1,152 @@
+<div class="container my-5" *ngIf="isKeyImported && acceptBridgeForm && metaMaskStatus$ | async as status">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-12 col-md-8">
+      <own-card>
+        <own-card-title>
+          <div class="row justify-content-between">
+            <div class="col">Cross-Chain Transfer</div>
+            <div class="col text-right" *ngIf="status === 'Connected'">
+              <span class="text-small text-info mr-2" *ngIf="chainName$ | async as networkName">
+                {{ networkName }}
+              </span>
+            </div>
+          </div>
+        </own-card-title>
+        <own-card-body [padding]="true">
+          <!-- Step 1 - Accept Risks -->
+          <div class="row" *ngIf="step === 1">
+            <div class="col">
+              <h4 class="mb-4">Terms to accept</h4>
+              <p>
+                This process allows you to transfer CHX tokens from the
+                <strong>WeOwn Blockchain</strong> onto other blockchains and back.
+              </p>
+              <p>
+                Before you proceed, please make sure you are familiar with inter-blockchain related swap / bridge / wrap
+                risks involved.
+              </p>
+              <p class="mt-4">The pre-requisites for the token bridge are:</p>
+              <ul>
+                <li>You have created a CHX wallet, loaded with enough CHX tokens incl. transaction fees.</li>
+                <li>
+                  You have a wallet on the supported source and target blockchain with enough tokens and transaction
+                  fees.
+                </li>
+                <li>
+                  You are in control of all private keys for both source and target blockchain, safely stored in a
+                  secure place.
+                </li>
+                <li>You have a MetaMask installed and you can access it.</li>
+              </ul>
+              <form [formGroup]="acceptBridgeForm">
+                <div class="row mt-4">
+                  <div class="col mt-4">
+                    <input type="checkbox" formControlName="aware" id="aware-of-risks" />
+                    <label class="m-0" for="aware-of-risks"
+                      >I am fully aware of the risks involved, and any incorrect usage could result in total or partial
+                      loss of my funds</label
+                    >
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col">
+                    <input type="checkbox" formControlName="confirm" id="confirm" />
+                    <label class="m-0" for="confirm">
+                      I hereby confirm that both target and source wallets are in my control and I meet all
+                      prerequisites described above.
+                    </label>
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col">
+                    <input type="checkbox" formControlName="agree" id="agree" />
+                    <label class="m-0" for="agree">
+                      I confirm and agree that WeOwn cannot be held accountable for any incorrect or improper use of the
+                      bridge feature.
+                    </label>
+                  </div>
+                </div>
+                <div class="row mt-4 justify-content-center">
+                  <div class="col col-sm-6 mt-4">
+                    <button
+                      [disabled]="acceptBridgeForm.invalid || loading"
+                      class="block own-effect"
+                      (click)="acceptRisks()"
+                    >
+                      <svg
+                        *ngIf="loading || status === 'Connecting'"
+                        class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="4"></circle>
+                        <path
+                          class="opacity-75"
+                          fill="#dfdfdf"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+
+                      {{ status === 'Connected' ? 'ACCEPT AND CONTINUE' : 'CONNECT WITH METAMASK' }}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <div class="row" *ngIf="step === 2">
+            <form class="col" [formGroup]="assetBridgeForm">
+              <div class="row">
+                <div class="col">
+                  <label for="amount" class="col-2">Asset</label>
+                  <div class="mega-input block text-lg">
+                    <own-dropdown-menu #menu id="asset-selector" [showIcon]="false" [fullWidth]="true">
+                      <div class="label flex items-center justify-content-between wallet-table">
+                        <div class="flex">
+                          <div class="px-4 text-normal flex">
+                            {{ selectedAsset ? (selectedAsset | uppercase) : 'No assets currently' }}
+                          </div>
+                        </div>
+                      </div>
+                      <ng-container *ngFor="let asset of assets">
+                        <own-dropdown-item
+                          *ngIf="asset !== selectedAsset"
+                          [hasPadding]="false"
+                          (click)="assetBridgeForm.get('asset').setValue(asset)"
+                        >
+                          <div class="flex items-center">
+                            <div class="px-4 text-normal">{{ asset }}</div>
+                          </div>
+                        </own-dropdown-item>
+                      </ng-container>
+                    </own-dropdown-menu>
+                  </div>
+                </div>
+                <div class="col">
+                  <label for="amount" class="col-2">Amount</label>
+                  <div class="mega-input text-lg">
+                    <input id="amount" name="amount" class="block no-borders" type="number" formControlName="amount" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt-4">
+                <div class="col">
+                  <label for="from" class="col-2">From</label>
+                  <div class="shadow-sm border-light p-4 rounded">Cool</div>
+                </div>
+                <div class="col">
+                  <label for="from" class="col-2">To</label>
+                  <div class="shadow-sm border-light p-4 rounded">Cool</div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </own-card-body>
+      </own-card>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 export enum MetaMaskStatus {
-  Disconnected,
-  Initiating,
-  Connecting,
-  Connected,
+  Disconnected = 'Disconnected',
+  Initiating = 'Initiating',
+  Connecting = 'Connecting',
+  Connected = 'Connected',
 }

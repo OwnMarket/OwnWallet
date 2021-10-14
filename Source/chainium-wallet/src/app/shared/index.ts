@@ -5,6 +5,8 @@ export { OwnSliderModule } from './own-slider/own-slider.module';
 export { OwnModalModule } from './own-modal/own-modal.module';
 export { OwnDropdownMenuModule } from './own-dropdown-menu/own-dropdown-menu.module';
 export * from './directives';
-
+export * from './services';
+export * from './models';
+export * from './enums';
 import * as OwnAnimations from './animations/router.animations';
 export { OwnAnimations };

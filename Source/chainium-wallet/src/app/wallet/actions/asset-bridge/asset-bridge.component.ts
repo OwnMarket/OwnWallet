@@ -38,6 +38,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   loading: boolean = false;
 
   assets: any = ['chx', 'defx'];
+  blockchains = [
+    { name: 'Ethereum', code: 'eth' },
+    { name: 'Binance Smart Chain', code: 'bsc' },
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -82,9 +86,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.assetBridgeForm = this.fb.group({
       asset: ['chx'],
       amount: [0, [Validators.required, Validators.min(0.0000001)]],
-      fromBlockchain: ['own'],
-      toBlockchain: ['eth'],
-      address: [null],
+      from: ['own'],
+      to: ['eth'],
+      fromAddress: [this.chxAddress],
+      toAddress: [this.metaMaskAddress],
       account: [null],
     });
   }
@@ -93,12 +98,28 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     return this.assetBridgeForm.get('asset').value;
   }
 
+  get fromAddress(): string {
+    return this.assetBridgeForm.get('fromAddress').value;
+  }
+
+  get toAddress(): string {
+    return this.assetBridgeForm.get('toAddress').value;
+  }
+
   get from(): string {
     return this.assetBridgeForm.get('from').value;
   }
 
   get to(): string {
     return this.assetBridgeForm.get('to').value;
+  }
+
+  get metaMaskAddress(): string {
+    return this.metamask.currentAccount;
+  }
+
+  targetChainName(code: string): string {
+    return this.blockchains.find((chain) => chain.code === code).name;
   }
 
   acceptRisks() {

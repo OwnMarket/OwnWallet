@@ -663,7 +663,7 @@ select:focus {
 }
 
 .border-light {
-  border: 1px solid #ededed;
+  border-color: #ededed;
 }
 
 input,

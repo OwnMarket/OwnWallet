@@ -97,13 +97,13 @@
           </div>
 
           <!-- Form -->
-          <div class="row" *ngIf="step === 2">
+          <div class="row" *ngIf="step === 2 && assetBridgeForm">
             <form class="col" [formGroup]="assetBridgeForm">
               <div class="row">
                 <div class="col">
                   <label for="amount" class="col-2">Asset</label>
                   <div class="mega-input block text-lg">
-                    <own-dropdown-menu #menu id="asset-selector" [showIcon]="false" [fullWidth]="true">
+                    <own-dropdown-menu id="asset-selector" [showIcon]="false" [fullWidth]="true">
                       <div class="label flex items-center justify-content-between wallet-table">
                         <div class="flex">
                           <div class="px-4 text-normal flex">
@@ -136,11 +136,51 @@
               <div class="row mt-4">
                 <div class="col">
                   <label for="from" class="col-2">From</label>
-                  <div class="shadow-sm border-light p-4 rounded">Cool</div>
+                  <div class="shadow-sm border rounded">
+                    <div class="p-4">
+                      <ng-container [ngSwitch]="from">
+                        <ng-container *ngSwitchCase="'own'" [ngTemplateOutlet]="weownLogo"></ng-container>
+                        <ng-container *ngSwitchCase="'eth'" [ngTemplateOutlet]="ethLogo"></ng-container>
+                        <ng-container *ngSwitchCase="'bsc'" [ngTemplateOutlet]="bscLogo"></ng-container>
+                      </ng-container>
+                    </div>
+                    <ng-container *ngIf="from !== 'own'">
+                      <ng-container
+                        *ngTemplateOutlet="bcDropdown; context: { target: 'from', current: from }"
+                      ></ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="from === 'own'">
+                      <label class="px-4 mt-2">WeOwn</label>
+                      <div class="p-4 border-top-all info" *ngIf="selectedAsset === 'chx'">
+                        <div>Address:</div>
+                        <div>{{ fromAddress }}</div>
+                      </div>
+                    </ng-container>
+                  </div>
                 </div>
                 <div class="col">
                   <label for="from" class="col-2">To</label>
-                  <div class="shadow-sm border-light p-4 rounded">Cool</div>
+                  <div class="shadow-sm border rounded">
+                    <div class="p-4">
+                      <ng-container [ngSwitch]="to">
+                        <ng-container *ngSwitchCase="'own'" [ngTemplateOutlet]="weownLogo"></ng-container>
+                        <ng-container *ngSwitchCase="'eth'" [ngTemplateOutlet]="ethLogo"></ng-container>
+                        <ng-container *ngSwitchCase="'bsc'" [ngTemplateOutlet]="bscLogo"></ng-container>
+                      </ng-container>
+                    </div>
+                    <ng-container *ngIf="to === 'own'">
+                      <label class="px-4 mt-2">WeOwn</label>
+                    </ng-container>
+                    <ng-container *ngIf="to !== 'own'">
+                      <ng-container
+                        *ngTemplateOutlet="bcDropdown; context: { target: 'to', current: to }"
+                      ></ng-container>
+                      <div class="p-4 border-top-all info" *ngIf="selectedAsset === 'chx'">
+                        <div>Address:</div>
+                        <div>{{ toAddress }}</div>
+                      </div>
+                    </ng-container>
+                  </div>
                 </div>
               </div>
             </form>
@@ -150,3 +190,89 @@
     </div>
   </div>
 </div>
+
+<ng-template #bcDropdown let-target="target" let-current="current">
+  <own-dropdown-menu [showIcon]="false" [fullWidth]="true">
+    <div class="label flex items-center justify-content-between wallet-table">
+      <div class="flex">
+        <div class="flex">
+          {{ targetChainName(current) }}
+        </div>
+      </div>
+    </div>
+    <ng-container *ngFor="let chain of blockchains">
+      <own-dropdown-item
+        *ngIf="chain.code !== current"
+        [hasPadding]="false"
+        (click)="assetBridgeForm.get(target).setValue(chain.code)"
+      >
+        <div class="flex items-center">
+          <div class="px-4 text-normal">{{ chain.name }}</div>
+        </div>
+      </own-dropdown-item>
+    </ng-container>
+  </own-dropdown-menu>
+</ng-template>
+
+<ng-template #weownLogo>
+  <svg viewBox="0 0 400 550" width="100" height="100" style="margin-left: -30px">
+    <path
+      d="M207.32,295.78a2.5,2.5,0,0,0,3.68-1.17l39.15-71.2A29.15,29.15,0,0,1,288,207.08a28.68,28.68,0,0,1,4.23,2.09l3.45,2.1,53.1,31.84a2.49,2.49,0,0,0,3.47-.92l60-105A162.7,162.7,0,0,0,142.1,256.44Z"
+      style="fill: #f26622"
+    ></path>
+    <path
+      d="M394.65,319.7l-4.19,4.52A34.26,34.26,0,0,1,345,328.51l-61.1-42.86a2.5,2.5,0,0,0-3.63.72L240.73,341l-2.9,4.09A21,21,0,0,1,209,352.35a22.22,22.22,0,0,1-3.06-2.23l-57.75-46.47a162.75,162.75,0,0,0,319.34-44.33c0-3-.09-5.91-.25-8.84Z"
+      style="fill: #f26622"
+    ></path>
+  </svg>
+</ng-template>
+
+<ng-template #ethLogo>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100" height="100">
+    <path
+      class="ethereum-one"
+      d="M99.88,15.1c.32-.57.38,0,.44.13.74,1.18,1.46,2.38,2.18,3.57l49.23,81.7a2.11,2.11,0,0,1,.45.88,1.73,1.73,0,0,1-.89-.22c-1.93-.87-3.84-1.76-5.77-2.64l-9.21-4.21-13-5.87-9.22-4.21-13.1-6c-1-.45-1-.47-1,.63v53.2c-.24-.2-.15-.48-.15-.72q0-26.71,0-53.43a1.71,1.71,0,0,0,.15-1V15.89C100,15.63,100.15,15.32,99.88,15.1Z"
+    />
+    <path
+      class="ethereum-two"
+      d="M99.88,15.1c.27.22.16.53.16.79V77a1.71,1.71,0,0,1-.15,1c-.76.32-1.52.63-2.27,1l-9.29,4.24L75.38,89l-9.22,4.21c-4.86,2.2-9.71,4.42-14.59,6.59a18.84,18.84,0,0,1-3.68,1.54,45.38,45.38,0,0,1,2.6-4.48Q69.36,65.55,88.25,34.21L99.54,15.49C99.63,15.34,99.69,15.16,99.88,15.1Z"
+    />
+    <path
+      class="ethereum-three"
+      d="M100,132.11V78.91c0-1.1,0-1.08,1-.63l13.1,6,9.22,4.21,13,5.87,9.21,4.21c1.93.88,3.84,1.77,5.77,2.64a1.73,1.73,0,0,0,.89.22c.26.48-.24.43-.4.53-3.23,1.93-6.48,3.85-9.72,5.76q-9.69,5.73-19.38,11.45c-5.08,3-10.17,6-15.25,9-2.24,1.32-4.46,2.68-6.7,4-.22.13-.4.34-.69.32Z"
+    />
+    <path
+      class="ethereum-four"
+      d="M100,132.11v.31a21.22,21.22,0,0,1-3.16-1.76Q72.61,116.34,48.35,102l-.45-.3v-.3h0a18.84,18.84,0,0,0,3.68-1.54c4.88-2.17,9.73-4.39,14.59-6.59L75.38,89l13-5.87,9.29-4.24c.75-.34,1.51-.65,2.27-1q0,26.72,0,53.43C99.89,131.63,99.8,131.91,100,132.11Z"
+    />
+    <path
+      class="ethereum-five"
+      d="M100.18,185c-.38.34-.41-.11-.51-.26-1.69-2.35-3.36-4.71-5-7.07L58.11,126.22l-9.78-13.79-.39-.57c.26-.16.41,0,.58.14l28.76,17,22.49,13.29c.09.05.19.08.28.12s0,.21,0,.31v41.66C100,184.59,100,184.84,100.18,185Z"
+    />
+    <path
+      class="ethereum-six"
+      d="M100.18,185c-.21-.18-.14-.43-.14-.65V142.71c0-.1,0-.2,0-.31L131.29,124l20-11.82a1.37,1.37,0,0,1,.68-.31c.07.32-.17.48-.31.68q-25.58,36-51.17,72.07Z"
+    />
+    <path d="M47.89,101.38v.3C47.67,101.59,47.72,101.49,47.89,101.38Z" style="fill: #8a92b1" />
+  </svg>
+</ng-template>
+
+<ng-template #bscLogo>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100" height="100">
+    <path
+      d="M66.29,113.93c.32.3.68.62,1,1q15.45,15.31,30.88,30.65c1.78,1.77,1.78,1.77,3.58,0q15.42-15.33,30.85-30.67c.91-.91,1.39-1,2.35,0q8.68,8.74,17.52,17.32c.87.85.93,1.31,0,2.22q-25.62,25.36-51.17,50.82c-1,1-1.54,1.1-2.6,0q-25.65-25.56-51.39-51c-.66-.65-.81-1,0-1.76,6-5.93,12.06-11.91,18.08-17.87C65.61,114.32,65.82,114,66.29,113.93Z"
+    />
+    <path
+      d="M66.18,86.2c-.29-.25-.55-.44-.77-.66-6-6-12.09-12-18.18-18-.83-.81-.41-1.18.17-1.75L83.6,29.84c5.07-5,10.16-10,15.19-15.11.88-.89,1.35-1.06,2.35-.06q25.59,25.5,51.3,50.9c1,1,.82,1.47-.07,2.34q-8.85,8.67-17.58,17.47c-1,1-1.41.55-2.13-.16q-15.52-15.47-31.08-30.89c-1.62-1.6-1.61-1.6-3.24,0L67.24,85.21C66.91,85.54,66.56,85.85,66.18,86.2Z"
+    />
+    <path
+      d="M100,80.23c.3.28.54.48.77.71C106.92,87,113,93.1,119.2,99.14c.74.73.62,1.15,0,1.8q-9.24,9.07-18.42,18.2c-.58.57-.95.61-1.55,0q-9.27-9.25-18.6-18.47c-.61-.6-.41-.9.08-1.4Q90,90.07,99.29,80.84C99.51,80.62,99.77,80.44,100,80.23Z"
+    />
+    <path
+      d="M52.24,100c-.27.31-.46.55-.68.77q-9.08,9-18.13,18c-.66.66-1,.56-1.66,0q-9-9-18.16-18c-.62-.61-.55-.94,0-1.52q9-8.93,18-17.91c.73-.74,1.16-.72,1.9,0,5.94,6,11.93,11.87,17.91,17.8C51.73,99.42,52,99.7,52.24,100Z"
+    />
+    <path
+      d="M167.33,119.47c-.29-.26-.54-.45-.77-.68q-9.08-9-18.16-18c-.6-.59-.61-.94,0-1.53q9.15-9,18.27-18.12c.52-.52.87-.57,1.42,0q9.16,9.15,18.37,18.25c.48.48.52.79,0,1.29q-9.21,9.11-18.39,18.23A7.3,7.3,0,0,1,167.33,119.47Z"
+    />
+  </svg>
+</ng-template>

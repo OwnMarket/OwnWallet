@@ -78,6 +78,16 @@
                 <own-icon icon="swap" color="#eb6723"></own-icon>
               </button>
             </div>
+            <div class="px-4 cursor-pointer border-left">
+              <button
+                class="button-transparent p-0"
+                title="Bridge Asset"
+                [routerLink]="['/wallet/asset-bridge']"
+                [queryParams]="{ assetHash: asset.assetHash, balance: asset.balance }"
+              >
+                <own-icon icon="swap" color="#3aabb9"></own-icon>
+              </button>
+            </div>
           </div>
         </div>
       </div>

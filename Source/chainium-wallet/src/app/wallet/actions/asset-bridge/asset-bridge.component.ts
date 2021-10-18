@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { combineLatest, Observable, Subscription } from 'rxjs';
 
 import {
   MetaMaskStatus,
@@ -37,6 +38,9 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   risksAccepted: boolean = false;
   loading: boolean = false;
 
+  assetHashFromParams: string;
+  balanceFromParams: number;
+
   assets: any = ['chx', 'defx'];
   blockchains = [
     { name: 'Ethereum', code: 'eth' },
@@ -45,6 +49,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
+    private activatedRoute: ActivatedRoute,
     private metamask: MetamaskService,
     private nodeService: NodeService,
     private privateKeyService: PrivatekeyService,
@@ -59,12 +64,20 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.wallet = this.privateKeyService.getWalletInfo();
     this.chxAddress = this.wallet.address;
 
-    this.addressSub = this.nodeService.getAddressInfo(this.wallet.address).subscribe((balInfo) => {
+    this.addressSub = combineLatest([
+      this.nodeService.getAddressInfo(this.wallet.address),
+      this.activatedRoute.queryParams,
+    ]).subscribe(([balInfo, params]) => {
       this.chxBalance = balInfo.balance.available;
       this.nonce = balInfo.nonce + 1;
       this.fee = this.nodeService.getMinFee();
       this.metaMaskStatus$ = this.metamask.status$;
       this.chainName$ = this.metamask.chainName$;
+
+      const { assetHash, balance } = params;
+      this.assetHashFromParams = assetHash || null;
+      this.balanceFromParams = balance || null;
+
       this.initAcceptBridgeForm();
       this.initAssetBridgeForm();
     });

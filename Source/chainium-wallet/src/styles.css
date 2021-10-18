@@ -180,6 +180,14 @@ button.link {
   margin-top: 1rem !important;
 }
 
+.pb-0 {
+  padding-bottom: 0 !important;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+
 .mr-6 {
   margin-right: 24px;
 }
@@ -405,8 +413,6 @@ a:hover {
   background-color: #fff;
   border: none;
   border-radius: 15px;
-  height: 100%;
-  overflow: hidden;
 }
 
 .card-title {

@@ -105,8 +105,15 @@
                   <div class="mega-input block text-lg">
                     <own-dropdown-menu id="asset-selector" [showIcon]="false" [fullWidth]="true">
                       <div class="label flex items-center justify-content-between wallet-table">
-                        <div class="flex">
-                          <div class="px-4 text-normal flex">
+                        <div class="flex items-center">
+                          <img
+                            width="30px"
+                            height="30px"
+                            class="mr-2"
+                            *ngIf="selectedAsset === 'chx'"
+                            src="https://s3.amazonaws.com/static.weown.com/own/WeOwn_logo_final.png"
+                          />
+                          <div class="text-normal flex">
                             {{ selectedAsset ? (selectedAsset | uppercase) : 'No assets currently' }}
                           </div>
                         </div>
@@ -118,7 +125,7 @@
                           (click)="assetBridgeForm.get('asset').setValue(asset)"
                         >
                           <div class="flex items-center">
-                            <div class="px-4 text-normal">{{ asset }}</div>
+                            <div class="px-4 text-normal">{{ asset | uppercase }}</div>
                           </div>
                         </own-dropdown-item>
                       </ng-container>
@@ -134,15 +141,24 @@
               </div>
 
               <div class="row mt-4">
-                <div class="col">
+                <div class="col-6">
                   <label for="from" class="col-2">From</label>
                   <div class="shadow-sm border rounded">
-                    <div class="p-4">
+                    <div class="p-4 pb-0 position-relative">
                       <ng-container [ngSwitch]="from">
                         <ng-container *ngSwitchCase="'own'" [ngTemplateOutlet]="weownLogo"></ng-container>
                         <ng-container *ngSwitchCase="'eth'" [ngTemplateOutlet]="ethLogo"></ng-container>
                         <ng-container *ngSwitchCase="'bsc'" [ngTemplateOutlet]="bscLogo"></ng-container>
                       </ng-container>
+                      <div class="position-absolute swap-chains">
+                        <button
+                          class="button-transparent cursor-pointer rotate-90 px-4"
+                          title="Swap Blockchains"
+                          (click)="swapBlockchains()"
+                        >
+                          <own-icon icon="swap"></own-icon>
+                        </button>
+                      </div>
                     </div>
                     <ng-container *ngIf="from !== 'own'">
                       <ng-container
@@ -151,17 +167,37 @@
                     </ng-container>
                     <ng-container *ngIf="from === 'own'">
                       <label class="px-4 mt-2">WeOwn</label>
-                      <div class="p-4 border-top-all info" *ngIf="selectedAsset === 'chx'">
-                        <div>Address:</div>
-                        <div>{{ fromAddress }}</div>
-                      </div>
                     </ng-container>
+                    <div class="p-4 border-top-all">
+                      <ng-container *ngIf="selectedAsset === 'chx'">
+                        <div class="mb-2">Address:</div>
+                        <div class="info">{{ fromAddress }}</div>
+                      </ng-container>
+                      <ng-container *ngIf="selectedAsset !== 'chx' && from !== 'own'">
+                        <div class="mb-2">Address:</div>
+                        <div class="mega-input">
+                          <input
+                            id="from-address"
+                            name="from-address"
+                            class="block no-borders elipsis"
+                            type="text"
+                            formControlName="fromAddress"
+                          />
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf="selectedAsset !== 'chx' && from === 'own'">
+                        <div class="mb-2">Account:</div>
+                        <div class="mega-input block position-relative">
+                          <ng-container [ngTemplateOutlet]="accountDropdown"></ng-container>
+                        </div>
+                      </ng-container>
+                    </div>
                   </div>
                 </div>
-                <div class="col">
+                <div class="col-6">
                   <label for="from" class="col-2">To</label>
                   <div class="shadow-sm border rounded">
-                    <div class="p-4">
+                    <div class="p-4 pb-0">
                       <ng-container [ngSwitch]="to">
                         <ng-container *ngSwitchCase="'own'" [ngTemplateOutlet]="weownLogo"></ng-container>
                         <ng-container *ngSwitchCase="'eth'" [ngTemplateOutlet]="ethLogo"></ng-container>
@@ -175,12 +211,56 @@
                       <ng-container
                         *ngTemplateOutlet="bcDropdown; context: { target: 'to', current: to }"
                       ></ng-container>
-                      <div class="p-4 border-top-all info" *ngIf="selectedAsset === 'chx'">
-                        <div>Address:</div>
-                        <div>{{ toAddress }}</div>
-                      </div>
                     </ng-container>
+                    <div class="p-4 border-top-all">
+                      <ng-container *ngIf="selectedAsset === 'chx'">
+                        <div class="mb-2">Address:</div>
+                        <div class="info">{{ toAddress }}</div>
+                      </ng-container>
+                      <ng-container *ngIf="selectedAsset !== 'chx' && to !== 'own'">
+                        <div class="mb-2">Address:</div>
+                        <div class="mega-input">
+                          <input
+                            id="to-address"
+                            name="to-address"
+                            class="block no-borders elipsis"
+                            type="text"
+                            formControlName="toAddress"
+                          />
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf="selectedAsset !== 'chx' && to === 'own'">
+                        <div class="mb-2">Account:</div>
+                        <div class="mega-input block position-relative">
+                          <ng-container [ngTemplateOutlet]="accountDropdown"></ng-container>
+                        </div>
+                      </ng-container>
+                    </div>
                   </div>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col">
+                  <ng-container [ngTemplateOutlet]="bridgeFeesTpl"></ng-container>
+                </div>
+                <div class="col">
+                  <button [disabled]="assetBridgeForm.invalid || loading" class="block own-effect">
+                    <svg
+                      *ngIf="loading"
+                      class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="4"></circle>
+                      <path
+                        class="opacity-75"
+                        fill="#dfdfdf"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    TRANSFER
+                  </button>
                 </div>
               </div>
             </form>
@@ -191,13 +271,32 @@
   </div>
 </div>
 
+<ng-template #accountDropdown>
+  <own-dropdown-menu id="account-selector" [showIcon]="false" [fullWidth]="true">
+    <div class="label flex items-center justify-content-between wallet-table col-11">
+      <div class="elipsis">
+        {{ account ? account : 'No accounts currently' }}
+      </div>
+    </div>
+    <ng-container *ngFor="let item of accounts">
+      <own-dropdown-item
+        *ngIf="item !== account"
+        [hasPadding]="false"
+        (click)="assetBridgeForm.get('account').setValue(item)"
+      >
+        <div class="row px-4">
+          <div class="text-normal col-11 elipsis">{{ item }}</div>
+        </div>
+      </own-dropdown-item>
+    </ng-container>
+  </own-dropdown-menu>
+</ng-template>
+
 <ng-template #bcDropdown let-target="target" let-current="current">
   <own-dropdown-menu [showIcon]="false" [fullWidth]="true">
     <div class="label flex items-center justify-content-between wallet-table">
-      <div class="flex">
-        <div class="flex">
-          {{ targetChainName(current) }}
-        </div>
+      <div class="flex pl-2">
+        {{ targetChainName(current) }}
       </div>
     </div>
     <ng-container *ngFor="let chain of blockchains">
@@ -215,7 +314,7 @@
 </ng-template>
 
 <ng-template #weownLogo>
-  <svg viewBox="0 0 400 550" width="100" height="100" style="margin-left: -30px">
+  <svg viewBox="0 0 440 540" width="100" height="100" style="margin-left: -30px">
     <path
       d="M207.32,295.78a2.5,2.5,0,0,0,3.68-1.17l39.15-71.2A29.15,29.15,0,0,1,288,207.08a28.68,28.68,0,0,1,4.23,2.09l3.45,2.1,53.1,31.84a2.49,2.49,0,0,0,3.47-.92l60-105A162.7,162.7,0,0,0,142.1,256.44Z"
       style="fill: #f26622"
@@ -275,4 +374,88 @@
       d="M167.33,119.47c-.29-.26-.54-.45-.77-.68q-9.08-9-18.16-18c-.6-.59-.61-.94,0-1.53q9.15-9,18.27-18.12c.52-.52.87-.57,1.42,0q9.16,9.15,18.37,18.25c.48.48.52.79,0,1.29q-9.21,9.11-18.39,18.23A7.3,7.3,0,0,1,167.33,119.47Z"
     />
   </svg>
+</ng-template>
+
+<ng-template #bridgeFeesTpl>
+  <div
+    class="
+      row
+      justify-content-center
+      item-align-center
+      text-info
+      mt-4
+      p-2
+      bg-lighter
+      rounded
+      cursor-pointer
+      position-relative
+    "
+    *ngIf="bridgeFee"
+    tabindex="1"
+    title="Click to view detailed fee calculation"
+    (click)="showFees = !showFees"
+  >
+    <span class="col-1 drop-menu position-absolute right-0 top-0 mt-1 -mr-1" [class.open]="showFees">
+      <own-icon icon="arrow-down"></own-icon>
+    </span>
+    <div class="col">
+      <ng-container *ngIf="showFees">
+        <div class="row mr-2">
+          <div class="col">Gas consumption:</div>
+          <div class="col text-right">{{ bridgeFee.gasConsumption }} Gas</div>
+        </div>
+        <div class="row mr-2">
+          <div class="col">Gas price:</div>
+          <div class="col text-right">{{ bridgeFee.gweiGasPrice }} Gwei</div>
+        </div>
+
+        <div class="row mr-2">
+          <div class="col">{{ blockchain | uppercase }} fee:</div>
+          <div class="col text-right">{{ bridgeFee.targetCurrencyFee }} {{ networkToken }}</div>
+        </div>
+
+        <div class="row mr-2">
+          <div class="col">CHX/{{ networkToken }} price rate:</div>
+          <div class="col text-right">
+            {{ bridgeFee.chxTargetCurrencyPriceRate }}
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="row mr-2">
+          <div class="col">Fee on {{ blockchain | uppercase }}:</div>
+          <div class="col text-right">{{ bridgeFee.targetFeeInChx | number: '1.0-7' }} CHX</div>
+        </div>
+        <div class="row mr-2">
+          <div class="col">Fee on WeOwn blockchain:</div>
+          <div class="col text-right">
+            {{ from === 'own' ? (bridgeFee.chxFee + fee | number: '1.0-7') : (bridgeFee.chxFee | number: '1.0-7') }}
+            CHX
+          </div>
+        </div>
+
+        <hr />
+      </ng-container>
+
+      <div class="row" [class.text-bold]="showFees">
+        <div class="col">
+          <div class="float-left">
+            <own-icon icon="info" size="24" color="#3aabb9"></own-icon>
+          </div>
+          Total fee:
+        </div>
+        <div class="col text-right">
+          <div class="row mr-2">
+            <div class="col">
+              {{
+                from === 'own' ? (bridgeFee.totalFee + fee | number: '1.0-7') : (bridgeFee.totalFee | number: '1.0-7')
+              }}
+              CHX
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </ng-template>

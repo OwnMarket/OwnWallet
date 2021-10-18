@@ -11,6 +11,7 @@ import {
   NodeService,
   PrivatekeyService,
   CryptoService,
+  BridgeFee,
 } from 'src/app/shared';
 
 @Component({
@@ -21,6 +22,7 @@ import {
 export class AssetBridgeComponent implements OnInit, OnDestroy {
   acceptBridgeForm: FormGroup;
   assetBridgeForm: FormGroup;
+
   metaMaskStatus$: Observable<MetaMaskStatus>;
   chainName$: Observable<string>;
 
@@ -33,14 +35,18 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   fee: number;
 
   addressSub: Subscription;
+  bridgeFeeSub: Subscription;
 
   step: number = 2;
   risksAccepted: boolean = false;
   loading: boolean = false;
+  showFee: boolean = false;
+  bridgeFee: BridgeFee;
 
   assetHashFromParams: string;
   balanceFromParams: number;
 
+  accounts: string[] = [];
   assets: any = ['chx', 'defx'];
   blockchains = [
     { name: 'Ethereum', code: 'eth' },
@@ -66,8 +72,9 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
     this.addressSub = combineLatest([
       this.nodeService.getAddressInfo(this.wallet.address),
+      this.nodeService.getChxAddressAccounts(this.wallet.address),
       this.activatedRoute.queryParams,
-    ]).subscribe(([balInfo, params]) => {
+    ]).subscribe(([balInfo, accounts, params]) => {
       this.chxBalance = balInfo.balance.available;
       this.nonce = balInfo.nonce + 1;
       this.fee = this.nodeService.getMinFee();
@@ -76,7 +83,8 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
       const { assetHash, balance } = params;
       this.assetHashFromParams = assetHash || null;
-      this.balanceFromParams = balance || null;
+      this.balanceFromParams = +balance || null;
+      this.accounts = accounts.accounts;
 
       this.initAcceptBridgeForm();
       this.initAssetBridgeForm();
@@ -85,6 +93,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.addressSub && this.addressSub.unsubscribe();
+    this.bridgeFeeSub && this.bridgeFeeSub.unsubscribe();
   }
 
   initAcceptBridgeForm(): void {
@@ -103,7 +112,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       to: ['eth'],
       fromAddress: [this.chxAddress],
       toAddress: [this.metaMaskAddress],
-      account: [null],
+      account: [this.accounts[0]],
     });
   }
 
@@ -127,12 +136,30 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     return this.assetBridgeForm.get('to').value;
   }
 
+  get account(): string {
+    return this.assetBridgeForm.get('account').value;
+  }
+
   get metaMaskAddress(): string {
     return this.metamask.currentAccount;
   }
 
   targetChainName(code: string): string {
     return this.blockchains.find((chain) => chain.code === code).name;
+  }
+
+  swapBlockchains() {
+    if (this.from === 'own') {
+      this.assetBridgeForm.get('from').setValue(this.to);
+      this.assetBridgeForm.get('to').setValue('own');
+      this.assetBridgeForm.get('fromAddress').setValue(this.toAddress);
+      this.assetBridgeForm.get('toAddress').setValue(this.chxAddress);
+    } else {
+      this.assetBridgeForm.get('to').setValue(this.from);
+      this.assetBridgeForm.get('from').setValue('own');
+      this.assetBridgeForm.get('toAddress').setValue(this.fromAddress);
+      this.assetBridgeForm.get('fromAddress').setValue(this.chxAddress);
+    }
   }
 
   acceptRisks() {

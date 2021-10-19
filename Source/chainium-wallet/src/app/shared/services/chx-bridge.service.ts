@@ -97,9 +97,7 @@ export class ChxBridgeService {
       }
       return true;
     } catch (error) {
-      throw new Error(
-        `Please check if your currently selected network in MetaMask is ${this.network}. Change currently selected network in MetaMask to ${this.network} and try again.`
-      );
+      throw new Error(error.message);
     }
   }
 

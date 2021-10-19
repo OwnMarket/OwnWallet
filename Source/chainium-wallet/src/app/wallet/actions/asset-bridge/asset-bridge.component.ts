@@ -33,13 +33,14 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   wallet: WalletInfo;
   chxAddress: string;
   chxBalance: number;
+  balance: number;
   nonce: number;
   fee: number;
 
   addressSub: Subscription;
   bridgeFeeSub: Subscription;
 
-  step: number = 2;
+  step: number = 1;
   risksAccepted: boolean = false;
   loading: boolean = false;
   showFee: boolean = false;
@@ -48,6 +49,8 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   assetHashFromParams: string;
   balanceFromParams: number;
   addressIsMapped: boolean;
+  wrongNetwork: boolean;
+  error: string;
 
   accounts: string[] = [];
   assets: BridgeAsset[] = [];
@@ -95,7 +98,6 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
       this.initAcceptBridgeForm();
       this.initAssetBridgeForm();
-      this.initChxBridge();
     });
   }
 
@@ -124,12 +126,23 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     });
   }
 
+  async connect() {
+    try {
+      await this.metamask.init();
+    } catch (error) {
+      console.log(error.message);
+      this.error = error.message;
+    }
+  }
+
   async initChxBridge() {
     try {
       this.chxService.initContracts(this.metamask.web3, this.to);
       this.addressIsMapped = await this.chxService.addressIsMapped(this.chxAddress, this.to);
+      this.wrongNetwork = await this.chxService.addressIsMappedToOtherChxAddress(this.metaMaskAddress, this.chxAddress);
     } catch (error) {
       console.log(error.message);
+      this.error = error.message;
     }
   }
 
@@ -179,8 +192,22 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     }
   }
 
-  acceptRisks() {
-    this.risksAccepted = true;
-    this.step = 2;
+  async acceptRisks() {
+    try {
+      this.risksAccepted = true;
+      this.step = 2;
+      await this.initChxBridge();
+    } catch (error) {
+      console.log(error.message);
+      this.error = error.message;
+    }
+  }
+
+  reset() {
+    this.error = null;
+    this.risksAccepted = false;
+    this.wrongNetwork = false;
+    this.txResult = null;
+    this.step = 1;
   }
 }

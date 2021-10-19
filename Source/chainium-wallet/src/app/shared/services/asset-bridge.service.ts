@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpBackend } from '@angular/common/http';
 import { ConfigurationService } from './configuration.service';
 import { Observable } from 'rxjs';
-import { BridgeAsset } from '../models/bridge-asset.model';
+import { ApiResponse, BridgeAsset } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class AssetBridgeService {
@@ -12,8 +12,8 @@ export class AssetBridgeService {
     this.httpHandler = new HttpClient(handler);
   }
 
-  getAssets(): Observable<BridgeAsset[]> {
-    return this.httpHandler.get<BridgeAsset[]>(`${this.configService.config.bridgeApiUrl}/assets`);
+  getAssets(): Observable<ApiResponse<BridgeAsset[]>> {
+    return this.httpHandler.get<ApiResponse<BridgeAsset[]>>(`${this.configService.config.bridgeApiUrl}/assets`);
   }
 
   getABI(targetBlockchain: string, tokenAddress: string): Observable<string> {

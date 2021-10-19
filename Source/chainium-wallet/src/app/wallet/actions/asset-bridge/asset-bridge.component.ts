@@ -10,8 +10,10 @@ import {
   MetamaskService,
   NodeService,
   PrivatekeyService,
-  CryptoService,
   BridgeFee,
+  AssetBridgeService,
+  BridgeAsset,
+  ChxBridgeService,
 } from 'src/app/shared';
 
 @Component({
@@ -45,9 +47,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   assetHashFromParams: string;
   balanceFromParams: number;
+  addressIsMapped: boolean;
 
   accounts: string[] = [];
-  assets: any = ['chx', 'defx'];
+  assets: BridgeAsset[] = [];
   blockchains = [
     { name: 'Ethereum', code: 'eth' },
     { name: 'Binance Smart Chain', code: 'bsc' },
@@ -59,7 +62,8 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     private metamask: MetamaskService,
     private nodeService: NodeService,
     private privateKeyService: PrivatekeyService,
-    private cryptoService: CryptoService
+    private assetBridgeService: AssetBridgeService,
+    private chxService: ChxBridgeService
   ) {}
 
   ngOnInit(): void {
@@ -73,21 +77,25 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.addressSub = combineLatest([
       this.nodeService.getAddressInfo(this.wallet.address),
       this.nodeService.getChxAddressAccounts(this.wallet.address),
+      this.assetBridgeService.getAssets(),
       this.activatedRoute.queryParams,
-    ]).subscribe(([balInfo, accounts, params]) => {
+    ]).subscribe(([balInfo, accounts, assets, params]) => {
       this.chxBalance = balInfo.balance.available;
       this.nonce = balInfo.nonce + 1;
       this.fee = this.nodeService.getMinFee();
-      this.metaMaskStatus$ = this.metamask.status$;
-      this.chainName$ = this.metamask.chainName$;
 
       const { assetHash, balance } = params;
       this.assetHashFromParams = assetHash || null;
       this.balanceFromParams = +balance || null;
       this.accounts = accounts.accounts;
+      this.assets = [this.chxService.ChxAsset, ...assets.data];
+
+      this.metaMaskStatus$ = this.metamask.status$;
+      this.chainName$ = this.metamask.chainName$;
 
       this.initAcceptBridgeForm();
       this.initAssetBridgeForm();
+      this.initChxBridge();
     });
   }
 
@@ -106,7 +114,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   initAssetBridgeForm(): void {
     this.assetBridgeForm = this.fb.group({
-      asset: ['chx'],
+      asset: ['CHX'],
       amount: [0, [Validators.required, Validators.min(0.0000001)]],
       from: ['own'],
       to: ['eth'],
@@ -114,6 +122,15 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       toAddress: [this.metaMaskAddress],
       account: [this.accounts[0]],
     });
+  }
+
+  async initChxBridge() {
+    try {
+      this.chxService.initContracts(this.metamask.web3, this.to);
+      this.addressIsMapped = await this.chxService.addressIsMapped(this.chxAddress, this.to);
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   get selectedAsset(): string {

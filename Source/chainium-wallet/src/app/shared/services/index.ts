@@ -1,5 +1,6 @@
 export * from './asset-bridge.service';
 export * from './chx-bridge-fee.service';
+export * from './chx-bridge.service';
 export * from './configuration.service';
 export * from './crypto.service';
 export * from './file.service';

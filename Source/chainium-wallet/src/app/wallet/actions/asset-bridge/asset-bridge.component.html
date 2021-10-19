@@ -110,22 +110,27 @@
                             width="30px"
                             height="30px"
                             class="mr-2"
-                            *ngIf="selectedAsset === 'chx'"
-                            src="https://s3.amazonaws.com/static.weown.com/own/WeOwn_logo_final.png"
+                            [src]="'https://static.weown.com/own/bridge/' + selectedAsset + '.png'"
                           />
                           <div class="text-normal flex">
-                            {{ selectedAsset ? (selectedAsset | uppercase) : 'No assets currently' }}
+                            {{ selectedAsset ? selectedAsset : 'No assets currently' }}
                           </div>
                         </div>
                       </div>
                       <ng-container *ngFor="let asset of assets">
                         <own-dropdown-item
-                          *ngIf="asset !== selectedAsset"
+                          *ngIf="asset.assetCode !== selectedAsset"
                           [hasPadding]="false"
-                          (click)="assetBridgeForm.get('asset').setValue(asset)"
+                          (click)="assetBridgeForm.get('asset').setValue(asset.assetCode)"
                         >
-                          <div class="flex items-center">
-                            <div class="px-4 text-normal">{{ asset | uppercase }}</div>
+                          <div class="flex items-center px-4">
+                            <img
+                              width="30px"
+                              height="30px"
+                              class="mr-2"
+                              [src]="'https://static.weown.com/own/bridge/' + asset.assetCode + '.png'"
+                            />
+                            <div class="text-normal">{{ asset.assetCode }}</div>
                           </div>
                         </own-dropdown-item>
                       </ng-container>
@@ -169,11 +174,11 @@
                       <label class="px-4 mt-2">WeOwn</label>
                     </ng-container>
                     <div class="p-4 border-top-all">
-                      <ng-container *ngIf="selectedAsset === 'chx'">
+                      <ng-container *ngIf="selectedAsset === 'CHX'">
                         <div class="mb-2">Address:</div>
                         <div class="info">{{ fromAddress }}</div>
                       </ng-container>
-                      <ng-container *ngIf="selectedAsset !== 'chx' && from !== 'own'">
+                      <ng-container *ngIf="selectedAsset !== 'CHX' && from !== 'own'">
                         <div class="mb-2">Address:</div>
                         <div class="mega-input">
                           <input
@@ -185,7 +190,7 @@
                           />
                         </div>
                       </ng-container>
-                      <ng-container *ngIf="selectedAsset !== 'chx' && from === 'own'">
+                      <ng-container *ngIf="selectedAsset !== 'CHX' && from === 'own'">
                         <div class="mb-2">Account:</div>
                         <div class="mega-input block position-relative">
                           <ng-container [ngTemplateOutlet]="accountDropdown"></ng-container>
@@ -213,11 +218,11 @@
                       ></ng-container>
                     </ng-container>
                     <div class="p-4 border-top-all">
-                      <ng-container *ngIf="selectedAsset === 'chx'">
+                      <ng-container *ngIf="selectedAsset === 'CHX'">
                         <div class="mb-2">Address:</div>
                         <div class="info">{{ toAddress }}</div>
                       </ng-container>
-                      <ng-container *ngIf="selectedAsset !== 'chx' && to !== 'own'">
+                      <ng-container *ngIf="selectedAsset !== 'CHX' && to !== 'own'">
                         <div class="mb-2">Address:</div>
                         <div class="mega-input">
                           <input
@@ -229,7 +234,7 @@
                           />
                         </div>
                       </ng-container>
-                      <ng-container *ngIf="selectedAsset !== 'chx' && to === 'own'">
+                      <ng-container *ngIf="selectedAsset !== 'CHX' && to === 'own'">
                         <div class="mb-2">Account:</div>
                         <div class="mega-input block position-relative">
                           <ng-container [ngTemplateOutlet]="accountDropdown"></ng-container>

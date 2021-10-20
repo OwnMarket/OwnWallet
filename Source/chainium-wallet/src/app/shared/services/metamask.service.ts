@@ -28,9 +28,12 @@ export class MetamaskService {
     MetaMaskStatus.Disconnected
   );
   private chainIdSubj: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+  private accountSubj: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+
   error$: Observable<string | null> = this.errorSubj.asObservable();
   status$: Observable<MetaMaskStatus> = this.statusSubj.asObservable();
   chainId$: Observable<string | null> = this.chainIdSubj.asObservable();
+  account$: Observable<string | null> = this.accountSubj.asObservable();
 
   constructor(private configService: ConfigurationService) {
     this.provider = window.ethereum as any;
@@ -83,6 +86,7 @@ export class MetamaskService {
       this.errorSubj.next(`Your MetaMask wallet is locked or you didn't connect any accounts.`);
     }
     if (accounts[0] !== this.currentAccount) {
+      this.accountSubj.next(accounts[0]);
       this.currentAccount = accounts[0];
     }
     console.log(this.currentAccount);

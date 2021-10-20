@@ -6,8 +6,8 @@
           <div class="row justify-content-between">
             <div class="col">Cross-Chain Transfer</div>
             <div class="col text-right" *ngIf="status === 'Connected'">
-              <span class="text-small text-info mr-2" *ngIf="chainName$ | async as networkName">
-                {{ networkName }}
+              <span class="text-small text-info mr-2" *ngIf="chainName">
+                {{ chainName }}
               </span>
             </div>
           </div>
@@ -204,11 +204,7 @@
                         </ng-container>
                         <ng-container *ngIf="selectedAsset !== 'CHX' && from === 'own'">
                           <div class="mb-2">Account:</div>
-                          <button
-                            *ngIf="accounts.length === 0"
-                            class="block own-effect"
-                            [routerLink]="['wallet/portfolio']"
-                          >
+                          <button *ngIf="accounts.length === 0" class="block own-effect" routerLink="/wallet/portfolio">
                             ADD ACCOUNT
                           </button>
                           <div class="mega-input block position-relative" *ngIf="accounts.length > 0">
@@ -255,11 +251,7 @@
                         </ng-container>
                         <ng-container *ngIf="selectedAsset !== 'CHX' && to === 'own'">
                           <div class="mb-2">Account:</div>
-                          <button
-                            *ngIf="accounts.length === 0"
-                            class="block own-effect"
-                            [routerLink]="['wallet/portfolio']"
-                          >
+                          <button *ngIf="accounts.length === 0" class="block own-effect" routerLink="/wallet/portfolio">
                             ADD ACCOUNT
                           </button>
                           <div class="mega-input block position-relative" *ngIf="accounts.length > 0">
@@ -415,7 +407,6 @@
       justify-content-center
       item-align-center
       text-info
-      mt-4
       p-2
       bg-lighter
       rounded
@@ -427,7 +418,7 @@
     title="Click to view detailed fee calculation"
     (click)="showFees = !showFees"
   >
-    <span class="col-1 drop-menu position-absolute right-0 top-0 mt-1 -mr-1" [class.open]="showFees">
+    <span class="drop-menu position-absolute right-0 top-0 mt-1 mr-1" [class.open]="showFees">
       <own-icon icon="arrow-down"></own-icon>
     </span>
     <div class="col">
@@ -442,12 +433,12 @@
         </div>
 
         <div class="row mr-2">
-          <div class="col">{{ blockchain | uppercase }} fee:</div>
+          <div class="col">{{ to | uppercase }} fee:</div>
           <div class="col text-right">{{ bridgeFee.targetCurrencyFee }} {{ networkToken }}</div>
         </div>
 
         <div class="row mr-2">
-          <div class="col">CHX/{{ networkToken }} price rate:</div>
+          <div class="col">CHX/{{ to }} price rate:</div>
           <div class="col text-right">
             {{ bridgeFee.chxTargetCurrencyPriceRate }}
           </div>
@@ -456,7 +447,7 @@
         <hr />
 
         <div class="row mr-2">
-          <div class="col">Fee on {{ blockchain | uppercase }}:</div>
+          <div class="col">Fee on {{ to | uppercase }}:</div>
           <div class="col text-right">{{ bridgeFee.targetFeeInChx | number: '1.0-7' }} CHX</div>
         </div>
         <div class="row mr-2">
@@ -471,13 +462,13 @@
       </ng-container>
 
       <div class="row" [class.text-bold]="showFees">
-        <div class="col">
+        <div class="col-5">
           <div class="float-left">
             <own-icon icon="info" size="24" color="#3aabb9"></own-icon>
           </div>
           Total fee:
         </div>
-        <div class="col text-right">
+        <div class="col-7 text-right">
           <div class="row mr-2">
             <div class="col">
               {{

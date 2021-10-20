@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ɵɵsetComponentScope } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { combineLatest, Observable, Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest, Observable, of, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import {
   MetaMaskStatus,
@@ -26,9 +27,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   assetBridgeForm: FormGroup;
 
   metaMaskStatus$: Observable<MetaMaskStatus>;
+  txStatus$: Observable<string>;
+  txResult$: Observable<TxResult>;
 
   isKeyImported: boolean;
-  txResult: TxResult;
   wallet: WalletInfo;
   chxAddress: string;
   chxBalance: number;
@@ -37,6 +39,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   nonce: number;
   fee: number;
 
+  paramsSub: Subscription;
   addressSub: Subscription;
   bridgeFeeSub: Subscription;
   transferSub: Subscription;
@@ -45,6 +48,8 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   risksAccepted: boolean = false;
   loading: boolean = false;
   showFee: boolean = false;
+  showMapping: boolean = false;
+  mappingAddresses: boolean = true;
   bridgeFee: BridgeFee;
 
   assetHashFromParams: string;
@@ -80,6 +85,15 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     }
     this.wallet = this.privateKeyService.getWalletInfo();
     this.chxAddress = this.wallet.address;
+    this.metaMaskStatus$ = this.metamask.status$;
+    this.metaMaskAddress = this.metamask.currentAccount;
+    this.txStatus$ = of('ready');
+
+    this.paramsSub = this.activatedRoute.queryParams.subscribe((params) => {
+      const { assetHash, balance } = params;
+      this.assetHashFromParams = assetHash || null;
+      this.balanceFromParams = +balance || null;
+    });
 
     this.addressSub = combineLatest([
       this.nodeService.getAddressInfo(this.wallet.address),
@@ -87,39 +101,34 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.assetBridgeService.getAssets(),
       this.metamask.account$,
       this.metamask.chainName$,
-      this.activatedRoute.queryParams,
-    ]).subscribe(([balInfo, accounts, assets, account, chainName, params]) => {
+    ]).subscribe(([balInfo, accounts, assets, account, chainName]) => {
       this.chxBalance = balInfo.balance.available;
       this.nonce = balInfo.nonce + 1;
       this.fee = this.nodeService.getMinFee();
 
-      const { assetHash, balance } = params;
-      this.assetHashFromParams = assetHash || null;
-      this.balanceFromParams = +balance || null;
       this.accounts = accounts.accounts;
       this.assets = [this.chxService.ChxAsset, ...assets.data];
-
-      this.metaMaskStatus$ = this.metamask.status$;
 
       this.initAcceptBridgeForm();
       this.initAssetBridgeForm();
 
       if (this.chainName !== chainName) {
-        this.reset();
-        console.log(chainName);
+        if (this.step !== 1 || this.error) this.reset();
         this.chainName = chainName;
         this.changeDetectorRef.markForCheck();
       }
 
       if (this.metaMaskAddress !== account) {
-        this.reset();
+        if (this.step !== 1 || this.error) this.reset();
         this.metaMaskAddress = account;
+        this.assetBridgeForm.get('toAddress').setValue(this.metaMaskAddress);
         this.changeDetectorRef.markForCheck();
       }
     });
   }
 
   ngOnDestroy(): void {
+    this.paramsSub && this.paramsSub.unsubscribe();
     this.addressSub && this.addressSub.unsubscribe();
     this.bridgeFeeSub && this.bridgeFeeSub.unsubscribe();
     this.transferSub && this.transferSub.unsubscribe();
@@ -190,7 +199,6 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   async connect() {
     try {
       await this.metamask.init();
-      this.assetBridgeForm.get('toAddress').setValue(this.metaMaskAddress);
     } catch (error) {
       console.log(error.message);
       this.error = error.message;
@@ -199,10 +207,12 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   async initChxBridge() {
     try {
+      this.txStatus$ = this.chxService.status$;
+      this.txResult$ = this.chxService.txResult$;
       this.chxService.initContracts(this.metamask.web3, this.to);
       this.addressIsMapped = await this.chxService.addressIsMapped(this.chxAddress, this.to);
       this.wrongNetwork = await this.chxService.addressIsMappedToOtherChxAddress(this.metaMaskAddress, this.chxAddress);
-      if (this.addressIsMapped && this.metaMaskAddress) {
+      if (this.metaMaskAddress) {
         const { balance, minWrapAmount } = await this.chxService.balanceAndMinAmount(this.metaMaskAddress);
         this.balance = balance;
         this.minWrapAmount = minWrapAmount;
@@ -229,14 +239,17 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   async mapAddress() {
     try {
-      this.transferSub = this.chxService
-        .mapAddress(this.metaMaskAddress, this.chxAddress, this.privateKeyService.getWalletInfo().privateKey)
-        .subscribe((resp) => {
-          console.log(resp);
-          this.addressIsMapped = true;
-        });
+      this.mappingAddresses = true;
+      await this.chxService.mapAddress(
+        this.metaMaskAddress,
+        this.chxAddress,
+        this.privateKeyService.getWalletInfo().privateKey
+      );
+      this.mappingAddresses = false;
+      this.addressIsMapped = true;
     } catch (error) {
       console.log(error);
+      this.error = error.message;
     }
   }
 
@@ -244,7 +257,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.error = null;
     this.risksAccepted = false;
     this.wrongNetwork = false;
-    this.txResult = null;
     this.step = 1;
+    this.chxService.resetStatus();
   }
 }

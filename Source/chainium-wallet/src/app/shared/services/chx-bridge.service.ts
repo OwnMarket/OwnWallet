@@ -116,33 +116,31 @@ export class ChxBridgeService {
     return this.bridgeFeeService.getBridgeFees(targetBlockchain, targetAddress, type).pipe(map((resp) => resp.data));
   }
 
-  mapAddress(targetAddress: string, chxAddress: string, privateKey: string): Observable<any> {
-    this.statusSubj.next('loading');
-    return this.cryptoService.signMessage(privateKey, targetAddress).pipe(
-      map(async (signature: string) => {
-        try {
-          await this.mapping.methods
-            .mapAddress(chxAddress, signature)
-            .send({
-              from: targetAddress,
-            })
-            .on('transactionHash', (hash: string) => {
-              let txResult = new TxResult();
-              txResult.txHash = hash;
-              this.txResultSubj.next(txResult);
-              this.statusSubj.next('inprogress');
-            })
-            .on('receipt', (receipt) => {
-              this.txResultSubj.next(null);
-              this.statusSubj.next('done');
-            });
+  async mapAddress(targetAddress: string, chxAddress: string, privateKey: string): Promise<any> {
+    try {
+      const signature = await this.cryptoService.signMessageAsPromise(privateKey, targetAddress);
+      await this.mapping.methods
+        .mapAddress(chxAddress, signature)
+        .send({
+          from: targetAddress,
+        })
+        .on('transactionHash', (hash: string) => {
+          let txResult = new TxResult();
+          txResult.txHash = hash;
+          this.txResultSubj.next(txResult);
+          this.statusSubj.next('proccessing');
+        })
+        .on('receipt', (receipt) => {
+          this.statusSubj.next('done');
+        });
+    } catch (error) {
+      this.errorSubj.next(error.error.message);
+      throw new Error(error.message);
+    }
+  }
 
-          return true;
-        } catch (error) {
-          this.errorSubj.next(error.error.message);
-          return false;
-        }
-      })
-    );
+  resetStatus() {
+    this.statusSubj.next('ready');
+    this.txResultSubj.next(null);
   }
 }

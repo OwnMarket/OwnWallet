@@ -1,4 +1,4 @@
-<div class="container my-5" *ngIf="isKeyImported && acceptBridgeForm && metaMaskStatus$ | async as status">
+<div class="container my-5" *ngIf="isKeyImported && metaMaskStatus$ | async as status">
   <div class="row justify-content-center">
     <div class="col-12 col-sm-12 col-md-8">
       <own-card>
@@ -16,69 +16,341 @@
           <!-- Error -->
           <ng-container *ngIf="error" [ngTemplateOutlet]="errorScreen"></ng-container>
 
-          <ng-container *ngIf="!error">
-            <!-- Step 1 - Accept Risks -->
-            <div class="row" *ngIf="step === 1">
-              <div class="col">
-                <h4 class="mb-4">Terms to accept</h4>
-                <p>
-                  This process allows you to transfer CHX tokens from the
-                  <strong>WeOwn Blockchain</strong> onto other blockchains and back.
-                </p>
-                <p>
-                  Before you proceed, please make sure you are familiar with inter-blockchain related swap / bridge /
-                  wrap risks involved.
-                </p>
-                <p class="mt-4">The pre-requisites for the token bridge are:</p>
-                <ul>
-                  <li>You have created a CHX wallet, loaded with enough CHX tokens incl. transaction fees.</li>
-                  <li>
-                    You have a wallet on the supported source and target blockchain with enough tokens and transaction
-                    fees.
-                  </li>
-                  <li>
-                    You are in control of all private keys for both source and target blockchain, safely stored in a
-                    secure place.
-                  </li>
-                  <li>You have a MetaMask installed and you can access it.</li>
-                </ul>
-                <form [formGroup]="acceptBridgeForm">
-                  <div class="row mt-4">
-                    <div class="col mt-4">
-                      <input type="checkbox" formControlName="aware" id="aware-of-risks" />
-                      <label class="m-0" for="aware-of-risks"
-                        >I am fully aware of the risks involved, and any incorrect usage could result in total or
-                        partial loss of my funds</label
-                      >
+          <!-- Mapping -->
+          <ng-container *ngIf="showMapping" [ngTemplateOutlet]="mappingScreen"></ng-container>
+
+          <ng-container *ngIf="txStatus$ | async as txStatus">
+            <ng-container *ngIf="txResult$ | async as txRes">
+              <!-- Proccessing -->
+              <ng-container *ngIf="txStatus === 'proccessing'">
+                <ng-container *ngTemplateOutlet="proccessingScreen; context: { txResult: txRes }"></ng-container>
+              </ng-container>
+              <!-- Transaction info -->
+              <ng-container *ngIf="txStatus === 'done'">
+                <ng-container *ngTemplateOutlet="transactionInfo; context: { txResult: txRes }"></ng-container>
+              </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="!error && !showMapping && (!txStatus || txStatus === 'ready')">
+              <!-- Step 1 - Accept Risks -->
+              <div class="row" *ngIf="step === 1 && acceptBridgeForm">
+                <div class="col">
+                  <h4 class="mb-4">Terms to accept</h4>
+                  <p>
+                    This process allows you to transfer CHX tokens from the
+                    <strong>WeOwn Blockchain</strong> onto other blockchains and back.
+                  </p>
+                  <p>
+                    Before you proceed, please make sure you are familiar with inter-blockchain related swap / bridge /
+                    wrap risks involved.
+                  </p>
+                  <p class="mt-4">The pre-requisites for the token bridge are:</p>
+                  <ul>
+                    <li>You have created a CHX wallet, loaded with enough CHX tokens incl. transaction fees.</li>
+                    <li>
+                      You have a wallet on the supported source and target blockchain with enough tokens and transaction
+                      fees.
+                    </li>
+                    <li>
+                      You are in control of all private keys for both source and target blockchain, safely stored in a
+                      secure place.
+                    </li>
+                    <li>You have a MetaMask installed and you can access it.</li>
+                  </ul>
+                  <form [formGroup]="acceptBridgeForm">
+                    <div class="row mt-4">
+                      <div class="col mt-4">
+                        <input type="checkbox" formControlName="aware" id="aware-of-risks" />
+                        <label class="m-0" for="aware-of-risks"
+                          >I am fully aware of the risks involved, and any incorrect usage could result in total or
+                          partial loss of my funds</label
+                        >
+                      </div>
                     </div>
-                  </div>
-                  <div class="row mt-4">
+                    <div class="row mt-4">
+                      <div class="col">
+                        <input type="checkbox" formControlName="confirm" id="confirm" />
+                        <label class="m-0" for="confirm">
+                          I hereby confirm that both target and source wallets are in my control and I meet all
+                          prerequisites described above.
+                        </label>
+                      </div>
+                    </div>
+                    <div class="row mt-4">
+                      <div class="col">
+                        <input type="checkbox" formControlName="agree" id="agree" />
+                        <label class="m-0" for="agree">
+                          I confirm and agree that WeOwn cannot be held accountable for any incorrect or improper use of
+                          the bridge feature.
+                        </label>
+                      </div>
+                    </div>
+                    <div class="row mt-4 justify-content-center">
+                      <div class="col col-sm-6 mt-4">
+                        <button
+                          [disabled]="(status !== 'Disconnected' && acceptBridgeForm.invalid) || loading"
+                          class="block own-effect"
+                          (click)="metamask.currentAccount ? acceptRisks() : connect()"
+                        >
+                          <svg
+                            *ngIf="loading || status === 'Connecting'"
+                            class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              class="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="#ffffff"
+                              stroke-width="4"
+                            ></circle>
+                            <path
+                              class="opacity-75"
+                              fill="#dfdfdf"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                          <ng-container *ngIf="status !== 'Connecting'">
+                            {{ status === 'Connected' ? 'ACCEPT AND CONTINUE' : 'CONNECT WITH METAMASK' }}
+                          </ng-container>
+                          {{ status === 'Connecting' ? 'CONNECTING...' : '' }}
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Form -->
+              <div class="row" *ngIf="step === 2 && assetBridgeForm">
+                <form class="col" [formGroup]="assetBridgeForm">
+                  <div class="row">
                     <div class="col">
-                      <input type="checkbox" formControlName="confirm" id="confirm" />
-                      <label class="m-0" for="confirm">
-                        I hereby confirm that both target and source wallets are in my control and I meet all
-                        prerequisites described above.
-                      </label>
+                      <div class="row">
+                        <label for="amount" class="col ml-2">Asset</label>
+                        <div class="col text-info text-right">
+                          {{ selectedAsset === 'CHX' ? 'Balance: ' + chxBalance + 'CHX' : '' }}
+                        </div>
+                      </div>
+                      <div class="mega-input block text-lg">
+                        <own-dropdown-menu id="asset-selector" [showIcon]="false" [fullWidth]="true">
+                          <div class="label flex items-center justify-content-between wallet-table">
+                            <div class="flex items-center">
+                              <img
+                                width="30px"
+                                height="30px"
+                                class="mr-2"
+                                [src]="'https://static.weown.com/own/bridge/' + selectedAsset + '.png'"
+                              />
+                              <div class="text-normal flex">
+                                {{ selectedAsset ? selectedAsset : 'No assets currently' }}
+                              </div>
+                            </div>
+                          </div>
+                          <ng-container *ngFor="let asset of assets">
+                            <own-dropdown-item
+                              *ngIf="asset.assetCode !== selectedAsset"
+                              [hasPadding]="false"
+                              (click)="assetBridgeForm.get('asset').setValue(asset.assetCode)"
+                            >
+                              <div class="flex items-center px-4">
+                                <img
+                                  width="30px"
+                                  height="30px"
+                                  class="mr-2"
+                                  [src]="'https://static.weown.com/own/bridge/' + asset.assetCode + '.png'"
+                                />
+                                <div class="text-normal">{{ asset.assetCode }}</div>
+                              </div>
+                            </own-dropdown-item>
+                          </ng-container>
+                        </own-dropdown-menu>
+                      </div>
                     </div>
-                  </div>
-                  <div class="row mt-4">
                     <div class="col">
-                      <input type="checkbox" formControlName="agree" id="agree" />
-                      <label class="m-0" for="agree">
-                        I confirm and agree that WeOwn cannot be held accountable for any incorrect or improper use of
-                        the bridge feature.
-                      </label>
+                      <label for="amount" class="ml-2">Amount</label>
+                      <div class="mega-input text-lg">
+                        <input
+                          id="amount"
+                          name="amount"
+                          class="block no-borders"
+                          type="number"
+                          formControlName="amount"
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div class="row mt-4 justify-content-center">
-                    <div class="col col-sm-6 mt-4">
-                      <button
-                        [disabled]="acceptBridgeForm.invalid || loading"
-                        class="block own-effect"
-                        (click)="metamask.currentAccount ? acceptRisks() : connect()"
-                      >
+
+                  <div class="row mt-4">
+                    <div class="col-6">
+                      <label for="from" class="ml-2">From</label>
+                      <div class="shadow-sm border rounded">
+                        <div class="p-4 pb-0 position-relative">
+                          <ng-container *ngIf="selectedAsset === 'CHX' && from !== 'own' && !addressIsMapped">
+                            <a
+                              role="button"
+                              (click)="showMapping = true"
+                              class="position-absolute block right-0 text-right mb-4 pr-4"
+                              >MAP ADDRESS</a
+                            >
+                          </ng-container>
+                          <ng-container [ngSwitch]="from">
+                            <ng-container *ngSwitchCase="'own'" [ngTemplateOutlet]="weownLogo"></ng-container>
+                            <ng-container *ngSwitchCase="'eth'" [ngTemplateOutlet]="ethLogo"></ng-container>
+                            <ng-container *ngSwitchCase="'bsc'" [ngTemplateOutlet]="bscLogo"></ng-container>
+                          </ng-container>
+                          <div class="position-absolute swap-chains">
+                            <button
+                              class="button-transparent cursor-pointer rotate-90 px-4"
+                              title="Swap Blockchains"
+                              (click)="swapBlockchains()"
+                            >
+                              <own-icon icon="swap"></own-icon>
+                            </button>
+                          </div>
+                        </div>
+                        <ng-container *ngIf="from !== 'own'">
+                          <ng-container
+                            *ngTemplateOutlet="bcDropdown; context: { target: 'from', current: from }"
+                          ></ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="from === 'own'">
+                          <label class="px-4 mt-2">WeOwn</label>
+                        </ng-container>
+                        <div class="p-4 border-top-all">
+                          <ng-container *ngIf="selectedAsset === 'CHX'">
+                            <div class="mb-2">Address:</div>
+                            <div class="row">
+                              <div class="info elipsis col">
+                                {{ fromAddress }}
+                              </div>
+                              <div class="col-2">
+                                <button
+                                  class="button-transparent p-0"
+                                  title="Copy Address"
+                                  ngxClipboard
+                                  cbContent="{{ fromAddress }}"
+                                >
+                                  <own-icon icon="copy"></own-icon>
+                                </button>
+                              </div>
+                            </div>
+                          </ng-container>
+                          <ng-container *ngIf="selectedAsset !== 'CHX' && from !== 'own'">
+                            <div class="mb-2">Address:</div>
+                            <div class="mega-input">
+                              <input
+                                id="from-address"
+                                name="from-address"
+                                class="block no-borders elipsis"
+                                type="text"
+                                formControlName="fromAddress"
+                              />
+                            </div>
+                          </ng-container>
+                          <ng-container *ngIf="selectedAsset !== 'CHX' && from === 'own'">
+                            <div class="mb-2">Account:</div>
+                            <button
+                              *ngIf="accounts.length === 0"
+                              type="button"
+                              class="block own-effect"
+                              routerLink="/wallet/portfolio"
+                            >
+                              ADD ACCOUNT
+                            </button>
+                            <div class="mega-input block position-relative" *ngIf="accounts.length > 0">
+                              <ng-container [ngTemplateOutlet]="accountDropdown"></ng-container>
+                            </div>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <label for="from" class="ml-2">To</label>
+                      <div class="shadow-sm border rounded">
+                        <div class="p-4 pb-0 position-relative">
+                          <ng-container *ngIf="selectedAsset === 'CHX' && to !== 'own' && !addressIsMapped">
+                            <a
+                              role="button"
+                              (click)="showMapping = true"
+                              class="position-absolute block right-0 text-right mb-4 pr-4"
+                              >MAP ADDRESS</a
+                            >
+                          </ng-container>
+                          <ng-container [ngSwitch]="to">
+                            <ng-container *ngSwitchCase="'own'" [ngTemplateOutlet]="weownLogo"></ng-container>
+                            <ng-container *ngSwitchCase="'eth'" [ngTemplateOutlet]="ethLogo"></ng-container>
+                            <ng-container *ngSwitchCase="'bsc'" [ngTemplateOutlet]="bscLogo"></ng-container>
+                          </ng-container>
+                        </div>
+                        <ng-container *ngIf="to === 'own'">
+                          <label class="px-4 mt-2">WeOwn</label>
+                        </ng-container>
+                        <ng-container *ngIf="to !== 'own'">
+                          <ng-container
+                            *ngTemplateOutlet="bcDropdown; context: { target: 'to', current: to }"
+                          ></ng-container>
+                        </ng-container>
+                        <div class="p-4 border-top-all">
+                          <ng-container *ngIf="selectedAsset === 'CHX'">
+                            <div class="mb-2">Address:</div>
+                            <div class="row">
+                              <div class="info elipsis col">
+                                {{ toAddress }}
+                              </div>
+                              <div class="col-2">
+                                <button
+                                  class="button-transparent p-0"
+                                  title="Copy Address"
+                                  ngxClipboard
+                                  cbContent="{{ toAddress }}"
+                                >
+                                  <own-icon icon="copy"></own-icon>
+                                </button>
+                              </div>
+                            </div>
+                          </ng-container>
+                          <ng-container *ngIf="selectedAsset !== 'CHX' && to !== 'own'">
+                            <div class="mb-2">Address:</div>
+                            <div class="mega-input">
+                              <input
+                                id="to-address"
+                                name="to-address"
+                                class="block no-borders elipsis"
+                                type="text"
+                                formControlName="toAddress"
+                              />
+                            </div>
+                          </ng-container>
+                          <ng-container *ngIf="selectedAsset !== 'CHX' && to === 'own'">
+                            <div class="mb-2">Account:</div>
+                            <button
+                              *ngIf="accounts.length === 0"
+                              type="button"
+                              class="block own-effect"
+                              routerLink="/wallet/portfolio"
+                            >
+                              ADD ACCOUNT
+                            </button>
+                            <div class="mega-input block position-relative" *ngIf="accounts.length > 0">
+                              <ng-container [ngTemplateOutlet]="accountDropdown"></ng-container>
+                            </div>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-4 pt-4">
+                    <div class="col">
+                      <ng-container [ngTemplateOutlet]="bridgeFeesTpl"></ng-container>
+                    </div>
+                    <div class="col">
+                      <button [disabled]="assetBridgeForm.invalid || loading" class="block own-effect">
                         <svg
-                          *ngIf="loading || status === 'Connecting'"
+                          *ngIf="loading"
                           class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -91,203 +363,13 @@
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                           ></path>
                         </svg>
-                        <ng-container *ngIf="status !== 'Connecting'">
-                          {{ status === 'Connected' ? 'ACCEPT AND CONTINUE' : 'CONNECT WITH METAMASK' }}
-                        </ng-container>
-                        {{ status === 'Connecting' ? 'CONNECTING...' : '' }}
+                        TRANSFER
                       </button>
                     </div>
                   </div>
                 </form>
               </div>
-            </div>
-
-            <!-- Form -->
-            <div class="row" *ngIf="step === 2 && assetBridgeForm">
-              <form class="col" [formGroup]="assetBridgeForm">
-                <div class="row">
-                  <div class="col">
-                    <label for="amount" class="col-2">Asset</label>
-                    <div class="mega-input block text-lg">
-                      <own-dropdown-menu id="asset-selector" [showIcon]="false" [fullWidth]="true">
-                        <div class="label flex items-center justify-content-between wallet-table">
-                          <div class="flex items-center">
-                            <img
-                              width="30px"
-                              height="30px"
-                              class="mr-2"
-                              [src]="'https://static.weown.com/own/bridge/' + selectedAsset + '.png'"
-                            />
-                            <div class="text-normal flex">
-                              {{ selectedAsset ? selectedAsset : 'No assets currently' }}
-                            </div>
-                          </div>
-                        </div>
-                        <ng-container *ngFor="let asset of assets">
-                          <own-dropdown-item
-                            *ngIf="asset.assetCode !== selectedAsset"
-                            [hasPadding]="false"
-                            (click)="assetBridgeForm.get('asset').setValue(asset.assetCode)"
-                          >
-                            <div class="flex items-center px-4">
-                              <img
-                                width="30px"
-                                height="30px"
-                                class="mr-2"
-                                [src]="'https://static.weown.com/own/bridge/' + asset.assetCode + '.png'"
-                              />
-                              <div class="text-normal">{{ asset.assetCode }}</div>
-                            </div>
-                          </own-dropdown-item>
-                        </ng-container>
-                      </own-dropdown-menu>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <label for="amount" class="col-2">Amount</label>
-                    <div class="mega-input text-lg">
-                      <input
-                        id="amount"
-                        name="amount"
-                        class="block no-borders"
-                        type="number"
-                        formControlName="amount"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mt-4">
-                  <div class="col-6">
-                    <label for="from" class="col-2">From</label>
-                    <div class="shadow-sm border rounded">
-                      <div class="p-4 pb-0 position-relative">
-                        <ng-container [ngSwitch]="from">
-                          <ng-container *ngSwitchCase="'own'" [ngTemplateOutlet]="weownLogo"></ng-container>
-                          <ng-container *ngSwitchCase="'eth'" [ngTemplateOutlet]="ethLogo"></ng-container>
-                          <ng-container *ngSwitchCase="'bsc'" [ngTemplateOutlet]="bscLogo"></ng-container>
-                        </ng-container>
-                        <div class="position-absolute swap-chains">
-                          <button
-                            class="button-transparent cursor-pointer rotate-90 px-4"
-                            title="Swap Blockchains"
-                            (click)="swapBlockchains()"
-                          >
-                            <own-icon icon="swap"></own-icon>
-                          </button>
-                        </div>
-                      </div>
-                      <ng-container *ngIf="from !== 'own'">
-                        <ng-container
-                          *ngTemplateOutlet="bcDropdown; context: { target: 'from', current: from }"
-                        ></ng-container>
-                      </ng-container>
-                      <ng-container *ngIf="from === 'own'">
-                        <label class="px-4 mt-2">WeOwn</label>
-                      </ng-container>
-                      <div class="p-4 border-top-all">
-                        <ng-container *ngIf="selectedAsset === 'CHX'">
-                          <div class="mb-2">Address:</div>
-                          <div class="info">{{ fromAddress }}</div>
-                        </ng-container>
-                        <ng-container *ngIf="selectedAsset !== 'CHX' && from !== 'own'">
-                          <div class="mb-2">Address:</div>
-                          <div class="mega-input">
-                            <input
-                              id="from-address"
-                              name="from-address"
-                              class="block no-borders elipsis"
-                              type="text"
-                              formControlName="fromAddress"
-                            />
-                          </div>
-                        </ng-container>
-                        <ng-container *ngIf="selectedAsset !== 'CHX' && from === 'own'">
-                          <div class="mb-2">Account:</div>
-                          <button *ngIf="accounts.length === 0" class="block own-effect" routerLink="/wallet/portfolio">
-                            ADD ACCOUNT
-                          </button>
-                          <div class="mega-input block position-relative" *ngIf="accounts.length > 0">
-                            <ng-container [ngTemplateOutlet]="accountDropdown"></ng-container>
-                          </div>
-                        </ng-container>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-6">
-                    <label for="from" class="col-2">To</label>
-                    <div class="shadow-sm border rounded">
-                      <div class="p-4 pb-0">
-                        <ng-container [ngSwitch]="to">
-                          <ng-container *ngSwitchCase="'own'" [ngTemplateOutlet]="weownLogo"></ng-container>
-                          <ng-container *ngSwitchCase="'eth'" [ngTemplateOutlet]="ethLogo"></ng-container>
-                          <ng-container *ngSwitchCase="'bsc'" [ngTemplateOutlet]="bscLogo"></ng-container>
-                        </ng-container>
-                      </div>
-                      <ng-container *ngIf="to === 'own'">
-                        <label class="px-4 mt-2">WeOwn</label>
-                      </ng-container>
-                      <ng-container *ngIf="to !== 'own'">
-                        <ng-container
-                          *ngTemplateOutlet="bcDropdown; context: { target: 'to', current: to }"
-                        ></ng-container>
-                      </ng-container>
-                      <div class="p-4 border-top-all">
-                        <ng-container *ngIf="selectedAsset === 'CHX'">
-                          <div class="mb-2">Address:</div>
-                          <div class="info">{{ toAddress }}</div>
-                        </ng-container>
-                        <ng-container *ngIf="selectedAsset !== 'CHX' && to !== 'own'">
-                          <div class="mb-2">Address:</div>
-                          <div class="mega-input">
-                            <input
-                              id="to-address"
-                              name="to-address"
-                              class="block no-borders elipsis"
-                              type="text"
-                              formControlName="toAddress"
-                            />
-                          </div>
-                        </ng-container>
-                        <ng-container *ngIf="selectedAsset !== 'CHX' && to === 'own'">
-                          <div class="mb-2">Account:</div>
-                          <button *ngIf="accounts.length === 0" class="block own-effect" routerLink="/wallet/portfolio">
-                            ADD ACCOUNT
-                          </button>
-                          <div class="mega-input block position-relative" *ngIf="accounts.length > 0">
-                            <ng-container [ngTemplateOutlet]="accountDropdown"></ng-container>
-                          </div>
-                        </ng-container>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row mt-4">
-                  <div class="col">
-                    <ng-container [ngTemplateOutlet]="bridgeFeesTpl"></ng-container>
-                  </div>
-                  <div class="col">
-                    <button [disabled]="assetBridgeForm.invalid || loading" class="block own-effect">
-                      <svg
-                        *ngIf="loading"
-                        class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="4"></circle>
-                        <path
-                          class="opacity-75"
-                          fill="#dfdfdf"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                      TRANSFER
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
+            </ng-container>
           </ng-container>
         </own-card-body>
       </own-card>
@@ -295,10 +377,76 @@
   </div>
 </div>
 
+<ng-template #mappingScreen>
+  <div class="row">
+    <div class="col-12">
+      <h4 class="mb-4">Bind your WeOwn address with your {{ targetChainName(to !== 'own' ? to : from) }} address</h4>
+      <p>
+        In order to transfer and move CHX Tokens between both our WeOwn blockchain and the
+        {{ targetChainName(to !== 'own' ? to : from) }} network, you’ll have to bind your WeOwn address directly with
+        one of your {{ targetChainName(to !== 'own' ? to : from) }} addresses by using MetaMask. Once MetaMask opens,
+        please confirm the mapped transaction, which binds your current WeOwn address with the
+        {{ targetChainName(to !== 'own' ? to : from) }} address you select on MetaMask.
+      </p>
+      <p>
+        The binding of the WeOwn address to your {{ targetChainName(to !== 'own' ? to : from) }} address is a one-time
+        event. For transparency purpose, the following addresses and smart contracts are involved in the process:
+      </p>
+
+      <div class="mb-4 mt-4 text-lg">
+        <div><strong>CHX Address:</strong> {{ chxAddress }}</div>
+        <div>
+          <strong>{{ to !== 'own' ? (to | uppercase) : (from | uppercase) }} Address:</strong> {{ metaMaskAddress }}
+        </div>
+      </div>
+
+      <div class="mt-4 text-small text-info">
+        <p>
+          Once you have confirmed the mapping between both addresses, it cannot be undone. If you made a mistake with
+          the binding, you need to create a new WeOwn address, and repeat the steps.
+        </p>
+        <p>
+          The mapping does not automatically transfer funds – it only binds and connects both of your addresses. You are
+          in full control of moving the funds, and the next steps will guide you on how to transfer tokens across both
+          networks and your addresses.
+        </p>
+        <p>
+          A transaction fee will be required while binding to the
+          {{ targetChainName(to !== 'own' ? to : from) }} network. So please make sure you have adequate funds available
+          in your MetaMask wallet. There will be no transaction fee required on the WeOwn WeOwn blockchain during this
+          process.
+        </p>
+      </div>
+
+      <div class="row mt-4 justify-content-center">
+        <div class="col col-sm-6 mt-4">
+          <button [disabled]="loading" class="block own-effect" (click)="mapAddress()">
+            <svg
+              *ngIf="loading"
+              class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="4"></circle>
+              <path
+                class="opacity-75"
+                fill="#dfdfdf"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            BIND ADDRESSES ON METAMASK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
 <ng-template #accountDropdown>
   <own-dropdown-menu id="account-selector" [showIcon]="false" [fullWidth]="true">
     <div class="label flex items-center justify-content-between wallet-table col-11">
-      <div class="elipsis">
+      <div class="elipsis -ml-1">
         {{ account ? account : 'No accounts currently' }}
       </div>
     </div>
@@ -418,9 +566,9 @@
     title="Click to view detailed fee calculation"
     (click)="showFees = !showFees"
   >
-    <span class="drop-menu position-absolute right-0 top-0 mt-1 mr-1" [class.open]="showFees">
+    <div class="drop-menu position-absolute right-0 top-0 mt-1 mr-2 pt-1" [class.open]="showFees">
       <own-icon icon="arrow-down"></own-icon>
-    </span>
+    </div>
     <div class="col">
       <ng-container *ngIf="showFees">
         <div class="row mr-2">
@@ -475,6 +623,116 @@
                 from === 'own' ? (bridgeFee.totalFee + fee | number: '1.0-7') : (bridgeFee.totalFee | number: '1.0-7')
               }}
               CHX
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #proccessingScreen let-txResult="txResult">
+  <div class="row">
+    <div class="col-12 text-center">
+      <svg
+        class="svg-loader"
+        version="1.1"
+        id="L4"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 100 100"
+        enable-background="new 0 0 0 0"
+        xml:space="preserve"
+      >
+        <circle fill="#eb6723" stroke="none" cx="6" cy="50" r="6">
+          <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
+        </circle>
+        <circle fill="#eb6723" stroke="none" cx="26" cy="50" r="6">
+          <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.2" />
+        </circle>
+        <circle fill="#eb6723" stroke="none" cx="46" cy="50" r="6">
+          <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.3" />
+        </circle>
+      </svg>
+    </div>
+    <div class="col-12 text-center">
+      <h4>Processing...</h4>
+      <p *ngIf="mappingAddresses">Binding addresses ...</p>
+      <p *ngIf="addressIsMapped">
+        Your {{ to === 'own' ? 'CHX' : tokenName }} tokens will be added to your account after the transaction has been
+        executed.
+      </p>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="row justify-content-center">
+        <div class="col col-md-6">
+          <a
+            *ngIf="to !== 'own'"
+            class="button outline own-effect block text-center"
+            [href]="explorer + '/tx/' + txResult.txHash"
+            target="_blank"
+          >
+            VIEW TRANSACTION INFO
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #transactionInfo let-txResult="txResult">
+  <div class="row justify-content-center" *ngIf="step === 6">
+    <div class="col-12">
+      <div class="row full-height align-items-center justify-content-between">
+        <div class="col-12">
+          <div class="token-success"></div>
+        </div>
+        <div class="col-12">
+          <h4>Success!</h4>
+          <p class="info">Your transaction has been successfully submitted.</p>
+          <p>
+            <b>
+              <div class="row">
+                <div class="col-12">Transaction:</div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-12">
+                      {{ txResult.txHash }}
+                      <button
+                        class="button-transparent"
+                        title="Copy Transaction"
+                        ngxClipboard
+                        cbContent="{{ txResult.txHash }}"
+                      >
+                        <own-icon icon="copy" color="#eb6723"></own-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </b>
+          </p>
+          <div class="mt-5">
+            <div class="row justify-content-center">
+              <div class="col col-md-6">
+                <button
+                  *ngIf="fromBlockchain === 'chx'"
+                  class="outline own-effect block text-center"
+                  [routerLink]="['/info/tx/' + txResult.txHash]"
+                >
+                  VIEW TRANSACTION INFO
+                </button>
+                <a
+                  *ngIf="fromBlockchain === blockchain"
+                  class="button outline own-effect block text-center"
+                  [href]="explorer + '/tx/' + txResult.txHash"
+                  target="_blank"
+                >
+                  VIEW TRANSACTION INFO
+                </a>
+              </div>
             </div>
           </div>
         </div>

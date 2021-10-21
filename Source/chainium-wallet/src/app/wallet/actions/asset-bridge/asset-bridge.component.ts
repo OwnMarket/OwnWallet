@@ -63,8 +63,8 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   accounts: string[] = [];
   assets: BridgeAsset[] = [];
   blockchains = [
-    { name: 'Ethereum', code: 'eth' },
-    { name: 'Binance Smart Chain', code: 'bsc' },
+    { name: 'Ethereum', code: 'eth', token: 'ETH' },
+    { name: 'Binance Smart Chain', code: 'bsc', token: 'BNB' },
   ];
 
   constructor(
@@ -154,6 +154,18 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     });
   }
 
+  setValidators() {
+    this.assetBridgeForm
+      .get('amount')
+      .setValidators([
+        Validators.required,
+        Validators.min(this.minWrapAmount),
+        Validators.max(
+          this.from === 'own' ? (this.chxBalance > 0 ? +(this.chxBalance - this.fee).toFixed(7) : 0.1) : this.balance
+        ),
+      ]);
+  }
+
   get selectedAsset(): string {
     return this.assetBridgeForm.get('asset').value;
   }
@@ -180,6 +192,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   targetChainName(code: string): string {
     return this.blockchains.find((chain) => chain.code === code).name;
+  }
+
+  tokenName(code: string): string {
+    return this.blockchains.find((chain) => chain.code === code).token;
   }
 
   swapBlockchains() {
@@ -216,9 +232,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
         const { balance, minWrapAmount } = await this.chxService.balanceAndMinAmount(this.metaMaskAddress);
         this.balance = balance;
         this.minWrapAmount = minWrapAmount;
-        this.bridgeFeeSub = this.chxService
-          .getBridgeFee(this.toAddress, this.from, this.to)
-          .subscribe((fee) => (this.bridgeFee = fee));
+        this.bridgeFeeSub = this.chxService.getBridgeFee(this.toAddress, this.from, this.to).subscribe((fee) => {
+          this.bridgeFee = fee;
+          this.setValidators();
+        });
       }
     } catch (error) {
       console.log(error.message);

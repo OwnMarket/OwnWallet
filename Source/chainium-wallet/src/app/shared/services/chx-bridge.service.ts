@@ -6,6 +6,10 @@ import { ConfigurationService } from './configuration.service';
 import { ChxBridgeFeeService } from './chx-bridge-fee.service';
 import { CryptoService } from './crypto.service';
 import { BridgeAsset, BridgeFee, TxResult } from '../models';
+import { environment } from 'src/environments/environment';
+import { NodeService } from '.';
+
+declare var ownBlockchainSdk: any;
 
 @Injectable({ providedIn: 'root' })
 export class ChxBridgeService {
@@ -24,7 +28,8 @@ export class ChxBridgeService {
   constructor(
     private config: ConfigurationService,
     private bridgeFeeService: ChxBridgeFeeService,
-    private cryptoService: CryptoService
+    private cryptoService: CryptoService,
+    private nodeService: NodeService
   ) {
     this.initAsset();
   }
@@ -135,6 +140,69 @@ export class ChxBridgeService {
         });
     } catch (error) {
       this.errorSubj.next(error.error.message);
+      throw new Error(error.message);
+    }
+  }
+
+  async transferChxFromWeOwn(
+    chxAddress: string,
+    nonce: number,
+    fee: number,
+    amount: number,
+    privateKey: string
+  ): Promise<any> {
+    try {
+      const txToSign = ownBlockchainSdk.transactions.createTx(chxAddress, nonce, fee);
+      txToSign.addTransferChxAction(this.config.config[this.blockchain].ownerChxAddress, amount);
+      const signature = txToSign.sign(environment.networkCode, privateKey);
+
+      const result = await this.nodeService.submitTransaction(signature).toPromise();
+
+      if (result.errors) {
+        throw new Error(result.errors);
+      }
+
+      this.txResultSubj.next(result as TxResult);
+      this.statusSubj.next('done');
+    } catch (error) {
+      this.statusSubj.next('ready');
+      throw new Error(error.message);
+    }
+  }
+
+  async transferToWeOwn(amount: number, address: string): Promise<any> {
+    try {
+      await this.token.methods
+        .transfer(this.config.config[this.blockchain].tokenContract, amount)
+        .send({
+          from: address,
+        })
+        .on('transactionHash', (hash) => {
+          let txResult = new TxResult();
+          txResult.txHash = hash;
+          this.txResultSubj.next(txResult);
+          this.statusSubj.next('proccessing');
+        })
+        .on('receipt', (receipt) => {
+          this.statusSubj.next('done');
+        })
+        .on('error', (error, receipt) => {
+          this.statusSubj.next('ready');
+          switch (error.code) {
+            case 4001:
+              throw new Error(
+                'The transaction was rejected in MetaMask. The process was therefore cancelled and no tokens are transferred.'
+              );
+              break;
+            case -32602:
+              throw new Error(`Check if your currently selected address in MetaMask is ${address} and try again.`);
+              break;
+            default:
+              throw new Error(error.message);
+          }
+        });
+    } catch (error) {
+      this.statusSubj.next('ready');
       throw new Error(error.message);
     }
   }

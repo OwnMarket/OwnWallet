@@ -181,6 +181,28 @@
                           formControlName="amount"
                         />
                       </div>
+                      <span
+                        class="text-danger p-2 text-small"
+                        *ngIf="
+                          assetBridgeForm.get('amount').dirty &&
+                          assetBridgeForm.get('amount').touched &&
+                          assetBridgeForm.get('amount').errors
+                        "
+                      >
+                        <span
+                          *ngIf="
+                            assetBridgeForm.get('amount').errors?.min && !assetBridgeForm.get('amount').errors?.max
+                          "
+                        >
+                          Minimum amount is {{ minWrapAmount }}
+                        </span>
+
+                        <span *ngIf="assetBridgeForm.get('amount').errors?.max">
+                          Amount can't be greater than your balance
+                        </span>
+
+                        <span *ngIf="assetBridgeForm.get('amount').errors?.required"> Amount is required </span>
+                      </span>
                     </div>
                   </div>
 
@@ -234,7 +256,7 @@
                                   ngxClipboard
                                   cbContent="{{ fromAddress }}"
                                 >
-                                  <own-icon icon="copy"></own-icon>
+                                  <own-icon icon="copy" color="#EB6723"></own-icon>
                                 </button>
                               </div>
                             </div>
@@ -308,7 +330,7 @@
                                   ngxClipboard
                                   cbContent="{{ toAddress }}"
                                 >
-                                  <own-icon icon="copy"></own-icon>
+                                  <own-icon icon="copy" color="#EB6723"></own-icon>
                                 </button>
                               </div>
                             </div>
@@ -581,12 +603,12 @@
         </div>
 
         <div class="row mr-2">
-          <div class="col">{{ to | uppercase }} fee:</div>
+          <div class="col">{{ to !== 'own' ? (to | uppercase) : (from | uppercase) }} fee:</div>
           <div class="col text-right">{{ bridgeFee.targetCurrencyFee }} {{ networkToken }}</div>
         </div>
 
         <div class="row mr-2">
-          <div class="col">CHX/{{ to }} price rate:</div>
+          <div class="col">CHX/{{ to !== 'own' ? (to | uppercase) : (from | uppercase) }} price rate:</div>
           <div class="col text-right">
             {{ bridgeFee.chxTargetCurrencyPriceRate }}
           </div>
@@ -595,7 +617,7 @@
         <hr />
 
         <div class="row mr-2">
-          <div class="col">Fee on {{ to | uppercase }}:</div>
+          <div class="col">Fee on {{ to !== 'own' ? (to | uppercase) : (from | uppercase) }}:</div>
           <div class="col text-right">{{ bridgeFee.targetFeeInChx | number: '1.0-7' }} CHX</div>
         </div>
         <div class="row mr-2">

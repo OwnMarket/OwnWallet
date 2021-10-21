@@ -1,8 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ɵɵsetComponentScope } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import {
   MetaMaskStatus,
@@ -190,6 +189,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     return this.assetBridgeForm.get('account').value;
   }
 
+  get amount(): number {
+    return +this.assetBridgeForm.get('amount').value;
+  }
+
   targetChainName(code: string): string {
     return this.blockchains.find((chain) => chain.code === code).name;
   }
@@ -209,6 +212,9 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.assetBridgeForm.get('from').setValue('own');
       this.assetBridgeForm.get('toAddress').setValue(this.fromAddress);
       this.assetBridgeForm.get('fromAddress').setValue(this.chxAddress);
+    }
+    if (this.selectedAsset === 'CHX') {
+      this.getBridgeFees();
     }
   }
 
@@ -232,15 +238,19 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
         const { balance, minWrapAmount } = await this.chxService.balanceAndMinAmount(this.metaMaskAddress);
         this.balance = balance;
         this.minWrapAmount = minWrapAmount;
-        this.bridgeFeeSub = this.chxService.getBridgeFee(this.toAddress, this.from, this.to).subscribe((fee) => {
-          this.bridgeFee = fee;
-          this.setValidators();
-        });
+        this.getBridgeFees();
       }
     } catch (error) {
       console.log(error.message);
       this.error = error.message;
     }
+  }
+
+  getBridgeFees() {
+    this.bridgeFeeSub = this.chxService.getBridgeFee(this.toAddress, this.from, this.to).subscribe((fee) => {
+      this.bridgeFee = fee;
+      this.setValidators();
+    });
   }
 
   async acceptRisks() {
@@ -256,6 +266,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   async mapAddress() {
     try {
+      this.showMapping = false;
       this.mappingAddresses = true;
       await this.chxService.mapAddress(
         this.metaMaskAddress,
@@ -264,6 +275,34 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       );
       this.mappingAddresses = false;
       this.addressIsMapped = true;
+    } catch (error) {
+      console.log(error);
+      this.error = error.message;
+    }
+  }
+
+  async transfer() {
+    if (this.selectedAsset === 'CHX') {
+      await this.transferChx();
+    }
+  }
+
+  async transferChx() {
+    try {
+      if (this.from === 'own') {
+        await this.chxService.transferChxFromWeOwn(
+          this.chxAddress,
+          this.nonce,
+          this.fee,
+          this.amount,
+          this.wallet.privateKey
+        );
+      }
+
+      if (this.from !== 'own') {
+        const amountToTransfer = this.amount * Math.pow(10, 7);
+        await this.chxService.transferToWeOwn(amountToTransfer, this.metaMaskAddress);
+      }
     } catch (error) {
       console.log(error);
       this.error = error.message;

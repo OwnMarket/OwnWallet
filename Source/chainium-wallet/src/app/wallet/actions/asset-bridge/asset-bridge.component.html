@@ -130,9 +130,11 @@
                   <div class="row">
                     <div class="col">
                       <div class="row">
-                        <label for="amount" class="col ml-2">Asset</label>
+                        <label for="asset" class="col ml-2">Asset</label>
                         <div class="col text-info text-right">
-                          {{ selectedAsset === 'CHX' ? 'Balance: ' + chxBalance + 'CHX' : '' }}
+                          <ng-container *ngIf="selectedAsset === 'CHX'">
+                            {{ from === 'own' ? 'Balance: ' + chxBalance + ' CHX' : 'Balance: ' + balance + ' CHX' }}
+                          </ng-container>
                         </div>
                       </div>
                       <div class="mega-input block text-lg">
@@ -171,7 +173,14 @@
                       </div>
                     </div>
                     <div class="col">
-                      <label for="amount" class="ml-2">Amount</label>
+                      <div class="row">
+                        <label for="amount" class="col ml-2">Amount</label>
+                        <div class="col text-info text-right">
+                          <ng-container *ngIf="selectedAsset === 'CHX'">
+                            {{ to === 'own' ? 'Balance: ' + chxBalance + 'CHX' : 'Balance: ' + balance + ' CHX' }}
+                          </ng-container>
+                        </div>
+                      </div>
                       <div class="mega-input text-lg">
                         <input
                           id="amount"
@@ -578,6 +587,7 @@
       item-align-center
       text-info
       p-2
+      mx-1
       bg-lighter
       rounded
       cursor-pointer
@@ -631,14 +641,14 @@
         <hr />
       </ng-container>
 
-      <div class="row" [class.text-bold]="showFees">
-        <div class="col-5">
-          <div class="float-left">
-            <own-icon icon="info" size="24" color="#3aabb9"></own-icon>
+      <div class="flex align-items-center justify-content-between" [class.text-bold]="showFees">
+        <div>
+          <div class="float-left mt-1 -ml-1">
+            <own-icon icon="info" size="24" color="#EB6723"></own-icon>
           </div>
           Total fee:
         </div>
-        <div class="col-7 text-right">
+        <div class="text-right">
           <div class="row mr-2">
             <div class="col">
               {{

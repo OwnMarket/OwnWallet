@@ -4,10 +4,10 @@ import { map } from 'rxjs/operators';
 import Web3 from 'web3';
 import { ConfigurationService } from './configuration.service';
 import { ChxBridgeFeeService } from './chx-bridge-fee.service';
+import { NodeService } from './node.service';
 import { CryptoService } from './crypto.service';
 import { BridgeAsset, BridgeFee, TxResult } from '../models';
 import { environment } from 'src/environments/environment';
-import { NodeService } from '.';
 
 declare var ownBlockchainSdk: any;
 

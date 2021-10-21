@@ -1,5 +1,5 @@
 export interface BridgedToken {
-  targetBlockchain: number;
+  targetBlockchain: string;
   tokenAddress: string;
   accountHash?: string;
   ownerChxAddress?: string;

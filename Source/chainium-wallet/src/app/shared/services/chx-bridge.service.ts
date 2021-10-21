@@ -39,13 +39,13 @@ export class ChxBridgeService {
       assetCode: 'CHX',
       bridgedTokens: [
         {
-          targetBlockchain: 0,
+          targetBlockchain: 'Eth',
           tokenAddress: this.config.config['eth'].tokenContract,
           ownerChxAddress: this.config.config['eth'].ownerChxAddress,
           mappingContract: this.config.config['eth'].mappingContract,
         },
         {
-          targetBlockchain: 1,
+          targetBlockchain: 'Bsc',
           tokenAddress: this.config.config['bsc'].tokenContract,
           ownerChxAddress: this.config.config['bsc'].ownerChxAddress,
           mappingContract: this.config.config['bsc'].mappingContract,

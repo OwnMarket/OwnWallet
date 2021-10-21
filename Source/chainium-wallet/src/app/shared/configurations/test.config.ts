@@ -2,6 +2,7 @@ export const testConfig = {
   isProduction: false,
   explorerUrl: 'https://test.explorer.weown.com',
   bridgeApiUrl: 'https://test.bridge-api.weown.com',
+  assetBridgeContract: '0x01fbb3b4a39d4f9ea2d39218ed176e8f549ed218',
   network: 'CHX Testnet',
   eth: {
     chainId: '0x4',

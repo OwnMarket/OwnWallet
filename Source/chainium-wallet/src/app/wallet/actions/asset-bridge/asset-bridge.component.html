@@ -598,7 +598,7 @@
     title="Click to view detailed fee calculation"
     (click)="showFees = !showFees"
   >
-    <div class="drop-menu position-absolute right-0 top-0 mt-1 mr-2 pt-1" [class.open]="showFees">
+    <div class="drop-menu position-absolute right-0 top-0 mt-1 mr-2 pt-2" [class.open]="showFees">
       <own-icon icon="arrow-down"></own-icon>
     </div>
     <div class="col">
@@ -642,12 +642,10 @@
       </ng-container>
 
       <div class="flex align-items-center justify-content-between" [class.text-bold]="showFees">
-        <div>
-          <div class="float-left mt-1 -ml-1">
-            <own-icon icon="info" size="24" color="#EB6723"></own-icon>
-          </div>
-          Total fee:
+        <div class="pt-2 -ml-1">
+          <own-icon icon="info" size="24" color="#EB6723"></own-icon>
         </div>
+        <div class="-ml-2">Total fee:</div>
         <div class="text-right">
           <div class="row mr-2">
             <div class="col">

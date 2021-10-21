@@ -42,6 +42,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   addressSub: Subscription;
   bridgeFeeSub: Subscription;
   transferSub: Subscription;
+  selectedAssetSub: Subscription;
 
   step: number = 1;
   risksAccepted: boolean = false;
@@ -151,6 +152,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       toAddress: [this.metaMaskAddress],
       account: [this.accounts[0]],
     });
+
+    this.selectedAssetSub = this.assetBridgeForm.get('asset').valueChanges.subscribe((value) => {
+      value === 'CHX' ? this.initChxBridge() : this.initAssetBridge();
+    });
   }
 
   setValidators() {
@@ -199,6 +204,13 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   tokenName(code: string): string {
     return this.blockchains.find((chain) => chain.code === code).token;
+  }
+
+  tokenAddress(code: string, blockchain: string): string {
+    const chainCode = blockchain.charAt(0).toUpperCase() + blockchain.slice(1);
+    return this.assets
+      .find((asset) => asset.assetCode === code)
+      .bridgedTokens.find((token) => token.targetBlockchain === chainCode).tokenAddress;
   }
 
   swapBlockchains() {
@@ -251,6 +263,22 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.bridgeFee = fee;
       this.setValidators();
     });
+  }
+
+  async initAssetBridge() {
+    try {
+      this.txStatus$ = this.assetBridgeService.status$;
+      this.txResult$ = this.assetBridgeService.txResult$;
+      const targetChain = this.to !== 'own' ? this.to : this.from;
+      await this.assetBridgeService.initContracts(
+        this.metamask.web3,
+        targetChain,
+        this.tokenAddress(this.selectedAsset, targetChain)
+      );
+    } catch (error) {
+      console.log(error);
+      this.error = error.message;
+    }
   }
 
   async acceptRisks() {

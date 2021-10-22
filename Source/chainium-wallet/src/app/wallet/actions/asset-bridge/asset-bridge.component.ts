@@ -198,6 +198,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     return +this.assetBridgeForm.get('amount').value;
   }
 
+  targetChainCode() {
+    return this.to !== 'own' ? this.to : this.from;
+  }
+
   targetChainName(code: string): string {
     return this.blockchains.find((chain) => chain.code === code).name;
   }
@@ -243,9 +247,11 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     try {
       this.txStatus$ = this.chxService.status$;
       this.txResult$ = this.chxService.txResult$;
-      this.chxService.initContracts(this.metamask.web3, this.to);
-      this.addressIsMapped = await this.chxService.addressIsMapped(this.chxAddress, this.to);
-      this.wrongNetwork = await this.chxService.addressIsMappedToOtherChxAddress(this.metaMaskAddress, this.chxAddress);
+      this.chxService.initContracts(this.metamask.web3, this.targetChainCode());
+      this.addressIsMapped = await this.chxService.addressIsMapped(this.chxAddress, this.targetChainCode());
+      if (this.addressIsMapped) {
+        this.wrongNetwork = await this.chxService.addressIsMappedToOtherChxAddress(this.metaMaskAddress, this.chxAddress);
+      }
       if (this.metaMaskAddress) {
         const { balance, minWrapAmount } = await this.chxService.balanceAndMinAmount(this.metaMaskAddress);
         this.balance = balance;
@@ -294,16 +300,18 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   async mapAddress() {
     try {
-      this.showMapping = false;
       this.mappingAddresses = true;
       await this.chxService.mapAddress(
         this.metaMaskAddress,
         this.chxAddress,
         this.privateKeyService.getWalletInfo().privateKey
       );
+      this.showMapping = false;
       this.mappingAddresses = false;
       this.addressIsMapped = true;
     } catch (error) {
+      this.showMapping = false;
+      this.mappingAddresses = false;
       console.log(error);
       this.error = error.message;
     }

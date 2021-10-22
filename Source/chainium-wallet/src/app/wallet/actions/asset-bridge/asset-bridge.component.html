@@ -16,10 +16,11 @@
           <!-- Error -->
           <ng-container *ngIf="error" [ngTemplateOutlet]="errorScreen"></ng-container>
 
-          <!-- Mapping -->
-          <ng-container *ngIf="showMapping" [ngTemplateOutlet]="mappingScreen"></ng-container>
-
           <ng-container *ngIf="txStatus$ | async as txStatus">
+
+          <!-- Mapping -->
+          <ng-container *ngIf="showMapping && (txStatus === 'ready' || txStatus === 'preparing')" [ngTemplateOutlet]="mappingScreen"></ng-container>
+
             <ng-container *ngIf="txResult$ | async as txRes">
               <!-- Proccessing -->
               <ng-container *ngIf="txStatus === 'proccessing'">

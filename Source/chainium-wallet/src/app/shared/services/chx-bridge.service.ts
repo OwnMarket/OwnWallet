@@ -20,7 +20,7 @@ export class ChxBridgeService {
 
   private statusSubj: BehaviorSubject<string> = new BehaviorSubject<string>('ready');
   private errorSubj: BehaviorSubject<string> = new BehaviorSubject<string | null>(null);
-  private txResultSubj: BehaviorSubject<TxResult> = new BehaviorSubject<TxResult>(null);
+  private txResultSubj: BehaviorSubject<TxResult> = new BehaviorSubject<TxResult>(new TxResult());
   status$: Observable<string> = this.statusSubj.asObservable();
   error$: Observable<string> = this.errorSubj.asObservable();
   txResult$: Observable<TxResult> = this.txResultSubj.asObservable();
@@ -92,15 +92,16 @@ export class ChxBridgeService {
   async addressIsMappedToOtherChxAddress(address: string, chxAddress: string): Promise<boolean> {
     try {
       const chxAddr = await this.mapping.methods.chxAddress(address).call();
+      console.log(chxAddr)
       if (chxAddr !== '') {
         if (chxAddr !== chxAddress) {
           throw new Error(
             `Currently selected ${this.network} Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.`
           );
-        }
-        return true;
+        } 
+        return false;
       }
-      return true;
+      
     } catch (error) {
       throw new Error(error.message);
     }
@@ -123,6 +124,7 @@ export class ChxBridgeService {
 
   async mapAddress(targetAddress: string, chxAddress: string, privateKey: string): Promise<any> {
     try {
+      this.statusSubj.next('preparing');
       const signature = await this.cryptoService.signMessageAsPromise(privateKey, targetAddress);
       await this.mapping.methods
         .mapAddress(chxAddress, signature)
@@ -139,7 +141,7 @@ export class ChxBridgeService {
           this.statusSubj.next('done');
         });
     } catch (error) {
-      this.errorSubj.next(error.error.message);
+      this.errorSubj.next(error.message);
       throw new Error(error.message);
     }
   }
@@ -172,6 +174,7 @@ export class ChxBridgeService {
 
   async transferToWeOwn(amount: number, address: string): Promise<any> {
     try {
+      this.statusSubj.next('preparing');
       await this.token.methods
         .transfer(this.config.config[this.blockchain].tokenContract, amount)
         .send({
@@ -193,10 +196,8 @@ export class ChxBridgeService {
               throw new Error(
                 'The transaction was rejected in MetaMask. The process was therefore cancelled and no tokens are transferred.'
               );
-              break;
             case -32602:
               throw new Error(`Check if your currently selected address in MetaMask is ${address} and try again.`);
-              break;
             default:
               throw new Error(error.message);
           }

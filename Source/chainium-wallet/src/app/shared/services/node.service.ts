@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 import { AccountInfo } from '../models/account-info.model';
 import { TxEnvelope } from '../models/submit-transactions.model';
 import { ChxAddressInfo } from '../models/chx-address-info.model';
+import { map } from 'rxjs/operators';
 
 const TXENDPOINT = 'tx';
 

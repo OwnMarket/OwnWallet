@@ -34,6 +34,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   chxAddress: string;
   chxBalance: number;
   balance: number;
+  nativeBalance: number;
   minWrapAmount: number;
   nonce: number;
   fee: number;
@@ -218,6 +219,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     return this.blockchains.find((chain) => chain.code === code).token;
   }
 
+  tokenHash(code: string): string {
+    return this.assets.find((asset) => asset.assetCode === code).assetHash;
+  }
+
   tokenAddress(code: string, blockchain: string): string {
     const chainCode = blockchain.charAt(0).toUpperCase() + blockchain.slice(1);
     return this.assets
@@ -297,6 +302,11 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       } else {
         this.assetBridgeFee = await this.assetBridgeService.ethTransferFee();
       }
+      this.nativeBalance = await this.assetBridgeService.getNativeBalance(
+        this.account,
+        this.tokenHash(this.selectedAsset)
+      );
+      console.log(this.nativeBalance);
       this.balance = await this.assetBridgeService.balanceOf(this.metaMaskAddress);
       console.log(this.balance);
       this.setValidators();
@@ -370,11 +380,17 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   async transferAsset() {
     try {
       if (this.from === 'own') {
+        await this.assetBridgeService.transferFromNativeChain(
+          this.tokenHash(this.selectedAsset),
+          this.toAddress,
+          this.account,
+          this.chxAddress,
+          this.amount
+        );
       }
 
       if (this.from !== 'own') {
-        console.log(this.assetBridgeFee);
-        this.assetBridgeService.transferToNativeChain(
+        await this.assetBridgeService.transferToNativeChain(
           this.metaMaskAddress,
           this.tokenAddress(this.selectedAsset, this.targetChainCode()),
           this.account,

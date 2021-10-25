@@ -142,7 +142,11 @@
                             {{ from === 'own' ? 'Balance: ' + chxBalance + ' CHX' : 'Balance: ' + balance + ' CHX' }}
                           </ng-container>
                           <ng-container *ngIf="selectedAsset !== 'CHX'">
-                            {{ from === 'own' ? '' : 'Balance: ' + balance + ' ' + (selectedAsset | uppercase) }}
+                            {{
+                              from === 'own'
+                                ? 'Balance: ' + nativeBalance + ' ' + (selectedAsset | uppercase)
+                                : 'Balance: ' + balance + ' ' + (selectedAsset | uppercase)
+                            }}
                           </ng-container>
                         </div>
                       </div>
@@ -189,7 +193,11 @@
                             {{ to === 'own' ? 'Balance: ' + chxBalance + 'CHX' : 'Balance: ' + balance + ' CHX' }}
                           </ng-container>
                           <ng-container *ngIf="selectedAsset !== 'CHX'">
-                            {{ to === 'own' ? '' : ('Balance: ' + balance + ' ' + selectedAsset | uppercase) }}
+                            {{
+                              to === 'own'
+                                ? 'Balance: ' + nativeBalance + ' ' + (selectedAsset | uppercase)
+                                : 'Balance: ' + balance + ' ' + (selectedAsset | uppercase)
+                            }}
                           </ng-container>
                         </div>
                       </div>

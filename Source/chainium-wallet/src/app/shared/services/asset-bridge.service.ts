@@ -4,8 +4,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ConfigurationService } from './configuration.service';
+import { PrivatekeyService } from './privatekey.service';
+import { NodeService } from './node.service';
 import { ApiResponse, BridgeAsset, TxResult } from '../models';
 import Web3 from 'web3';
+import { environment } from 'src/environments/environment';
 
 declare var ownBlockchainSdk: any;
 
@@ -23,7 +26,12 @@ export class AssetBridgeService {
   error$: Observable<string> = this.errorSubj.asObservable();
   txResult$: Observable<TxResult> = this.txResultSubj.asObservable();
 
-  constructor(private handler: HttpBackend, private config: ConfigurationService) {
+  constructor(
+    private handler: HttpBackend,
+    private config: ConfigurationService,
+    private privateKeyService: PrivatekeyService,
+    private nodeService: NodeService
+  ) {
     this.httpHandler = new HttpClient(handler);
   }
 
@@ -72,6 +80,14 @@ export class AssetBridgeService {
     }
   }
 
+  async getNativeBalance(accountHash: string, assetHash: string): Promise<number> {
+    try {
+      return await this.getAssetBalance(accountHash, assetHash).toPromise();
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
   async balanceOf(address: string): Promise<number> {
     try {
       const decimals = await this.tokenDecimals();
@@ -79,6 +95,11 @@ export class AssetBridgeService {
     } catch (error) {
       throw new Error(error.message);
     }
+  }
+
+  shortHashFromLong(hash: string): string {
+    const orig = ownBlockchainSdk.crypto.decode64(hash);
+    return ownBlockchainSdk.crypto.hash(orig);
   }
 
   async transferToNativeChain(
@@ -116,28 +137,43 @@ export class AssetBridgeService {
     address: string,
     fromAccountHash: string,
     chxAddress: string,
-    nonce: number,
-    ownFee: number,
-    privateKey: string
+    amount: number
   ): Promise<any> {
     try {
+      const privateKey = this.privateKeyService.getWalletInfo().privateKey;
+      const fee = this.nodeService.getMinFee();
+      const nonce = await this.nodeService
+        .getAddressInfo(chxAddress)
+        .pipe(map((resp) => resp.nonce + 1))
+        .toPromise();
       const toAccountHash = await this.accountsForAssets(assetHash);
-      const txToSign = ownBlockchainSdk.transactions.createTx(chxAddress, nonce, ownFee);
+      const txToSign = ownBlockchainSdk.transactions.createTx(chxAddress, nonce, fee);
+      txToSign.addTransferAssetAction(fromAccountHash, toAccountHash, assetHash, amount);
+      const signature = txToSign.sign(environment.networkCode, privateKey);
+      const ownTxHash = this.shortHashFromLong(signature.tx);
+      const ethFee = await this.ethTransferFee();
 
-      // return await this.assetBridge.methods
-      //   .transferFromNativeChain(ethTransferFee, txHash, signature, address)
-      //   .send({
-      //     from: address,
-      //   })
-      //   .on('transactionHash', (hash: string) => {
-      //     let txResult = new TxResult();
-      //     txResult.txHash = hash;
-      //     this.txResultSubj.next(txResult);
-      //     this.statusSubj.next('proccessing');
-      //   })
-      //   .on('receipt', (receipt) => {
-      //     this.statusSubj.next('done');
-      //   });
+      return await this.assetBridge.methods
+        .transferFromNativeChain(ethFee, ownTxHash, signature, address)
+        .send({
+          from: address,
+        })
+        .on('transactionHash', (hash: string) => {
+          let txResult = new TxResult();
+          txResult.txHash = hash;
+          this.txResultSubj.next(txResult);
+          this.statusSubj.next('proccessing');
+        })
+        .on('receipt', async (receipt) => {
+          console.log(receipt);
+          const tx = await this.nodeService.submitTransaction(signature).toPromise();
+          if (tx.errors) {
+            throw new Error(tx.errors);
+          }
+          const txResult = tx as TxResult;
+          this.txResultSubj.next(txResult);
+          this.statusSubj.next('done');
+        });
     } catch (error) {
       this.statusSubj.next('ready');
       throw new Error(error.message);
@@ -152,6 +188,18 @@ export class AssetBridgeService {
     return this.httpHandler
       .get<ApiResponse<any>>(`${this.config.config.bridgeApiUrl}/assets/${targetBlockchain}/${tokenAddress}/abi`)
       .pipe(map((resp) => JSON.parse(resp.data)));
+  }
+
+  public getAssetBalance(accountHash: string, assetHash: string): Observable<number> {
+    const accountInfoUrl = `${environment.nodeApiUrl}/account/${accountHash}?asset=${assetHash}`;
+    return this.httpHandler.get<any>(accountInfoUrl).pipe(
+      map((resp) => {
+        if (resp.holdings && resp.holdings.length > 0) {
+          return resp.holdings[0].balance;
+        }
+        return 0;
+      })
+    );
   }
 
   resetStatus() {

@@ -133,4 +133,9 @@ export class AssetBridgeService {
       .get<ApiResponse<any>>(`${this.config.config.bridgeApiUrl}/assets/${targetBlockchain}/${tokenAddress}/abi`)
       .pipe(map((resp) => JSON.parse(resp.data)));
   }
+
+  resetStatus() {
+    this.statusSubj.next('ready');
+    this.txResultSubj.next(null);
+  }
 }

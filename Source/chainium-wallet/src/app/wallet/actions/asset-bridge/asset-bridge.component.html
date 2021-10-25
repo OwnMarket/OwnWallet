@@ -17,9 +17,11 @@
           <ng-container *ngIf="error" [ngTemplateOutlet]="errorScreen"></ng-container>
 
           <ng-container *ngIf="txStatus$ | async as txStatus">
-
-          <!-- Mapping -->
-          <ng-container *ngIf="showMapping && (txStatus === 'ready' || txStatus === 'preparing')" [ngTemplateOutlet]="mappingScreen"></ng-container>
+            <!-- Mapping -->
+            <ng-container
+              *ngIf="showMapping && (txStatus === 'ready' || txStatus === 'mapping')"
+              [ngTemplateOutlet]="mappingScreen"
+            ></ng-container>
 
             <ng-container *ngIf="txResult$ | async as txRes">
               <!-- Proccessing -->
@@ -380,7 +382,11 @@
                       <ng-container [ngTemplateOutlet]="bridgeFeesTpl"></ng-container>
                     </div>
                     <div class="col">
-                      <button [disabled]="assetBridgeForm.invalid || loading" class="block own-effect">
+                      <button
+                        [disabled]="assetBridgeForm.invalid || loading"
+                        class="block own-effect"
+                        (click)="transfer()"
+                      >
                         <svg
                           *ngIf="loading"
                           class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -714,7 +720,7 @@
 </ng-template>
 
 <ng-template #transactionInfo let-txResult="txResult">
-  <div class="row justify-content-center" *ngIf="step === 6">
+  <div class="row justify-content-center">
     <div class="col-12">
       <div class="row full-height align-items-center justify-content-between">
         <div class="col-12">

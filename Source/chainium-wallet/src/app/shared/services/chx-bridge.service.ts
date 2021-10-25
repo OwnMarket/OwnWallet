@@ -92,16 +92,15 @@ export class ChxBridgeService {
   async addressIsMappedToOtherChxAddress(address: string, chxAddress: string): Promise<boolean> {
     try {
       const chxAddr = await this.mapping.methods.chxAddress(address).call();
-      console.log(chxAddr)
+      console.log(chxAddr);
       if (chxAddr !== '') {
         if (chxAddr !== chxAddress) {
           throw new Error(
             `Currently selected ${this.network} Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.`
           );
-        } 
+        }
         return false;
       }
-      
     } catch (error) {
       throw new Error(error.message);
     }
@@ -113,7 +112,7 @@ export class ChxBridgeService {
       const minWrapAmount = (await this.token.methods.minWrapAmount().call()) / Math.pow(10, 7);
       return { balance, minWrapAmount };
     } catch (error) {
-      return error;
+      throw new Error(error.message);
     }
   }
 
@@ -124,7 +123,7 @@ export class ChxBridgeService {
 
   async mapAddress(targetAddress: string, chxAddress: string, privateKey: string): Promise<any> {
     try {
-      this.statusSubj.next('preparing');
+      this.statusSubj.next('mapping');
       const signature = await this.cryptoService.signMessageAsPromise(privateKey, targetAddress);
       await this.mapping.methods
         .mapAddress(chxAddress, signature)
@@ -141,7 +140,7 @@ export class ChxBridgeService {
           this.statusSubj.next('done');
         });
     } catch (error) {
-      this.errorSubj.next(error.message);
+      this.statusSubj.next('ready');
       throw new Error(error.message);
     }
   }

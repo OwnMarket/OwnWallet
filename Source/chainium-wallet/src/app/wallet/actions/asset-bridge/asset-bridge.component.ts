@@ -250,7 +250,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.chxService.initContracts(this.metamask.web3, this.targetChainCode());
       this.addressIsMapped = await this.chxService.addressIsMapped(this.chxAddress, this.targetChainCode());
       if (this.addressIsMapped) {
-        this.wrongNetwork = await this.chxService.addressIsMappedToOtherChxAddress(this.metaMaskAddress, this.chxAddress);
+        this.wrongNetwork = await this.chxService.addressIsMappedToOtherChxAddress(
+          this.metaMaskAddress,
+          this.chxAddress
+        );
       }
       if (this.metaMaskAddress) {
         const { balance, minWrapAmount } = await this.chxService.balanceAndMinAmount(this.metaMaskAddress);
@@ -321,6 +324,9 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     if (this.selectedAsset === 'CHX') {
       await this.transferChx();
     }
+    if (this.selectedAsset !== 'CHX') {
+      await this.transferAsset();
+    }
   }
 
   async transferChx() {
@@ -345,11 +351,32 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     }
   }
 
+  async transferAsset() {
+    try {
+      if (this.from === 'own') {
+      }
+
+      if (this.from !== 'own') {
+        this.assetBridgeService.transferToNativeChain(
+          this.metaMaskAddress,
+          this.tokenAddress(this.selectedAsset, this.targetChainCode()),
+          this.account,
+          this.amount,
+          await this.assetBridgeService.getNativeTransferFee()
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      this.error = error.message;
+    }
+  }
+
   reset() {
     this.error = null;
     this.risksAccepted = false;
     this.wrongNetwork = false;
     this.step = 1;
     this.chxService.resetStatus();
+    this.assetBridgeService.resetStatus();
   }
 }

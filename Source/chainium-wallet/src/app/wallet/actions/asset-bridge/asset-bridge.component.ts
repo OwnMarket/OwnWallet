@@ -175,8 +175,14 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     if (this.selectedAsset !== 'CHX') {
       this.assetBridgeForm
         .get('amount')
-        .setValidators([Validators.required, Validators.min(0.000001), Validators.max(this.balance)]);
+        .setValidators([
+          Validators.required,
+          Validators.min(0.000001),
+          Validators.max(this.from === 'own' ? this.nativeBalance : this.balance),
+        ]);
     }
+    this.assetBridgeForm.markAsPristine();
+    this.assetBridgeForm.get('amount').updateValueAndValidity();
   }
 
   get selectedAsset(): string {
@@ -245,6 +251,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     if (this.selectedAsset === 'CHX') {
       this.getBridgeFees();
     }
+    this.setValidators();
   }
 
   async connect() {
@@ -391,7 +398,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
       if (this.from !== 'own') {
         await this.assetBridgeService.transferToNativeChain(
-          this.metaMaskAddress,
+          this.fromAddress,
           this.tokenAddress(this.selectedAsset, this.targetChainCode()),
           this.account,
           this.amount
@@ -408,6 +415,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.risksAccepted = false;
     this.wrongNetwork = false;
     this.step = 1;
+    this.assetBridgeForm.reset();
     this.chxService.resetStatus();
     this.assetBridgeService.resetStatus();
   }

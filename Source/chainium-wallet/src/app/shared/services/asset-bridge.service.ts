@@ -14,6 +14,7 @@ declare var ownBlockchainSdk: any;
 
 @Injectable({ providedIn: 'root' })
 export class AssetBridgeService {
+  private web3: Web3;
   private httpHandler: HttpClient;
   private blockchain: string;
   private token: any;
@@ -36,6 +37,7 @@ export class AssetBridgeService {
   }
 
   async initContracts(web3: Web3, blockchain: string, tokenAddress: string): Promise<any> {
+    this.web3 = web3;
     this.blockchain = blockchain;
     try {
       const assetBridgeContract = this.config.config.assetBridgeContract;
@@ -110,12 +112,18 @@ export class AssetBridgeService {
   ): Promise<any> {
     try {
       const decimals = await this.tokenDecimals();
-      const totalAmount = amount * Math.pow(10, decimals);
-      const fee = await this.getNativeTransferFee();
+      const totalAmount = this.web3.utils
+        .toBN(10)
+        .pow(this.web3.utils.toBN(decimals))
+        .mul(this.web3.utils.toBN(amount));
+
+      const fee = await this.assetBridge.methods.nativeTransferFee().call();
+
       return await this.assetBridge.methods
-        .transferToNativeChain(totalAmount, tokenAddress, accountHash, fee)
+        .transferToNativeChain(tokenAddress, accountHash, totalAmount)
         .send({
           from: address,
+          value: fee,
         })
         .on('transactionHash', (hash: string) => {
           let txResult = new TxResult();
@@ -151,12 +159,13 @@ export class AssetBridgeService {
       txToSign.addTransferAssetAction(fromAccountHash, toAccountHash, assetHash, amount);
       const signature = txToSign.sign(environment.networkCode, privateKey);
       const ownTxHash = this.shortHashFromLong(signature.tx);
-      const ethFee = await this.ethTransferFee();
+      const ethFee = await this.assetBridge.methods.ethTransferFee().call();
 
       return await this.assetBridge.methods
-        .transferFromNativeChain(ethFee, ownTxHash, signature, address)
+        .transferFromNativeChain(ownTxHash, signature, address)
         .send({
           from: address,
+          value: ethFee,
         })
         .on('transactionHash', (hash: string) => {
           let txResult = new TxResult();
@@ -166,12 +175,14 @@ export class AssetBridgeService {
         })
         .on('receipt', async (receipt) => {
           console.log(receipt);
-          const tx = await this.nodeService.submitTransaction(signature).toPromise();
-          if (tx.errors) {
-            throw new Error(tx.errors);
+          if (receipt.status) {
+            const tx = await this.nodeService.submitTransaction(signature).toPromise();
+            if (tx.errors) {
+              throw new Error(tx.errors);
+            }
+            const txResult = tx as TxResult;
+            this.txResultSubj.next(txResult);
           }
-          const txResult = tx as TxResult;
-          this.txResultSubj.next(txResult);
           this.statusSubj.next('done');
         });
     } catch (error) {

@@ -712,7 +712,7 @@
     </div>
     <div class="col-12 text-center">
       <h4>Processing...</h4>
-      <p *ngIf="mappingAddresses">Binding addresses ...</p>
+      <p *ngIf="!addressIsMapped">Binding addresses ...</p>
       <p *ngIf="addressIsMapped">
         Your {{ to === 'own' ? 'CHX' : tokenName }} tokens will be added to your account after the transaction has been
         executed.
@@ -771,14 +771,14 @@
             <div class="row justify-content-center">
               <div class="col col-md-6">
                 <button
-                  *ngIf="fromBlockchain === 'chx'"
+                  *ngIf="from === 'own'"
                   class="outline own-effect block text-center"
                   [routerLink]="['/info/tx/' + txResult.txHash]"
                 >
                   VIEW TRANSACTION INFO
                 </button>
                 <a
-                  *ngIf="fromBlockchain === blockchain"
+                  *ngIf="from !== 'own'"
                   class="button outline own-effect block text-center"
                   [href]="explorer + '/tx/' + txResult.txHash"
                   target="_blank"

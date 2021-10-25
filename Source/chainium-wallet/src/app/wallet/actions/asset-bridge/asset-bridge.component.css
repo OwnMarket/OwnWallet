@@ -3,3 +3,8 @@
   right: -50px;
   z-index: 10;
 }
+
+.terms-disabled {
+  color: var(--color-text-info);
+  pointer-events: none;
+}

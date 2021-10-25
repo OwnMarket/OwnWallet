@@ -174,7 +174,7 @@ export const ownIcons = {
     ],
   },
   close: {
-    paths: [`M2 2 L20 20 L38 2 M20 20 L20 20 M2 38 L20 20 L38 38`],
+    paths: [`M6 18L18 6M6 6l12 12`],
   },
   swap: {
     paths: [

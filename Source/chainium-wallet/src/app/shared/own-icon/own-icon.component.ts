@@ -3,10 +3,9 @@ import { ownIcons } from './own-icons';
 @Component({
   selector: 'own-icon',
   templateUrl: './own-icon.component.html',
-  styleUrls: ['./own-icon.component.css']
+  styleUrls: ['./own-icon.component.css'],
 })
 export class OwnIconComponent {
-
   _icon: any;
   _oldColor: string;
 
@@ -18,6 +17,7 @@ export class OwnIconComponent {
 
   @Input() size = 20;
   @Input() color = '#848484';
+  @Input() viewBox = '0 0 475.084 475.084';
   @Input() hoverColor: string;
 
   @HostListener('mouseover')
@@ -34,5 +34,4 @@ export class OwnIconComponent {
       this.color = this._oldColor;
     }
   }
-
 }

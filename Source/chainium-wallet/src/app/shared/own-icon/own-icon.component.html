@@ -1,4 +1,4 @@
-<svg [attr.width]="size + 'px'" viewBox="0 0 475.084 475.084">
+<svg [attr.width]="size + 'px'" [attr.viewBox]="viewBox" stroke="currentColor" stroke-width="2">
   <ng-container *ngFor="let path of _icon.paths">
     <path [attr.d]="path" [attr.fill]="color" />
   </ng-container>

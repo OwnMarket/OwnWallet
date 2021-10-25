@@ -159,15 +159,22 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   }
 
   setValidators() {
-    this.assetBridgeForm
-      .get('amount')
-      .setValidators([
-        Validators.required,
-        Validators.min(this.minWrapAmount),
-        Validators.max(
-          this.from === 'own' ? (this.chxBalance > 0 ? +(this.chxBalance - this.fee).toFixed(7) : 0.1) : this.balance
-        ),
-      ]);
+    if (this.selectedAsset === 'CHX') {
+      this.assetBridgeForm
+        .get('amount')
+        .setValidators([
+          Validators.required,
+          Validators.min(this.minWrapAmount),
+          Validators.max(
+            this.from === 'own' ? (this.chxBalance > 0 ? +(this.chxBalance - this.fee).toFixed(7) : 0.1) : this.balance
+          ),
+        ]);
+    }
+    if (this.selectedAsset !== 'CHX') {
+      this.assetBridgeForm
+        .get('amount')
+        .setValidators([Validators.required, Validators.min(0.000001), Validators.max(this.balance)]);
+    }
   }
 
   get selectedAsset(): string {
@@ -284,6 +291,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
         targetChain,
         this.tokenAddress(this.selectedAsset, targetChain)
       );
+      this.setValidators();
     } catch (error) {
       console.log(error);
       this.error = error.message;

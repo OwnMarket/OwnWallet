@@ -5,10 +5,13 @@
         <own-card-title>
           <div class="row justify-content-between">
             <div class="col">Cross-Chain Transfer</div>
-            <div class="col text-right" *ngIf="status === 'Connected'">
-              <span class="text-small text-info mr-2" *ngIf="chainName">
+            <div class="col text-right">
+              <span class="text-small text-info mr-2" *ngIf="status === 'Connected' && chainName">
                 {{ chainName }}
               </span>
+              <a routerLink="/wallet">
+              <own-icon icon="close" viewBox="0 0 24 24"></own-icon>
+            </a>
             </div>
           </div>
         </own-card-title>
@@ -61,7 +64,7 @@
                     <li>You have a MetaMask installed and you can access it.</li>
                   </ul>
                   <form [formGroup]="acceptBridgeForm">
-                    <div class="row mt-4">
+                    <div class="row mt-4" [class.terms-disabled]="status !== 'Connected'">
                       <div class="col mt-4">
                         <input type="checkbox" formControlName="aware" id="aware-of-risks" />
                         <label class="m-0" for="aware-of-risks"
@@ -70,7 +73,7 @@
                         >
                       </div>
                     </div>
-                    <div class="row mt-4">
+                    <div class="row mt-4" [class.terms-disabled]="status !== 'Connected'">
                       <div class="col">
                         <input type="checkbox" formControlName="confirm" id="confirm" />
                         <label class="m-0" for="confirm">
@@ -79,7 +82,7 @@
                         </label>
                       </div>
                     </div>
-                    <div class="row mt-4">
+                    <div class="row mt-4" [class.terms-disabled]="status !== 'Connected'">
                       <div class="col">
                         <input type="checkbox" formControlName="agree" id="agree" />
                         <label class="m-0" for="agree">
@@ -133,7 +136,7 @@
                   <div class="row">
                     <div class="col">
                       <div class="row">
-                        <label for="asset" class="col ml-2">Asset</label>
+                        <label for="asset" class="col-2 ml-2">Asset</label>
                         <div class="col text-info text-right">
                           <ng-container *ngIf="selectedAsset === 'CHX'">
                             {{ from === 'own' ? 'Balance: ' + chxBalance + ' CHX' : 'Balance: ' + balance + ' CHX' }}
@@ -177,7 +180,7 @@
                     </div>
                     <div class="col">
                       <div class="row">
-                        <label for="amount" class="col ml-2">Amount</label>
+                        <label for="amount" class="col-2 ml-2">Amount</label>
                         <div class="col text-info text-right">
                           <ng-container *ngIf="selectedAsset === 'CHX'">
                             {{ to === 'own' ? 'Balance: ' + chxBalance + 'CHX' : 'Balance: ' + balance + ' CHX' }}

@@ -40,7 +40,7 @@ export class AssetBridgeService {
     }
   }
 
-  async getNativeTransferFee(): Promise<any> {
+  async getNativeTransferFee(): Promise<number> {
     try {
       return (await this.assetBridge.methods.nativeTransferFee().call()) / Math.pow(10, 18);
     } catch (error) {
@@ -48,7 +48,7 @@ export class AssetBridgeService {
     }
   }
 
-  async ethTransferFee(): Promise<any> {
+  async ethTransferFee(): Promise<number> {
     try {
       return (await this.assetBridge.methods.ethTransferFee().call()) / Math.pow(10, 18);
     } catch (error) {
@@ -56,9 +56,26 @@ export class AssetBridgeService {
     }
   }
 
-  async tokenDecimals(): Promise<any> {
+  async tokenDecimals(): Promise<number> {
     try {
       return await this.token.methods.decimals().call();
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async accountsForAssets(assetHash: string): Promise<string> {
+    try {
+      return await this.assetBridge.methods.accountsForAssets(assetHash).call();
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async balanceOf(address: string): Promise<number> {
+    try {
+      const decimals = await this.tokenDecimals();
+      return (await this.token.methods.balanceOf(address).call()) / Math.pow(10, decimals);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -68,14 +85,14 @@ export class AssetBridgeService {
     address: string,
     tokenAddress: string,
     accountHash: string,
-    amount: number,
-    nativeTransferFee: number
+    amount: number
   ): Promise<any> {
     try {
       const decimals = await this.tokenDecimals();
       const totalAmount = amount * Math.pow(10, decimals);
+      const fee = await this.getNativeTransferFee();
       return await this.assetBridge.methods
-        .transferToNativeChain(totalAmount, tokenAddress, accountHash, nativeTransferFee)
+        .transferToNativeChain(totalAmount, tokenAddress, accountHash, fee)
         .send({
           from: address,
         })
@@ -89,20 +106,22 @@ export class AssetBridgeService {
           this.statusSubj.next('done');
         });
     } catch (error) {
+      this.statusSubj.next('ready');
       throw new Error(error.message);
     }
   }
 
   async transferFromNativeChain(
+    assetHash: string,
     address: string,
     fromAccountHash: string,
-    toAccountHash: string,
     chxAddress: string,
     nonce: number,
     ownFee: number,
     privateKey: string
   ): Promise<any> {
     try {
+      const toAccountHash = await this.accountsForAssets(assetHash);
       const txToSign = ownBlockchainSdk.transactions.createTx(chxAddress, nonce, ownFee);
 
       // return await this.assetBridge.methods
@@ -120,6 +139,7 @@ export class AssetBridgeService {
       //     this.statusSubj.next('done');
       //   });
     } catch (error) {
+      this.statusSubj.next('ready');
       throw new Error(error.message);
     }
   }

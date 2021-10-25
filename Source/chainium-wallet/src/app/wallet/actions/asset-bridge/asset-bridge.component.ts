@@ -51,6 +51,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   showMapping: boolean = false;
   mappingAddresses: boolean = true;
   bridgeFee: BridgeFee;
+  assetBridgeFee: any;
 
   assetHashFromParams: string;
   balanceFromParams: number;
@@ -291,6 +292,13 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
         targetChain,
         this.tokenAddress(this.selectedAsset, targetChain)
       );
+      if (targetChain === 'own') {
+        this.assetBridgeFee = await this.assetBridgeService.getNativeTransferFee();
+      } else {
+        this.assetBridgeFee = await this.assetBridgeService.ethTransferFee();
+      }
+      this.balance = await this.assetBridgeService.balanceOf(this.metaMaskAddress);
+      console.log(this.balance);
       this.setValidators();
     } catch (error) {
       console.log(error);
@@ -365,12 +373,12 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       }
 
       if (this.from !== 'own') {
+        console.log(this.assetBridgeFee);
         this.assetBridgeService.transferToNativeChain(
           this.metaMaskAddress,
           this.tokenAddress(this.selectedAsset, this.targetChainCode()),
           this.account,
-          this.amount,
-          await this.assetBridgeService.getNativeTransferFee()
+          this.amount
         );
       }
     } catch (error) {

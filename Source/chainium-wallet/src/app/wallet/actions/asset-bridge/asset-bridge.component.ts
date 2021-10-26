@@ -65,7 +65,11 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   chainName: string;
   accounts: string[] = [];
   assets: BridgeAsset[] = [];
-  blockchains = [
+  blockchains = [];
+
+  assetBridgeChains = [{ name: 'Ethereum', code: 'eth', token: 'ETH' }];
+
+  chxBridgeChains = [
     { name: 'Ethereum', code: 'eth', token: 'ETH' },
     { name: 'Binance Smart Chain', code: 'bsc', token: 'BNB' },
   ];
@@ -241,7 +245,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  swapBlockchains() {
+  async swapBlockchains() {
     if (this.from === 'own') {
       this.assetBridgeForm.get('from').setValue(this.to);
       this.assetBridgeForm.get('to').setValue('own');
@@ -256,6 +260,15 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     if (this.selectedAsset === 'CHX') {
       this.getBridgeFees();
     }
+
+    if (this.selectedAsset !== 'CHX') {
+      if (this.to === 'own') {
+        this.assetBridgeFee = await this.assetBridgeService.getNativeTransferFee();
+      } else {
+        this.assetBridgeFee = await this.assetBridgeService.ethTransferFee();
+      }
+    }
+
     this.setValidators();
   }
 
@@ -270,17 +283,22 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   async initChxBridge() {
     try {
+      this.blockchains = this.chxBridgeChains;
       this.chxService.resetStatus();
       this.txStatus$ = this.chxService.status$;
       this.txResult$ = this.chxService.txResult$;
       this.chxService.initContracts(this.metamask.web3, this.targetChainCode());
       this.addressIsMapped = await this.chxService.addressIsMapped(this.chxAddress, this.targetChainCode());
+
+      this.explorer = this.chxService.explorer;
+
       if (this.addressIsMapped) {
         this.wrongNetwork = await this.chxService.addressIsMappedToOtherChxAddress(
           this.metaMaskAddress,
           this.chxAddress
         );
       }
+
       if (this.metaMaskAddress) {
         const { balance, minWrapAmount } = await this.chxService.balanceAndMinAmount(this.metaMaskAddress);
         this.balance = balance;
@@ -302,27 +320,30 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   async initAssetBridge() {
     try {
+      this.blockchains = this.assetBridgeChains;
       this.assetBridgeService.resetStatus();
       this.txStatus$ = this.assetBridgeService.status$;
       this.txResult$ = this.assetBridgeService.txResult$;
-      const targetChain = this.to !== 'own' ? this.to : this.from;
+
       await this.assetBridgeService.initContracts(
         this.metamask.web3,
-        targetChain,
-        this.tokenAddress(this.selectedAsset, targetChain)
+        this.targetChainCode(),
+        this.tokenAddress(this.selectedAsset, this.targetChainCode())
       );
-      if (targetChain === 'own') {
+
+      this.explorer = this.assetBridgeService.explorer;
+
+      if (this.to === 'own') {
         this.assetBridgeFee = await this.assetBridgeService.getNativeTransferFee();
       } else {
         this.assetBridgeFee = await this.assetBridgeService.ethTransferFee();
       }
+
       this.nativeBalance = await this.assetBridgeService.getNativeBalance(
         this.account,
         this.tokenHash(this.selectedAsset)
       );
-      console.log(this.nativeBalance);
       this.balance = await this.assetBridgeService.balanceOf(this.metaMaskAddress);
-      console.log(this.balance);
       this.setValidators();
     } catch (error) {
       console.log(error);

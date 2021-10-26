@@ -26,7 +26,7 @@ export class AssetBridgeService {
 
   private statusSubj: BehaviorSubject<string> = new BehaviorSubject<string>('ready');
   private errorSubj: BehaviorSubject<string> = new BehaviorSubject<string | null>(null);
-  private txResultSubj: BehaviorSubject<TxResult> = new BehaviorSubject<TxResult>(null);
+  private txResultSubj: BehaviorSubject<TxResult> = new BehaviorSubject<TxResult>(new TxResult());
   status$: Observable<string> = this.statusSubj.asObservable();
   error$: Observable<string> = this.errorSubj.asObservable();
   txResult$: Observable<TxResult> = this.txResultSubj.asObservable();
@@ -132,6 +132,9 @@ export class AssetBridgeService {
           )
           .send({ from: address })
           .on('transactionHash', (hash: string) => {
+            let txResult = new TxResult();
+            txResult.txHash = hash;
+            this.txResultSubj.next(txResult);
             this.statusSubj.next('proccessing');
           })
           .on('receipt', async (receipt) => {
@@ -148,6 +151,9 @@ export class AssetBridgeService {
             from: address,
           })
           .on('transactionHash', (hash: string) => {
+            let txResult = new TxResult();
+            txResult.txHash = hash;
+            this.txResultSubj.next(txResult);
             this.statusSubj.next('proccessing');
           })
           .on('receipt', (receipt) => {
@@ -275,6 +281,6 @@ export class AssetBridgeService {
 
   resetStatus() {
     this.statusSubj.next('ready');
-    this.txResultSubj.next(null);
+    this.txResultSubj.next(new TxResult());
   }
 }

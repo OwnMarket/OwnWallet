@@ -621,11 +621,15 @@
     title="Click to view detailed fee calculation"
     (click)="showFees = !showFees"
   >
-    <div class="drop-menu position-absolute right-0 top-0 mt-1 mr-2 pt-2" [class.open]="showFees">
+    <div
+      *ngIf="selectedAsset === 'CHX'"
+      class="drop-menu position-absolute right-0 top-0 mt-1 mr-2 pt-2"
+      [class.open]="showFees"
+    >
       <own-icon icon="arrow-down"></own-icon>
     </div>
     <div class="col">
-      <ng-container *ngIf="showFees">
+      <ng-container *ngIf="showFees && selectedAsset === 'CHX'">
         <div class="row mr-2">
           <div class="col">Gas consumption:</div>
           <div class="col text-right">{{ bridgeFee.gasConsumption }} Gas</div>
@@ -665,17 +669,23 @@
       </ng-container>
 
       <div class="flex align-items-center justify-content-between" [class.text-bold]="showFees">
-        <div class="pt-2 -ml-1">
-          <own-icon icon="info" size="24" color="#EB6723"></own-icon>
+        <div class="-ml-1 flex align-items-center">
+          <own-icon class="pt-2" icon="info" size="24" color="#EB6723"></own-icon>
+          <div>Total fee:</div>
         </div>
-        <div class="-ml-2">Total fee:</div>
         <div class="text-right">
           <div class="row mr-2">
             <div class="col">
-              {{
-                from === 'own' ? (bridgeFee.totalFee + fee | number: '1.0-7') : (bridgeFee.totalFee | number: '1.0-7')
-              }}
-              CHX
+              <ng-container *ngIf="selectedAsset === 'CHX'">
+                {{
+                  from === 'own' ? (bridgeFee.totalFee + fee | number: '1.0-7') : (bridgeFee.totalFee | number: '1.0-7')
+                }}
+                CHX
+              </ng-container>
+              <ng-container *ngIf="selectedAsset !== 'CHX'">
+                {{ assetBridgeFee }}
+                ETH {{ from === 'own' ? '/ 1 CHX' : '' }}
+              </ng-container>
             </div>
           </div>
         </div>
@@ -714,7 +724,7 @@
       <h4>Processing...</h4>
       <p *ngIf="!addressIsMapped">Binding addresses ...</p>
       <p *ngIf="addressIsMapped">
-        Your {{ to === 'own' ? 'CHX' : tokenName }} tokens will be added to your account after the transaction has been
+        Your {{ selectedAsset | uppercase }} tokens will be added to your account after the transaction has been
         executed.
       </p>
     </div>

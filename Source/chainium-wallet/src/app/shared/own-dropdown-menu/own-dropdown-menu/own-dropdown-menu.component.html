@@ -7,7 +7,7 @@
   [attr.aria-labelledby]="ariaLabelledby || null"
   [attr.aria-describedby]="ariaDescribedby || null"
 >
-  <button class="dropdown-trigger" (click)="isActive = !isActive" [ngStyle]="{ width: menuWidth }">
+  <button class="dropdown-trigger" (click)="toggle()" [ngStyle]="{ width: menuWidth }">
     <svg *ngIf="showIcon" viewBox="0 0 515.555 515.555" width="15" fill="#848484">
       <path
         d="m303.347 18.875c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138c25.166-25.167 65.97-25.167 91.138 0"
@@ -23,7 +23,7 @@
     <div *ngIf="label" class="text-center block">{{ label }}</div>
     <ng-content select="div.label"></ng-content>
 
-    <div *ngIf="!showIcon" [ngStyle]="{ transform: isActive ? 'rotate(180deg)' : 'rotate(0)' }">
+    <div *ngIf="!showIcon && items.length > 0" [ngStyle]="{ transform: isActive ? 'rotate(180deg)' : 'rotate(0)' }">
       <own-icon icon="arrow-down" color="#3aabb9"></own-icon>
     </div>
   </button>

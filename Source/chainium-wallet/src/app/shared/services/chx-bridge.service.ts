@@ -75,6 +75,10 @@ export class ChxBridgeService {
     return this.config.config[this.blockchain].network;
   }
 
+  get explorer(): string {
+    return this.config.config[this.blockchain].explorerUrl;
+  }
+
   async addressIsMapped(chxAddress: string, blockchain: string): Promise<boolean> {
     try {
       const targetAddress = await this.mapping.methods[blockchain + 'Address'](chxAddress).call();

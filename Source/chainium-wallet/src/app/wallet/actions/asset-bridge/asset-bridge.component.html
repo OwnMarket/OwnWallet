@@ -9,7 +9,7 @@
               <span class="text-small text-info mr-2" *ngIf="status === 'Connected' && chainName">
                 {{ chainName }}
               </span>
-              <a routerLink="/wallet">
+              <a role="button" (click)="close()">
                 <own-icon icon="close" viewBox="0 0 24 24"></own-icon>
               </a>
             </div>

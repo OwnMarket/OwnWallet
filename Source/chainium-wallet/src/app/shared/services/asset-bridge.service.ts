@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpBackend } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import Web3 from 'web3';
 
 import { ConfigurationService } from './configuration.service';
 import { PrivatekeyService } from './privatekey.service';
 import { NodeService } from './node.service';
+import { CryptoService } from './crypto.service';
+
 import { ApiResponse, BridgeAsset, TxResult } from '../models';
-import Web3 from 'web3';
-import { environment } from 'src/environments/environment';
 
 declare var ownBlockchainSdk: any;
 
@@ -17,6 +20,7 @@ export class AssetBridgeService {
   private web3: Web3;
   private httpHandler: HttpClient;
   private blockchain: string;
+  private assetBridgeAddress: string;
   private token: any;
   private assetBridge: any;
 
@@ -31,7 +35,8 @@ export class AssetBridgeService {
     private handler: HttpBackend,
     private config: ConfigurationService,
     private privateKeyService: PrivatekeyService,
-    private nodeService: NodeService
+    private nodeService: NodeService,
+    private cryptoService: CryptoService
   ) {
     this.httpHandler = new HttpClient(handler);
   }
@@ -39,6 +44,7 @@ export class AssetBridgeService {
   async initContracts(web3: Web3, blockchain: string, tokenAddress: string): Promise<any> {
     this.web3 = web3;
     this.blockchain = blockchain;
+    this.assetBridgeAddress = this.config.config.assetBridgeContract;
     try {
       const assetBridgeContract = this.config.config.assetBridgeContract;
       const assetBridgeAbi = await this.getABI(blockchain, assetBridgeContract).toPromise();
@@ -99,9 +105,61 @@ export class AssetBridgeService {
     }
   }
 
+  get explorer(): string {
+    return this.config.config[this.blockchain].explorerUrl;
+  }
+
   shortHashFromLong(hash: string): string {
     const orig = ownBlockchainSdk.crypto.decode64(hash);
     return ownBlockchainSdk.crypto.hash(orig);
+  }
+
+  async checkAllowance(amount: any, address: string): Promise<any> {
+    try {
+      const allowance = this.web3.utils.toBN(
+        await this.token.methods.allowance(address, this.assetBridgeAddress).call()
+      );
+
+      if (allowance.gte(amount)) {
+        return true;
+      }
+
+      if (allowance.isZero()) {
+        return await this.token.methods
+          .approve(
+            this.assetBridgeAddress,
+            '115792089237316195423570985008687907853269984665640564039457584007913129639935'
+          )
+          .send({ from: address })
+          .on('transactionHash', (hash: string) => {
+            this.statusSubj.next('proccessing');
+          })
+          .on('receipt', async (receipt) => {
+            if (receipt.status) {
+              return true;
+            }
+          });
+      }
+
+      if (allowance.lt(amount)) {
+        return await this.token.methods
+          .increaseAllowance(this.assetBridgeAddress, amount)
+          .send({
+            from: address,
+          })
+          .on('transactionHash', (hash: string) => {
+            this.statusSubj.next('proccessing');
+          })
+          .on('receipt', (receipt) => {
+            if (receipt.status) {
+              return true;
+            }
+          });
+      }
+    } catch (error) {
+      this.statusSubj.next('ready');
+      throw new Error(error.message);
+    }
   }
 
   async transferToNativeChain(
@@ -118,6 +176,7 @@ export class AssetBridgeService {
         .mul(this.web3.utils.toBN(amount));
 
       const fee = await this.assetBridge.methods.nativeTransferFee().call();
+      await this.checkAllowance(totalAmount, address);
 
       return await this.assetBridge.methods
         .transferToNativeChain(tokenAddress, accountHash, totalAmount)
@@ -159,10 +218,11 @@ export class AssetBridgeService {
       txToSign.addTransferAssetAction(fromAccountHash, toAccountHash, assetHash, amount);
       const signature = txToSign.sign(environment.networkCode, privateKey);
       const ownTxHash = this.shortHashFromLong(signature.tx);
+      const txHashSignature = await this.cryptoService.signMessageAsPromise(privateKey, ownTxHash);
       const ethFee = await this.assetBridge.methods.ethTransferFee().call();
 
       return await this.assetBridge.methods
-        .transferFromNativeChain(ownTxHash, signature, address)
+        .transferFromNativeChain(ownTxHash, txHashSignature, address)
         .send({
           from: address,
           value: ethFee,

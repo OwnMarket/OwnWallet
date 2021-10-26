@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ɵɵsetComponentScope } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
 
 import {
@@ -58,6 +58,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   balanceFromParams: number;
   addressIsMapped: boolean;
   wrongNetwork: boolean;
+  explorer: string;
   error: string;
   metaMaskAddress: string;
 
@@ -70,6 +71,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   ];
 
   constructor(
+    private router: Router,
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private metamask: MetamaskService,
@@ -229,11 +231,14 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     return this.assets.find((asset) => asset.assetCode === code).assetHash;
   }
 
-  tokenAddress(code: string, blockchain: string): string {
-    const chainCode = blockchain.charAt(0).toUpperCase() + blockchain.slice(1);
-    return this.assets
-      .find((asset) => asset.assetCode === code)
-      .bridgedTokens.find((token) => token.targetBlockchain === chainCode).tokenAddress;
+  tokenAddress(code: string, blockchain: string): string | null {
+    if (blockchain) {
+      const chainCode = blockchain.charAt(0).toUpperCase() + blockchain.slice(1);
+      return this.assets
+        .find((asset) => asset.assetCode === code)
+        .bridgedTokens.find((token) => token.targetBlockchain === chainCode).tokenAddress;
+    }
+    return null;
   }
 
   swapBlockchains() {
@@ -265,6 +270,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   async initChxBridge() {
     try {
+      this.chxService.resetStatus();
       this.txStatus$ = this.chxService.status$;
       this.txResult$ = this.chxService.txResult$;
       this.chxService.initContracts(this.metamask.web3, this.targetChainCode());
@@ -296,6 +302,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   async initAssetBridge() {
     try {
+      this.assetBridgeService.resetStatus();
       this.txStatus$ = this.assetBridgeService.status$;
       this.txResult$ = this.assetBridgeService.txResult$;
       const targetChain = this.to !== 'own' ? this.to : this.from;
@@ -410,11 +417,16 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     }
   }
 
+  close() {
+    this.reset();
+    this.router.navigate(['/wallet']);
+  }
+
   reset() {
+    this.step = 1;
     this.error = null;
     this.risksAccepted = false;
     this.wrongNetwork = false;
-    this.step = 1;
     this.assetBridgeForm.reset();
     this.chxService.resetStatus();
     this.assetBridgeService.resetStatus();

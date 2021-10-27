@@ -210,6 +210,9 @@
                           formControlName="amount"
                         />
                       </div>
+                      <ng-container *ngIf="assetBridgeForm.valid && selectedAsset === 'CHX' && !addressIsMapped">
+                        <span class="text-danger p-2 text-small"> Please map your address before transfer </span>
+                      </ng-container>
                       <span
                         class="text-danger p-2 text-small"
                         *ngIf="
@@ -400,9 +403,10 @@
                     </div>
                     <div class="col">
                       <button
-                        [disabled]="assetBridgeForm.invalid || loading"
+                        [disabled]="transferIsDisabled"
                         class="block own-effect"
                         (click)="transfer()"
+                        [attr.title]="!addressIsMapped ? 'Please map address before proceeding' : ''"
                       >
                         <svg
                           *ngIf="loading"

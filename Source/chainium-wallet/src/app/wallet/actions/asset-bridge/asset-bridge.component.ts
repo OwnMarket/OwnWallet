@@ -50,7 +50,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   showFee: boolean = false;
   showMapping: boolean = false;
-  mappingAddresses: boolean = true;
+  mappingAddresses: boolean = false;
   bridgeFee: BridgeFee;
   assetBridgeFee: any;
 
@@ -127,9 +127,9 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       }
 
       if (this.metaMaskAddress !== account) {
-        if (this.step !== 1 || this.error) this.reset();
         this.metaMaskAddress = account;
         this.assetBridgeForm.get('toAddress').setValue(this.metaMaskAddress);
+        if (this.step !== 1 || this.error) this.reset();
         this.changeDetectorRef.markForCheck();
       }
     });
@@ -219,6 +219,12 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     return +this.assetBridgeForm.get('amount').value;
   }
 
+  get transferIsDisabled(): boolean {
+    if (this.loading) return true;
+    if (this.assetBridgeForm.invalid) return true;
+    if (this.selectedAsset === 'CHX' && !this.addressIsMapped) return true;
+  }
+
   targetChainCode() {
     return this.to !== 'own' ? this.to : this.from;
   }
@@ -297,6 +303,9 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
           this.metaMaskAddress,
           this.chxAddress
         );
+        if (this.wrongNetwork) {
+          this.error = `Currently selected ${this.targetChainCode()} Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.`;
+        }
       }
 
       if (this.metaMaskAddress) {
@@ -371,7 +380,6 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
         this.privateKeyService.getWalletInfo().privateKey
       );
       this.showMapping = false;
-      this.mappingAddresses = false;
       this.addressIsMapped = true;
     } catch (error) {
       this.showMapping = false;
@@ -440,16 +448,26 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   close() {
     this.reset();
-    this.router.navigate(['/wallet']);
+    if (!this.mappingAddresses) {
+      this.router.navigate(['/wallet']);
+    }
+    this.mappingAddresses = false;
   }
 
   reset() {
-    this.step = 1;
-    this.error = null;
-    this.risksAccepted = false;
-    this.wrongNetwork = false;
-    this.assetBridgeForm.reset();
+    if (this.wrongNetwork) {
+      this.step = 1;
+      this.acceptBridgeForm.reset();
+      this.risksAccepted = false;
+    }
+
+    if (this.step !== 1) {
+      this.step = 2;
+    }
+
     this.chxService.resetStatus();
     this.assetBridgeService.resetStatus();
+    this.error = null;
+    this.wrongNetwork = false;
   }
 }

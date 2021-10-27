@@ -96,12 +96,10 @@ export class ChxBridgeService {
   async addressIsMappedToOtherChxAddress(address: string, chxAddress: string): Promise<boolean> {
     try {
       const chxAddr = await this.mapping.methods.chxAddress(address).call();
-      console.log(chxAddr);
+
       if (chxAddr !== '') {
         if (chxAddr !== chxAddress) {
-          throw new Error(
-            `Currently selected ${this.network} Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.`
-          );
+          return true;
         }
         return false;
       }

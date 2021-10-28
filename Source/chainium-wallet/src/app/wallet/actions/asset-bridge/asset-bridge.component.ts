@@ -44,6 +44,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   bridgeFeeSub: Subscription;
   transferSub: Subscription;
   selectedAssetSub: Subscription;
+  selectedAccSub: Subscription;
 
   step: number = 1;
   risksAccepted: boolean = false;
@@ -140,6 +141,8 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.addressSub && this.addressSub.unsubscribe();
     this.bridgeFeeSub && this.bridgeFeeSub.unsubscribe();
     this.transferSub && this.transferSub.unsubscribe();
+    this.selectedAssetSub && this.selectedAssetSub.unsubscribe();
+    this.selectedAccSub && this.selectedAccSub.unsubscribe();
   }
 
   initAcceptBridgeForm(): void {
@@ -163,6 +166,13 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
     this.selectedAssetSub = this.assetBridgeForm.get('asset').valueChanges.subscribe((value) => {
       value === 'CHX' ? this.initChxBridge() : this.initAssetBridge();
+    });
+
+    this.selectedAccSub = this.assetBridgeForm.get('account').valueChanges.subscribe(async (value) => {
+      this.nativeBalance = await this.assetBridgeService.getNativeBalance(
+        this.account,
+        this.tokenHash(this.selectedAsset)
+      );
     });
   }
 

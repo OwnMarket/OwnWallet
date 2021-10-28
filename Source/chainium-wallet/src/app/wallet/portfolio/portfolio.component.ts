@@ -50,6 +50,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.accInfoSub) this.accInfoSub.unsubscribe();
+    if (this.bridgedAssetsSub) this.bridgedAssetsSub.unsubscribe();
   }
 
   isBridgedAsset(assetHash: string): boolean {

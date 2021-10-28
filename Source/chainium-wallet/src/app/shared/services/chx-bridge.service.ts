@@ -6,13 +6,15 @@ import { ConfigurationService } from './configuration.service';
 import { ChxBridgeFeeService } from './chx-bridge-fee.service';
 import { NodeService } from './node.service';
 import { CryptoService } from './crypto.service';
-import { BridgeAsset, BridgeFee, TxResult } from '../models';
+import { ApiResponse, BridgeAsset, BridgeFee, TxResult } from '../models';
 import { environment } from 'src/environments/environment';
+import { HttpClient, HttpBackend } from '@angular/common/http';
 
 declare var ownBlockchainSdk: any;
 
 @Injectable({ providedIn: 'root' })
 export class ChxBridgeService {
+  private httpHandler: HttpClient;
   private chx: BridgeAsset;
   private token: any;
   private mapping: any;
@@ -26,6 +28,7 @@ export class ChxBridgeService {
   txResult$: Observable<TxResult> = this.txResultSubj.asObservable();
 
   constructor(
+    private handler: HttpBackend,
     private config: ConfigurationService,
     private bridgeFeeService: ChxBridgeFeeService,
     private cryptoService: CryptoService,
@@ -207,6 +210,12 @@ export class ChxBridgeService {
       this.statusSubj.next('ready');
       throw new Error(error.message);
     }
+  }
+
+  getABI(targetBlockchain: string, tokenAddress: string): Observable<any> {
+    return this.httpHandler
+      .get<ApiResponse<any>>(`${this.config.config.bridgeApiUrl}/assets/${targetBlockchain}/${tokenAddress}/abi`)
+      .pipe(map((resp) => JSON.parse(resp.data)));
   }
 
   resetStatus() {

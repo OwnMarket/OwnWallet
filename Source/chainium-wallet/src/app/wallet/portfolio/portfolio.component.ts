@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
+import { AssetBridgeService } from 'src/app/shared';
 import { contentInOut, flyUpDown } from 'src/app/shared/animations/router.animations';
 import { WalletInfo } from 'src/app/shared/models/wallet-info.model';
 import { NodeService } from 'src/app/shared/services/node.service';
@@ -21,13 +22,20 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   selectedAccount: string;
   selectedAsset: string;
   selectedAssetBalance: number;
+  bridgedAssetsSub: Subscription;
   accInfoSub: Subscription;
-  accInfo: any;
+  holdings: any;
+  bridgedAssets: string[];
+  assets: Observable<any>;
 
   wallet: WalletInfo;
   isKeyImported = false;
 
-  constructor(private nodeService: NodeService, private privateKeyService: PrivatekeyService) {}
+  constructor(
+    private nodeService: NodeService,
+    private privateKeyService: PrivatekeyService,
+    private assetBridgeService: AssetBridgeService
+  ) {}
 
   ngOnInit(): void {
     this.isKeyImported = this.privateKeyService.existsKey();
@@ -36,11 +44,23 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     }
 
     this.wallet = this.privateKeyService.getWalletInfo();
+    this.fetchBridgedAssets();
     this.fetchAccountsWithInfo();
   }
 
   ngOnDestroy(): void {
     if (this.accInfoSub) this.accInfoSub.unsubscribe();
+  }
+
+  isBridgedAsset(assetHash: string): boolean {
+    return this.bridgedAssets.includes(assetHash);
+  }
+
+  fetchBridgedAssets() {
+    this.bridgedAssetsSub = this.assetBridgeService
+      .getAssets()
+      .pipe(map((resp) => resp.data.map((asset) => asset.assetHash)))
+      .subscribe((assets) => (this.bridgedAssets = assets));
   }
 
   fetchAccountsWithInfo(transfered?: boolean): void {
@@ -52,8 +72,10 @@ export class PortfolioComponent implements OnInit, OnDestroy {
             this.selectedAccount = resp.accounts[0];
           }
           return this.nodeService.getAccountInfo(this.selectedAccount).pipe(
-            map((infoResp) => {
-              this.accInfo = infoResp;
+            map((resp) => resp.holdings),
+            mergeMap((holdings) => this.mergeAssetCodes(holdings)),
+            map((assets) => {
+              this.holdings = assets;
               return resp.accounts;
             })
           );
@@ -65,9 +87,28 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   }
 
   fetchAccountInfo(): void {
-    this.accInfoSub = this.nodeService.getAccountInfo(this.selectedAccount).subscribe((resp) => {
-      this.accInfo = resp;
+    this.accInfoSub = this.nodeService
+      .getAccountInfo(this.selectedAccount)
+      .pipe(
+        map((resp) => resp.holdings),
+        mergeMap((holdings) => this.mergeAssetCodes(holdings))
+      )
+      .subscribe((assets) => (this.holdings = assets));
+  }
+
+  mergeAssetCodes(holdings: any[]): Observable<any> {
+    let requests = [];
+    holdings.forEach((asset) => {
+      requests.push(this.nodeService.getAssetInfo(asset.assetHash));
     });
+    return forkJoin(requests).pipe(
+      map((assetInfo: any) =>
+        holdings.map((asset) => {
+          const assetCode = assetInfo.find((info) => info.assetHash === asset.assetHash).assetCode;
+          return { ...asset, assetCode };
+        })
+      )
+    );
   }
 
   selectAccount(account: string): void {

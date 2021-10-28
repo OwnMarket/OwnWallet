@@ -54,10 +54,14 @@
       *ngIf="selectedAccount && !addingNewAsset && !addingNewAccount && !settingController && !transferingAsset"
       @contentInOut
     >
-      <div class="mega-input block bg-white no-borders py-3 mt-4" *ngFor="let asset of accInfo?.holdings">
+      <div class="mega-input block bg-white no-borders py-3 mt-4" *ngFor="let asset of holdings">
         <div class="flex items-center justify-content-between">
           <div class="flex">
-            <div class="px-4 border-right"><b>Asset</b></div>
+            <div class="px-4 border-right">
+              <b
+                >Asset <span class="text-brand pl-2">{{ asset.assetCode }}</span></b
+              >
+            </div>
             <div class="px-4 text-normal">
               {{ asset.assetHash }}
               <button class="button-transparent" title="Copy Asset Hash" ngxClipboard cbContent="{{ asset.assetHash }}">
@@ -78,7 +82,7 @@
                 <own-icon icon="swap" color="#eb6723"></own-icon>
               </button>
             </div>
-            <div class="px-4 cursor-pointer border-left">
+            <div class="px-4 cursor-pointer border-left" *ngIf="isBridgedAsset(asset.assetHash)">
               <button
                 class="button-transparent p-0"
                 title="Bridge Asset"

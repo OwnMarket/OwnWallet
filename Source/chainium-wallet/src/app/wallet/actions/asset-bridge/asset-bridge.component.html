@@ -158,6 +158,7 @@
                                 width="30px"
                                 height="30px"
                                 class="mr-2"
+                                (error)="tokenImageError($event)"
                                 [src]="'https://static.weown.com/own/bridge/' + selectedAsset + '.png'"
                               />
                               <div class="text-normal flex">

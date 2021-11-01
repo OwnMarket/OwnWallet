@@ -176,6 +176,7 @@
                                   width="30px"
                                   height="30px"
                                   class="mr-2"
+                                  (error)="tokenImageError($event)"
                                   [src]="'https://static.weown.com/own/bridge/' + asset.assetCode + '.png'"
                                 />
                                 <div class="text-normal">{{ asset.assetCode }}</div>

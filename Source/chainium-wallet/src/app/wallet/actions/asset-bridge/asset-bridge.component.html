@@ -203,7 +203,7 @@
                           </ng-container>
                         </div>
                       </div>
-                      <div class="mega-input text-lg">
+                      <div class="mega-input text-lg position-relative">
                         <input
                           id="amount"
                           name="amount"
@@ -211,6 +211,7 @@
                           type="number"
                           formControlName="amount"
                         />
+                        <div class="max-button text-white text-small" (click)="setMaxAmount()">MAX</div>
                       </div>
                       <ng-container *ngIf="assetBridgeForm.valid && selectedAsset === 'CHX' && !addressIsMapped">
                         <span class="text-danger p-2 text-small"> Please map your address before transfer </span>

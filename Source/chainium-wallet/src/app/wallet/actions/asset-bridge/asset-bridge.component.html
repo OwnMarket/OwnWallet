@@ -137,18 +137,6 @@
                     <div class="col">
                       <div class="row">
                         <label for="asset" class="col-2 ml-2">Asset</label>
-                        <div class="col info text-right">
-                          <ng-container *ngIf="selectedAsset === 'CHX'">
-                            {{ from === 'own' ? 'Balance: ' + chxBalance + ' CHX' : 'Balance: ' + balance + ' CHX' }}
-                          </ng-container>
-                          <ng-container *ngIf="selectedAsset !== 'CHX'">
-                            {{
-                              from === 'own'
-                                ? 'Balance: ' + nativeBalance + ' ' + (selectedAsset | uppercase)
-                                : 'Balance: ' + balance + ' ' + (selectedAsset | uppercase)
-                            }}
-                          </ng-container>
-                        </div>
                       </div>
                       <div class="mega-input block text-lg">
                         <own-dropdown-menu id="asset-selector" [showIcon]="false" [fullWidth]="true">
@@ -192,13 +180,13 @@
                         <label for="amount" class="col-2 ml-2">Amount</label>
                         <div class="col info text-right">
                           <ng-container *ngIf="selectedAsset === 'CHX'">
-                            {{ to === 'own' ? 'Balance: ' + chxBalance + 'CHX' : 'Balance: ' + balance + ' CHX' }}
+                            {{ to === 'own' ? 'Balance: ' + balance + 'CHX' : 'Balance: ' + chxBalance + 'CHX' }}
                           </ng-container>
                           <ng-container *ngIf="selectedAsset !== 'CHX'">
                             {{
                               to === 'own'
-                                ? 'Balance: ' + nativeBalance + ' ' + (selectedAsset | uppercase)
-                                : 'Balance: ' + balance + ' ' + (selectedAsset | uppercase)
+                                ? 'Balance: ' + balance + (selectedAsset | uppercase)
+                                : 'Balance: ' + nativeBalance + ' ' + (selectedAsset | uppercase)
                             }}
                           </ng-container>
                         </div>
@@ -300,6 +288,7 @@
                             <div class="mb-2">Address:</div>
                             <div class="mega-input">
                               <input
+                                readonly
                                 id="from-address"
                                 name="from-address"
                                 class="block no-borders elipsis"
@@ -381,6 +370,21 @@
                                 formControlName="toAddress"
                               />
                             </div>
+                            <span
+                              class="text-danger p-2 text-small"
+                              *ngIf="
+                                assetBridgeForm.get('toAddress').dirty &&
+                                assetBridgeForm.get('toAddress').touched &&
+                                assetBridgeForm.get('toAddress').errors
+                              "
+                            >
+                              <span *ngIf="assetBridgeForm.get('toAddress').errors?.notEthAddress">
+                                Invalid {{ this.to | uppercase }} address
+                              </span>
+                              <span *ngIf="assetBridgeForm.get('toAddress').errors?.required">
+                                Address is required
+                              </span>
+                            </span>
                           </ng-container>
                           <ng-container *ngIf="selectedAsset !== 'CHX' && to === 'own'">
                             <div class="mb-2">Account:</div>
@@ -799,7 +803,7 @@
 
 <ng-template #proccessingScreen let-txResult="txResult">
   <div class="row">
-    <div class="col-12 text-center">
+    <div class="col-12 ml-4 text-center">
       <svg
         class="svg-loader"
         version="1.1"

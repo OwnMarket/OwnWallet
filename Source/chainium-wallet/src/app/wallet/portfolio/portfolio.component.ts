@@ -54,7 +54,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   }
 
   isBridgedAsset(assetHash: string): boolean {
-    return this.bridgedAssets.includes(assetHash);
+    return this.bridgedAssets?.includes(assetHash);
   }
 
   fetchBridgedAssets() {

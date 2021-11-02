@@ -8,5 +8,6 @@ export * from './directives';
 export * from './services';
 export * from './models';
 export * from './enums';
+export * from './validators';
 import * as OwnAnimations from './animations/router.animations';
 export { OwnAnimations };

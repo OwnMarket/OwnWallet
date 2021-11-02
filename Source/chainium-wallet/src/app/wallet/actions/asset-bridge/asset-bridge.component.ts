@@ -14,6 +14,7 @@ import {
   AssetBridgeService,
   BridgeAsset,
   ChxBridgeService,
+  validateEthAddress,
 } from 'src/app/shared';
 
 @Component({
@@ -177,6 +178,17 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     });
   }
 
+  // public findInvalidControls() {
+  //   const invalid = [];
+  //   const controls = this.assetBridgeForm.controls;
+  //   for (const name in controls) {
+  //     if (controls[name].invalid) {
+  //       invalid.push(name);
+  //     }
+  //   }
+  //   return invalid;
+  // }
+
   setValidators() {
     if (this.selectedAsset === 'CHX') {
       this.assetBridgeForm
@@ -197,9 +209,21 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
           Validators.min(0.000001),
           Validators.max(this.from === 'own' ? this.nativeBalance : this.balance),
         ]);
+      if (this.to !== 'own') {
+        this.assetBridgeForm.get('toAddress').setValidators([Validators.required, validateEthAddress]);
+        this.assetBridgeForm.get('toAddress').updateValueAndValidity();
+        this.assetBridgeForm.get('fromAddress').clearValidators();
+        this.assetBridgeForm.get('fromAddress').updateValueAndValidity();
+      }
+      if (this.from !== 'own') {
+        this.assetBridgeForm.get('fromAddress').clearValidators();
+        this.assetBridgeForm.get('fromAddress').updateValueAndValidity();
+        this.assetBridgeForm.get('toAddress').clearValidators();
+        this.assetBridgeForm.get('toAddress').updateValueAndValidity();
+      }
     }
     this.assetBridgeForm.markAsPristine();
-    this.assetBridgeForm.get('amount').updateValueAndValidity();
+    this.assetBridgeForm.updateValueAndValidity();
   }
 
   get selectedAsset(): string {
@@ -476,7 +500,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
       if (this.from !== 'own') {
         await this.assetBridgeService.transferToNativeChain(
-          this.fromAddress,
+          this.metaMaskAddress,
           this.tokenAddress(this.selectedAsset, this.targetChainCode()),
           this.account,
           this.amount

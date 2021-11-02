@@ -714,9 +714,7 @@ input[type='checkbox'] + label {
   margin-bottom: 20px;
   font: 14px/20px 'Open Sans', Arial, sans-serif;
   cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  user-select: none;
 }
 
 input[type='checkbox'] + label:last-child {
@@ -760,6 +758,10 @@ input[type='checkbox'].own-switch + label::before {
 input:read-only {
   color: var(--color-text-info);
   background-color: var(--color-bg-lighter);
+}
+
+.select-none {
+  user-select: none;
 }
 
 .own-switch-label {

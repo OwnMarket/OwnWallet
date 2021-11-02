@@ -85,7 +85,7 @@
             <div class="px-4 cursor-pointer border-left" *ngIf="isBridgedAsset(asset.assetHash)">
               <button
                 class="button-transparent p-0"
-                title="Bridge Asset"
+                title="Cross-Chain Asset Transfer"
                 [routerLink]="['/wallet/asset-bridge']"
                 [queryParams]="{ assetHash: asset.assetHash, balance: asset.balance }"
               >

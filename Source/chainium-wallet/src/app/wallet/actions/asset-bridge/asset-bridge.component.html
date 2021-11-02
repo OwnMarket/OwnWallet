@@ -721,11 +721,12 @@
       mx-1
       bg-lighter
       rounded
-      cursor-pointer
       position-relative
+      select-none
     "
     tabindex="1"
-    title="Click to view detailed fee calculation"
+    [class.cursor-pointer]="selectedAsset === 'CHX'"
+    [title]="selectedAsset === 'CHX' ? 'Click to view detailed fee calculation' : ''"
     (click)="showFees = !showFees"
   >
     <div
@@ -791,7 +792,7 @@
               </ng-container>
               <ng-container *ngIf="selectedAsset !== 'CHX'">
                 {{ assetBridgeFee }}
-                ETH {{ from === 'own' ? '/ 1 CHX' : '' }}
+                ETH {{ from === 'own' ? '+ 1 CHX' : '' }}
               </ng-container>
             </div>
           </div>

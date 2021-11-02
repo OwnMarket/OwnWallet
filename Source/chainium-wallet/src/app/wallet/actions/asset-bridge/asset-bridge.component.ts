@@ -288,9 +288,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   setMaxAmount(): void {
     if (this.selectedAsset === 'CHX') {
-      if (this.max > this.minWrapAmount) {
+      if (this.max >= this.minWrapAmount) {
         this.setAmount(this.max);
       } else {
+        this.setAmount(this.max);
         this.assetBridgeForm.get('amount').setErrors({ min: true });
       }
       return;

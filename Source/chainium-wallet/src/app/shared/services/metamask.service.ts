@@ -9,6 +9,7 @@ import { ConfigurationService } from './configuration.service';
 
 @Injectable({ providedIn: 'root' })
 export class MetamaskService {
+  public chainId: string;
   public web3: Web3;
   public provider: any;
   public currentAccount: string;
@@ -43,14 +44,19 @@ export class MetamaskService {
     }
   }
 
+  currentChainCode(): string {
+    if (this.chainId === '0x38' || this.chainId === '0x61') return 'bsc';
+    return 'eth';
+  }
+
   async init() {
     console.log('Init metamask');
     this.statusSubj.next(MetaMaskStatus.Initiating);
     this.web3 = new Web3(Web3.givenProvider);
     this.provider = await detectEthereumProvider();
     this.web3.setProvider(this.provider);
-    const chainId = await this.provider.request({ method: 'eth_chainId' });
-    this.chainIdSubj.next(chainId);
+    this.chainId = await this.provider.request({ method: 'eth_chainId' });
+    this.chainIdSubj.next(this.chainId);
 
     this.provider.on('disconnect', () => {
       this.statusSubj.next(MetaMaskStatus.Disconnected);
@@ -59,6 +65,7 @@ export class MetamaskService {
     this.provider.on('chainChanged', (chainId: string) => {
       console.log('changed network', chainId);
       this.chainIdSubj.next(chainId);
+      window.location.reload();
     });
 
     this.provider.on('accountsChanged', async (accounts: string[]) => await this.syncAccounts(accounts));

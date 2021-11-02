@@ -46,6 +46,8 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   transferSub: Subscription;
   selectedAssetSub: Subscription;
   selectedAccSub: Subscription;
+  toChainSub: Subscription;
+  fromChainSub: Subscription;
 
   step: number = 1;
   risksAccepted: boolean = false;
@@ -67,7 +69,6 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   chainName: string;
   accounts: string[] = [];
   assets: BridgeAsset[] = [];
-  blockchains = [];
 
   assetBridgeChains = [{ name: 'Ethereum', code: 'eth', token: 'ETH' }];
 
@@ -75,6 +76,8 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     { name: 'Ethereum', code: 'eth', token: 'ETH' },
     { name: 'Binance Smart Chain', code: 'bsc', token: 'BNB' },
   ];
+
+  blockchains = [];
 
   constructor(
     private router: Router,
@@ -122,16 +125,13 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.initAcceptBridgeForm();
       this.initAssetBridgeForm();
 
-      if (this.chainName !== chainName) {
-        if (this.step !== 1 || this.error) this.reset();
-        this.chainName = chainName;
-        this.changeDetectorRef.markForCheck();
-      }
-
       if (this.metaMaskAddress !== account) {
         this.metaMaskAddress = account;
         this.assetBridgeForm.get('toAddress').setValue(this.metaMaskAddress);
-        if (this.step !== 1 || this.error) this.reset();
+        if (this.step !== 1 || this.error) {
+          this.error = null;
+          this.step = 2;
+        }
         this.changeDetectorRef.markForCheck();
       }
     });
@@ -159,7 +159,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       asset: ['CHX'],
       amount: [0, [Validators.required, Validators.min(0.0000001)]],
       from: ['own'],
-      to: ['eth'],
+      to: [this.metamask.currentChainCode()],
       fromAddress: [this.chxAddress],
       toAddress: [this.metaMaskAddress],
       account: [this.accounts[0]],
@@ -167,7 +167,13 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
     this.selectedAssetSub = this.assetBridgeForm.get('asset').valueChanges.subscribe((value) => {
       this.setAmount(0);
-      value === 'CHX' ? this.initChxBridge() : this.initAssetBridge();
+      if (value === 'CHX') {
+        this.initChxBridge();
+      } else {
+        if (this.to !== 'own') this.assetBridgeForm.get('to').setValue('eth');
+        if (this.from !== 'own') this.assetBridgeForm.get('from').setValue('eth');
+        this.initAssetBridge();
+      }
     });
 
     this.selectedAccSub = this.assetBridgeForm.get('account').valueChanges.subscribe(async (value) => {
@@ -176,18 +182,21 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
         this.tokenHash(this.selectedAsset)
       );
     });
-  }
 
-  // public findInvalidControls() {
-  //   const invalid = [];
-  //   const controls = this.assetBridgeForm.controls;
-  //   for (const name in controls) {
-  //     if (controls[name].invalid) {
-  //       invalid.push(name);
-  //     }
-  //   }
-  //   return invalid;
-  // }
+    this.toChainSub = this.assetBridgeForm.get('to').valueChanges.subscribe(async (value) => {
+      if (value !== 'own') {
+        if (this.selectedAsset === 'CHX') await this.initChxBridge();
+        if (this.selectedAsset !== 'CHX') await this.initAssetBridge();
+      }
+    });
+
+    this.fromChainSub = this.assetBridgeForm.get('from').valueChanges.subscribe(async (value) => {
+      if (value !== 'own') {
+        if (this.selectedAsset === 'CHX') await this.initChxBridge();
+        if (this.selectedAsset !== 'CHX') await this.initAssetBridge();
+      }
+    });
+  }
 
   setValidators() {
     if (this.selectedAsset === 'CHX') {
@@ -296,15 +305,15 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   }
 
   targetChainName(code: string): string {
-    return this.blockchains.find((chain) => chain.code === code).name;
+    return this.blockchains?.find((chain) => chain.code === code).name;
   }
 
   tokenName(code: string): string {
-    return this.blockchains.find((chain) => chain.code === code).token;
+    return this.blockchains?.find((chain) => chain.code === code).token;
   }
 
   tokenHash(code: string): string {
-    return this.assets.find((asset) => asset.assetCode === code).assetHash;
+    return this.assets?.find((asset) => asset.assetCode === code).assetHash;
   }
 
   tokenAddress(code: string, blockchain: string): string | null {
@@ -523,7 +532,6 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   reset() {
     if (this.wrongNetwork) {
       this.step = 1;
-      this.acceptBridgeForm.reset();
       this.risksAccepted = false;
     }
 

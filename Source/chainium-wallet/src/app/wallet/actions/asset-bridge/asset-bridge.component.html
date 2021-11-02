@@ -825,11 +825,11 @@
     </div>
     <div class="col-12 text-center">
       <h4>Processing...</h4>
-      <p *ngIf="!addressIsMapped">Binding addresses ...</p>
+      <p *ngIf="selectedAsset === 'CHX' && !addressIsMapped">Binding addresses ...</p>
       <p *ngIf="addressIsMapped && selectedAsset !== 'CHX' && from === 'own'">
         Please don't close the current window while transaction is being proccessed. This could lead to token loss.
       </p>
-      <p *ngIf="addressIsMapped">
+      <p *ngIf="selectedAsset !== 'CHX' || addressIsMapped">
         Your {{ selectedAsset | uppercase }} tokens will be added to your account after the transaction has been
         executed.
       </p>

@@ -58,7 +58,8 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   bridgeFee: BridgeFee;
   assetBridgeFee: any;
 
-  assetHashFromParams: string;
+  accountHashFromParams: string;
+  assetCodeFromParams: string;
   balanceFromParams: number;
   addressIsMapped: boolean;
   wrongNetwork: boolean;
@@ -103,8 +104,9 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.txStatus$ = of('ready');
 
     this.paramsSub = this.activatedRoute.queryParams.subscribe((params) => {
-      const { assetHash, balance } = params;
-      this.assetHashFromParams = assetHash || null;
+      const { accountHash, assetCode, balance } = params;
+      this.accountHashFromParams = accountHash || null;
+      this.assetCodeFromParams = assetCode || null;
       this.balanceFromParams = +balance || null;
     });
 
@@ -156,13 +158,13 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   initAssetBridgeForm(): void {
     this.assetBridgeForm = this.fb.group({
-      asset: ['CHX'],
-      amount: [0, [Validators.required, Validators.min(0.0000001)]],
+      asset: [this.assetCodeFromParams ? this.assetCodeFromParams : 'CHX'],
+      amount: [this.balanceFromParams ? this.balanceFromParams : 0, [Validators.required, Validators.min(0.0000001)]],
       from: ['own'],
       to: [this.metamask.currentChainCode()],
       fromAddress: [this.chxAddress],
       toAddress: [this.metaMaskAddress],
-      account: [this.accounts[0]],
+      account: [this.accountHashFromParams ? this.accountHashFromParams : this.accounts[0]],
     });
 
     this.selectedAssetSub = this.assetBridgeForm.get('asset').valueChanges.subscribe((value) => {
@@ -424,6 +426,8 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
         this.assetBridgeFee = await this.assetBridgeService.ethTransferFee();
       }
 
+      console.log(this.assetBridgeFee);
+
       this.nativeBalance = await this.assetBridgeService.getNativeBalance(
         this.account,
         this.tokenHash(this.selectedAsset)
@@ -440,7 +444,11 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     try {
       this.risksAccepted = true;
       this.step = 2;
-      await this.initChxBridge();
+      if (this.assetCodeFromParams) {
+        await this.initAssetBridge();
+      } else {
+        await this.initChxBridge();
+      }
     } catch (error) {
       console.log(error.message);
       this.error = error.message;

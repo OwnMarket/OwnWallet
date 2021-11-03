@@ -87,7 +87,11 @@
                 class="button-transparent p-0"
                 title="Cross-Chain Asset Transfer"
                 [routerLink]="['/wallet/asset-bridge']"
-                [queryParams]="{ assetHash: asset.assetHash, balance: asset.balance }"
+                [queryParams]="{
+                  accountHash: selectedAccount,
+                  assetCode: asset.assetCode,
+                  balance: asset.balance
+                }"
               >
                 <own-icon icon="swap" color="#3aabb9"></own-icon>
               </button>

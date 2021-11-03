@@ -64,7 +64,7 @@
                     <li>You have a MetaMask installed and you can access it.</li>
                   </ul>
                   <form [formGroup]="acceptBridgeForm">
-                    <div class="row mt-4" [class.terms-disabled]="status !== 'Connected'">
+                    <div class="row mt-4">
                       <div class="col mt-4">
                         <input type="checkbox" formControlName="aware" id="aware-of-risks" />
                         <label class="m-0" for="aware-of-risks"
@@ -73,7 +73,7 @@
                         >
                       </div>
                     </div>
-                    <div class="row mt-4" [class.terms-disabled]="status !== 'Connected'">
+                    <div class="row mt-4">
                       <div class="col">
                         <input type="checkbox" formControlName="confirm" id="confirm" />
                         <label class="m-0" for="confirm">
@@ -82,7 +82,7 @@
                         </label>
                       </div>
                     </div>
-                    <div class="row mt-4" [class.terms-disabled]="status !== 'Connected'">
+                    <div class="row mt-4">
                       <div class="col">
                         <input type="checkbox" formControlName="agree" id="agree" />
                         <label class="m-0" for="agree">

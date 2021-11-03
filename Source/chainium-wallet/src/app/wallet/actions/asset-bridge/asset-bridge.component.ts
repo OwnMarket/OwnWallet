@@ -158,7 +158,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   initAssetBridgeForm(): void {
     this.assetBridgeForm = this.fb.group({
-      asset: [this.assetCodeFromParams ? this.assetCodeFromParams : 'CHX'],
+      asset: [this.assetCodeFromParams ? this.assetCodeFromParams : this.assets[1].assetCode],
       amount: [this.balanceFromParams ? this.balanceFromParams : 0, [Validators.required, Validators.min(0.0000001)]],
       from: ['own'],
       to: [this.metamask.currentChainCode()],
@@ -442,11 +442,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     try {
       this.risksAccepted = true;
       this.step = 2;
-      if (this.assetCodeFromParams) {
-        await this.initAssetBridge();
-      } else {
-        await this.initChxBridge();
-      }
+      await this.initAssetBridge();
     } catch (error) {
       console.log(error.message);
       this.error = error.message;

@@ -784,7 +784,7 @@
         <div class="text-right">
           <div class="row mr-2">
             <div class="col">
-              <ng-container *ngIf="selectedAsset === 'CHX'">
+              <ng-container *ngIf="selectedAsset === 'CHX' && bridgeFee">
                 {{
                   from === 'own' ? (bridgeFee.totalFee + fee | number: '1.0-7') : (bridgeFee.totalFee | number: '1.0-7')
                 }}

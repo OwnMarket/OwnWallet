@@ -426,8 +426,6 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
         this.assetBridgeFee = await this.assetBridgeService.ethTransferFee();
       }
 
-      console.log(this.assetBridgeFee);
-
       this.nativeBalance = await this.assetBridgeService.getNativeBalance(
         this.account,
         this.tokenHash(this.selectedAsset)

@@ -114,14 +114,20 @@ export class AssetBridgeService {
     return ownBlockchainSdk.crypto.hash(orig);
   }
 
-  async checkAllowance(amount: any, address: string): Promise<any> {
+  async checkAllowance(
+    amount: any,
+    address: string,
+    tokenAddress: string,
+    accountHash: string,
+    fee: number
+  ): Promise<any> {
     try {
       const allowance = this.web3.utils.toBN(
         await this.token.methods.allowance(address, this.assetBridgeAddress).call()
       );
 
       if (allowance.gte(amount)) {
-        return true;
+        await this.transferToNative(tokenAddress, accountHash, amount, address, fee);
       }
 
       if (allowance.isZero()) {
@@ -139,7 +145,7 @@ export class AssetBridgeService {
           })
           .on('receipt', async (receipt) => {
             if (receipt.status) {
-              return true;
+              await this.transferToNative(tokenAddress, accountHash, amount, address, fee);
             }
           });
       }
@@ -156,9 +162,9 @@ export class AssetBridgeService {
             this.txResultSubj.next(txResult);
             this.statusSubj.next('proccessing');
           })
-          .on('receipt', (receipt) => {
+          .on('receipt', async (receipt) => {
             if (receipt.status) {
-              return true;
+              await this.transferToNative(tokenAddress, accountHash, amount, address, fee);
             }
           });
       }
@@ -182,10 +188,23 @@ export class AssetBridgeService {
         .mul(this.web3.utils.toBN(amount));
 
       const fee = await this.assetBridge.methods.nativeTransferFee().call();
-      await this.checkAllowance(totalAmount, address);
+      await this.checkAllowance(totalAmount, address, tokenAddress, accountHash, fee);
+    } catch (error) {
+      this.statusSubj.next('ready');
+      throw new Error(error.message);
+    }
+  }
 
+  async transferToNative(
+    tokenAddress: string,
+    accountHash: string,
+    amount: any,
+    address: string,
+    fee: number
+  ): Promise<any> {
+    try {
       return await this.assetBridge.methods
-        .transferToNativeChain(tokenAddress, accountHash, totalAmount)
+        .transferToNativeChain(tokenAddress, accountHash, amount)
         .send({
           from: address,
           value: fee,

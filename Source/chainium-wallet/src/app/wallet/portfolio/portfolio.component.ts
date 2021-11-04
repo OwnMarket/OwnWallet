@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { forkJoin, Observable, Subscription } from 'rxjs';
+import { forkJoin, Observable, of, Subscription } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { AssetBridgeService } from 'src/app/shared';
 import { contentInOut, flyUpDown } from 'src/app/shared/animations/router.animations';
@@ -74,7 +74,13 @@ export class PortfolioComponent implements OnInit, OnDestroy {
           }
           return this.nodeService.getAccountInfo(this.selectedAccount).pipe(
             map((resp) => resp.holdings),
-            mergeMap((holdings) => this.mergeAssetCodes(holdings)),
+            mergeMap((holdings) => {
+              if (holdings.length > 0) {
+                return this.mergeAssetCodes(holdings);
+              } else {
+                return of([]);
+              }
+            }),
             map((assets) => {
               this.holdings = assets;
               return resp.accounts;
@@ -92,7 +98,13 @@ export class PortfolioComponent implements OnInit, OnDestroy {
       .getAccountInfo(this.selectedAccount)
       .pipe(
         map((resp) => resp.holdings),
-        mergeMap((holdings) => this.mergeAssetCodes(holdings))
+        mergeMap((holdings) => {
+          if (holdings.length > 0) {
+            return this.mergeAssetCodes(holdings);
+          } else {
+            return of([]);
+          }
+        })
       )
       .subscribe((assets) => (this.holdings = assets));
   }

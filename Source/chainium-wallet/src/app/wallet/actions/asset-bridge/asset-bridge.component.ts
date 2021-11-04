@@ -175,8 +175,8 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       if (value === 'CHX') {
         this.initChxBridge();
       } else {
-        if (this.to !== 'own') this.assetBridgeForm.get('to').setValue('eth');
-        if (this.from !== 'own') this.assetBridgeForm.get('from').setValue('eth');
+        if (this.to !== 'own') this.assetBridgeForm.get('to').setValue('eth', { emitEvent: false });
+        if (this.from !== 'own') this.assetBridgeForm.get('from').setValue('eth', { emitEvent: false });
         this.initAssetBridge();
       }
     });
@@ -327,7 +327,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       const chainCode = blockchain.charAt(0).toUpperCase() + blockchain.slice(1);
       return this.assets
         .find((asset) => asset.assetCode === code)
-        .bridgedTokens.find((token) => token.targetBlockchain === chainCode).tokenAddress;
+        .bridgedTokens.find((token) => token.targetBlockchain === chainCode)?.tokenAddress;
     }
     return null;
   }
@@ -370,6 +370,9 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   async initChxBridge() {
     try {
+      if (this.metamask.currentChainCode() !== 'eth') {
+        this.assetBridgeForm.get('asset').setValue('CHX', { emitEvent: false });
+      }
       this.blockchains = this.chxBridgeChains;
       this.chxService.resetStatus();
       this.txStatus$ = this.chxService.status$;
@@ -445,7 +448,11 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     try {
       this.risksAccepted = true;
       this.step = 2;
-      await this.initAssetBridge();
+      if (this.metamask.currentChainCode() === 'eth') {
+        await this.initAssetBridge();
+      } else {
+        await this.initChxBridge();
+      }
     } catch (error) {
       console.log(error.message);
       this.error = error.message;

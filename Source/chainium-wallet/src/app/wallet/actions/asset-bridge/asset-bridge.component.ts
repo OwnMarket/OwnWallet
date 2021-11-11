@@ -175,9 +175,17 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       if (value === 'CHX') {
         this.initChxBridge();
       } else {
-        if (this.to !== 'own') this.assetBridgeForm.get('to').setValue('eth', { emitEvent: false });
-        if (this.from !== 'own') this.assetBridgeForm.get('from').setValue('eth', { emitEvent: false });
-        this.initAssetBridge();
+        const supportsAssetBridge = this.assetBridgeChains
+          .map((chain) => chain.code)
+          .includes(this.metamask.currentChainCode());
+        if (supportsAssetBridge) {
+          this.initAssetBridge();
+        } else {
+          this.assetBridgeForm.get('asset').setValue('CHX', { emitEvent: false });
+          this.error = `Currently selected asset ${value} isn't supported on ${this.targetChainName(
+            this.metamask.currentChainCode()
+          )} please change network in metamask to Ethereum and try again.`;
+        }
       }
     });
 

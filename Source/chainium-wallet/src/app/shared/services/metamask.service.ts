@@ -38,7 +38,7 @@ export class MetamaskService {
 
   constructor(private configService: ConfigurationService) {
     this.provider = window.ethereum as any;
-    if (this.provider && this.provider.isMetaMask && this.provider.selectedAddress) {
+    if (this.provider && this.provider.isMetaMask) {
       console.log('MetaMaskService: MetaMask installed');
       this.init();
     }

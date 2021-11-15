@@ -55,6 +55,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   showFee: boolean = false;
   showMapping: boolean = false;
   mappingAddresses: boolean = false;
+  addressJustMapped: boolean = false;
   bridgeFee: BridgeFee;
   assetBridgeFee: any;
 
@@ -284,7 +285,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   get max(): number {
     if (this.selectedAsset === 'CHX') {
-      if (this.from === 'own') return Number((this.chxBalance - this.fee).toFixed(7));
+      if (this.from === 'own') {
+       const max = Number((this.chxBalance - this.fee).toFixed(7));
+       return max > 0 ? max : 0;
+      };
       return this.balance;
     }
     if (this.selectedAsset !== 'CHX') {
@@ -306,8 +310,9 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       } else {
         this.setAmount(this.max);
         this.assetBridgeForm.get('amount').setErrors({ min: true });
+        this.assetBridgeForm.get('amount').markAsDirty();
+        this.assetBridgeForm.get('amount').markAsTouched();
       }
-      return;
     }
     if (this.selectedAsset !== 'CHX') {
       this.setAmount(this.max);
@@ -476,6 +481,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
         this.privateKeyService.getWalletInfo().privateKey
       );
       this.showMapping = false;
+      this.addressJustMapped = true;
       this.addressIsMapped = true;
     } catch (error) {
       this.showMapping = false;
@@ -551,6 +557,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   }
 
   reset() {
+    this.addressJustMapped = false;
     if (this.wrongNetwork) {
       this.step = 1;
       this.risksAccepted = false;

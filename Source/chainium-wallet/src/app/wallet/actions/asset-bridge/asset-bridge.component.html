@@ -177,12 +177,12 @@
                         <label for="amount" class="col-2 ml-2">Amount</label>
                         <div class="col info text-right">
                           <ng-container *ngIf="selectedAsset === 'CHX'">
-                            {{ to === 'own' ? 'Balance: ' + balance + 'CHX' : 'Balance: ' + chxBalance + 'CHX' }}
+                            {{ to === 'own' ? 'Balance: ' + balance + ' CHX' : 'Balance: ' + chxBalance + ' CHX' }}
                           </ng-container>
                           <ng-container *ngIf="selectedAsset !== 'CHX'">
                             {{
                               to === 'own'
-                                ? 'Balance: ' + balance + (selectedAsset | uppercase)
+                                ? 'Balance: ' + balance + ' ' + (selectedAsset | uppercase)
                                 : 'Balance: ' + nativeBalance + ' ' + (selectedAsset | uppercase)
                             }}
                           </ng-container>
@@ -839,14 +839,16 @@
     <div class="col-12 mt-5">
       <div class="row justify-content-center">
         <div class="col col-md-6">
+       
           <a
-            *ngIf="to !== 'own'"
+            *ngIf="to !== 'own' || mappingAddresses"
             class="button outline own-effect block text-center"
             [href]="explorer + '/tx/' + txResult.txHash"
             target="_blank"
           >
             VIEW TRANSACTION INFO
           </a>
+           
         </div>
       </div>
     </div>
@@ -889,14 +891,14 @@
             <div class="row justify-content-center">
               <div class="col col-md-6">
                 <button
-                  *ngIf="from === 'own'"
+                  *ngIf="from === 'own' && !addressJustMapped"
                   class="outline own-effect block text-center"
                   [routerLink]="['/info/tx/' + txResult.txHash]"
                 >
                   VIEW TRANSACTION INFO
                 </button>
                 <a
-                  *ngIf="from !== 'own'"
+                  *ngIf="from !== 'own' || addressJustMapped"
                   class="button outline own-effect block text-center"
                   [href]="explorer + '/tx/' + txResult.txHash"
                   target="_blank"

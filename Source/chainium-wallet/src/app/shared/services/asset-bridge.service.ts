@@ -74,7 +74,7 @@ export class AssetBridgeService {
 
   async tokenDecimals(): Promise<number> {
     try {
-      return await this.token.methods.decimals().call();
+      return (await this.token?.methods.decimals().call()) || 0;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -99,7 +99,7 @@ export class AssetBridgeService {
   async balanceOf(address: string): Promise<number> {
     try {
       const decimals = await this.tokenDecimals();
-      return (await this.token.methods.balanceOf(address).call()) / Math.pow(10, decimals);
+      return (await this.token?.methods.balanceOf(address).call()) / Math.pow(10, decimals) || 0;
     } catch (error) {
       throw new Error(error.message);
     }

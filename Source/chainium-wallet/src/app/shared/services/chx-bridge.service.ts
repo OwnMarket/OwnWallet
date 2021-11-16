@@ -113,8 +113,8 @@ export class ChxBridgeService {
 
   async balanceAndMinAmount(address: string): Promise<any> {
     try {
-      const balance = (await this.token.methods.balanceOf(address).call()) / Math.pow(10, 7);
-      const minWrapAmount = (await this.token.methods.minWrapAmount().call()) / Math.pow(10, 7);
+      const balance = (await this.token?.methods.balanceOf(address).call()) / Math.pow(10, 7) || 0;
+      const minWrapAmount = (await this.token?.methods.minWrapAmount().call()) / Math.pow(10, 7) || 0;
       return { balance, minWrapAmount };
     } catch (error) {
       throw new Error(error.message);

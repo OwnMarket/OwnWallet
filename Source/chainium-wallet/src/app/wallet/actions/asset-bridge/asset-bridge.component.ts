@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
@@ -82,6 +82,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   blockchains = [];
 
   constructor(
+    private ngZone: NgZone,
     private router: Router,
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
@@ -122,26 +123,24 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.chxBalance = balInfo.balance.available;
       this.nonce = balInfo.nonce + 1;
       this.fee = this.nodeService.getMinFee();
-
       this.accounts = accounts.accounts;
       this.assets = [this.chxService.ChxAsset, ...assets.data];
+      this.initAssetBridgeForm();
 
       if (this.metaMaskAddress !== account) {
         this.metaMaskAddress = account;
-        if (this.assetBridgeForm) {
+        this.ngZone.run(async () => {
           this.from === 'own'
             ? this.assetBridgeForm.get('toAddress').setValue(this.metaMaskAddress)
             : this.assetBridgeForm.get('fromAddress').setValue(this.metaMaskAddress);
-          const selectBC = document.getElementById('select-blockchain');
           await this.getBalance();
-          if (selectBC) selectBC.click();
-        }
+        });
+
         if (this.step !== 1 || this.error) {
           this.error = null;
           this.step = 2;
         }
       }
-      this.initAssetBridgeForm();
     });
   }
 

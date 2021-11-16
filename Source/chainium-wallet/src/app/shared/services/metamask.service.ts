@@ -64,6 +64,7 @@ export class MetamaskService {
 
     this.provider.on('chainChanged', (chainId: string) => {
       console.log('changed network', chainId);
+      this.chainId = chainId;
       this.chainIdSubj.next(chainId);
       window.location.reload();
     });
@@ -101,6 +102,10 @@ export class MetamaskService {
 
   get chainName$(): Observable<string> {
     return this.chainId$.pipe(map((chainId) => this.networks[chainId]));
+  }
+
+  get preferredNetwork(): string {
+    return this.networks[this.configService.config[this.currentChainCode()].chainId];
   }
 
   async addCustomNetwork(blockchain: string): Promise<any> {

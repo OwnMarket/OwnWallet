@@ -465,7 +465,9 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.setValidators();
     } catch (error) {
       console.log(error);
-      this.error = error.message;
+      const chainName = this.metamask.preferredNetwork;
+      const message = `Please change your currently selected network in MetaMask to ${chainName}`;
+      this.error = message;
     }
   }
 

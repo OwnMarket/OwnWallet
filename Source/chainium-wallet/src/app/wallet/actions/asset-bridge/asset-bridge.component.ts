@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
@@ -89,8 +89,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     private nodeService: NodeService,
     private privateKeyService: PrivatekeyService,
     private assetBridgeService: AssetBridgeService,
-    private chxService: ChxBridgeService,
-    private changeDetectorRef: ChangeDetectorRef
+    private chxService: ChxBridgeService
   ) {}
 
   ngOnInit(): void {
@@ -119,7 +118,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.assetBridgeService.getAssets(),
       this.metamask.account$,
       this.metamask.chainName$,
-    ]).subscribe(([balInfo, accounts, assets, account, chainName]) => {
+    ]).subscribe(async ([balInfo, accounts, assets, account, chainName]) => {
       this.chxBalance = balInfo.balance.available;
       this.nonce = balInfo.nonce + 1;
       this.fee = this.nodeService.getMinFee();
@@ -127,17 +126,22 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.accounts = accounts.accounts;
       this.assets = [this.chxService.ChxAsset, ...assets.data];
 
-      this.initAssetBridgeForm();
-
       if (this.metaMaskAddress !== account) {
         this.metaMaskAddress = account;
-        this.assetBridgeForm.get('toAddress').setValue(this.metaMaskAddress);
+        if (this.assetBridgeForm) {
+          this.from === 'own'
+            ? this.assetBridgeForm.get('toAddress').setValue(this.metaMaskAddress)
+            : this.assetBridgeForm.get('fromAddress').setValue(this.metaMaskAddress);
+          const selectBC = document.getElementById('select-blockchain');
+          await this.getBalance();
+          if (selectBC) selectBC.click();
+        }
         if (this.step !== 1 || this.error) {
           this.error = null;
           this.step = 2;
         }
-        this.changeDetectorRef.markForCheck();
       }
+      this.initAssetBridgeForm();
     });
   }
 
@@ -286,9 +290,9 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   get max(): number {
     if (this.selectedAsset === 'CHX') {
       if (this.from === 'own') {
-       const max = Number((this.chxBalance - this.fee).toFixed(7));
-       return max > 0 ? max : 0;
-      };
+        const max = Number((this.chxBalance - this.fee).toFixed(7));
+        return max > 0 ? max : 0;
+      }
       return this.balance;
     }
     if (this.selectedAsset !== 'CHX') {
@@ -372,7 +376,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.setValidators();
   }
 
-  async connect() {
+  async connect(): Promise<void> {
     try {
       await this.metamask.init();
     } catch (error) {
@@ -381,7 +385,22 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     }
   }
 
-  async initChxBridge() {
+  async getBalance(): Promise<void> {
+    if (this.selectedAsset === 'CHX') {
+      const { balance, minWrapAmount } = await this.chxService.balanceAndMinAmount(this.metaMaskAddress);
+      this.balance = balance;
+      this.minWrapAmount = minWrapAmount;
+    }
+    if (this.selectedAsset !== 'CHX') {
+      this.nativeBalance = await this.assetBridgeService.getNativeBalance(
+        this.account,
+        this.tokenHash(this.selectedAsset)
+      );
+      this.balance = await this.assetBridgeService.balanceOf(this.metaMaskAddress);
+    }
+  }
+
+  async initChxBridge(): Promise<void> {
     try {
       if (this.metamask.currentChainCode() !== 'eth') {
         this.assetBridgeForm.get('asset').setValue('CHX', { emitEvent: false });
@@ -406,9 +425,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       }
 
       if (this.metaMaskAddress) {
-        const { balance, minWrapAmount } = await this.chxService.balanceAndMinAmount(this.metaMaskAddress);
-        this.balance = balance;
-        this.minWrapAmount = minWrapAmount;
+        await this.getBalance();
         this.getBridgeFees();
       }
     } catch (error) {
@@ -445,11 +462,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
         this.assetBridgeFee = await this.assetBridgeService.ethTransferFee();
       }
 
-      this.nativeBalance = await this.assetBridgeService.getNativeBalance(
-        this.account,
-        this.tokenHash(this.selectedAsset)
-      );
-      this.balance = await this.assetBridgeService.balanceOf(this.metaMaskAddress);
+      await this.getBalance();
       this.setValidators();
     } catch (error) {
       console.log(error);

@@ -529,7 +529,7 @@
 
 <ng-template #bcDropdown let-target="target" let-current="current">
   <div class="mb-1">
-    <own-dropdown-menu [showIcon]="false" [fullWidth]="true">
+    <own-dropdown-menu id="select-blockchain" [showIcon]="false" [fullWidth]="true">
       <div class="label flex items-center justify-content-between wallet-table">
         <div class="flex pl-2">
           {{ targetChainName(current) }}
@@ -839,7 +839,6 @@
     <div class="col-12 mt-5">
       <div class="row justify-content-center">
         <div class="col col-md-6">
-       
           <a
             *ngIf="to !== 'own' || mappingAddresses"
             class="button outline own-effect block text-center"
@@ -848,7 +847,6 @@
           >
             VIEW TRANSACTION INFO
           </a>
-           
         </div>
       </div>
     </div>

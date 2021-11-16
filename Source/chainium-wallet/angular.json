@@ -30,7 +30,8 @@
               "node_modules/bootstrap/dist/css/bootstrap-grid.css",
               "src/styles.css"
             ],
-            "scripts": ["src/lib/own-blockchain-sdk.js"]
+            "scripts": ["src/lib/own-blockchain-sdk.js"],
+            "allowedCommonJsDependencies": ["qrcode", "web3", "hash.js"]
           },
           "configurations": {
             "production": {

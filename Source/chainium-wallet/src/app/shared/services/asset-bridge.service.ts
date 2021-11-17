@@ -44,9 +44,9 @@ export class AssetBridgeService {
   async initContracts(web3: Web3, blockchain: string, tokenAddress: string): Promise<any> {
     this.web3 = web3;
     this.blockchain = blockchain;
-    this.assetBridgeAddress = this.config.config.assetBridgeContract;
+    this.assetBridgeAddress = this.config.config[blockchain].assetBridgeContract;
     try {
-      const assetBridgeContract = this.config.config.assetBridgeContract;
+      const assetBridgeContract = this.assetBridgeAddress;
       const assetBridgeAbi = await this.getABI(blockchain, assetBridgeContract).toPromise();
       const tokenAbi = await this.getABI(blockchain, tokenAddress).toPromise();
       this.assetBridge = new web3.eth.Contract(assetBridgeAbi, assetBridgeContract);
@@ -64,9 +64,9 @@ export class AssetBridgeService {
     }
   }
 
-  async ethTransferFee(): Promise<number> {
+  async targetTransferFee(): Promise<number> {
     try {
-      return (await this.assetBridge.methods.ethTransferFee().call()) / Math.pow(10, 18);
+      return (await this.assetBridge.methods.targetTransferFee().call()) / Math.pow(10, 18);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -244,7 +244,7 @@ export class AssetBridgeService {
       const signature = txToSign.sign(environment.networkCode, privateKey);
       const ownTxHash = this.shortHashFromLong(signature.tx);
       const txHashSignature = await this.cryptoService.signMessageAsPromise(privateKey, ownTxHash);
-      const ethFee = await this.assetBridge.methods.ethTransferFee().call();
+      const ethFee = await this.assetBridge.methods.targetTransferFee().call();
 
       return await this.assetBridge.methods
         .transferFromNativeChain(ownTxHash, txHashSignature, address)

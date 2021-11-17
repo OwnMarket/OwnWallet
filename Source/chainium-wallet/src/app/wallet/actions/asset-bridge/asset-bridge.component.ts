@@ -374,7 +374,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       if (this.to === 'own') {
         this.assetBridgeFee = await this.assetBridgeService.getNativeTransferFee();
       } else {
-        this.assetBridgeFee = await this.assetBridgeService.ethTransferFee();
+        this.assetBridgeFee = await this.assetBridgeService.targetTransferFee();
       }
     }
 
@@ -464,7 +464,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       if (this.to === 'own') {
         this.assetBridgeFee = await this.assetBridgeService.getNativeTransferFee();
       } else {
-        this.assetBridgeFee = await this.assetBridgeService.ethTransferFee();
+        this.assetBridgeFee = await this.assetBridgeService.targetTransferFee();
       }
 
       await this.getBalance();

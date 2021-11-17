@@ -2,7 +2,6 @@ export const testConfig = {
   isProduction: false,
   explorerUrl: 'https://test.explorer.weown.com',
   bridgeApiUrl: 'https://test.bridge-api.weown.com',
-  assetBridgeContract: '0x01fbb3b4a39d4f9ea2d39218ed176e8f549ed218',
   network: 'CHX Testnet',
   eth: {
     chainId: '0x4',
@@ -11,6 +10,7 @@ export const testConfig = {
     ownerChxAddress: 'CHWBRa8ovb9xcGncaJcgSJrYPtwvrSf8P2K',
     mappingContract: '0x821f375d636f779ea831536f75b06db582817b77',
     tokenContract: '0xe6991e5d1f3a41015d8332cbb1a5e6db440da875',
+    assetBridgeContract: '0x5b270f171Cf6729DE0d2efF22108bDCd0F5231FC',
     network: 'Ethereum Rinkeby Test Network',
     explorerUrl: 'https://rinkeby.etherscan.io',
     rpcUrl: 'https://rinkeby.infura.io/v3/ebf7e4de5a24483d977a04e2199e4bfe',
@@ -374,6 +374,7 @@ export const testConfig = {
     ownerChxAddress: 'CHbVoTPVRVZvEFcxw7ksddLULsdG5cTynFQ',
     mappingContract: '0x906836a70d9e384d9ee8942df855f6f2cda220a9',
     tokenContract: '0x8b7627ea65838c98c9bc74e10c602cc769ececc6',
+    assetBridgeContract: '0x5750727088d971aC57393E3a5097541784FBb3A6',
     network: 'Binance Smart Chain - Testnet',
     networkToken: 'BNB',
     explorerUrl: 'https://testnet.bscscan.com',

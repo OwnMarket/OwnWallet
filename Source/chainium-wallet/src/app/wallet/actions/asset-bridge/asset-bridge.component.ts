@@ -127,6 +127,17 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.assets = [this.chxService.ChxAsset, ...assets.data];
       this.initAssetBridgeForm();
 
+      if (this.chainName !== chainName) {
+        this.ngZone.run(async () => {
+          this.chainName = chainName;
+          if (this.metamask.currentChainCode() === 'bsc' && this.selectedAsset !== 'CHX') {
+            this.assetBridgeForm.get('asset').setValue('CHX');
+          }
+
+          if (this.selectedAsset !== 'CHX') this.assetBridgeForm.get('asset').setValue('DEFX');
+        });
+      }
+
       if (this.metaMaskAddress !== account) {
         this.metaMaskAddress = account;
         this.ngZone.run(async () => {
@@ -135,11 +146,6 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
             : this.assetBridgeForm.get('fromAddress').setValue(this.metaMaskAddress);
           await this.getBalance();
         });
-
-        if (this.step !== 1 || this.error) {
-          this.error = null;
-          this.step = 2;
-        }
       }
     });
   }

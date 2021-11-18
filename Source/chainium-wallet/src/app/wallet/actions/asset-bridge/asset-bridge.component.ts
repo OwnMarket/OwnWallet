@@ -128,24 +128,27 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.initAssetBridgeForm();
 
       if (this.chainName !== chainName) {
-        this.ngZone.run(async () => {
-          this.chainName = chainName;
-          if (this.metamask.currentChainCode() === 'bsc' && this.selectedAsset !== 'CHX') {
-            this.assetBridgeForm.get('asset').setValue('CHX');
-          }
-
-          if (this.selectedAsset !== 'CHX') this.assetBridgeForm.get('asset').setValue('DEFX');
-        });
+        if (typeof this.chainName !== 'undefined') {
+          this.ngZone.run(async () => {
+            if (this.metamask.currentChainCode() === 'bsc' && this.selectedAsset !== 'CHX') {
+              this.assetBridgeForm.get('asset').setValue('CHX');
+            }
+            if (this.selectedAsset !== 'CHX') this.assetBridgeForm.get('asset').setValue('DEFX');
+          });
+        }
+        this.chainName = chainName;
       }
 
       if (this.metaMaskAddress !== account) {
+        if (typeof this.metaMaskAddress !== 'undefined') {
+          this.ngZone.run(async () => {
+            this.from === 'own'
+              ? this.assetBridgeForm.get('toAddress').setValue(account)
+              : this.assetBridgeForm.get('fromAddress').setValue(account);
+            await this.getBalance();
+          });
+        }
         this.metaMaskAddress = account;
-        this.ngZone.run(async () => {
-          this.from === 'own'
-            ? this.assetBridgeForm.get('toAddress').setValue(this.metaMaskAddress)
-            : this.assetBridgeForm.get('fromAddress').setValue(this.metaMaskAddress);
-          await this.getBalance();
-        });
       }
     });
   }

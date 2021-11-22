@@ -140,14 +140,17 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       }
 
       if (this.metaMaskAddress !== account) {
-        if (typeof this.metaMaskAddress !== 'undefined') {
-          this.ngZone.run(async () => {
-            this.from === 'own'
-              ? this.assetBridgeForm.get('toAddress').setValue(account)
-              : this.assetBridgeForm.get('fromAddress').setValue(account);
-            await this.getBalance();
-          });
-        }
+        this.ngZone.run(async () => {
+          if (this.from === 'own') {
+            this.assetBridgeForm.get('toAddress').setValue(account);
+            this.assetBridgeForm.get('fromAddress').setValue(this.chxAddress);
+          } else {
+            this.assetBridgeForm.get('fromAddress').setValue(account);
+            this.assetBridgeForm.get('toAddress').setValue(this.chxAddress);
+          }
+          await this.getBalance();
+        });
+
         this.metaMaskAddress = account;
       }
     });

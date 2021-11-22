@@ -181,11 +181,22 @@ export class AssetBridgeService {
     amount: number
   ): Promise<any> {
     try {
-      const decimals = await this.tokenDecimals();
-      const totalAmount = this.web3.utils
-        .toBN(10)
-        .pow(this.web3.utils.toBN(decimals))
-        .mul(this.web3.utils.toBN(amount));
+      const decimals = Number(await this.tokenDecimals());
+      const fixedAmount = amount.toFixed(decimals);
+      const weiAmount = this.web3.utils.toWei(fixedAmount, 'ether');
+      let totalAmount: any = weiAmount;
+
+      if (decimals > 18) {
+        totalAmount = this.web3.utils
+          .toBN(weiAmount)
+          .mul(this.web3.utils.toBN(10).pow(this.web3.utils.toBN(decimals - 18)));
+      }
+
+      if (decimals < 18) {
+        totalAmount = this.web3.utils
+          .toBN(weiAmount)
+          .div(this.web3.utils.toBN(10).pow(this.web3.utils.toBN(18 - decimals)));
+      }
 
       const fee = await this.assetBridge.methods.nativeTransferFee().call();
       await this.checkAllowance(totalAmount, address, tokenAddress, accountHash, fee);
@@ -240,7 +251,7 @@ export class AssetBridgeService {
         .toPromise();
       const toAccountHash = await this.accountsForAssets(assetHash);
       const txToSign = ownBlockchainSdk.transactions.createTx(chxAddress, nonce, fee);
-      txToSign.addTransferAssetAction(fromAccountHash, toAccountHash, assetHash, amount);
+      txToSign.addTransferAssetAction(fromAccountHash, toAccountHash, assetHash, +amount);
       const signature = txToSign.sign(environment.networkCode, privateKey);
       const ownTxHash = this.shortHashFromLong(signature.tx);
       const txHashSignature = await this.cryptoService.signMessageAsPromise(privateKey, ownTxHash);

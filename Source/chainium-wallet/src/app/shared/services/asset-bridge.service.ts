@@ -237,12 +237,14 @@ export class AssetBridgeService {
 
   async transferFromNativeChain(
     assetHash: string,
+    senderAddress: string,
     address: string,
     fromAccountHash: string,
     chxAddress: string,
     amount: number
   ): Promise<any> {
     try {
+      console.log(address);
       const privateKey = this.privateKeyService.getWalletInfo().privateKey;
       const fee = this.nodeService.getMinFee();
       const nonce = await this.nodeService
@@ -260,7 +262,7 @@ export class AssetBridgeService {
       return await this.assetBridge.methods
         .transferFromNativeChain(ownTxHash, txHashSignature, address)
         .send({
-          from: address,
+          from: senderAddress,
           value: ethFee,
         })
         .on('transactionHash', (hash: string) => {

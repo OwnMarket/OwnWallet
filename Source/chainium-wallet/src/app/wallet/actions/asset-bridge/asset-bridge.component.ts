@@ -126,7 +126,6 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.accounts = accounts.accounts;
       this.assets = [this.chxService.ChxAsset, ...assets.data];
       this.metaMaskAddress = this.metamask.currentAccount;
-      this.initAssetBridgeForm();
     });
 
     this.metamaskAddressSub = this.metamask.account$.subscribe((account) => {
@@ -479,6 +478,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   async acceptRisks() {
     try {
       this.risksAccepted = true;
+      this.initAssetBridgeForm();
       this.step = 2;
       if (this.metamask.currentChainCode() === 'eth') {
         await this.initAssetBridge();
@@ -546,6 +546,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       if (this.from === 'own') {
         await this.assetBridgeService.transferFromNativeChain(
           this.tokenHash(this.selectedAsset),
+          this.metaMaskAddress,
           this.toAddress,
           this.account,
           this.chxAddress,
@@ -575,21 +576,13 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.mappingAddresses = false;
   }
 
-  reset() {
+  async reset() {
     this.addressJustMapped = false;
-    if (this.wrongNetwork) {
-      this.step = 1;
-      this.risksAccepted = false;
-    }
-
-    if (this.step !== 1) {
-      this.step = 2;
-    }
-
     this.chxService.resetStatus();
     this.assetBridgeService.resetStatus();
     this.error = null;
     this.wrongNetwork = false;
+    this.selectedAsset === 'CHX' ? await this.initChxBridge() : await this.initAssetBridge();
   }
 
   tokenImageError(event: any): void {

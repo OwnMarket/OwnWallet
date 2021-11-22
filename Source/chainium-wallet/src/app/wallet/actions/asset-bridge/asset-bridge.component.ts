@@ -48,6 +48,8 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   selectedAccSub: Subscription;
   toChainSub: Subscription;
   fromChainSub: Subscription;
+  chainNameSub: Subscription;
+  metamaskAddressSub: Subscription;
 
   step: number = 1;
   risksAccepted: boolean = false;
@@ -117,41 +119,31 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.nodeService.getAddressInfo(this.wallet.address),
       this.nodeService.getChxAddressAccounts(this.wallet.address),
       this.assetBridgeService.getAssets(),
-      this.metamask.account$,
-      this.metamask.chainName$,
-    ]).subscribe(async ([balInfo, accounts, assets, account, chainName]) => {
+    ]).subscribe(async ([balInfo, accounts, assets]) => {
       this.chxBalance = balInfo.balance.available;
       this.nonce = balInfo.nonce + 1;
       this.fee = this.nodeService.getMinFee();
       this.accounts = accounts.accounts;
       this.assets = [this.chxService.ChxAsset, ...assets.data];
+      this.metaMaskAddress = this.metamask.currentAccount;
       this.initAssetBridgeForm();
+    });
 
-      if (this.chainName !== chainName) {
-        if (typeof this.chainName !== 'undefined') {
-          this.ngZone.run(async () => {
-            if (this.metamask.currentChainCode() === 'bsc' && this.selectedAsset !== 'CHX') {
-              this.assetBridgeForm.get('asset').setValue('CHX');
-            }
-            if (this.selectedAsset !== 'CHX') this.assetBridgeForm.get('asset').setValue('DEFX');
-          });
-        }
-        this.chainName = chainName;
-      }
-
+    this.metamaskAddressSub = this.metamask.account$.subscribe((account) => {
       if (this.metaMaskAddress !== account) {
-        this.ngZone.run(async () => {
-          if (this.from === 'own') {
-            this.assetBridgeForm.get('toAddress').setValue(account);
-            this.assetBridgeForm.get('fromAddress').setValue(this.chxAddress);
-          } else {
-            this.assetBridgeForm.get('fromAddress').setValue(account);
-            this.assetBridgeForm.get('toAddress').setValue(this.chxAddress);
-          }
-          await this.getBalance();
-        });
-
         this.metaMaskAddress = account;
+        this.ngZone.run(async () => {
+          if (account && this.assetBridgeForm) {
+            if (this.from === 'own') {
+              this.assetBridgeForm.get('toAddress').setValue(account);
+              this.assetBridgeForm.get('fromAddress').setValue(this.chxAddress);
+            } else {
+              this.assetBridgeForm.get('fromAddress').setValue(account);
+              this.assetBridgeForm.get('toAddress').setValue(this.chxAddress);
+            }
+            this.selectedAsset === 'CHX' ? await this.initChxBridge() : await this.getBalance();
+          }
+        });
       }
     });
   }
@@ -165,6 +157,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.selectedAccSub && this.selectedAccSub.unsubscribe();
     this.toChainSub && this.selectedAccSub.unsubscribe();
     this.fromChainSub && this.fromChainSub.unsubscribe();
+    this.metamaskAddressSub && this.metamaskAddressSub.unsubscribe();
   }
 
   initAcceptBridgeForm(): void {
@@ -265,31 +258,31 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   }
 
   get selectedAsset(): string {
-    return this.assetBridgeForm.get('asset').value;
+    return this.assetBridgeForm?.get('asset').value;
   }
 
   get fromAddress(): string {
-    return this.assetBridgeForm.get('fromAddress').value;
+    return this.assetBridgeForm?.get('fromAddress').value;
   }
 
   get toAddress(): string {
-    return this.assetBridgeForm.get('toAddress').value;
+    return this.assetBridgeForm?.get('toAddress').value;
   }
 
   get from(): string {
-    return this.assetBridgeForm.get('from').value;
+    return this.assetBridgeForm?.get('from').value;
   }
 
   get to(): string {
-    return this.assetBridgeForm.get('to').value;
+    return this.assetBridgeForm?.get('to').value;
   }
 
   get account(): string {
-    return this.assetBridgeForm.get('account').value;
+    return this.assetBridgeForm?.get('account').value;
   }
 
   get amount(): number {
-    return +this.assetBridgeForm.get('amount').value;
+    return +this.assetBridgeForm?.get('amount').value;
   }
 
   get transferIsDisabled(): boolean {
@@ -339,15 +332,15 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   }
 
   targetChainName(code: string): string {
-    return this.blockchains?.find((chain) => chain.code === code).name;
+    return this.blockchains?.find((chain) => chain.code === code)?.name;
   }
 
   tokenName(code: string): string {
-    return this.blockchains?.find((chain) => chain.code === code).token;
+    return this.blockchains?.find((chain) => chain.code === code)?.token;
   }
 
   tokenHash(code: string): string {
-    return this.assets?.find((asset) => asset.assetCode === code).assetHash;
+    return this.assets?.find((asset) => asset.assetCode === code)?.assetHash;
   }
 
   tokenAddress(code: string, blockchain: string): string | null {

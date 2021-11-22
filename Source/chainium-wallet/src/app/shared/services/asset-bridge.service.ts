@@ -184,7 +184,7 @@ export class AssetBridgeService {
       const decimals = Number(await this.tokenDecimals());
       const fixedAmount = amount.toFixed(decimals);
       const weiAmount = this.web3.utils.toWei(fixedAmount, 'ether');
-      let totalAmount: any = weiAmount;
+      let totalAmount: any = this.web3.utils.toBN(weiAmount);
 
       if (decimals > 18) {
         totalAmount = this.web3.utils

@@ -122,11 +122,13 @@ export class AssetBridgeService {
     fee: number
   ): Promise<any> {
     try {
+      const bigNumAmount = this.web3.utils.toBN(amount);
+
       const allowance = this.web3.utils.toBN(
         await this.token.methods.allowance(address, this.assetBridgeAddress).call()
       );
 
-      if (allowance.gte(amount)) {
+      if (allowance.gte(bigNumAmount)) {
         await this.transferToNative(tokenAddress, accountHash, amount, address, fee);
       }
 
@@ -150,7 +152,7 @@ export class AssetBridgeService {
           });
       }
 
-      if (allowance.lt(amount)) {
+      if (allowance.lt(bigNumAmount)) {
         return await this.token.methods
           .increaseAllowance(this.assetBridgeAddress, amount)
           .send({
@@ -184,18 +186,20 @@ export class AssetBridgeService {
       const decimals = Number(await this.tokenDecimals());
       const fixedAmount = amount.toFixed(decimals);
       const weiAmount = this.web3.utils.toWei(fixedAmount, 'ether');
-      let totalAmount: any = this.web3.utils.toBN(weiAmount);
+      let totalAmount: any = this.web3.utils.toBN(weiAmount).toString();
 
       if (decimals > 18) {
         totalAmount = this.web3.utils
           .toBN(weiAmount)
-          .mul(this.web3.utils.toBN(10).pow(this.web3.utils.toBN(decimals - 18)));
+          .mul(this.web3.utils.toBN(10).pow(this.web3.utils.toBN(decimals - 18)))
+          .toString();
       }
 
       if (decimals < 18) {
         totalAmount = this.web3.utils
           .toBN(weiAmount)
-          .div(this.web3.utils.toBN(10).pow(this.web3.utils.toBN(18 - decimals)));
+          .div(this.web3.utils.toBN(10).pow(this.web3.utils.toBN(18 - decimals)))
+          .toString();
       }
 
       const fee = await this.assetBridge.methods.nativeTransferFee().call();

@@ -85,10 +85,12 @@ export class ChxBridgeService {
   async addressIsMapped(chxAddress: string, blockchain: string): Promise<boolean> {
     try {
       const targetAddress = await this.mapping.methods[blockchain + 'Address'](chxAddress).call();
+
       if (targetAddress !== '0x0000000000000000000000000000000000000000' && targetAddress !== '') {
         return true;
+      } else {
+        return false;
       }
-      return false;
     } catch (error) {
       throw new Error(
         `Please check if your currently selected network in MetaMask is ${this.network}. Change currently selected network in MetaMask to ${this.network} and try again.`
@@ -96,13 +98,15 @@ export class ChxBridgeService {
     }
   }
 
-  async addressIsMappedToOtherChxAddress(address: string, chxAddress: string): Promise<boolean> {
+  async addressIsMappedToOtherChxAddress(targetChain: string, address: string, chxAddress: string): Promise<boolean> {
     try {
       const chxAddr = await this.mapping.methods.chxAddress(address).call();
 
       if (chxAddr !== '') {
         if (chxAddr !== chxAddress) {
-          return true;
+          throw new Error(
+            `Currently selected ${targetChain.toUpperCase()} Address <b>${address}</b> has already been mapped to this CHX address <b>${chxAddr}</b>. Please select that CHX address in your wallet before you procees or select another account in MetaMask before you try again.`
+          );
         }
         return false;
       }

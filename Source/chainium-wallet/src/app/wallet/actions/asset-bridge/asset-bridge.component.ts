@@ -414,18 +414,12 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.txResult$ = this.chxService.txResult$;
       this.chxService.initContracts(this.metamask.web3, this.targetChainCode());
       this.addressIsMapped = await this.chxService.addressIsMapped(this.chxAddress, this.targetChainCode());
-
       this.explorer = this.chxService.explorer;
-
-      if (this.addressIsMapped) {
-        this.wrongNetwork = await this.chxService.addressIsMappedToOtherChxAddress(
-          this.metaMaskAddress,
-          this.chxAddress
-        );
-        if (this.wrongNetwork) {
-          this.error = `Currently selected ${this.targetChainCode()} Address has been already mapped to other CHX Address, please select other account in your MetaMask and try again.`;
-        }
-      }
+      this.wrongNetwork = await this.chxService.addressIsMappedToOtherChxAddress(
+        this.targetChainCode(),
+        this.metaMaskAddress,
+        this.chxAddress
+      );
 
       if (this.metaMaskAddress) {
         await this.getBalance();

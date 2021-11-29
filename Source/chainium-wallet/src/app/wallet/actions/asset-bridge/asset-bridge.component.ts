@@ -74,7 +74,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   accounts: string[] = [];
   assets: BridgeAsset[] = [];
 
-  assetBridgeChains = [{ name: 'Ethereum', code: 'eth', token: 'ETH' }];
+  assetBridgeChains = [
+    { name: 'Ethereum', code: 'eth', token: 'ETH' },
+    { name: 'Binance Smart Chain', code: 'bsc', token: 'BNB' },
+  ];
 
   chxBridgeChains = [
     { name: 'Ethereum', code: 'eth', token: 'ETH' },
@@ -464,7 +467,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     } catch (error) {
       console.log(error);
       const chainName = this.metamask.preferredNetwork;
-      const message = `Please change your currently selected network in MetaMask to ${chainName}`;
+      const message = `Please change your currently selected network in MetaMask to ${chainName}. <br /> ${error.message}`;
       this.error = message;
     }
   }
@@ -474,10 +477,8 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.risksAccepted = true;
       this.initAssetBridgeForm();
       this.step = 2;
-      if (this.metamask.currentChainCode() === 'eth') {
-        await this.initAssetBridge();
-      } else {
-        await this.initChxBridge();
+      if (this.metamask.currentChainCode()) {
+        this.assetBridgeForm.get('to').setValue(this.metamask.currentChainCode());
       }
     } catch (error) {
       console.log(error.message);

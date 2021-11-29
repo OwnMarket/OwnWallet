@@ -52,7 +52,7 @@ export class AssetBridgeService {
       this.assetBridge = new web3.eth.Contract(assetBridgeAbi, assetBridgeContract);
       this.token = new web3.eth.Contract(tokenAbi, tokenAddress);
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(`Error initializing contracts or loading contract ABIs from bridge API.`);
     }
   }
 

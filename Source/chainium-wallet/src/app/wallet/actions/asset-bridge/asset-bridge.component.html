@@ -6,7 +6,7 @@
           <div class="row justify-content-between">
             <div class="col">Cross-Chain Transfer</div>
             <div class="col text-right">
-              <span class="text-small text-info mr-2" *ngIf="status === 'Connected' && chainName">
+              <span class="text-small text-info mr-2" *ngIf="chainName">
                 {{ chainName }}
               </span>
               <a role="button" (click)="close()">

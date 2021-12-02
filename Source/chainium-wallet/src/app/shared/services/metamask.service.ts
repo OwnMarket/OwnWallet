@@ -66,7 +66,7 @@ export class MetamaskService {
       console.log('changed network', chainId);
       this.chainId = chainId;
       this.chainIdSubj.next(chainId);
-      window.location.reload();
+      // window.location.reload();
     });
 
     this.provider.on('accountsChanged', async (accounts: string[]) => await this.syncAccounts(accounts));
@@ -97,6 +97,10 @@ export class MetamaskService {
       this.currentAccount = accounts[0];
     }
     console.log(this.currentAccount);
+  }
+
+  get chainName(): string {
+    return this.networks[this.chainId];
   }
 
   get chainName$(): Observable<string> {

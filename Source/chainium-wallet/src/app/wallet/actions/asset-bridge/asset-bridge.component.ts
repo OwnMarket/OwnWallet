@@ -108,6 +108,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.chxAddress = this.wallet.address;
     this.metaMaskStatus$ = this.metamask.status$;
     this.metaMaskAddress = this.metamask.currentAccount;
+    this.chainName = this.metamask.chainName;
     this.txStatus$ = of('ready');
     this.initAcceptBridgeForm();
 
@@ -129,6 +130,12 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       this.accounts = accounts.accounts;
       this.assets = [this.chxService.ChxAsset, ...assets.data];
       this.metaMaskAddress = this.metamask.currentAccount;
+    });
+
+    this.chainNameSub = this.metamask.chainId$.subscribe((id) => {
+      this.ngZone.run(async () => {
+        this.chainName = this.metamask.chainName;
+      });
     });
 
     this.metamaskAddressSub = this.metamask.account$.subscribe((account) => {
@@ -159,6 +166,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.selectedAccSub && this.selectedAccSub.unsubscribe();
     this.toChainSub && this.selectedAccSub.unsubscribe();
     this.fromChainSub && this.fromChainSub.unsubscribe();
+    this.chainNameSub && this.chainNameSub.unsubscribe();
     this.metamaskAddressSub && this.metamaskAddressSub.unsubscribe();
   }
 
@@ -186,17 +194,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       if (value === 'CHX') {
         this.initChxBridge();
       } else {
-        const supportsAssetBridge = this.assetBridgeChains
-          .map((chain) => chain.code)
-          .includes(this.metamask.currentChainCode());
-        if (supportsAssetBridge) {
-          this.initAssetBridge();
-        } else {
-          this.assetBridgeForm.get('asset').setValue('CHX', { emitEvent: false });
-          this.error = `Currently selected asset ${value} isn't supported on ${this.targetChainName(
-            this.metamask.currentChainCode()
-          )} please change network in metamask to Ethereum and try again.`;
-        }
+        this.initAssetBridge();
       }
     });
 
@@ -209,6 +207,9 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
     this.toChainSub = this.assetBridgeForm.get('to').valueChanges.subscribe(async (value) => {
       if (value !== 'own') {
+        if (value !== this.metamask.currentChainCode) {
+          await this.metamask.addCustomNetwork(value);
+        }
         if (this.selectedAsset === 'CHX') await this.initChxBridge();
         if (this.selectedAsset !== 'CHX') await this.initAssetBridge();
       }
@@ -216,6 +217,9 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
     this.fromChainSub = this.assetBridgeForm.get('from').valueChanges.subscribe(async (value) => {
       if (value !== 'own') {
+        if (value !== this.metamask.currentChainCode) {
+          await this.metamask.addCustomNetwork(value);
+        }
         if (this.selectedAsset === 'CHX') await this.initChxBridge();
         if (this.selectedAsset !== 'CHX') await this.initAssetBridge();
       }

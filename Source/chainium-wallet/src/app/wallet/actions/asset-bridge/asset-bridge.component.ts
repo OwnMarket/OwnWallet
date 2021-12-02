@@ -207,7 +207,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
     this.toChainSub = this.assetBridgeForm.get('to').valueChanges.subscribe(async (value) => {
       if (value !== 'own') {
-        if (value !== this.metamask.currentChainCode) {
+        if (value !== this.metamask.currentChainCode()) {
           await this.metamask.addCustomNetwork(value);
         }
         if (this.selectedAsset === 'CHX') await this.initChxBridge();
@@ -217,7 +217,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
     this.fromChainSub = this.assetBridgeForm.get('from').valueChanges.subscribe(async (value) => {
       if (value !== 'own') {
-        if (value !== this.metamask.currentChainCode) {
+        if (value !== this.metamask.currentChainCode()) {
           await this.metamask.addCustomNetwork(value);
         }
         if (this.selectedAsset === 'CHX') await this.initChxBridge();

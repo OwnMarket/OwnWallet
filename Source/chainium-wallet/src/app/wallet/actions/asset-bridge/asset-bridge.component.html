@@ -171,6 +171,13 @@
                           </ng-container>
                         </own-dropdown-menu>
                       </div>
+                      <span
+                        class="text-danger p-2 text-small"
+                        *ngIf="!tokenIsBridgedToNetwork(selectedAsset, targetChainCode())"
+                      >
+                        Token currently isn't supported on
+                        {{ targetChainCode() | uppercase }} network
+                      </span>
                     </div>
                     <div class="col">
                       <div class="row">
@@ -238,6 +245,18 @@
                               class="position-absolute block right-0 text-right mb-4 pr-4"
                               >MAP ADDRESS</a
                             >
+                          </ng-container>
+                          <ng-container
+                            *ngIf="
+                              selectedAsset !== 'CHX' &&
+                              from !== 'own' &&
+                              !tokenIsBridgedToNetwork(selectedAsset, targetChainCode())
+                            "
+                          >
+                            <span class="text-sm text-danger"
+                              >Change your currently selected network in MetaMask to
+                              {{ setAssetBridgeChains()[0].name }}
+                            </span>
                           </ng-container>
                           <ng-container [ngSwitch]="from">
                             <ng-container *ngSwitchCase="'own'" [ngTemplateOutlet]="weownLogo"></ng-container>
@@ -323,6 +342,19 @@
                               >MAP ADDRESS</a
                             >
                           </ng-container>
+                          <ng-container
+                            *ngIf="
+                              selectedAsset !== 'CHX' &&
+                              to !== 'own' &&
+                              !tokenIsBridgedToNetwork(selectedAsset, targetChainCode())
+                            "
+                          >
+                            <span class="text-sm text-danger"
+                              >Change your currently selected network in MetaMask to
+                              {{ setAssetBridgeChains()[0].name }}
+                            </span>
+                          </ng-container>
+
                           <ng-container [ngSwitch]="to">
                             <ng-container *ngSwitchCase="'own'" [ngTemplateOutlet]="weownLogo"></ng-container>
                             <ng-container *ngSwitchCase="'eth'" [ngTemplateOutlet]="ethLogo"></ng-container>

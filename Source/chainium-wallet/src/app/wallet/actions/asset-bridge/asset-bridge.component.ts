@@ -134,6 +134,16 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
     this.chainNameSub = this.metamask.chainId$.subscribe((id) => {
       this.ngZone.run(async () => {
+        if (this.chainName && this.selectedAsset !== 'CHX') {
+          this.blockchains = this.setAssetBridgeChains();
+          if (this.targetChainCode() !== this.metamask.currentChainCode()) {
+            if (this.targetChainCode() !== 'own') {
+              this.assetBridgeForm.get('to').setValue(this.blockchains[0].code);
+            } else {
+              this.assetBridgeForm.get('from').setValue(this.blockchains[0].code);
+            }
+          }
+        }
         this.chainName = this.metamask.chainName;
       });
     });
@@ -194,7 +204,18 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       if (value === 'CHX') {
         this.initChxBridge();
       } else {
-        this.initAssetBridge();
+        if (this.tokenIsBridgedToNetwork(value, this.targetChainCode())) {
+          this.initAssetBridge();
+        } else {
+          this.blockchains = this.setAssetBridgeChains();
+          if (this.targetChainCode() !== this.metamask.currentChainCode()) {
+            if (this.targetChainCode() !== 'own') {
+              this.assetBridgeForm.get('to').setValue(this.blockchains[0].code);
+            } else {
+              this.assetBridgeForm.get('from').setValue(this.blockchains[0].code);
+            }
+          }
+        }
       }
     });
 
@@ -211,7 +232,11 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
           await this.metamask.addCustomNetwork(value);
         }
         if (this.selectedAsset === 'CHX') await this.initChxBridge();
-        if (this.selectedAsset !== 'CHX') await this.initAssetBridge();
+        if (this.selectedAsset !== 'CHX') {
+          if (this.tokenIsBridgedToNetwork(this.selectedAsset, this.targetChainCode())) {
+            await this.initAssetBridge();
+          }
+        }
       }
     });
 
@@ -221,7 +246,11 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
           await this.metamask.addCustomNetwork(value);
         }
         if (this.selectedAsset === 'CHX') await this.initChxBridge();
-        if (this.selectedAsset !== 'CHX') await this.initAssetBridge();
+        if (this.selectedAsset !== 'CHX') {
+          if (this.tokenIsBridgedToNetwork(this.selectedAsset, this.targetChainCode())) {
+            await this.initAssetBridge();
+          }
+        }
       }
     });
   }
@@ -263,6 +292,12 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.assetBridgeForm.updateValueAndValidity();
   }
 
+  tokenIsBridgedToNetwork(assetCode: string, network: string): boolean {
+    const asset = this.assets.filter((ass) => ass.assetCode == assetCode)[0];
+    const isBridged = asset.bridgedTokens.map((token) => token.targetBlockchain.toLowerCase()).includes(network);
+    return isBridged;
+  }
+
   get selectedAsset(): string {
     return this.assetBridgeForm?.get('asset').value;
   }
@@ -295,6 +330,8 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     if (this.loading) return true;
     if (this.assetBridgeForm.invalid) return true;
     if (this.selectedAsset === 'CHX' && !this.addressIsMapped) return true;
+    if (this.selectedAsset !== 'CHX' && !this.tokenIsBridgedToNetwork(this.selectedAsset, this.targetChainCode()))
+      return true;
   }
 
   get max(): number {
@@ -445,9 +482,19 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     });
   }
 
+  setAssetBridgeChains(): any[] {
+    const asset = this.assets.find((ass) => ass.assetCode == this.selectedAsset);
+    const bridgedNetworks = asset.bridgedTokens.map((token) => token.targetBlockchain.toLowerCase());
+    let chains = [];
+    for (let chain of this.assetBridgeChains) {
+      if (bridgedNetworks.includes(chain.code)) chains.push(chain);
+    }
+    return chains;
+  }
+
   async initAssetBridge() {
     try {
-      this.blockchains = this.assetBridgeChains;
+      this.blockchains = this.setAssetBridgeChains();
       this.assetBridgeService.resetStatus();
       this.txStatus$ = this.assetBridgeService.status$;
       this.txResult$ = this.assetBridgeService.txResult$;

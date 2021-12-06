@@ -175,7 +175,7 @@
                         class="text-danger p-2 text-small"
                         *ngIf="!tokenIsBridgedToNetwork(selectedAsset, targetChainCode())"
                       >
-                        Token currently isn't supported on
+                        The currently selected asset {{ selectedAsset }} isn't supported on
                         {{ targetChainCode() | uppercase }} network
                       </span>
                     </div>
@@ -236,7 +236,24 @@
                   <div class="row mt-4">
                     <div class="col-6">
                       <label for="from" class="ml-2">From</label>
-                      <div class="shadow-sm border rounded">
+                      <div class="shadow-sm border rounded position-relative">
+                        <ng-container
+                          *ngIf="
+                            selectedAsset !== 'CHX' &&
+                            from !== 'own' &&
+                            (bridgeWrongNetwork(from) || !tokenIsBridgedToNetwork(selectedAsset, from))
+                          "
+                        >
+                          <div class="error-overlay">
+                            Please change the network in MetaMask to {{ setAssetBridgeChains()[0].name }} and try again.
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="selectedAsset === 'CHX' && from !== 'own' && bridgeWrongNetwork(from)">
+                          <div class="error-overlay">
+                            Please change the network in MetaMask to {{ targetChainName(targetChainCode()) }} and try
+                            again.
+                          </div>
+                        </ng-container>
                         <div class="p-4 pb-0 position-relative">
                           <ng-container *ngIf="selectedAsset === 'CHX' && from !== 'own' && !addressIsMapped">
                             <a
@@ -245,18 +262,6 @@
                               class="position-absolute block right-0 text-right mb-4 pr-4"
                               >MAP ADDRESS</a
                             >
-                          </ng-container>
-                          <ng-container
-                            *ngIf="
-                              selectedAsset !== 'CHX' &&
-                              from !== 'own' &&
-                              !tokenIsBridgedToNetwork(selectedAsset, targetChainCode())
-                            "
-                          >
-                            <span class="text-sm text-danger"
-                              >Change your currently selected network in MetaMask to
-                              {{ setAssetBridgeChains()[0].name }}
-                            </span>
                           </ng-container>
                           <ng-container [ngSwitch]="from">
                             <ng-container *ngSwitchCase="'own'" [ngTemplateOutlet]="weownLogo"></ng-container>
@@ -332,7 +337,24 @@
                     </div>
                     <div class="col-6">
                       <label for="from" class="ml-2">To</label>
-                      <div class="shadow-sm border rounded">
+                      <div class="shadow-sm border rounded position-relative">
+                        <ng-container
+                          *ngIf="
+                            selectedAsset !== 'CHX' &&
+                            to !== 'own' &&
+                            (bridgeWrongNetwork(to) || !tokenIsBridgedToNetwork(selectedAsset, to))
+                          "
+                        >
+                          <div class="error-overlay">
+                            Please change the network in MetaMask to {{ setAssetBridgeChains()[0].name }} and try again.
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="selectedAsset === 'CHX' && to !== 'own' && bridgeWrongNetwork(to)">
+                          <div class="error-overlay">
+                            Please change the network in MetaMask to {{ targetChainName(targetChainCode()) }} and try
+                            again.
+                          </div>
+                        </ng-container>
                         <div class="p-4 pb-0 position-relative">
                           <ng-container *ngIf="selectedAsset === 'CHX' && to !== 'own' && !addressIsMapped">
                             <a
@@ -342,19 +364,6 @@
                               >MAP ADDRESS</a
                             >
                           </ng-container>
-                          <ng-container
-                            *ngIf="
-                              selectedAsset !== 'CHX' &&
-                              to !== 'own' &&
-                              !tokenIsBridgedToNetwork(selectedAsset, targetChainCode())
-                            "
-                          >
-                            <span class="text-sm text-danger"
-                              >Change your currently selected network in MetaMask to
-                              {{ setAssetBridgeChains()[0].name }}
-                            </span>
-                          </ng-container>
-
                           <ng-container [ngSwitch]="to">
                             <ng-container *ngSwitchCase="'own'" [ngTemplateOutlet]="weownLogo"></ng-container>
                             <ng-container *ngSwitchCase="'eth'" [ngTemplateOutlet]="ethLogo"></ng-container>

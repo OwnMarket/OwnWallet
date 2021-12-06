@@ -8,3 +8,18 @@
   color: var(--color-text-info);
   pointer-events: none;
 }
+
+.error-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 20px;
+  color: white;
+  z-index: 100;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}

@@ -134,6 +134,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
     this.chainNameSub = this.metamask.chainId$.subscribe((id) => {
       this.ngZone.run(async () => {
+        this.error = null;
         if (this.chainName && this.selectedAsset !== 'CHX') {
           this.blockchains = this.setAssetBridgeChains();
           if (this.targetChainCode() !== this.metamask.currentChainCode()) {
@@ -142,6 +143,12 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
             } else {
               this.assetBridgeForm.get('from').setValue(this.blockchains[0].code);
             }
+          }
+        }
+
+        if (this.chainName && this.selectedAsset === 'CHX') {
+          if (!this.bridgeWrongNetwork(this.metamask.currentChainCode())) {
+            this.initChxBridge();
           }
         }
         this.chainName = this.metamask.chainName;
@@ -202,10 +209,14 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.selectedAssetSub = this.assetBridgeForm.get('asset').valueChanges.subscribe((value) => {
       this.setAmount(0);
       if (value === 'CHX') {
-        this.initChxBridge();
+        if (!this.bridgeWrongNetwork(value)) {
+          this.initChxBridge();
+        }
       } else {
         if (this.tokenIsBridgedToNetwork(value, this.targetChainCode())) {
-          this.initAssetBridge();
+          if (!this.bridgeWrongNetwork(value)) {
+            this.initAssetBridge();
+          }
         } else {
           this.blockchains = this.setAssetBridgeChains();
           if (this.targetChainCode() !== this.metamask.currentChainCode()) {
@@ -226,33 +237,31 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       );
     });
 
-    this.toChainSub = this.assetBridgeForm.get('to').valueChanges.subscribe(async (value) => {
-      if (value !== 'own') {
-        if (value !== this.metamask.currentChainCode()) {
-          await this.metamask.addCustomNetwork(value);
-        }
-        if (this.selectedAsset === 'CHX') await this.initChxBridge();
-        if (this.selectedAsset !== 'CHX') {
-          if (this.tokenIsBridgedToNetwork(this.selectedAsset, this.targetChainCode())) {
-            await this.initAssetBridge();
-          }
-        }
-      }
-    });
+    this.toChainSub = this.assetBridgeForm.get('to').valueChanges.subscribe((value) => this.handleAssetChange(value));
 
-    this.fromChainSub = this.assetBridgeForm.get('from').valueChanges.subscribe(async (value) => {
-      if (value !== 'own') {
-        if (value !== this.metamask.currentChainCode()) {
-          await this.metamask.addCustomNetwork(value);
+    this.fromChainSub = this.assetBridgeForm
+      .get('from')
+      .valueChanges.subscribe((value) => this.handleAssetChange(value));
+  }
+
+  async handleAssetChange(value: string): Promise<any> {
+    if (value !== 'own') {
+      if (value !== this.metamask.currentChainCode()) {
+        await this.metamask.addCustomNetwork(value);
+      }
+      if (this.selectedAsset === 'CHX') {
+        if (!this.bridgeWrongNetwork(value)) {
+          await this.initChxBridge();
         }
-        if (this.selectedAsset === 'CHX') await this.initChxBridge();
-        if (this.selectedAsset !== 'CHX') {
-          if (this.tokenIsBridgedToNetwork(this.selectedAsset, this.targetChainCode())) {
+      }
+      if (this.selectedAsset !== 'CHX') {
+        if (this.tokenIsBridgedToNetwork(this.selectedAsset, this.targetChainCode())) {
+          if (!this.bridgeWrongNetwork(value)) {
             await this.initAssetBridge();
           }
         }
       }
-    });
+    }
   }
 
   setValidators() {
@@ -350,6 +359,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     }
   }
 
+  bridgeWrongNetwork(chainCode: string): boolean {
+    return chainCode !== this.metamask.currentChainCode();
+  }
+
   setAmount(amount: number): void {
     this.assetBridgeForm.get('amount').setValue(amount);
   }
@@ -413,10 +426,12 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     }
 
     if (this.selectedAsset !== 'CHX') {
-      if (this.to === 'own') {
-        this.assetBridgeFee = await this.assetBridgeService.getNativeTransferFee();
-      } else {
-        this.assetBridgeFee = await this.assetBridgeService.targetTransferFee();
+      if (!this.bridgeWrongNetwork(this.metamask.currentChainCode())) {
+        if (this.to === 'own') {
+          this.assetBridgeFee = await this.assetBridgeService.getNativeTransferFee();
+        } else {
+          this.assetBridgeFee = await this.assetBridgeService.targetTransferFee();
+        }
       }
     }
 

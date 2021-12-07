@@ -237,11 +237,13 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
       );
     });
 
-    this.toChainSub = this.assetBridgeForm.get('to').valueChanges.subscribe((value) => this.handleAssetChange(value));
+    this.toChainSub = this.assetBridgeForm
+      .get('to')
+      .valueChanges.subscribe(async (value) => await this.handleAssetChange(value));
 
     this.fromChainSub = this.assetBridgeForm
       .get('from')
-      .valueChanges.subscribe((value) => this.handleAssetChange(value));
+      .valueChanges.subscribe(async (value) => await this.handleAssetChange(value));
   }
 
   async handleAssetChange(value: string): Promise<any> {
@@ -303,8 +305,12 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   tokenIsBridgedToNetwork(assetCode: string, network: string): boolean {
     const asset = this.assets.filter((ass) => ass.assetCode == assetCode)[0];
-    const isBridged = asset.bridgedTokens.map((token) => token.targetBlockchain.toLowerCase()).includes(network);
+    const isBridged = asset?.bridgedTokens.map((token) => token.targetBlockchain.toLowerCase()).includes(network);
     return isBridged;
+  }
+
+  chainCodeForTrack(blockchain: any): string {
+    return blockchain.code;
   }
 
   get selectedAsset(): string {
@@ -464,9 +470,6 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   async initChxBridge(): Promise<void> {
     try {
-      if (this.metamask.currentChainCode() !== 'eth') {
-        this.assetBridgeForm.get('asset').setValue('CHX', { emitEvent: false });
-      }
       this.blockchains = this.chxBridgeChains;
       this.chxService.resetStatus();
       this.txStatus$ = this.chxService.status$;
@@ -499,7 +502,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   setAssetBridgeChains(): any[] {
     const asset = this.assets.find((ass) => ass.assetCode == this.selectedAsset);
-    const bridgedNetworks = asset.bridgedTokens.map((token) => token.targetBlockchain.toLowerCase());
+    const bridgedNetworks = asset?.bridgedTokens.map((token) => token.targetBlockchain.toLowerCase());
     let chains = [];
     for (let chain of this.assetBridgeChains) {
       if (bridgedNetworks.includes(chain.code)) chains.push(chain);

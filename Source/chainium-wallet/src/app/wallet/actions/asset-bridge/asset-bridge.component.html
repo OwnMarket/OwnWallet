@@ -576,7 +576,7 @@
           {{ targetChainName(current) }}
         </div>
       </div>
-      <ng-container *ngFor="let chain of blockchains">
+      <ng-container *ngFor="let chain of blockchains; trackBy: chainCodeForTrack">
         <own-dropdown-item
           *ngIf="chain.code !== current"
           [hasPadding]="false"

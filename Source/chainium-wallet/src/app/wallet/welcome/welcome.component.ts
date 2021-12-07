@@ -131,13 +131,11 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     if (this.fetchChxToUsdSub) {
       this.fetchChxToUsdSub.unsubscribe();
     }
-    this.fetchChxToUsdSub = timer(1000, 240000)
-      .pipe(mergeMap(() => this.state.getChxToUsdRate()))
-      .subscribe((rate) => {
-        if (this.chxToUsdRate !== rate) {
-          this.chxToUsdRate = rate;
-        }
-      });
+    this.fetchChxToUsdSub = this.state.getChxToUsdRate().subscribe((rate) => {
+      if (this.chxToUsdRate !== rate) {
+        this.chxToUsdRate = rate;
+      }
+    });
   }
 
   fetchAddressInfos() {
@@ -149,7 +147,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
 
     if (this.fetchAddressInfosSub) this.fetchAddressInfosSub.unsubscribe();
 
-    this.fetchAddressInfosSub = timer(1000, 30000)
+    this.fetchAddressInfosSub = timer(1000, 100000)
       .pipe(mergeMap(() => forkJoin(requests)))
       .subscribe((resp: ChxAddressInfo[]) => {
         if (JSON.stringify(this.addressInfos) !== JSON.stringify(resp)) {

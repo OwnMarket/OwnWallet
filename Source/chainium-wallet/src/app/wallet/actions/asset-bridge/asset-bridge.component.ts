@@ -70,6 +70,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   error: string;
   metaMaskAddress: string;
 
+  currentBridge = 'AssetBridge';
   chainName: string;
   accounts: string[] = [];
   assets: BridgeAsset[] = [];
@@ -209,23 +210,10 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.selectedAssetSub = this.assetBridgeForm.get('asset').valueChanges.subscribe((value) => {
       this.setAmount(0);
       if (value === 'CHX') {
-        if (!this.bridgeWrongNetwork(value)) {
-          this.initChxBridge();
-        }
+        this.initChxBridge();
       } else {
         if (this.tokenIsBridgedToNetwork(value, this.targetChainCode())) {
-          if (!this.bridgeWrongNetwork(value)) {
-            this.initAssetBridge();
-          }
-        } else {
-          this.blockchains = this.setAssetBridgeChains();
-          if (this.targetChainCode() !== this.metamask.currentChainCode()) {
-            if (this.targetChainCode() !== 'own') {
-              this.assetBridgeForm.get('to').setValue(this.blockchains[0].code);
-            } else {
-              this.assetBridgeForm.get('from').setValue(this.blockchains[0].code);
-            }
-          }
+          this.initAssetBridge();
         }
       }
     });
@@ -470,6 +458,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   async initChxBridge(): Promise<void> {
     try {
+      console.log('init chx bridge');
       this.blockchains = this.chxBridgeChains;
       this.chxService.resetStatus();
       this.txStatus$ = this.chxService.status$;
@@ -512,6 +501,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   async initAssetBridge() {
     try {
+      console.log('init asset bridge');
       this.blockchains = this.setAssetBridgeChains();
       this.assetBridgeService.resetStatus();
       this.txStatus$ = this.assetBridgeService.status$;

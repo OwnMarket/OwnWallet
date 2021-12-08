@@ -405,13 +405,13 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   async swapBlockchains() {
     if (this.from === 'own') {
-      this.assetBridgeForm.get('from').setValue(this.to);
-      this.assetBridgeForm.get('to').setValue('own');
+      this.assetBridgeForm.get('from').setValue(this.to, { emitEvent: false });
+      this.assetBridgeForm.get('to').setValue('own', { emitEvent: false });
       this.assetBridgeForm.get('fromAddress').setValue(this.toAddress);
       this.assetBridgeForm.get('toAddress').setValue(this.chxAddress);
     } else {
-      this.assetBridgeForm.get('to').setValue(this.from);
-      this.assetBridgeForm.get('from').setValue('own');
+      this.assetBridgeForm.get('to').setValue(this.from, { emitEvent: false });
+      this.assetBridgeForm.get('from').setValue('own', { emitEvent: false });
       this.assetBridgeForm.get('toAddress').setValue(this.fromAddress);
       this.assetBridgeForm.get('fromAddress').setValue(this.chxAddress);
     }

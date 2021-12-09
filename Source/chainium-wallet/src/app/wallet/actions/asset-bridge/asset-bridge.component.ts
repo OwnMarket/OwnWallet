@@ -138,7 +138,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
         this.error = null;
         if (this.chainName && this.selectedAsset !== 'CHX') {
           this.blockchains = this.setAssetBridgeChains();
-          if (this.targetChainCode() !== this.metamask.currentChainCode()) {
+          if (this.assetBridgeForm && this.targetChainCode() !== this.metamask.currentChainCode()) {
             if (this.targetChainCode() !== 'own') {
               this.assetBridgeForm.get('to').setValue(this.blockchains[0].code);
             } else {
@@ -491,7 +491,7 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
 
   setAssetBridgeChains(): any[] {
     const asset = this.assets.find((ass) => ass.assetCode == this.selectedAsset);
-    const bridgedNetworks = asset?.bridgedTokens.map((token) => token.targetBlockchain.toLowerCase());
+    const bridgedNetworks = asset?.bridgedTokens.map((token) => token.targetBlockchain.toLowerCase()) || [];
     let chains = [];
     for (let chain of this.assetBridgeChains) {
       if (bridgedNetworks.includes(chain.code)) chains.push(chain);

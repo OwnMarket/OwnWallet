@@ -136,20 +136,11 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.chainNameSub = this.metamask.chainId$.subscribe((id) => {
       this.ngZone.run(async () => {
         this.error = null;
-        if (this.chainName && this.selectedAsset !== 'CHX') {
-          this.blockchains = this.setAssetBridgeChains();
-          if (this.assetBridgeForm && this.targetChainCode() !== this.metamask.currentChainCode()) {
-            if (this.targetChainCode() !== 'own') {
-              this.assetBridgeForm.get('to').setValue(this.blockchains[0].code);
-            } else {
-              this.assetBridgeForm.get('from').setValue(this.blockchains[0].code);
-            }
-          }
-        }
-
-        if (this.chainName && this.selectedAsset === 'CHX') {
-          if (!this.bridgeWrongNetwork(this.metamask.currentChainCode())) {
-            this.initChxBridge();
+        if (this.chainName && this.assetBridgeForm) {
+          if (this.targetChainCode() !== 'own') {
+            this.assetBridgeForm.get('to').setValue(this.metamask.currentChainCode());
+          } else {
+            this.assetBridgeForm.get('from').setValue(this.metamask.currentChainCode());
           }
         }
         this.chainName = this.metamask.chainName;
@@ -176,6 +167,9 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.assetBridgeService.resetStatus();
+    this.chxService.resetStatus();
+    this.assetBridgeForm = undefined;
     this.paramsSub && this.paramsSub.unsubscribe();
     this.addressSub && this.addressSub.unsubscribe();
     this.bridgeFeeSub && this.bridgeFeeSub.unsubscribe();
@@ -636,7 +630,6 @@ export class AssetBridgeComponent implements OnInit, OnDestroy {
     this.assetBridgeService.resetStatus();
     this.error = null;
     this.wrongNetwork = false;
-    this.selectedAsset === 'CHX' ? await this.initChxBridge() : await this.initAssetBridge();
   }
 
   tokenImageError(event: any): void {

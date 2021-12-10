@@ -111,6 +111,10 @@ export class MetamaskService {
     return this.networks[this.configService.config[this.currentChainCode()].chainId];
   }
 
+  get networkToken(): string {
+    return this.configService.config[this.currentChainCode()].networkToken;
+  }
+
   async addCustomNetwork(blockchain: string): Promise<any> {
     try {
       const rpcReq = {

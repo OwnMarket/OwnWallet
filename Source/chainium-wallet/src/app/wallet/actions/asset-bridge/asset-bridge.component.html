@@ -830,7 +830,7 @@
               </ng-container>
               <ng-container *ngIf="selectedAsset !== 'CHX'">
                 {{ assetBridgeFee }}
-                ETH {{ from === 'own' ? '+ 1 CHX' : '' }}
+                {{ metamask.networkToken }} {{ from === 'own' ? '+ 1 CHX' : '' }}
               </ng-container>
             </div>
           </div>

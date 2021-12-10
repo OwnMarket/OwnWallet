@@ -104,17 +104,6 @@
 
   <div class="row justify-content-center">
     <div class="col-12 col-md-10">
-      <div class="text-center">
-        <button
-          *ngIf="selectedAccount && !addingNewAsset && !addingNewAccount && !settingController && !transferingAsset"
-          class="own-effect mx-auto"
-          type="button"
-          (click)="addNewAsset()"
-        >
-          ADD NEW ASSET
-        </button>
-      </div>
-
       <div *ngIf="settingController" @flyUpDown>
         <app-set-account-controller
           (onClosed)="close()"

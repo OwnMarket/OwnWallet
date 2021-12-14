@@ -117,27 +117,37 @@ export class MetamaskService {
 
   async addCustomNetwork(blockchain: string): Promise<any> {
     try {
-      const rpcReq = {
-        id: 1,
-        jsonrpc: '2.0',
-        method: 'wallet_addEthereumChain',
-        params: [
-          {
-            chainId: this.configService.config[blockchain].chainId,
-            chainName: this.configService.config[blockchain].network,
-            rpcUrls: [this.configService.config[blockchain].rpcUrl],
-            blockExplorerUrls: [this.configService.config[blockchain].explorerUrl],
-            nativeCurrency: {
-              name: this.configService.config[blockchain].networkToken,
-              symbol: this.configService.config[blockchain].networkToken,
-              decimals: 18,
-            },
-          },
-        ],
-      };
-      return await this.provider.request(rpcReq);
-    } catch (error) {
-      return error;
+      return await this.provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: this.configService.config[blockchain].chainId }],
+      });
+    } catch (switchError) {
+      // This error code indicates that the chain has not been added to MetaMask.
+      if (switchError.code === 4902) {
+        try {
+          const rpcReq = {
+            id: 1,
+            jsonrpc: '2.0',
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: this.configService.config[blockchain].chainId,
+                chainName: this.configService.config[blockchain].network,
+                rpcUrls: [this.configService.config[blockchain].rpcUrl],
+                blockExplorerUrls: [this.configService.config[blockchain].explorerUrl],
+                nativeCurrency: {
+                  name: this.configService.config[blockchain].networkToken,
+                  symbol: this.configService.config[blockchain].networkToken,
+                  decimals: 18,
+                },
+              },
+            ],
+          };
+          return await this.provider.request(rpcReq);
+        } catch (error) {
+          return error;
+        }
+      }
     }
   }
 

@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
-import { AssetBridgeService } from 'src/app/shared';
 import { contentInOut, flyUpDown } from 'src/app/shared/animations/router.animations';
 import { WalletInfo } from 'src/app/shared/models/wallet-info.model';
 import { NodeService } from 'src/app/shared/services/node.service';
@@ -25,7 +24,6 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   bridgedAssetsSub: Subscription;
   accInfoSub: Subscription;
   holdings: any;
-  bridgedAssets: string[];
   assets: Observable<any>;
 
   wallet: WalletInfo;
@@ -33,8 +31,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
 
   constructor(
     private nodeService: NodeService,
-    private privateKeyService: PrivatekeyService,
-    private assetBridgeService: AssetBridgeService
+    private privateKeyService: PrivatekeyService
   ) {}
 
   ngOnInit(): void {
@@ -44,24 +41,12 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     }
 
     this.wallet = this.privateKeyService.getWalletInfo();
-    this.fetchBridgedAssets();
     this.fetchAccountsWithInfo();
   }
 
   ngOnDestroy(): void {
     if (this.accInfoSub) this.accInfoSub.unsubscribe();
     if (this.bridgedAssetsSub) this.bridgedAssetsSub.unsubscribe();
-  }
-
-  isBridgedAsset(assetHash: string): boolean {
-    return this.bridgedAssets?.includes(assetHash);
-  }
-
-  fetchBridgedAssets() {
-    this.bridgedAssetsSub = this.assetBridgeService
-      .getAssets()
-      .pipe(map((resp) => resp.data.map((asset) => asset.assetHash)))
-      .subscribe((assets) => (this.bridgedAssets = assets));
   }
 
   fetchAccountsWithInfo(transfered?: boolean): void {

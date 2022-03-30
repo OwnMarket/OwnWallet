@@ -82,20 +82,6 @@
                 <own-icon icon="swap" color="#eb6723"></own-icon>
               </button>
             </div>
-            <div class="px-4 cursor-pointer border-left" *ngIf="isBridgedAsset(asset.assetHash)">
-              <button
-                class="button-transparent p-0"
-                title="Cross-Chain Asset Transfer"
-                [routerLink]="['/wallet/asset-bridge']"
-                [queryParams]="{
-                  accountHash: selectedAccount,
-                  assetCode: asset.assetCode,
-                  balance: asset.balance
-                }"
-              >
-                <own-icon icon="swap" color="#3aabb9"></own-icon>
-              </button>
-            </div>
           </div>
         </div>
       </div>

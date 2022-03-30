@@ -44,7 +44,7 @@ import { PortfolioComponent } from './wallet/portfolio/portfolio.component';
 import { AddAssetComponent } from './wallet/actions/add-asset/add-asset.component';
 import { SetAccountControllerComponent } from './wallet/actions/set-account-controller/set-account-controller.component';
 import { TransferAssetComponent } from './wallet/actions/transfer-asset/transfer-asset.component';
-import { AssetBridgeComponent } from './wallet/actions/asset-bridge/asset-bridge.component';
+
 
 @NgModule({
   declarations: [
@@ -74,8 +74,7 @@ import { AssetBridgeComponent } from './wallet/actions/asset-bridge/asset-bridge
     PortfolioComponent,
     AddAssetComponent,
     SetAccountControllerComponent,
-    TransferAssetComponent,
-    AssetBridgeComponent,
+    TransferAssetComponent
   ],
   imports: [
     BrowserModule,

@@ -14,11 +14,8 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "./webpack.config.js"
-            },
             "outputPath": "dist/chainium-wallet",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -31,7 +28,7 @@
               "src/styles.css"
             ],
             "scripts": ["src/lib/own-blockchain-sdk.js"],
-            "allowedCommonJsDependencies": ["qrcode", "web3", "hash.js"]
+            "allowedCommonJsDependencies": ["qrcode", "hash.js", "hammerjs"]
           },
           "configurations": {
             "production": {
@@ -54,7 +51,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "chainium-wallet:build"
           },

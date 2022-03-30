@@ -28,7 +28,6 @@ import { ValidatorManagmentComponent } from './wallet/validator-managment/valida
 import { StakingComponent } from './wallet/staking/staking.component';
 import { MessageSignVerificationComponent } from './wallet/msg-sign-verify/msg-sign-verify.component';
 import { PortfolioComponent } from './wallet/portfolio/portfolio.component';
-import { AssetBridgeComponent } from './wallet/actions/asset-bridge/asset-bridge.component';
 
 export const ROUTERCONFIGS: Routes = [
   {
@@ -134,11 +133,6 @@ export const ROUTERCONFIGS: Routes = [
         path: 'receive-chx',
         component: ReceiveChxComponent,
         data: { state: 'receive-chx' },
-      },
-      {
-        path: 'asset-bridge',
-        component: AssetBridgeComponent,
-        data: { state: 'asset-bridge' },
       },
       {
         path: 'portfolio',

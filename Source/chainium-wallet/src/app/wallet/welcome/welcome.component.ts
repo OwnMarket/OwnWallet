@@ -34,9 +34,10 @@ export class WelcomeComponent implements OnInit, OnDestroy {
   showImportedPk: boolean;
   isWalletContextValid: boolean;
   showAdvanced = false;
-  explorerUrl: string;
   chxToUsdRate: number;
   privateKeyIsImported: boolean = false;
+  walletProUrl: string;
+  explorerUrl: string;
 
   selectedSlideIndex: number = 0;
   routerSub: Subscription;
@@ -55,6 +56,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     private configService: ConfigurationService
   ) {
     this.explorerUrl = this.configService.config.explorerUrl;
+    this.walletProUrl = this.configService.config.walletProUrl;
 
     try {
       this.showImportedPk = JSON.parse(sessionStorage.getItem('isPrivateKeyImported')) || false;

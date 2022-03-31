@@ -15,7 +15,7 @@ mkdir -p "$OUTPUT_DIR"
 echo "--- Building project..."
 cd "../Source/chainium-wallet"
 npm ci
-npm run build -- --prod
+npm run build
 npm run gulp
 
 echo "--- Creating package..."

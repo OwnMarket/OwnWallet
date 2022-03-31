@@ -309,6 +309,10 @@ button.link {
   border-radius: 7px;
 }
 
+.text-left {
+  text-align: left;
+}
+
 .text-center {
   text-align: center;
 }
